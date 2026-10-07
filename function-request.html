@@ -112,7 +112,9 @@
         display: block;
       }
     }
-  </style>
+  
+    main { padding-bottom: 60px !important; }
+</style>
   </style>
   <style>
     .header {
@@ -175,13 +177,19 @@
     }
 
     .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
       margin-left: 260px;
       padding: 10px 24px;
+      background: var(--bg, #f7f9fc);
       color: var(--muted);
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
-      font-size: .78rem
+      font-size: .78rem;
+      z-index: 999;
     }
 
     @media(max-width:900px) {
@@ -194,8 +202,20 @@
       }
 
       .footer {
-        margin-left: 0
-      }
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-left: 260px;
+      padding: 10px 24px;
+      background: var(--bg, #f7f9fc);
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem;
+      z-index: 999;
+    }
 
       main {
         padding-top: 34px
@@ -629,13 +649,19 @@
     }
 
     .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
       margin-left: 260px;
       padding: 10px 24px;
+      background: var(--bg, #f7f9fc);
       color: var(--muted);
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
-      font-size: .78rem
+      font-size: .78rem;
+      z-index: 999;
     }
 
     @media(max-width:900px) {
@@ -648,8 +674,20 @@
       }
 
       .footer {
-        margin-left: 0
-      }
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-left: 260px;
+      padding: 10px 24px;
+      background: var(--bg, #f7f9fc);
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem;
+      z-index: 999;
+    }
 
       main {
         padding-top: 34px
