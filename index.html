@@ -251,6 +251,30 @@
                 justify-content: center;
             }
         }
+    
+        .signup-prompt {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .signup-prompt a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: color 0.2s;
+        }
+
+        .signup-prompt a:hover {
+            color: var(--accent);
+        }
+
+        .hidden-field {
+            display: none;
+        }
+
     </style>
 </head>
 
@@ -273,6 +297,15 @@
         </div>
 
         <form id="loginForm">
+            
+            <div class="form-group hidden-field" id="nameGroup">
+                <label for="fullName">Full Name</label>
+                <div class="input-wrapper">
+                    <input type="text" id="fullName" placeholder="Enter your full name" autocomplete="name">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <div class="input-wrapper">
@@ -302,6 +335,11 @@
                 <span class="btn-text">Sign In</span>
                 <div class="spinner"></div>
             </button>
+        
+            <div class="signup-prompt" id="signupPrompt">
+                Don't have an account? <a href="#" id="toggleSignup">Sign Up</a>
+            </div>
+
         </form>
 
         <div class="footer-text">
@@ -317,6 +355,43 @@
         const loginBtn = document.getElementById('loginBtn');
         const btnText = loginBtn.querySelector('.btn-text');
         const spinner = loginBtn.querySelector('.spinner');
+
+        
+        const toggleSignup = document.getElementById('toggleSignup');
+        const nameGroup = document.getElementById('nameGroup');
+        const fullNameInput = document.getElementById('fullName');
+        const titleText = document.querySelector('.brand-header h1');
+        const subtitleText = document.querySelector('.brand-header p');
+        const signupPromptText = document.getElementById('signupPrompt');
+        
+        let isSignup = false;
+
+        toggleSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            isSignup = !isSignup;
+            
+            if (isSignup) {
+                // Switch to Sign Up
+                titleText.textContent = 'Create an Account';
+                subtitleText.textContent = 'Join Admin Request Management System';
+                btnText.textContent = 'Sign Up';
+                signupPromptText.innerHTML = 'Already have an account? <a href="#" id="toggleSignup">Sign In</a>';
+                nameGroup.style.display = 'block';
+                fullNameInput.required = true;
+            } else {
+                // Switch to Sign In
+                titleText.textContent = 'Welcome Back';
+                subtitleText.textContent = 'Admin Request Management System';
+                btnText.textContent = 'Sign In';
+                signupPromptText.innerHTML = 'Don\'t have an account? <a href="#" id="toggleSignup">Sign Up</a>';
+                nameGroup.style.display = 'none';
+                fullNameInput.required = false;
+            }
+            
+            // Re-attach event listener because innerHTML replaced the element
+            document.getElementById('toggleSignup').addEventListener('click', arguments.callee);
+        });
+
 
         // Check if remembered
         if (localStorage.getItem('rememberedEmail')) {
