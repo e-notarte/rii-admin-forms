@@ -958,6 +958,166 @@
             text-align: center;
         }
 </style>
+<style>
+        /* --- CALENDAR POPUP CSS --- */
+        .calendar-trigger-btn {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 800;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .calendar-trigger-btn:hover {
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+        .calendar-trigger-btn::after {
+            content: "Check Calendar";
+            position: absolute;
+            right: calc(100% + 15px);
+            background: var(--primary);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            transform: translateX(10px);
+        }
+        .calendar-trigger-btn:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media(max-width: 900px) {
+            .calendar-trigger-btn {
+                top: auto;
+                bottom: 90px;
+                right: 20px;
+                transform: none;
+            }
+            .calendar-trigger-btn:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        .calendar-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            width: 100%;
+            text-align: left;
+        }
+        .calendar-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--primary);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .calendar-title-bar h2 {
+            margin: 0;
+            color: var(--accent) !important;
+            font-size: 1.25rem;
+        }
+        .calendar-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .calendar-controls select {
+            padding: 6px;
+            border-radius: 4px;
+            border: none;
+            font-family: inherit;
+        }
+        .calendar-controls button {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+        .calendar-day-header {
+            background: var(--accent);
+            color: var(--primary);
+            text-align: center;
+            padding: 10px 0;
+            font-weight: 600;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        .calendar-day {
+            background: #f1f5f9;
+            min-height: 85px;
+            border-radius: 4px;
+            padding: 8px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            font-size: 0.9rem;
+        }
+        .calendar-day.empty {
+            background: transparent;
+        }
+        .calendar-day.reserved {
+            background: var(--primary);
+            color: white;
+        }
+        .calendar-legend {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .legend-reserved { background: var(--primary); }
+        .legend-available { background: #f1f5f9; }
+</style>
 </head>
 <body>
 <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" onclick="document.body.classList.toggle('nav-open'); document.body.classList.remove('account-open')"><i class="fa-solid fa-bars"></i></button>
@@ -1011,6 +1171,101 @@
 <main><section class="form-card"><h1><i class="fa-solid fa-square-parking"></i> Parking Slot Request</h1><p class="intro">Submit a request to reserve a parking slot.</p><form id="requestForm"><div class="grid"><label>Requestor Email<input name="requestor" type="email" required placeholder="Enter your email address"></label><label>Company<select name="company" required><option value="">Select Company</option><option>RMRCI</option><option>RBI</option><option>PESC</option><option>RLAND</option></select></label></div><label>Department<select name="department" required><option value="">Select Department</option><option>Admin</option><option>HR</option><option>Purchasing</option><option>BDG</option><option>Engineering</option><option>C&amp;C</option><option>Accounting</option><option>Finance</option></select></label><label>Visitor Name<input name="visitor" required></label><label>Plate Number<input name="plate" required></label><div class="grid"><label>Date<input name="date" type="date" required></label><label>Start Time<input name="time" type="time" required></label></div><label>Person to Visit<input name="visit" required></label><button type="submit">Submit Parking Slot Request</button></form></section></main>
 <div class="modal" id="modal"><div class="modal-box"><h2>Request Submitted</h2><p>Reference Number:</p><strong id="reference"></strong><br><br><button type="button" onclick="modal.classList.remove('open')">Close</button></div></div>
 <script>var modal=document.getElementById('modal');document.getElementById('requestForm').addEventListener('submit',function(e){e.preventDefault();var f=new FormData(e.target),r=JSON.parse(localStorage.getItem('fleetRequests')||'[]'),id='REQ-'+Math.floor(Math.random()*900+100);r.push({id:id,requestor:f.get('requestor'),destination:'Parking Slot',purpose:'Visitor: '+f.get('visitor')+', Person to Visit: '+f.get('visit'),scheduleDate:f.get('date'),scheduleTime:f.get('time'),driver:'',car:'',status:'pending',requestType:'Parking Slot',company:f.get('company'),department:f.get('department'),plate:f.get('plate')});localStorage.setItem('fleetRequests',JSON.stringify(r));document.getElementById('reference').textContent=id;modal.classList.add('open');e.target.reset()})</script>
+
+<!-- CALENDAR TRIGGER BUTTON -->
+<button type="button" class="calendar-trigger-btn" onclick="document.getElementById('facilityCalendarModal').classList.add('open')">
+    <i class="fa-solid fa-calendar-days"></i>
+</button>
+
+<!-- CALENDAR MODAL -->
+<div class="modal" id="facilityCalendarModal">
+    <div class="modal-box" style="width: min(95%, 800px); max-height: 90vh; overflow-y: auto; padding: 20px;">
+        <div class="calendar-container">
+            <div class="calendar-title-bar">
+                <h2>Reservation Calendar</h2>
+                <div class="calendar-controls">
+                    <label>Month:</label>
+                    <select id="calMonth">
+                        <option value="9">Oct</option>
+                        <option value="10">Nov</option>
+                        <option value="11">Dec</option>
+                    </select>
+                    <label>Year:</label>
+                    <select id="calYear">
+                        <option value="2026">2026</option>
+                    </select>
+                    <button type="button" onclick="updateCal()">Go</button>
+                    <button type="button" onclick="document.getElementById('facilityCalendarModal').classList.remove('open')" style="margin-left: 10px; background: #fff; color: var(--primary);">Close</button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+            <div class="calendar-legend">
+                <div class="legend-item"><div class="legend-dot legend-reserved"></div><span>Occupied</span></div>
+                <div class="legend-item"><div class="legend-dot legend-available"></div><span>Available</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const calendarGrid = document.getElementById('calendarGrid');
+
+    function getMockEvents() {
+        return [
+            { date: '2026-10-08', title: 'Occupied' },
+            { date: '2026-10-15', title: 'Occupied' },
+            { date: '2026-10-16', title: 'Occupied' },
+            { date: '2026-10-23', title: 'Occupied' },
+            { date: '2026-11-05', title: 'Occupied' },
+            { date: '2026-11-12', title: 'Occupied' },
+        ];
+    }
+
+    function renderCalendar(year, month) {
+        if(!calendarGrid) return;
+        calendarGrid.innerHTML = `
+            <div class="calendar-day-header">Sun</div>
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+        `;
+
+        const events = getMockEvents();
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+            calendarGrid.innerHTML += `<div class="calendar-day empty"></div>`;
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            const m = String(month + 1).padStart(2, '0');
+            const d = String(i).padStart(2, '0');
+            const dateString = `${year}-${m}-${d}`;
+
+            const hasEvent = events.some(e => e.date === dateString);
+            const classStr = hasEvent ? "calendar-day reserved" : "calendar-day";
+            const labelStr = hasEvent ? `<br><span style="font-size:0.75rem; color:var(--accent); margin-top:auto;">Occupied</span>` : "";
+
+            calendarGrid.innerHTML += `<div class="${classStr}">${i}${labelStr}</div>`;
+        }
+    }
+
+    function updateCal() {
+        const m = parseInt(document.getElementById('calMonth').value);
+        const y = parseInt(document.getElementById('calYear').value);
+        renderCalendar(y, m);
+    }
+
+    // initialize for Oct 2026
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCalendar(2026, 9);
+    });
+</script>
+
 <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span></footer>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
