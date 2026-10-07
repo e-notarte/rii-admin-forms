@@ -872,7 +872,7 @@
 <body>
 <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" onclick="document.body.classList.toggle('nav-open'); document.body.classList.remove('account-open')"><i class="fa-solid fa-bars"></i></button>
 <button class="mobile-account-button" type="button" aria-label="Open account menu" onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i class="fa-solid fa-user"></i><span>Account</span></button>
-<div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button" title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button" title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button></div>
+<div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button" title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button" title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button><button type="button" title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i class="fa-solid fa-right-from-bracket"></i> Log out</button></div>
 <header class="header">
     <div class="brand"><img
         src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
@@ -881,6 +881,7 @@
           class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button class="icon-btn" type="button"
         title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button><button class="icon-btn" type="button"
         title="Notifications"><i class="fa-regular fa-bell"></i></button>
+        <button class="icon-btn" type="button" title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i class="fa-solid fa-right-from-bracket"></i></button>
       <div class="user-badge"><span>Requestor User</span>
         <div class="avatar">RU</div>
       </div>
