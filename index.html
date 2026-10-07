@@ -29,22 +29,36 @@
 
         body {
             background-color: var(--bg);
-            background-image: radial-gradient(circle at top right, rgba(30, 53, 95, 0.05), transparent 40%),
-                              radial-gradient(circle at bottom left, rgba(252, 174, 22, 0.05), transparent 40%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-main);
+            overflow: hidden;
+        }
+
+        .bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -1;
+            object-fit: cover;
+            filter: brightness(0.65); 
         }
 
         .login-container {
-            background: var(--surface);
+            background: rgba(255, 255, 255, 0.93);
+            backdrop-filter: blur(12px);
             width: 100%;
             max-width: 440px;
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -236,6 +250,9 @@
     </style>
 </head>
 <body>
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="../RII Video.mp4" type="video/mp4">
+    </video>
 
     <div class="login-container">
         <div class="brand-header">
