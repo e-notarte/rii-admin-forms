@@ -112,7 +112,9 @@
                 display: block;
             }
         }
-    </style>
+    
+    main { padding-bottom: 60px !important; }
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Supplies Dashboard - R-II Builders</title>
@@ -697,15 +699,20 @@
 
         /* FOOTER */
         .footer {
-            margin-left: 260px;
-            text-align: center;
-            padding: 10px 24px;
-            font-size: .78rem;
-            color: var(--muted);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-        }
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-left: 260px;
+      padding: 10px 24px;
+      background: var(--bg, #f7f9fc);
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem;
+      z-index: 999;
+    }
 
         /* MODAL */
         .modal-overlay {
@@ -863,8 +870,20 @@
             }
 
             .footer {
-                margin-left: 0;
-            }
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-left: 260px;
+      padding: 10px 24px;
+      background: var(--bg, #f7f9fc);
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem;
+      z-index: 999;
+    }
 
             .page-body {
                 padding-top: 24px;
