@@ -1118,6 +1118,35 @@
         .legend-reserved { background: var(--primary); }
         .legend-available { background: #f1f5f9; }
 </style>
+
+<style>
+    .ai-bot-btn {
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        cursor: pointer;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+        border: 2px solid var(--primary, #1E355F);
+    }
+    .ai-bot-btn:hover {
+        transform: scale(1.1);
+    }
+    .ai-bot-btn img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+</style>
+
 </head>
 <body>
 <button class="mobile-menu-toggle" type="button" aria-label="Open navigation" onclick="document.body.classList.toggle('nav-open'); document.body.classList.remove('account-open')"><i class="fa-solid fa-bars"></i></button>
@@ -1273,5 +1302,11 @@
         }
     });
 </script>
+
+<!-- AI Bot -->
+<div class="ai-bot-btn" title="Chat with AI Assistant">
+    <img src="AI_Bot.png" alt="AI Bot">
+</div>
+
 </body></html>
 
