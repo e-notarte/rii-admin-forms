@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <style>
+    .mobile-menu-toggle,
+    .mobile-account-button {
+      display: none;
+    }
+
+    .mobile-account-menu {
+      display: none;
+    }
+
+    @media (max-width:900px) {
+      .header {
+        padding-left: 56px;
+      }
+
+      .mobile-menu-toggle,
+      .mobile-account-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 14px;
+        z-index: 1100;
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgba(255, 255, 255, .25);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, .1);
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .mobile-menu-toggle {
+        left: 12px;
+        font-size: 1.1rem;
+      }
+
+      .mobile-account-button {
+        right: 12px;
+        width: auto;
+        padding: 0 10px;
+        gap: 6px;
+        font-size: .75rem;
+        font-weight: 600;
+      }
+
+      .header-right {
+        display: none;
+      }
+
+      .mobile-account-menu {
+        display: none;
+        position: fixed;
+        top: 58px;
+        right: 12px;
+        z-index: 1200;
+        min-width: 190px;
+        padding: 8px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+      }
+
+      body.account-open .mobile-account-menu {
+        display: grid;
+        gap: 4px;
+      }
+
+      .mobile-account-menu a,
+      .mobile-account-menu button {
+        width: 100%;
+        padding: 9px 10px;
+        border: 0;
+        border-radius: 5px;
+        background: transparent;
+        color: var(--primary);
+        font: inherit;
+        font-size: .8rem;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .mobile-account-menu a:hover,
+      .mobile-account-menu button:hover {
+        background: #f1f5f9;
+      }
+
+      body:not(.nav-open) .sidebar {
+        display: none;
+      }
+
+      body.nav-open .sidebar {
+        display: block;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 64px);
+        margin: 0;
+        padding: 12px 0;
+        overflow-y: auto;
+        z-index: 900;
+      }
+
+      body.nav-open .sidebar nav {
+        display: block;
+      }
+    }
+  </style>
+  </style>
+  <style>
+    .header {
+      height: 64px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100
+    }
+
+    .header:after {
+      content: "FUNCTION HALL REQUEST";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase
+    }
+
+    .switch-admin {
+      background: #fcae1626;
+      border: 1px solid #fcae164d;
+      border-radius: 6px;
+      padding: 6px 14px
+    }
+
+    .icon-btn {
+      background: none;
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem
+    }
+
+    .icon-btn:hover {
+      color: var(--accent)
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-size: .85rem;
+      font-weight: 600
+    }
+
+    .sidebar {
+      top: 64px;
+      height: calc(100vh - 64px)
+    }
+
+    main {
+      padding-top: 98px
+    }
+
+    .footer {
+      margin-left: 260px;
+      padding: 10px 24px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem
+    }
+
+    @media(max-width:900px) {
+      .header:after {
+        display: none
+      }
+
+      .sidebar {
+        margin-top: 64px
+      }
+
+      .footer {
+        margin-left: 0
+      }
+
+      main {
+        padding-top: 34px
+      }
+    }
+  </style>
+  }
+  </style>
+  <style>
+    html,
+    body {
+      overflow-x: hidden;
+    }
+
+    .header {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: 100% !important;
+      height: 64px !important;
+      z-index: 1000 !important;
+    }
+
+    .sidebar {
+      position: fixed !important;
+      top: 64px !important;
+      left: 0 !important;
+      height: calc(100vh - 64px) !important;
+      z-index: 900 !important;
+      overflow-y: auto;
+    }
+
+    main {
+      padding-top: 98px !important;
+      min-width: 0;
+    }
+
+    .form-card {
+      width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: static !important;
+        top: auto !important;
+        height: auto !important;
+        margin-top: 64px;
+        overflow-y: visible;
+      }
+
+      main {
+        width: 100%;
+        padding: 34px 16px 70px !important;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-card {
+        padding: 20px;
+      }
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Function Hall Request - R-II Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1E355F;
+      --accent: #FCAE16;
+      --bg: #f7f9fc;
+      --border: #e2e8f0;
+      --muted: #718096
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #2d3748;
+      font-family: Poppins, sans-serif;
+      min-height: 100vh
+    }
+
+    .header {
+      height: 70px;
+      background: var(--primary);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700
+    }
+
+    .brand img {
+      width: 44px
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px
+    }
+
+    .switch-admin {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: .85rem;
+      font-weight: 600
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ffffff26;
+      display: grid;
+      place-items: center;
+      font-size: .75rem;
+      font-weight: 700
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 260px;
+      height: calc(100vh - 70px);
+      background: #fff;
+      border-right: 1px solid var(--border);
+      padding: 20px 0
+    }
+
+    .sidebar-brand-mobile {
+      display: none;
+    }
+
+    .nav-label {
+      color: var(--muted);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      padding: 10px 24px 5px;
+      text-transform: uppercase
+    }
+
+    .nav-link,
+    .nav-group-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px 24px;
+      color: #2d3748;
+      text-decoration: none;
+      font-size: .9rem;
+      border-left: 3px solid transparent
+    }
+
+    .nav-link i,
+    .nav-group-title i {
+      width: 20px;
+      text-align: center;
+      color: var(--muted)
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary);
+      background: #1e355f0d
+    }
+
+    .nav-link.active {
+      border-left-color: var(--accent)
+    }
+
+    .nav-group-title {
+      color: var(--primary)
+    }
+
+    .sub-links {
+      padding-left: 26px
+    }
+
+    .sub-link {
+      display: block;
+      padding: 7px 24px 7px 33px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .82rem
+    }
+
+    .sub-link:hover,
+    .sub-link.active {
+      color: var(--primary);
+      background: #f8fafc
+    }
+
+    main {
+      margin-left: 260px;
+      padding: 34px 24px 70px
+    }
+
+    .form-card {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 18px #00000014;
+      padding: 28px
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 1.45rem
+    }
+
+    .intro {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: .85rem
+    }
+
+    form {
+      display: grid;
+      gap: 14px
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--primary);
+      font-size: .8rem;
+      font-weight: 600
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px 11px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font: inherit;
+      font-size: .85rem
+    }
+
+    button {
+      border: 0;
+      border-radius: 7px;
+      padding: 12px;
+      background: var(--primary);
+      color: #fff;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer
+    }
+
+    button:hover {
+      background: #152748
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #00000073;
+      place-items: center
+    }
+
+    .modal.open {
+      display: grid
+    }
+
+    .modal-box {
+      width: min(90%, 360px);
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px;
+      text-align: center
+    }
+
+    .modal-box h2 {
+      color: var(--primary)
+    }
+
+    @media(max-width:900px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        padding: 8px 0;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-right: 0;
+        border-bottom: 1px solid var(--border)
+      }
+
+      .nav-label {
+        display: none
+      }
+
+      .sidebar nav {
+        display: flex;
+        min-width: max-content
+      }
+
+      .nav-link,
+      .nav-group-title {
+        border-left: 0;
+        border-bottom: 3px solid transparent;
+        padding: 10px 16px
+      }
+
+      .nav-link.active {
+        border-bottom-color: var(--accent)
+      }
+
+      .nav-group {
+        display: flex;
+        align-items: center
+      }
+
+      .sub-links {
+        display: flex;
+        padding: 0
+      }
+
+      .sub-link {
+        padding: 10px 12px
+      }
+
+      main {
+        margin-left: 0
+      }
+    }
+
+    @media(max-width:600px) {
+      .header-right span {
+        display: none
+      }
+
+      .grid {
+        grid-template-columns: 1fr
+      }
+
+      .form-card {
+        padding: 20px
+      }
+    }
+  </style>
+  <style>
+    .header {
+      height: 64px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100
+    }
+
+    .header:after {
+      content: "FUNCTION HALL REQUEST";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase
+    }
+
+    .switch-admin {
+      background: #fcae1626;
+      border: 1px solid #fcae164d;
+      border-radius: 6px;
+      padding: 6px 14px
+    }
+
+    .icon-btn {
+      background: none;
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem
+    }
+
+    .icon-btn:hover {
+      color: var(--accent)
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-size: .85rem;
+      font-weight: 600
+    }
+
+    .sidebar {
+      top: 64px;
+      height: calc(100vh - 64px)
+    }
+
+    main {
+      padding-top: 98px
+    }
+
+    .footer {
+      margin-left: 260px;
+      padding: 10px 24px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem
+    }
+
+    @media(max-width:900px) {
+      .header:after {
+        display: none
+      }
+
+      .sidebar {
+        margin-top: 64px
+      }
+
+      .footer {
+        margin-left: 0
+      }
+
+      main {
+        padding-top: 34px
+      }
+    }
+  </style>
+  <style id="mobile-shell-overrides">
+    @media (max-width:900px) {
+
+      .header,
+      .header-bar {
+        padding-left: 56px;
+        padding-right: 56px;
+      }
+
+      .header-right {
+        display: flex;
+        gap: 10px;
+      }
+
+      .header-right .switch-admin,
+      .header-right .switch-btn,
+      .header-right .user-badge,
+      .header-right .user-profile {
+        display: none;
+      }
+
+      .header-right .icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+      }
+
+      .mobile-account-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 14px;
+        right: 12px;
+        z-index: 1300;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: #d1fae5;
+        color: #047857;
+        font-size: 0;
+        cursor: pointer;
+      }
+
+      .mobile-account-button i {
+        font-size: .9rem;
+      }
+
+      .mobile-menu-toggle {
+        z-index: 1300;
+      }
+
+      .mobile-account-menu {
+        top: 58px;
+        right: 12px;
+      }
+
+      body:not(.nav-open) .sidebar,
+      body:not(.nav-open) .requestor-sidebar {
+        display: none;
+      }
+
+      body.nav-open::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 1100;
+        background: rgba(15, 23, 42, .48);
+      }
+
+      /* Make sidebar like mydtr mobile */
+      body.nav-open .sidebar,
+      body.nav-open .requestor-sidebar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: min(85vw, 320px);
+        height: 100vh;
+        margin: 0;
+        padding: 0 0 20px 0;
+        overflow-y: auto;
+        z-index: 1200;
+        background: #fff;
+        box-shadow: 4px 0 18px rgba(0, 0, 0, .16);
+      }
+
+      /* Hide the hamburger toggle when sidebar is open */
+      body.nav-open .mobile-menu-toggle {
+        display: none;
+      }
+
+      /* Sidebar mobile header */
+      .sidebar-brand-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 10px;
+      }
+
+      .sidebar-brand-mobile .brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .sidebar-brand-mobile .brand img {
+        width: 38px;
+      }
+
+      .close-sidebar {
+        background: none;
+        border: none;
+        font-size: 1.4rem;
+        color: var(--muted);
+        cursor: pointer;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .close-sidebar:hover {
+        color: #ef4444;
+      }
+
+      /* Nav items styling */
+      .nav-label {
+        display: block;
+        color: #9ca3af;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding: 15px 24px 5px;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      body.nav-open .sidebar nav,
+      body.nav-open .requestor-sidebar nav {
+        display: block;
+        min-width: auto;
+      }
+
+      .nav-link,
+      .nav-group-title {
+        border: none;
+        border-left: 4px solid transparent;
+        padding: 12px 24px 12px 20px;
+        color: #4b5563;
+        font-size: 0.95rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .nav-link i,
+      .nav-group-title i {
+        font-size: 1.1rem;
+        width: 24px;
+        text-align: center;
+        color: #9ca3af;
+      }
+
+      .nav-link.active,
+      .sub-link.active {
+        color: #059669 !important;
+        font-weight: 600;
+      }
+
+      .nav-link.active i {
+        color: #059669;
+      }
+
+      .nav-link.active {
+        background: rgba(5, 150, 105, 0.05);
+        border-left-color: #059669;
+      }
+
+      body.nav-open .sidebar .sub-links,
+      body.nav-open .requestor-sidebar .requestor-nav-sublinks {
+        display: block;
+        padding: 0;
+      }
+
+      body.nav-open .sidebar .sub-link,
+      body.nav-open .requestor-sidebar .requestor-nav-sublink {
+        display: block;
+        padding: 10px 24px 10px 58px;
+        color: #6b7280;
+        font-size: 0.85rem;
+        border: none;
+      }
+    }
+  </style>
+  <style>
+    @media (min-width: 901px) {
+      .sidebar-brand-mobile {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="mobile-menu-toggle" type="button" aria-label="Open navigation"
+    onclick="document.body.classList.toggle('nav-open'); document.body.classList.remove('account-open')"><i
+      class="fa-solid fa-bars"></i></button>
+  <button class="mobile-account-button" type="button" aria-label="Open account menu"
+    onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i
+      class="fa-solid fa-user"></i><span>Account</span></button>
+  <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
+        class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
+      title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
+      title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button></div>
+  <header class="header">
+    <div class="brand"><img
+        src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
+        alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
+    <div class="header-right"><a class="switch-admin" href="admin-dashboard.html"><i
+          class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button class="icon-btn" type="button"
+        title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button><button class="icon-btn" type="button"
+        title="Notifications"><i class="fa-regular fa-bell"></i></button>
+      <div class="user-badge"><span>Requestor User</span>
+        <div class="avatar">RU</div>
+      </div>
+    </div>
+  </header>
+  <aside class="sidebar" aria-label="Requestor navigation">
+    <div class="sidebar-brand-mobile">
+      <div class="brand"><img
+          src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
+          alt="RII Logo"><span>R-II BUILDERS</span></div>
+      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
+          class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="nav-label">MY RECORDS</div>
+    <nav>
+      <a class="nav-link" href="vehicle-request.html"><i class="fa-solid fa-car"></i> Vehicle Request</a>
+      <div class="nav-group">
+        <div class="nav-group-title"><i class="fa-solid fa-building"></i> Facility Request</div>
+        <div class="sub-links"><a class="sub-link" href="conference-request.html">Conference Room</a><a
+            class="sub-link active" href="function-request.html">Function Hall</a><a class="sub-link"
+            href="parking-request.html">Parking Slot</a><a class="sub-link" href="zoom-request.html">Zoom Meeting</a><a
+            class="sub-link" href="teams-request.html">MS Teams</a></div>
+      </div>
+    </nav>
+    <div class="nav-label" style="margin-top: 10px;">REQUESTS & FILINGS</div>
+    <nav>
+      <a class="nav-link" href="liaison-request.html"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison</a>
+      <a class="nav-link" href="supplies-dashboard.html"><i class="fa-solid fa-boxes-stacked"></i> Supplies</a>
+    </nav>
+  </aside>
+  <main>
+    <section class="form-card">
+      <h1><i class="fa-solid fa-building"></i> Function Hall Request</h1>
+      <p class="intro">Submit a request to reserve the function hall.</p>
+      <form id="requestForm">
+        <div class="grid"><label>Requestor Email<input name="requestor" type="email" required
+              placeholder="Enter your email address"></label><label>Company<select name="company" required>
+              <option value="">Select Company</option>
+              <option>RMRCI</option>
+              <option>RBI</option>
+              <option>PESC</option>
+              <option>RLAND</option>
+            </select></label></div><label>Department<select name="department" required>
+            <option value="">Select Department</option>
+            <option>Admin</option>
+            <option>HR</option>
+            <option>Purchasing</option>
+            <option>BDG</option>
+            <option>Engineering</option>
+            <option>C&amp;C</option>
+            <option>Accounting</option>
+            <option>Finance</option>
+          </select></label><label>Event Name<input name="title" required placeholder="Enter Event title"></label>
+        <div class="grid"><label>No. of Participants<input name="participants" type="number" min="1"
+              required></label><label>Date<input name="date" type="date" required></label></div>
+        <div class="grid"><label>Start Time<input name="startTime" type="time" required></label><label>Est. End
+            Time<input name="endTime" type="time" required></label></div><button type="submit">Submit Function Hall
+          Request</button>
+      </form>
+    </section>
+  </main>
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h2>Request Submitted</h2>
+      <p>Reference Number:</p><strong id="reference"></strong><br><br><button type="button"
+        onclick="modal.classList.remove('open')">Close</button>
+    </div>
+  </div>
+  <script>var modal = document.getElementById('modal'); document.getElementById('requestForm').addEventListener('submit', function (e) { e.preventDefault(); var f = new FormData(e.target), r = JSON.parse(localStorage.getItem('fleetRequests') || '[]'), id = 'REQ-' + Math.floor(Math.random() * 900 + 100); r.push({ id: id, requestor: f.get('requestor'), destination: 'Function Hall', purpose: f.get('title'), scheduleDate: f.get('date'), scheduleTime: f.get('startTime') + ' - ' + f.get('endTime'), driver: '', car: '', status: 'pending', requestType: 'Function Hall', company: f.get('company'), department: f.get('department'), participants: f.get('participants') }); localStorage.setItem('fleetRequests', JSON.stringify(r)); document.getElementById('reference').textContent = id; modal.classList.add('open'); e.target.reset() })</script>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (sessionStorage.getItem('userRole') !== 'admin') {
+            document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
+        }
+    });
+</script>
+</body>
+
+</html>

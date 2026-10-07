@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        .mobile-menu-toggle,
+        .mobile-account-button {
+            display: none;
+        }
+
+        .mobile-account-menu {
+            display: none;
+        }
+
+        @media (max-width:900px) {
+            .header {
+                padding-left: 56px;
+            }
+
+            .mobile-menu-toggle,
+            .mobile-account-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                top: 14px;
+                z-index: 1100;
+                width: 36px;
+                height: 36px;
+                border: 1px solid rgba(255, 255, 255, .25);
+                border-radius: 6px;
+                background: rgba(255, 255, 255, .1);
+                color: #fff;
+                cursor: pointer;
+            }
+
+            .mobile-menu-toggle {
+                left: 12px;
+                font-size: 1.1rem;
+            }
+
+            .mobile-account-button {
+                right: 12px;
+                width: auto;
+                padding: 0 10px;
+                gap: 6px;
+                font-size: .75rem;
+                font-weight: 600;
+            }
+
+            .header-right {
+                display: none;
+            }
+
+            .mobile-account-menu {
+                display: none;
+                position: fixed;
+                top: 58px;
+                right: 12px;
+                z-index: 1200;
+                min-width: 190px;
+                padding: 8px;
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+            }
+
+            body.account-open .mobile-account-menu {
+                display: grid;
+                gap: 4px;
+            }
+
+            .mobile-account-menu a,
+            .mobile-account-menu button {
+                width: 100%;
+                padding: 9px 10px;
+                border: 0;
+                border-radius: 5px;
+                background: transparent;
+                color: var(--primary);
+                font: inherit;
+                font-size: .8rem;
+                text-align: left;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .mobile-account-menu a:hover,
+            .mobile-account-menu button:hover {
+                background: #f1f5f9;
+            }
+
+            body:not(.nav-open) .sidebar {
+                display: none;
+            }
+
+            body.nav-open .sidebar {
+                display: block;
+                position: fixed;
+                top: 64px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 64px);
+                margin: 0;
+                padding: 12px 0;
+                overflow-y: auto;
+                z-index: 900;
+            }
+
+            body.nav-open .sidebar nav {
+                display: block;
+            }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Supplies Dashboard - R-II Builders</title>
+    <meta name="description"
+        content="R-II Builders Admin Supplies Inventory Dashboard - view stock levels and submit supply requests.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #1E355F;
+            --accent: #FCAE16;
+            --bg: #f4f7f6;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --muted: #718096;
+            --red: #dc2626;
+            --green: #16a34a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: #2d3748;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            height: 64px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+        }
+
+        .page-body {
+            padding-top: 88px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-left img {
+            width: 42px;
+        }
+
+        .header-left span {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: .03em;
+        }
+
+        .header-center {
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .switch-btn {
+            background: rgba(252, 174, 22, .15);
+            color: var(--accent);
+            border: 1px solid rgba(252, 174, 22, .3);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: background .2s;
+        }
+
+        .switch-btn:hover {
+            background: rgba(252, 174, 22, .3);
+            color: white;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .icon-btn:hover {
+            color: var(--accent);
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-size: .85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            background: rgba(255, 255, 255, .15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* MAIN LAYOUT */
+        .page-body {
+            flex: 1;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 20px;
+            margin-left: 260px;
+        }
+
+        /* REQUESTOR NAVIGATION */
+        .sidebar {
+            width: 260px;
+            background: #fff;
+            border-right: 1px solid var(--border);
+            position: fixed;
+            top: 64px;
+            left: 0;
+            height: calc(100vh - 64px);
+            z-index: 90;
+            padding: 20px 0;
+        }
+
+        .nav-label {
+            color: var(--muted);
+            font-size: .75rem;
+            font-weight: 600;
+            letter-spacing: .05em;
+            padding: 10px 24px 5px;
+            text-transform: uppercase;
+        }
+
+        .nav-link,
+        .nav-group-title {
+            align-items: center;
+            border-left: 3px solid transparent;
+            color: #2d3748;
+            display: flex;
+            font-size: .9rem;
+            font-weight: 500;
+            gap: 15px;
+            padding: 12px 24px;
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+        .nav-link i,
+        .nav-group-title i {
+            color: var(--muted);
+            text-align: center;
+            width: 20px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #1e355f0d;
+            color: var(--primary);
+        }
+
+        .nav-link.active {
+            border-left-color: var(--accent);
+        }
+
+        .nav-group-title {
+            color: var(--primary);
+        }
+
+        .nav-link.active,
+        .sub-link.active {
+            color: #059669 !important;
+            font-weight: 600;
+        }
+
+        .nav-link.active i {
+            color: #059669;
+        }
+
+        .nav-link.active {
+            background: rgba(5, 150, 105, 0.05);
+            border-left-color: #059669;
+        }
+
+        .sub-links {
+            padding-left: 26px;
+        }
+
+        .sub-link {
+            display: block;
+            color: var(--muted);
+            font-size: .82rem;
+            padding: 7px 24px 7px 33px;
+            text-decoration: none;
+        }
+
+        .sub-link:hover,
+        .sub-link.active {
+            color: var(--primary);
+            background: #f8fafc;
+        }
+
+        /* PANELS */
+        .panel {
+            background: var(--surface);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a202c;
+            padding: 18px 20px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* TOOLBAR */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .search-wrap i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: .85rem;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 8px 10px 8px 32px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: .82rem;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        #searchInput:focus {
+            border-color: var(--primary);
+        }
+
+        .toolbar select {
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: .82rem;
+            outline: none;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn-search {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: .82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .btn-search:hover {
+            opacity: .85;
+        }
+
+        /* TABLE */
+        .table-wrap {
+            overflow-x: auto;
+            flex: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: var(--primary);
+            color: white;
+        }
+
+        th {
+            padding: 11px 14px;
+            font-size: .78rem;
+            font-weight: 600;
+            text-align: left;
+            white-space: nowrap;
+            letter-spacing: .03em;
+        }
+
+        td {
+            padding: 10px 14px;
+            font-size: .82rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: #374151;
+        }
+
+        tbody tr:hover td {
+            background: #f8fafc;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: .72rem;
+            font-weight: 700;
+        }
+
+        .badge-available {
+            background: #dcfce7;
+            color: var(--green);
+        }
+
+        .badge-reorder {
+            background: #fee2e2;
+            color: var(--red);
+        }
+
+        tr.row-reorder td {
+            background: #fff7f7;
+        }
+
+        tr.row-reorder:hover td {
+            background: #fee2e2;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-top: 1px solid var(--border);
+            font-size: .8rem;
+            color: var(--muted);
+        }
+
+        .pg-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pg-btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: .78rem;
+        }
+
+        .pg-btn:hover {
+            background: #f8fafc;
+        }
+
+        .pg-btn.active-pg {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* REQUEST FORM PANEL */
+        .request-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .req-dept {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .req-dept select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: .85rem;
+            outline: none;
+            color: #374151;
+        }
+
+        .req-dept select:focus {
+            border-color: var(--primary);
+        }
+
+        .req-table-wrap {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .req-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .req-table thead tr {
+            background: var(--primary);
+        }
+
+        .req-table th {
+            font-size: .78rem;
+            padding: 10px 12px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .req-table td {
+            font-size: .8rem;
+            padding: 9px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        .req-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .req-table input,
+        .req-table select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: .78rem;
+            outline: none;
+        }
+
+        .req-table input:focus,
+        .req-table select:focus {
+            border-color: var(--primary);
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            font-size: .9rem;
+            padding: 0;
+        }
+
+        .req-actions {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-add {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: .82rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity .2s;
+        }
+
+        .btn-add:hover {
+            opacity: .85;
+        }
+
+        .req-submit-row {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-clear {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 9px 22px;
+            border-radius: 7px;
+            font-size: .85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .btn-clear:hover {
+            background: #4b5563;
+        }
+
+        .btn-submit {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 9px 22px;
+            border-radius: 7px;
+            font-size: .85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .btn-submit:hover {
+            opacity: .85;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-left: 260px;
+            text-align: center;
+            padding: 10px 24px;
+            font-size: .78rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+            animation: popIn .25s ease;
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(.85);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-box .check-icon {
+            font-size: 3rem;
+            color: #16a34a;
+            margin-bottom: 12px;
+        }
+
+        .modal-box h2 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .modal-box p {
+            color: var(--muted);
+            font-size: .85rem;
+            margin-bottom: 16px;
+        }
+
+        .modal-box .ref {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .modal-box .btn-ok {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: .9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .modal-box .btn-ok:hover {
+            background: #152748;
+        }
+
+        /* LOADING */
+        .loading-row td {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .empty-row td {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+            font-size: .85rem;
+        }
+
+        /* IFRAME VIEW */
+        .iframe-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .excel-iframe {
+            flex: 1;
+            border: none;
+            width: 100%;
+            min-height: 500px;
+        }
+
+        .iframe-note {
+            padding: 8px 16px;
+            font-size: .75rem;
+            color: var(--muted);
+            background: #fffbeb;
+            border-top: 1px solid #fde68a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header {
+            left: 0;
+            right: 0;
+            width: 100%;
+        }
+
+        .page-body {
+            padding-top: 88px;
+        }
+
+        @media (max-width: 900px) {
+            .page-body {
+                grid-template-columns: 1fr;
+                margin-left: 0;
+            }
+
+            .header-center {
+                display: none;
+            }
+
+            .footer {
+                margin-left: 0;
+            }
+
+            .page-body {
+                padding-top: 24px;
+            }
+
+            .requestor-sidebar {
+                position: static;
+                margin-top: 64px;
+                width: 100%;
+                height: auto;
+                padding: 8px 0;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .requestor-nav-label {
+                display: none;
+            }
+
+            .requestor-sidebar nav {
+                display: flex;
+                min-width: max-content;
+            }
+
+            .requestor-nav-link {
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                padding: 10px 16px;
+            }
+
+            .requestor-nav-group {
+                display: flex;
+                align-items: center;
+            }
+
+            .requestor-nav-sublinks {
+                display: flex;
+                padding-left: 0;
+            }
+
+            .requestor-nav-sublink {
+                padding: 10px 12px;
+            }
+
+            .requestor-nav-link.active {
+                border-bottom-color: var(--accent);
+            }
+        }
+    </style>
+    <style id="mobile-shell-overrides">
+        @media (max-width:900px) {
+
+            .header,
+            .header-bar {
+                padding-left: 56px;
+                padding-right: 56px;
+            }
+
+            .header-right {
+                display: flex;
+                gap: 10px;
+            }
+
+            .header-right .switch-admin,
+            .header-right .switch-btn,
+            .header-right .user-badge,
+            .header-right .user-profile {
+                display: none;
+            }
+
+            .header-right .icon-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 34px;
+                height: 34px;
+                padding: 0;
+            }
+
+            .mobile-account-button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                top: 14px;
+                right: 12px;
+                z-index: 1300;
+                width: 36px;
+                height: 36px;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background: #d1fae5;
+                color: #047857;
+                font-size: 0;
+                cursor: pointer;
+            }
+
+            .mobile-account-button i {
+                font-size: .9rem;
+            }
+
+            .mobile-menu-toggle {
+                z-index: 1300;
+            }
+
+            .mobile-account-menu {
+                top: 58px;
+                right: 12px;
+            }
+
+            body:not(.nav-open) .sidebar {
+                display: none;
+            }
+
+            body.nav-open::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                z-index: 1100;
+                background: rgba(15, 23, 42, .48);
+            }
+
+            body.nav-open .sidebar {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: min(78vw, 280px);
+                height: 100vh;
+                margin: 0;
+                padding: 76px 0 20px;
+                overflow-y: auto;
+                z-index: 1200;
+                background: #fff;
+                box-shadow: 4px 0 18px rgba(0, 0, 0, .16);
+            }
+
+            body.nav-open .sidebar nav {
+                display: block;
+            }
+
+            body.nav-open .sidebar .sub-links {
+                display: block;
+                padding: 0;
+            }
+
+            body.nav-open .sidebar .sub-link {
+                display: block;
+                padding: 10px 24px 10px 33px;
+            }
+
+            body.nav-open .mobile-menu-toggle {
+                left: auto;
+                right: calc(100% - min(78vw, 280px) + 10px);
+                color: #1E355F;
+                background: #fff;
+                border-color: #e2e8f0;
+                font-size: 0;
+            }
+
+            body.nav-open .mobile-menu-toggle::after {
+                content: "×";
+                font-size: 1.5rem;
+                line-height: 1;
+            }
+        }
+
+        @media (min-width: 901px) {
+            .sidebar-brand-mobile {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="mobile-menu-toggle" type="button" aria-label="Open navigation"
+        onclick="document.body.classList.toggle('nav-open'); document.body.classList.remove('account-open')"><i
+            class="fa-solid fa-bars"></i></button>
+    <button class="mobile-account-button" type="button" aria-label="Open account menu"
+        onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i
+            class="fa-solid fa-user"></i><span>Account</span></button>
+    <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
+                class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
+            title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
+            title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button></div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <img src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
+                alt="RII Logo">
+            <span>R-II BUILDERS, INC.</span>
+        </div>
+        <div class="header-center">ADMIN SUPPLIES DASHBOARD</div>
+        <div class="header-right">
+            <a href="admin-dashboard.html" class="switch-btn">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin
+            </a>
+            <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
+            <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+            <div class="user-badge">
+                <span>Admin User</span>
+                <div class="avatar">AU</div>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar" aria-label="Requestor navigation">
+        <div class="sidebar-brand-mobile">
+            <div class="brand"><img
+                    src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
+                    alt="RII Logo"><span>R-II BUILDERS</span></div>
+            <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
+                    class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="nav-label">MY RECORDS</div>
+        <nav>
+            <a href="vehicle-request.html" class="nav-link">
+                <i class="fa-solid fa-car"></i> Vehicle Request
+            </a>
+            <div class="nav-group">
+                <div class="nav-group-title">
+                    <i class="fa-solid fa-building"></i> Facility Request
+                </div>
+                <div class="sub-links">
+                    <a href="conference-request.html" class="sub-link">Conference Room</a>
+                    <a href="function-request.html" class="sub-link">Function Hall</a>
+                    <a href="parking-request.html" class="sub-link">Parking Slot</a>
+                    <a href="zoom-request.html" class="sub-link">Zoom Meeting</a>
+                    <a href="teams-request.html" class="sub-link">MS Teams</a>
+                </div>
+            </div>
+        </nav>
+        <div class="nav-label" style="margin-top: 10px;">REQUESTS & FILINGS</div>
+        <nav>
+            <a href="liaison-request.html" class="nav-link">
+                <i class="fa-solid fa-person-walking-arrow-right"></i> Liaison
+            </a>
+            <a href="supplies-dashboard.html" class="nav-link active" aria-current="page">
+                <i class="fa-solid fa-boxes-stacked"></i> Supplies
+            </a>
+        </nav>
+    </aside>
+
+    <!-- BODY -->
+    <div class="page-body">
+
+        <!-- LEFT: Item Summary -->
+        <div class="panel">
+            <div class="panel-title">
+                <i class="fa-solid fa-boxes-stacked" style="color:var(--accent);margin-right:8px;"></i>Item Summary
+            </div>
+
+            <!-- LIVE EXCEL IFRAME VIEW -->
+            <div class="iframe-wrap">
+                <iframe id="excelFrame" class="excel-iframe"
+                    src="https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQA1I00SaJyjS78LJeeiMymHAZizExz9necv2DaT3wLNxuU?action=embedview&wdAllowInteractivity=False&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True"
+                    frameborder="0" allowfullscreen title="Live Inventory Excel" loading="lazy">
+                </iframe>
+                <div class="iframe-note">
+                    <i class="fa-solid fa-circle-info" style="color:#d97706;"></i>
+                    Live view from SharePoint — you must be signed in to your Microsoft 365 account to see the data.
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Request Form -->
+        <div class="panel request-panel">
+            <div class="panel-title">
+                <i class="fa-solid fa-clipboard-list" style="color:var(--accent);margin-right:8px;"></i>Request Form
+            </div>
+
+            <div class="req-dept">
+                <select id="deptSelect">
+                    <option value="">Select Department</option>
+                    <option>Admin</option>
+                    <option>HR</option>
+                    <option>Purchasing</option>
+                    <option>BDG</option>
+                    <option>Engineering</option>
+                    <option>C&amp;C</option>
+                    <option>Accounting</option>
+                    <option>Finance</option>
+                </select>
+            </div>
+
+            <div class="req-table-wrap">
+                <table class="req-table">
+                    <thead>
+                        <tr>
+                            <th style="width:42%;">Description</th>
+                            <th style="width:16%;">Qty</th>
+                            <th style="width:32%;">Purpose</th>
+                            <th style="width:10%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestBody"></tbody>
+                </table>
+            </div>
+
+            <div class="req-actions">
+                <button class="btn-add" id="addItemBtn">
+                    <i class="fa-solid fa-plus"></i> Add Item
+                </button>
+            </div>
+
+            <div class="req-submit-row">
+                <button class="btn-clear" id="clearBtn">Clear</button>
+                <button class="btn-submit" id="submitBtn">Submit</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <span>© 2026 RII Builders, Inc. All Rights Reserved.</span>
+        <span>developed by admin</span>
+    </footer>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-box">
+            <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h2>Request Submitted!</h2>
+            <p>Your supply request has been recorded.<br>Reference Number:</p>
+            <div class="ref" id="modalRef">—</div>
+            <br>
+            <button class="btn-ok" id="modalOkBtn">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // ══════════════════════════════════════════════════════
+        //  INVENTORY DATA
+        //  Source: 2026 MRR VS PO Excel – "On Hand" sheet
+        //  Headers: ITEM DESCRIPTION | ITEM CODE | MRR | MRS | ON HAND | UOM | ITEM CLASSIFICATION | STATUS
+        // ══════════════════════════════════════════════════════
+        var INVENTORY = [
+            { desc: "METAL STUD 2 X 40.4 MM THICKNESS", code: "CONSMAT-0005", mrr: 40, mrs: 0, onHand: 40, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "AVAILABLE" },
+            { desc: "TEST PARAMETERS FOR WASTE WATER ANALYSIS", code: "CONSMAT-0011", mrr: 0, mrs: 0, onHand: 0, uom: "LT", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "BOYSEN LACQUER PRIMER SURFACER", code: "CONSMAT-0016", mrr: 14, mrs: 0, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "AUTOMOTIVE LACQUER WHITE", code: "CONSMAT-0017", mrr: 8, mrs: 8, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "POLITUFF", code: "CONSMAT-0018", mrr: 4, mrs: 4, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "LACQUER SPOT PUTTY", code: "CONSMAT-0019", mrr: 3, mrs: 0, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "PATCHING COMPOUND", code: "CONSMAT-0020", mrr: 2, mrs: 2, onHand: 0, uom: "KG", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "SANDING PAPER #100 3M", code: "CONSMAT-0021", mrr: 15, mrs: 0, onHand: 2, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "SANDING PAPER #240", code: "CONSMAT-0022", mrr: 35, mrs: 0, onHand: 2, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "CONSTRUCTION ADHESIVE (NO MORE NAIL)", code: "CONSMAT-0024", mrr: 2, mrs: 2, onHand: 0, uom: "TUBE", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "BABY ROLLER - COTTON", code: "CONSMAT-0029", mrr: 13, mrs: 0, onHand: 2, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "PAINT BRUSH #5", code: "CONSMAT-0030", mrr: 5, mrs: 0, onHand: 2, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "PAINT ROLLER #7", code: "CONSMAT-0031", mrr: 11, mrs: 10, onHand: 1, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "FLAT LATEX - WHITE", code: "CONSMAT-0032", mrr: 3, mrs: 0, onHand: 0, uom: "PAILS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "SEMI GLOSS LATEX", code: "CONSMAT-0033", mrr: 4, mrs: 0, onHand: 3, uom: "PAILS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: 'PAINT BRUSH 4"', code: "CONSMAT-0059", mrr: 10, mrs: 0, onHand: 10, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "AVAILABLE" },
+            { desc: "WELDING ROD 6013 NIHONWELD BRAND 3/32 12.5F", code: "CONSMAT-0063", mrr: 0, mrs: 0, onHand: 1, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: 'CUTTING DISC 4" BRAND: BDSN', code: "CONSMAT-0076", mrr: 0, mrs: 0, onHand: 2, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "CUTTING DISC 4\" RED SUPERTHIN 25'S BRAND:TYRC", code: "CONSMAT-0081", mrr: 0, mrs: 0, onHand: 2, uom: "BOX", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "CEMENT HOLCIM", code: "CONSMAT-0083", mrr: 20, mrs: 20, onHand: 0, uom: "BG", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "BISTSAY SAND (10KG)", code: "CONSMAT-0093", mrr: 48, mrs: 0, onHand: 0, uom: "BG", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "RSB 10MM X 6M GR.33", code: "CONSMAT-0094", mrr: 56, mrs: 56, onHand: 0, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "PLYWOOD 3/4 (ORDINARY)", code: "CONSMAT-0095", mrr: 22, mrs: 0, onHand: 0, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "CONCEALING HINGES C1", code: "CONSMAT-0096", mrr: 28, mrs: 4, onHand: 0, uom: "PR", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "LACQUER THINNER (BOYSEN)", code: "CONSMAT-0097", mrr: 16, mrs: 12, onHand: 4, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "BLIND RIVETS 1/8 x 1/2", code: "CONSMAT-0098", mrr: 1, mrs: 0, onHand: 1, uom: "BOX", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "BLACK SCREW 1-1/2 POINTED (1000PCS/BOX)", code: "CONSMAT-0099", mrr: 2, mrs: 0, onHand: 2, uom: "BOX", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
+            { desc: "SANDING PAPER #150", code: "CONSMAT-0100", mrr: 10, mrs: 10, onHand: 0, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" }
+        ];
+
+        var PAGE_SIZE = 15;
+        var currentPage = 1;
+        var filteredData = INVENTORY.slice();
+        var rowCount = 0;
+
+        // ── RENDER TABLE ──
+        function renderTable() {
+            var tbody = document.getElementById('inventoryBody');
+            if (!tbody) return;
+            var start = (currentPage - 1) * PAGE_SIZE;
+            var end = start + PAGE_SIZE;
+            var pageData = filteredData.slice(start, end);
+
+            if (pageData.length === 0) {
+                tbody.innerHTML = '<tr class="empty-row"><td colspan="6"><i class="fa-solid fa-box-open" style="font-size:1.8rem;opacity:.3;display:block;margin-bottom:8px;"></i>No items found.</td></tr>';
+            } else {
+                var html = '';
+                for (var i = 0; i < pageData.length; i++) {
+                    var item = pageData[i];
+                    var isAvail = item.status === 'AVAILABLE';
+                    var rowCls = isAvail ? '' : 'row-reorder';
+                    var bdgCls = isAvail ? 'badge-available' : 'badge-reorder';
+                    html += '<tr class="' + rowCls + '">' +
+                        '<td>' + item.desc + '</td>' +
+                        '<td>' + item.code + '</td>' +
+                        '<td style="text-align:center;font-weight:600;">' + item.onHand + '</td>' +
+                        '<td>' + item.uom + '</td>' +
+                        '<td style="font-size:.75rem;">' + item.classification + '</td>' +
+                        '<td><span class="badge ' + bdgCls + '">' + item.status + '</span></td>' +
+                        '</tr>';
+                }
+                tbody.innerHTML = html;
+            }
+
+            var total = filteredData.length;
+            var s = total === 0 ? 0 : start + 1;
+            var e = Math.min(end, total);
+            document.getElementById('paginationInfo').textContent = 'Showing ' + s + '\u2013' + e + ' of ' + total + ' items';
+
+            var totalPages = Math.ceil(total / PAGE_SIZE);
+            var pgBtns = document.getElementById('pgBtns');
+            pgBtns.innerHTML = '';
+
+            var prevBtn = document.createElement('button');
+            prevBtn.className = 'pg-btn';
+            prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+            (function (p) {
+                prevBtn.onclick = function () { if (currentPage > 1) { currentPage--; renderTable(); } };
+            })(currentPage);
+            pgBtns.appendChild(prevBtn);
+
+            for (var p = 1; p <= totalPages; p++) {
+                var btn = document.createElement('button');
+                btn.className = 'pg-btn' + (p === currentPage ? ' active-pg' : '');
+                btn.textContent = p;
+                (function (pg) {
+                    btn.onclick = function () { currentPage = pg; renderTable(); };
+                })(p);
+                pgBtns.appendChild(btn);
+            }
+
+            var nextBtn = document.createElement('button');
+            nextBtn.className = 'pg-btn';
+            nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+            nextBtn.onclick = function () {
+                if (currentPage < Math.ceil(filteredData.length / PAGE_SIZE)) { currentPage++; renderTable(); }
+            };
+            pgBtns.appendChild(nextBtn);
+        }
+
+        // ── FILTERS ──
+        function applyFilters() {
+            var search = document.getElementById('searchInput').value.trim().toLowerCase();
+            var cat = document.getElementById('categoryFilter').value;
+            var stat = document.getElementById('statusFilter').value;
+
+            filteredData = INVENTORY.filter(function (item) {
+                var matchSearch = !search ||
+                    item.desc.toLowerCase().indexOf(search) !== -1 ||
+                    item.code.toLowerCase().indexOf(search) !== -1;
+                var matchCat = !cat || item.classification === cat;
+                var matchStat = !stat || item.status === stat;
+                return matchSearch && matchCat && matchStat;
+            });
+
+            currentPage = 1;
+            renderTable();
+        }
+
+        var searchButton = document.getElementById('searchBtn');
+        var searchInput = document.getElementById('searchInput');
+        if (searchButton && searchInput) {
+            searchButton.addEventListener('click', applyFilters);
+            searchInput.addEventListener('keyup', function (e) {
+                if (e.key === 'Enter') applyFilters();
+            });
+        }
+
+        // ══════════════════════════════════════════════════════
+        //  REQUEST FORM
+        // ══════════════════════════════════════════════════════
+        function getDescOptions() {
+            var opts = '<option value="">Select item\u2026</option>';
+            for (var i = 0; i < INVENTORY.length; i++) {
+                var item = INVENTORY[i];
+                opts += '<option value="' + item.desc + '">' + item.desc + ' (' + item.code + ')</option>';
+            }
+            return opts;
+        }
+
+        function addRequestRow() {
+            rowCount++;
+            var tbody = document.getElementById('requestBody');
+            var tr = document.createElement('tr');
+            tr.id = 'req-row-' + rowCount;
+
+            var id = rowCount;
+            tr.innerHTML =
+                '<td><select id="desc-' + id + '" style="width:100%;padding:6px 8px;border:1px solid #d1d5db;border-radius:5px;font-family:Poppins,sans-serif;font-size:.75rem;outline:none;">' +
+                getDescOptions() +
+                '</select></td>' +
+                '<td><input type="number" id="qty-' + id + '" min="1" placeholder="1" style="width:60px;"></td>' +
+                '<td><input type="text" id="purpose-' + id + '" placeholder="Purpose"></td>' +
+                '<td><button class="remove-btn" data-id="' + id + '" title="Remove"><i class="fa-solid fa-trash"></i></button></td>';
+
+            tbody.appendChild(tr);
+
+            // auto-fill qty=1 on item select
+            document.getElementById('desc-' + id).addEventListener('change', function () {
+                var qtyEl = document.getElementById('qty-' + id);
+                if (this.value && !qtyEl.value) qtyEl.value = 1;
+            });
+
+            tr.querySelector('.remove-btn').addEventListener('click', function () {
+                var rowId = this.getAttribute('data-id');
+                var row = document.getElementById('req-row-' + rowId);
+                if (row) row.remove();
+            });
+        }
+
+        function clearRequest() {
+            document.getElementById('requestBody').innerHTML = '';
+            document.getElementById('deptSelect').value = '';
+            rowCount = 0;
+            addRequestRow();
+        }
+
+        function generateRef() {
+            return 'SUP-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 90000 + 10000);
+        }
+
+        function submitRequest() {
+            var dept = document.getElementById('deptSelect').value;
+            if (!dept) { alert('Please select a department.'); return; }
+
+            var rows = document.querySelectorAll('#requestBody tr');
+            if (rows.length === 0) { alert('Please add at least one item.'); return; }
+
+            var items = [];
+            var valid = true;
+            rows.forEach(function (row) {
+                var sel = row.querySelector('select');
+                var qty = row.querySelector('input[type="number"]');
+                var pur = row.querySelector('input[type="text"]');
+                if (!sel || !sel.value || !qty || !qty.value) { valid = false; return; }
+                items.push({ description: sel.value, qty: qty.value, purpose: pur ? pur.value : '' });
+            });
+
+            if (!valid) { alert('Please fill in all item descriptions and quantities.'); return; }
+
+            var ref = generateRef();
+            var payload = {
+                reference: ref,
+                department: dept,
+                items: items,
+                timestamp: new Date().toISOString()
+            };
+
+            console.log('Supply Request Submitted:', payload);
+
+
+
+            document.getElementById('modalRef').textContent = ref;
+            document.getElementById('successModal').classList.add('show');
+
+            document.getElementById('requestBody').innerHTML = '';
+            document.getElementById('deptSelect').value = '';
+            rowCount = 0;
+            addRequestRow();
+        }
+
+        document.getElementById('addItemBtn').addEventListener('click', addRequestRow);
+        document.getElementById('clearBtn').addEventListener('click', clearRequest);
+        document.getElementById('submitBtn').addEventListener('click', submitRequest);
+        document.getElementById('modalOkBtn').addEventListener('click', function () {
+            document.getElementById('successModal').classList.remove('show');
+        });
+
+        // TAB SWITCHER
+        function switchTab(tab) {
+            var tableView = document.getElementById('tableView');
+            var liveView = document.getElementById('liveView');
+            var tabTable = document.getElementById('tabTable');
+            var tabLive = document.getElementById('tabLive');
+
+            if (tab === 'table') {
+                tableView.style.display = 'flex';
+                liveView.classList.remove('show');
+                tabTable.classList.add('active-tab');
+                tabLive.classList.remove('active-tab');
+            } else {
+                tableView.style.display = 'none';
+                liveView.classList.add('show');
+                tabTable.classList.remove('active-tab');
+                tabLive.classList.add('active-tab');
+            }
+        }
+
+        // INIT
+        setTimeout(function () {
+            filteredData = INVENTORY.slice();
+            renderTable();
+        }, 400);
+
+        addRequestRow();
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('userRole') !== 'admin') {
+                document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
+            }
+        });
+    </script>
+</body>
+
+</html>

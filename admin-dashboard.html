@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - R-II Builders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #1E355F;
+            /* R-II Dark Blue */
+            --accent: #FCAE16;
+            /* R-II Gold */
+            --bg-body: #f4f7f6;
+            --bg-surface: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+            --sidebar-width: 260px;
+            --header-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            height: calc(100vh - var(--header-height));
+            display: flex;
+            flex-direction: column;
+            z-index: 90;
+        }
+
+        .sidebar-header {
+            display: none;
+        }
+
+        .sidebar-header h2 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header h2 i {
+            color: var(--accent);
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .menu-category {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 10px 24px 5px 24px;
+            margin-top: 10px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            gap: 15px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item i {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            width: 20px;
+            text-align: center;
+            transition: color 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #f8fafc;
+            color: var(--primary);
+        }
+
+        .menu-item:hover i {
+            color: var(--primary);
+        }
+
+        .menu-item.active {
+            background-color: rgba(30, 53, 95, 0.05);
+            /* Light primary */
+            color: var(--primary);
+            border-left-color: var(--accent);
+        }
+
+        .menu-item.active i {
+            color: var(--primary);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-wrapper {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        /* HEADER */
+        .header {
+            height: var(--header-height);
+            background-color: var(--primary);
+            color: var(--accent);
+            border-bottom: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .icon-btn:hover {
+            color: var(--accent);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: var(--accent);
+            /* Make text gold */
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.15);
+            /* Dark gray/transparent */
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .switch-btn {
+            background-color: rgba(252, 174, 22, 0.15);
+            color: #FCAE16;
+            border: 1px solid rgba(252, 174, 22, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-right: 15px;
+        }
+
+        .switch-btn:hover {
+            background-color: rgba(252, 174, 22, 0.25);
+            color: white;
+        }
+
+        /* CONTENT AREA */
+        .content {
+            padding: 30px;
+            flex: 1;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(30, 53, 95, 0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #152748;
+            transform: translateY(-1px);
+        }
+
+        /* TABLE CONTAINER */
+        .data-card {
+            background-color: var(--bg-surface);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .toolbar {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pill {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .pill.active {
+            background-color: rgba(252, 174, 22, 0.15);
+            color: #d97706;
+            border-color: transparent;
+        }
+
+        .pill:hover:not(.active) {
+            background-color: #f8fafc;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: left;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .user-cell {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .user-email {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .status-badge.active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        /* PAGINATION */
+        .pagination-bar {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .page-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-btn {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .page-btn:hover {
+            background: #f8fafc;
+        }
+
+        /* --- CALENDAR CSS --- */
+        .calendar-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            width: 100%;
+        }
+
+        .calendar-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1E355F;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title-bar h2 {
+            margin: 0;
+            color: #FCAE16;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .calendar-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: white;
+        }
+
+        .calendar-controls select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+        }
+
+        .calendar-controls button {
+            background: #FCAE16;
+            color: #1E355F;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day-header {
+            background: #FCAE16;
+            color: #1E355F;
+            text-align: center;
+            padding: 10px 0;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        .calendar-day {
+            background: #f1f5f9;
+            min-height: 100px;
+            border-radius: 4px;
+            padding: 10px;
+            font-weight: 600;
+            color: #1E355F;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+        }
+
+        .calendar-day.reserved {
+            background: #1E355F;
+            color: white;
+        }
+
+        .calendar-legend {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-reserved {
+            background: #1E355F;
+        }
+
+        .legend-available {
+            background: #f1f5f9;
+        }
+
+        /* VIEWS */
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+    </style>
+<style id="mobile-shell-overrides">
+@media (max-width:900px) {
+  .header, .header-bar { padding-left:56px; padding-right:56px; }
+  .header-right { display:flex; gap:10px; }
+  .header-right .switch-admin, .header-right .switch-btn, .header-right .user-badge, .header-right .user-profile { display:none; }
+  .header-right .icon-btn { display:flex; align-items:center; justify-content:center; width:34px; height:34px; padding:0; }
+  .mobile-account-button { display:flex; align-items:center; justify-content:center; position:fixed; top:14px; right:12px; z-index:1300; width:36px; height:36px; padding:0; border:0; border-radius:50%; background:#d1fae5; color:#047857; font-size:0; cursor:pointer; }
+  .mobile-account-button i { font-size:.9rem; }
+  .mobile-menu-toggle { z-index:1300; }
+  .mobile-account-menu { top:58px; right:12px; }
+  body:not(.nav-open) .sidebar, body:not(.nav-open) .requestor-sidebar { display:none; }
+  body.nav-open::before { content:""; position:fixed; inset:0; z-index:1100; background:rgba(15,23,42,.48); }
+  body.nav-open .sidebar, body.nav-open .requestor-sidebar { display:block; position:fixed; top:0; left:0; width:min(78vw,280px); height:100vh; margin:0; padding:76px 0 20px; overflow-y:auto; z-index:1200; background:#fff; box-shadow:4px 0 18px rgba(0,0,0,.16); }
+  body.nav-open .sidebar nav, body.nav-open .requestor-sidebar nav { display:block; } body.nav-open .sidebar .sub-links, body.nav-open .requestor-sidebar .requestor-nav-sublinks { display:block; padding:0; } body.nav-open .sidebar .sub-link, body.nav-open .requestor-sidebar .requestor-nav-sublink { display:block; padding:10px 24px 10px 33px; }
+  body.nav-open .mobile-menu-toggle { left:auto; right:calc(100% - min(78vw,280px) + 10px); color:#1E355F; background:#fff; border-color:#e2e8f0; font-size:0; } body.nav-open .mobile-menu-toggle::after { content:"×"; font-size:1.5rem; line-height:1; }
+}
+</style></head>
+
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div style="display:flex; align-items:center; gap: 10px;">
+            <img src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
+                alt="Logo" style="width: 55px;">
+            <div style="font-size: 18px; font-weight: 700;">
+                R-II BUILDERS, INC.
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="request-form.html" class="switch-btn"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to
+                Requestor</a>
+            <button class="icon-btn"><i class="fa-regular fa-moon"></i></button>
+            <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+            <div class="user-profile">
+                <span style="text-transform: uppercase;">Admin User</span>
+                <div class="user-avatar">AU</div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fa-solid fa-building"></i> R-II Builders</h2>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-category">Main</div>
+            <a href="#" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" class="menu-item active" onclick="switchView('view-calendar', this)"><i
+                    class="fa-solid fa-calendar-days"></i> Facility Reservation</a>
+
+            <div class="menu-category">Finance</div>
+            <a href="#" class="menu-item"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
+            <a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> Budget Monitoring</a>
+
+            <div class="menu-category">Inventory</div>
+            <a href="#" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
+
+            <div class="menu-category">Fleet Management</div>
+            <a href="#" class="menu-item" onclick="switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i>
+                Vehicle List</a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-wrapper">
+
+        <!-- HEADER -->
+
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <!-- VEHICLE LIST VIEW -->
+            <div id="view-vehicle" class="view-section">
+                <div class="page-header">
+                    <h1><i class="fa-solid fa-car"></i> Vehicle List</h1>
+                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> Add New Vehicle</button>
+                </div>
+
+                <div class="data-card">
+                    <div class="toolbar">
+                        <div class="search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Search vehicle or driver name...">
+                        </div>
+                        <div class="filter-pills">
+                            <div class="pill active">Active Vehicles</div>
+                            <div class="pill">Under Maintenance</div>
+                            <div class="pill">All Vehicles</div>
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vehicle Details</th>
+                                <th>Plate Number</th>
+                                <th>Vehicle Type</th>
+                                <th>Assigned Driver</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="user-cell">
+                                    <span class="user-name">Toyota Hiace Commuter</span>
+                                    <span class="user-email">Van - 2022 Model</span>
+                                </td>
+                                <td>ABC 1234</td>
+                                <td>Passenger Van</td>
+                                <td>Emmanuel Notarte</td>
+                                <td><span class="status-badge active">Available</span></td>
+                            </tr>
+                            <tr>
+                                <td class="user-cell">
+                                    <span class="user-name">Mitsubishi L300</span>
+                                    <span class="user-email">Utility - 2021 Model</span>
+                                </td>
+                                <td>DEF 5678</td>
+                                <td>Utility Vehicle</td>
+                                <td>Eduardo Reroma</td>
+                                <td><span class="status-badge">Dispatched</span></td>
+                            </tr>
+                            <tr>
+                                <td class="user-cell">
+                                    <span class="user-name">Isuzu NQR</span>
+                                    <span class="user-email">Truck - 2019 Model</span>
+                                </td>
+                                <td>GHI 9012</td>
+                                <td>Cargo Truck</td>
+                                <td>Eugene Developer</td>
+                                <td><span class="status-badge active">Available</span></td>
+                            </tr>
+                            <tr>
+                                <td class="user-cell">
+                                    <span class="user-name">Toyota Innova</span>
+                                    <span class="user-email">MPV - 2023 Model</span>
+                                </td>
+                                <td>JKL 3456</td>
+                                <td>MPV</td>
+                                <td>Jane Smith</td>
+                                <td><span class="status-badge active">Available</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="pagination-bar">
+                        <div>Showing 1 to 4 of 4 results</div>
+                        <div class="page-controls">
+                            <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                            <span>Page 1 of 1</span>
+                            <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FACILITY RESERVATION CALENDAR VIEW -->
+            <div id="view-calendar" class="view-section active">
+                <div class="page-header">
+                    <h1><i class="fa-solid fa-calendar-days"></i> Facility Reservation Calendar</h1>
+                </div>
+
+                <div class="calendar-container">
+                    <div class="calendar-title-bar">
+                        <h2>Reservation Calendar</h2>
+                        <div class="calendar-controls">
+                            <label>Month:</label>
+                            <select>
+                                <option>Oct</option>
+                            </select>
+                            <label>Year:</label>
+                            <select>
+                                <option>2026</option>
+                            </select>
+                            <button>Go</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar generated by JS -->
+                    </div>
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot legend-reserved"></div><span>Reserved</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot legend-available"></div><span>Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <script>
+        // --- VIEW SWITCHER ---
+        function switchView(viewId, menuItem) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            // Show target view
+            document.getElementById(viewId).classList.add('active');
+
+            // Update sidebar active states
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            menuItem.classList.add('active');
+        }
+
+        // --- CALENDAR LOGIC ---
+        const calendarGrid = document.getElementById('calendarGrid');
+
+        async function fetchCalendarData() {
+            let events = [
+                { date: '2026-10-08', title: 'audit', requestor: 'Emmanuel Notarte' },
+                { date: '2026-10-08', title: 'Meeting', requestor: 'Emmanuel Notarte' }
+            ];
+            return events;
+        }
+
+        async function renderCalendar(year, month) {
+            calendarGrid.innerHTML = `
+                <div class="calendar-day-header">Sun</div>
+                <div class="calendar-day-header">Mon</div>
+                <div class="calendar-day-header">Tue</div>
+                <div class="calendar-day-header">Wed</div>
+                <div class="calendar-day-header">Thu</div>
+                <div class="calendar-day-header">Fri</div>
+                <div class="calendar-day-header">Sat</div>
+            `;
+
+            const events = await fetchCalendarData();
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                calendarGrid.innerHTML += `<div class="calendar-day empty"></div>`;
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const m = String(month + 1).padStart(2, '0');
+                const d = String(i).padStart(2, '0');
+                const dateString = `${year}-${m}-${d}`;
+
+                const hasEvent = events.some(e => e.date === dateString);
+                const classStr = hasEvent ? "calendar-day reserved" : "calendar-day";
+
+                calendarGrid.innerHTML += `<div class="${classStr}">${i}</div>`;
+            }
+        }
+
+        renderCalendar(2026, 9);
+    </script>
+</body>
+
+</html>
