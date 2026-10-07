@@ -51,6 +51,8 @@
             z-index: -1;
             object-fit: cover;
             filter: brightness(0.65);
+            opacity: 0.5;
+            /* Adjust this value (0.0 to 1.0) */
         }
 
         .login-container {
@@ -251,7 +253,7 @@
                 justify-content: center;
             }
         }
-    
+
         .signup-prompt {
             text-align: center;
             margin-top: 20px;
@@ -274,7 +276,6 @@
         .hidden-field {
             display: none;
         }
-
     </style>
 </head>
 
@@ -297,7 +298,7 @@
         </div>
 
         <form id="loginForm">
-            
+
             <div class="form-group hidden-field" id="nameGroup">
                 <label for="fullName">Full Name</label>
                 <div class="input-wrapper">
@@ -335,7 +336,7 @@
                 <span class="btn-text">Sign In</span>
                 <div class="spinner"></div>
             </button>
-        
+
             <div class="signup-prompt" id="signupPrompt">
                 Don't have an account? <a href="#" id="toggleSignup">Sign Up</a>
             </div>
@@ -356,20 +357,20 @@
         const btnText = loginBtn.querySelector('.btn-text');
         const spinner = loginBtn.querySelector('.spinner');
 
-        
+
         const toggleSignup = document.getElementById('toggleSignup');
         const nameGroup = document.getElementById('nameGroup');
         const fullNameInput = document.getElementById('fullName');
         const titleText = document.querySelector('.brand-header h1');
         const subtitleText = document.querySelector('.brand-header p');
         const signupPromptText = document.getElementById('signupPrompt');
-        
+
         let isSignup = false;
 
         toggleSignup.addEventListener('click', (e) => {
             e.preventDefault();
             isSignup = !isSignup;
-            
+
             if (isSignup) {
                 // Switch to Sign Up
                 titleText.textContent = 'Create an Account';
@@ -387,7 +388,7 @@
                 nameGroup.style.display = 'none';
                 fullNameInput.required = false;
             }
-            
+
             // Re-attach event listener because innerHTML replaced the element
             document.getElementById('toggleSignup').addEventListener('click', arguments.callee);
         });
