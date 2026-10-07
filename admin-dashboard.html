@@ -555,7 +555,33 @@
         .view-section.active {
             display: block;
         }
-    </style>
+    
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin-left: 260px;
+            padding: 10px 24px;
+            color: var(--text-muted, #718096);
+            background: var(--bg-surface, #ffffff);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: .78rem;
+            z-index: 999;
+        }
+
+        @media(max-width:900px) {
+            .footer {
+                margin-left: 0;
+            }
+        }
+        
+        main.main-wrapper {
+            padding-bottom: 50px;
+        }
+</style>
 <style id="mobile-shell-overrides">
 @media (max-width:900px) {
   .header, .header-bar { padding-left:56px; padding-right:56px; }
@@ -815,6 +841,7 @@
 
         renderCalendar(2026, 9);
     </script>
+<footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span></footer>
 </body>
 
 </html>
