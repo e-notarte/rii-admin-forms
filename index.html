@@ -328,7 +328,7 @@
                     sessionStorage.setItem('userRole', 'admin');
                     
                     // Redirect to dashboard
-                    window.location.href = 'admin-dashboard.html';
+                    window.location.href = 'welcome.html';
                 } else if (email === 'user@riibuilders.com' && password === 'admin1234') {
                     // User Success
                     if (rememberMe) {
@@ -342,7 +342,7 @@
                     sessionStorage.setItem('userRole', 'user');
                     
                     // Redirect to user dashboard (vehicle request is the default first page)
-                    window.location.href = 'vehicle-request.html';
+                    window.location.href = 'welcome.html';
                 } else {
                     // Failed
                     errorMsg.style.display = 'flex';
