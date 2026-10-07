@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <style>
     .mobile-menu-toggle,
@@ -111,9 +112,11 @@
         display: block;
       }
     }
-  
-    main { padding-bottom: 60px !important; }
-</style>
+
+    main {
+      padding-bottom: 60px !important;
+    }
+  </style>
   </style>
   <style>
     .header {
@@ -201,20 +204,20 @@
       }
 
       .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin-left: 260px;
-      padding: 10px 24px;
-      background: var(--bg, #f7f9fc);
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-size: .78rem;
-      z-index: 999;
-    }
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-left: 260px;
+        padding: 10px 24px;
+        background: var(--bg, #f7f9fc);
+        color: var(--muted);
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        font-size: .78rem;
+        z-index: 999;
+      }
 
       main {
         padding-top: 34px
@@ -673,20 +676,20 @@
       }
 
       .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin-left: 260px;
-      padding: 10px 24px;
-      background: var(--bg, #f7f9fc);
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-size: .78rem;
-      z-index: 999;
-    }
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin-left: 260px;
+        padding: 10px 24px;
+        background: var(--bg, #f7f9fc);
+        color: var(--muted);
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        font-size: .78rem;
+        z-index: 999;
+      }
 
       main {
         padding-top: 34px
@@ -906,134 +909,159 @@
       }
     }
   </style>
-<style>
-        .user-profile, .user-badge {
-            position: relative;
-            cursor: pointer;
-        }
+  <style>
+    .user-profile,
+    .user-badge {
+      position: relative;
+      cursor: pointer;
+    }
 
-        .profile-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: #ffffff;
-            border: 1px solid var(--border, #e2e8f0);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            min-width: 160px;
-            z-index: 1000;
-            flex-direction: column;
-            overflow: hidden;
-        }
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      min-width: 160px;
+      z-index: 1000;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        .user-profile.active .profile-dropdown,
-        .user-badge.active .profile-dropdown {
-            display: flex;
-        }
+    .user-profile.active .profile-dropdown,
+    .user-badge.active .profile-dropdown {
+      display: flex;
+    }
 
-        .profile-dropdown a {
-            padding: 12px 16px;
-            color: #4a5568;
-            text-decoration: none;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.2s;
-            font-weight: 500;
-        }
+    .profile-dropdown a {
+      padding: 12px 16px;
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
 
-        .profile-dropdown a:hover {
-            background: #f7fafc;
-        }
+    .profile-dropdown a:hover {
+      background: #f7fafc;
+    }
 
-        .profile-dropdown a.logout-link {
-            color: #ef4444;
-            border-top: 1px solid var(--border, #e2e8f0);
-        }
-        
-        .profile-dropdown a i {
-            width: 16px;
-            text-align: center;
-        }
-</style>
+    .profile-dropdown a.logout-link {
+      color: #ef4444;
+      border-top: 1px solid var(--border, #e2e8f0);
+    }
 
-<style>
+    .profile-dropdown a i {
+      width: 16px;
+      text-align: center;
+    }
+  </style>
+
+  <style>
     .ai-bot-container {
-        position: fixed;
-        bottom: 60px;
-        right: 20px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 10px;
+      position: fixed;
+      bottom: 60px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
     }
+
     .ai-bot-cloud {
-        background: white;
-        padding: 8px 15px;
-        border-radius: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--primary, #1E355F);
-        position: relative;
-        animation: bounce 2s infinite;
-        border: 1px solid var(--border, #e2e8f0);
+      background: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary, #1E355F);
+      position: relative;
+      animation: bounce 2s infinite;
+      border: 1px solid var(--border, #e2e8f0);
     }
+
     .ai-bot-cloud::after {
-        content: '';
-        position: absolute;
-        bottom: -6px;
-        right: 35px;
-        border-width: 6px 6px 0;
-        border-style: solid;
-        border-color: white transparent transparent transparent;
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 35px;
+      border-width: 6px 6px 0;
+      border-style: solid;
+      border-color: white transparent transparent transparent;
     }
+
     .ai-bot-cloud::before {
-        content: '';
-        position: absolute;
-        bottom: -7px;
-        right: 34px;
-        border-width: 7px 7px 0;
-        border-style: solid;
-        border-color: var(--border, #e2e8f0) transparent transparent transparent;
-        z-index: -1;
+      content: '';
+      position: absolute;
+      bottom: -7px;
+      right: 34px;
+      border-width: 7px 7px 0;
+      border-style: solid;
+      border-color: var(--border, #e2e8f0) transparent transparent transparent;
+      z-index: -1;
     }
+
     @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-5px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
     }
+
     .ai-bot-btn {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background-color: white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.3s;
-        border: 2px solid var(--primary, #1E355F);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s;
+      border: 2px solid var(--primary, #1E355F);
     }
+
     .ai-bot-btn:hover {
-        transform: scale(1.08);
+      transform: scale(1.08);
     }
+
     .ai-bot-btn img {
-        width: 55px;
-        height: 55px;
-        object-fit: contain;
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
     }
-</style>
+  </style>
 
 </head>
+
 <body>
-<button class="mobile-menu-toggle" type="button" aria-label="Open navigation" onclick="document.body.classList.toggle('nav-open'); document.body.classList.remove('account-open')"><i class="fa-solid fa-bars"></i></button>
-<button class="mobile-account-button" type="button" aria-label="Open account menu" onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i class="fa-solid fa-user"></i><span>Account</span></button>
-<div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button" title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button" title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button><button type="button" title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i class="fa-solid fa-right-from-bracket"></i> Log out</button></div>
-<header class="header">
+  <button class="mobile-menu-toggle" type="button" aria-label="Open navigation"
+    onclick="document.body.classList.toggle('nav-open'); document.body.classList.remove('account-open')"><i
+      class="fa-solid fa-bars"></i></button>
+  <button class="mobile-account-button" type="button" aria-label="Open account menu"
+    onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i
+      class="fa-solid fa-user"></i><span>Account</span></button>
+  <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
+        class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
+      title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
+      title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button><button type="button"
+      title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
+        class="fa-solid fa-right-from-bracket"></i> Log out</button></div>
+  <header class="header">
     <div class="brand"><img
         src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
         alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
@@ -1041,17 +1069,18 @@
           class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button class="icon-btn" type="button"
         title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button><button class="icon-btn" type="button"
         title="Notifications"><i class="fa-regular fa-bell"></i></button>
-        <div class="user-badge" onclick="this.classList.toggle('active')"><span>Requestor User</span>
+      <div class="user-badge" onclick="this.classList.toggle('active')"><span>Requestor User</span>
         <div class="avatar">RU</div>
-      
+
         <div class="profile-dropdown">
-            <a href="#"><i class="fa-regular fa-user"></i> Profile</a>
-            <a href="#" class="logout-link" onclick="sessionStorage.clear(); window.location.href='index.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
+          <a href="#"><i class="fa-regular fa-user"></i> Profile</a>
+          <a href="#" class="logout-link" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
+              class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
         </div>
       </div>
     </div>
   </header>
-<aside class="sidebar" aria-label="Requestor navigation">
+  <aside class="sidebar" aria-label="Requestor navigation">
     <div class="sidebar-brand-mobile">
       <div class="brand"><img
           src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
@@ -1065,78 +1094,88 @@
       <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
       <div class="nav-group">
         <div class="nav-group-title"><i class="fa-solid fa-building"></i> Facility Request</div>
-        <div class="sub-links"><a class="sub-link" href="conference-request.html">Conference Room</a><a
-            class="sub-link" href="function-request.html">Function Hall</a><a class="sub-link"
-            href="parking-request.html">Parking Slot</a><a class="sub-link" href="zoom-request.html">Zoom Meeting</a><a
-            class="sub-link" href="teams-request.html">MS Teams</a></div>
+        <div class="sub-links"><a class="sub-link" href="conference-request.html">Conference Room</a><a class="sub-link"
+            href="function-request.html">Function Hall</a><a class="sub-link" href="parking-request.html">Parking
+            Slot</a><a class="sub-link" href="zoom-request.html">Zoom Meeting</a><a class="sub-link"
+            href="teams-request.html">MS Teams</a></div>
       </div>
     </nav>
-    <div class="nav-label" style="margin-top: 10px;">REQUESTS & FILINGS</div>
     <nav>
-      <a class="nav-link active" href="liaison-request.html"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison</a>
+      <a class="nav-link active" href="liaison-request.html"><i class="fa-solid fa-person-walking-arrow-right"></i>
+        Liaison</a>
       <a class="nav-link" href="supplies-dashboard.html"><i class="fa-solid fa-boxes-stacked"></i> Supplies</a>
     </nav>
   </aside>
-<main>
+  <main>
     <section class="form-card">
-        <h1><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison Request</h1>
-        <p class="intro">Submit a request for a messenger or liaison officer.</p>
-        <form id="requestForm">
-            <div class="grid">
-                <label>Requestor Email<input name="requestor" type="email" required placeholder="Enter your email address"></label>
-                <label>Company
-                    <select name="company" required>
-                        <option value="">Select Company</option>
-                        <option>RMRCI</option>
-                        <option>RBI</option>
-                        <option>PESC</option>
-                        <option>RLAND</option>
-                    </select>
-                </label>
-            </div>
-            <label>Department
-                <select name="department" required>
-                    <option value="">Select Department</option>
-                    <option>Admin</option>
-                    <option>HR</option>
-                    <option>Purchasing</option>
-                    <option>BDG</option>
-                    <option>Engineering</option>
-                    <option>C&amp;C</option>
-                    <option>Accounting</option>
-                    <option>Finance</option>
-                </select>
-            </label>
-            <label>Destination / Address<input name="destination" required placeholder="Enter destination"></label>
-            <label>Documents / Items to Deliver<input name="documents" required placeholder="List documents or items"></label>
-            <label>Contact Person<input name="contactPerson" required placeholder="Enter contact person"></label>
-            <div class="grid">
-                <label>Date<input name="date" type="date" required></label>
-                <label>Time Required<input name="time" type="time" required></label>
-            </div>
-            <button type="submit">Submit Liaison Request</button>
-        </form>
+      <h1><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison Request</h1>
+      <p class="intro">Submit a request for a messenger or liaison officer.</p>
+      <form id="requestForm">
+        <div class="grid">
+          <label>Requestor Email<input name="requestor" type="email" required
+              placeholder="Enter your email address"></label>
+          <label>Company
+            <select name="company" required>
+              <option value="">Select Company</option>
+              <option>RMRCI</option>
+              <option>RBI</option>
+              <option>PESC</option>
+              <option>RLAND</option>
+            </select>
+          </label>
+        </div>
+        <label>Department
+          <select name="department" required>
+            <option value="">Select Department</option>
+            <option>Admin</option>
+            <option>HR</option>
+            <option>Purchasing</option>
+            <option>BDG</option>
+            <option>Engineering</option>
+            <option>C&amp;C</option>
+            <option>Accounting</option>
+            <option>Finance</option>
+          </select>
+        </label>
+        <label>Destination / Address<input name="destination" required placeholder="Enter destination"></label>
+        <label>Documents / Items to Deliver<input name="documents" required
+            placeholder="List documents or items"></label>
+        <label>Contact Person<input name="contactPerson" required placeholder="Enter contact person"></label>
+        <div class="grid">
+          <label>Date<input name="date" type="date" required></label>
+          <label>Time Required<input name="time" type="time" required></label>
+        </div>
+        <button type="submit">Submit Liaison Request</button>
+      </form>
     </section>
-</main>
-<div class="modal" id="modal"><div class="modal-box"><h2>Request Submitted</h2><p>Reference Number:</p><strong id="reference"></strong><br><br><button type="button" onclick="modal.classList.remove('open')">Close</button></div></div>
-<script>var modal=document.getElementById('modal');document.getElementById('requestForm').addEventListener('submit',function(e){e.preventDefault();var f=new FormData(e.target),r=JSON.parse(localStorage.getItem('fleetRequests')||'[]'),id='REQ-'+Math.floor(Math.random()*900+100);r.push({id:id,requestor:f.get('requestor'),destination:f.get('destination'),purpose:f.get('documents'),scheduleDate:f.get('date'),scheduleTime:f.get('time'),driver:'',car:'',status:'pending',requestType:'Messenger',company:f.get('company'),department:f.get('department'),contactPerson:f.get('contactPerson')});localStorage.setItem('fleetRequests',JSON.stringify(r));document.getElementById('reference').textContent=id;modal.classList.add('open');e.target.reset()})</script>
-<footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span></footer>
+  </main>
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h2>Request Submitted</h2>
+      <p>Reference Number:</p><strong id="reference"></strong><br><br><button type="button"
+        onclick="modal.classList.remove('open')">Close</button>
+    </div>
+  </div>
+  <script>var modal = document.getElementById('modal'); document.getElementById('requestForm').addEventListener('submit', function (e) { e.preventDefault(); var f = new FormData(e.target), r = JSON.parse(localStorage.getItem('fleetRequests') || '[]'), id = 'REQ-' + Math.floor(Math.random() * 900 + 100); r.push({ id: id, requestor: f.get('requestor'), destination: f.get('destination'), purpose: f.get('documents'), scheduleDate: f.get('date'), scheduleTime: f.get('time'), driver: '', car: '', status: 'pending', requestType: 'Messenger', company: f.get('company'), department: f.get('department'), contactPerson: f.get('contactPerson') }); localStorage.setItem('fleetRequests', JSON.stringify(r)); document.getElementById('reference').textContent = id; modal.classList.add('open'); e.target.reset() })</script>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  </footer>
 
-<script>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-        if (sessionStorage.getItem('userRole') !== 'admin') {
-            document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
-        }
+      if (sessionStorage.getItem('userRole') !== 'admin') {
+        document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
+      }
     });
-</script>
+  </script>
 
-<!-- AI Bot -->
-<div class="ai-bot-container">
+  <!-- AI Bot -->
+  <div class="ai-bot-container">
     <div class="ai-bot-cloud">Chat with Mae!</div>
     <div class="ai-bot-btn" title="Chat with Mae!">
-        <img src="AI_Bot.png" alt="AI Bot">
+      <img src="AI_Bot.png" alt="AI Bot">
     </div>
-</div>
+  </div>
 
 </body>
+
 </html>
