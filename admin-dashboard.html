@@ -650,6 +650,35 @@
             text-align: center;
         }
 </style>
+
+<style>
+    .ai-bot-btn {
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        cursor: pointer;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s;
+        border: 2px solid var(--primary, #1E355F);
+    }
+    .ai-bot-btn:hover {
+        transform: scale(1.1);
+    }
+    .ai-bot-btn img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+</style>
+
 </head>
 
 <body>
@@ -898,6 +927,12 @@
         renderCalendar(2026, 9);
     </script>
 <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span></footer>
+
+<!-- AI Bot -->
+<div class="ai-bot-btn" title="Chat with AI Assistant">
+    <img src="AI_Bot.png" alt="AI Bot">
+</div>
+
 </body>
 
 </html>
