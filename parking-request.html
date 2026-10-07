@@ -1120,17 +1120,58 @@
 </style>
 
 <style>
-    .ai-bot-btn {
+    .ai-bot-container {
         position: fixed;
         bottom: 60px;
         right: 20px;
-        width: 60px;
-        height: 60px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
+    .ai-bot-cloud {
+        background: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--primary, #1E355F);
+        position: relative;
+        animation: bounce 2s infinite;
+        border: 1px solid var(--border, #e2e8f0);
+    }
+    .ai-bot-cloud::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        right: 35px;
+        border-width: 6px 6px 0;
+        border-style: solid;
+        border-color: white transparent transparent transparent;
+    }
+    .ai-bot-cloud::before {
+        content: '';
+        position: absolute;
+        bottom: -7px;
+        right: 34px;
+        border-width: 7px 7px 0;
+        border-style: solid;
+        border-color: var(--border, #e2e8f0) transparent transparent transparent;
+        z-index: -1;
+    }
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+    .ai-bot-btn {
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
         background-color: white;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         cursor: pointer;
-        z-index: 1000;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1138,11 +1179,11 @@
         border: 2px solid var(--primary, #1E355F);
     }
     .ai-bot-btn:hover {
-        transform: scale(1.1);
+        transform: scale(1.08);
     }
     .ai-bot-btn img {
-        width: 40px;
-        height: 40px;
+        width: 55px;
+        height: 55px;
         object-fit: contain;
     }
 </style>
@@ -1304,8 +1345,11 @@
 </script>
 
 <!-- AI Bot -->
-<div class="ai-bot-btn" title="Chat with AI Assistant">
-    <img src="AI_Bot.png" alt="AI Bot">
+<div class="ai-bot-container">
+    <div class="ai-bot-cloud">Chat with Mae!</div>
+    <div class="ai-bot-btn" title="Chat with Mae!">
+        <img src="AI_Bot.png" alt="AI Bot">
+    </div>
 </div>
 
 </body></html>
