@@ -1514,6 +1514,23 @@
 
         if (error) throw error;
 
+          // Insert notification
+          try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              await supabase.from('notifications').insert([{
+                user_id: user.id,
+                title: 'Request Submitted',
+                message: 'Your Driver Request request has been successfully submitted and is pending approval.',
+                request_type: 'Driver Request',
+                is_read: false
+              }]);
+              if (typeof loadNotifications === 'function') {
+                loadNotifications();
+              }
+            }
+          } catch(e) { console.error('Notification error', e); }
+
         // success
         const refId = data[0].id.split('-')[0].toUpperCase();
         document.getElementById('reference').textContent = refId;
