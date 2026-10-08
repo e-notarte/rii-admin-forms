@@ -2313,7 +2313,7 @@
               source_table: res.table
             };
           });
-          allRequests = allRequests.concat(items);
+          allRequests = allRequests.concat(items); window._allRequests = allRequests;
         });
 
         // Sort by created_at descending
@@ -2357,12 +2357,30 @@
 
     window.updateRequestStatus = async function (id, table, newStatus) {
       try {
+        // Find user id
+        let targetUserId = null;
+        if (typeof window._allRequests !== "undefined") {
+          const req = window._allRequests.find(r => r.id === id);
+          if (req && req.user_id) targetUserId = req.user_id;
+        }
         const { error } = await supabase
           .from(table)
           .update({ status: newStatus })
           .eq('id', id);
 
         if (error) throw error;
+
+        if (targetUserId) {
+          try {
+            await supabase.from('notifications').insert([{
+              user_id: targetUserId,
+              title: `Request ${newStatus}`,
+              message: `Your request has been ${newStatus.toLowerCase()} by the administrator.`,
+              request_type: table.replace('_requests', '').toUpperCase(),
+              is_read: false
+            }]);
+          } catch(err) { console.error('Notification error', err); }
+        }
         loadFacilityRequests(); // reload table
       } catch (e) {
         alert('Error updating status: ' + e.message);
@@ -2485,3 +2503,5 @@
 </body>
 
 </html>
+
+
