@@ -365,69 +365,7 @@ input[type="date"]:focus {
   background: #94a3b8;
 }
 
-/* Container that holds everything fixed to the right side */
-
-position: fixed;
-right: 0;
-top: 50%;
-/* Centers vertically */
-/* Hides the main container off-screen but leaves the 30px toggle visible */
-transform: translate(calc(100% - 30px), -50%);
-display: flex;
-align-items: center;
-transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-/* Bouncy slide-out effect */
-z-index: 9999;
-}
-
-/* When the 'active' class is applied via JS, slide fully into view */
-
-transform: translate(-10px, -50%);
-/* -10px gives it a little breathing room from the edge */
-}
-
-/* The small mark you click on */
-.ai-bot-toggle {
-  width: 30px;
-  height: 60px;
-  background: #007bff;
-  /* Change this to match your brand color */
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px 0 0 8px;
-  /* Rounds the left corners */
-  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Optional styling to make your original container look like a neat popup */
-.ai-bot-container {
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  margin-left: 10px;
-  /* Space between the toggle tab and the bot container */
-}
-
-.ai-bot-cloud {
-  font-family: sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.ai-bot-btn img {
-  width: 60px;
-  /* Adjust based on your image size */
-  height: auto;
-  cursor: pointer;
-}
-
+/* AI Bot Styles */
 .ai-bot-wrapper {
   position: fixed;
   right: 0;
@@ -446,18 +384,16 @@ transform: translate(-10px, -50%);
 .ai-bot-toggle {
   width: 30px;
   height: 60px;
-  background: white;
+  background: transparent;
   color: #1E355F;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px 0 0 8px;
-  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
-  border: 1px solid #e2e8f0;
-  border-right: none;
+  border: none;
+  box-shadow: none;
 }
 
 .ai-bot-container {
@@ -472,7 +408,7 @@ transform: translate(-10px, -50%);
   background: white;
   padding: 8px 15px;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   font-size: 0.9rem;
   font-weight: 600;
   color: #1E355F;
@@ -503,15 +439,8 @@ transform: translate(-10px, -50%);
 }
 
 @keyframes bounce {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-5px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 .ai-bot-btn {
@@ -519,7 +448,7 @@ transform: translate(-10px, -50%);
   height: 55px;
   border-radius: 50%;
   background-color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
