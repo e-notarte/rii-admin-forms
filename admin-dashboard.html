@@ -2,454 +2,564 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - R-II Builders</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - R-II Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <style>
-        
+  <style>
+    .main-wrapper {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      margin-top: var(--header-height);
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - var(--header-height));
+    }
 
-        
-        .main-wrapper {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            margin-top: var(--header-height);
-            display: flex;
-            flex-direction: column;
-            min-height: calc(100vh - var(--header-height));
-        }
 
-        
-        .content {
-            padding: 30px;
-            flex: 1;
-        }
+    .content {
+      padding: 30px;
+      flex: 1;
+    }
 
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
 
-        .page-header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .page-header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 4px rgba(30, 53, 95, 0.2);
-            transition: all 0.2s;
-        }
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 4px rgba(30, 53, 95, 0.2);
+      transition: all 0.2s;
+    }
 
-        .btn-primary:hover {
-            background-color: #152748;
-            transform: translateY(-1px);
-        }
+    .btn-primary:hover {
+      background-color: #152748;
+      transform: translateY(-1px);
+    }
 
-        /* TABLE CONTAINER */
-        .data-card {
-            background-color: var(--bg-surface);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-        }
+    /* TABLE CONTAINER */
+    .data-card {
+      background-color: var(--bg-surface);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
 
-        .toolbar {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            border-bottom: 1px solid var(--border);
-        }
+    .toolbar {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      border-bottom: 1px solid var(--border);
+    }
 
-        .search-box {
-            position: relative;
-            max-width: 400px;
-        }
+    .search-box {
+      position: relative;
+      max-width: 400px;
+    }
 
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
 
-        .search-box input {
-            width: 100%;
-            padding: 10px 10px 10px 40px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
+    .search-box input {
+      width: 100%;
+      padding: 10px 10px 10px 40px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
 
-        .search-box input:focus {
-            border-color: var(--primary);
-        }
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
 
-        .filter-pills {
-            display: flex;
-            gap: 10px;
-        }
+    .filter-pills {
+      display: flex;
+      gap: 10px;
+    }
 
-        .pill {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid var(--border);
-            background: white;
-            color: var(--text-muted);
-            transition: all 0.2s;
-        }
+    .pill {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
 
-        .pill.active {
-            background-color: rgba(252, 174, 22, 0.15);
-            color: #d97706;
-            border-color: transparent;
-        }
+    .pill.active {
+      background-color: rgba(252, 174, 22, 0.15);
+      color: #d97706;
+      border-color: transparent;
+    }
 
-        .pill:hover:not(.active) {
-            background-color: #f8fafc;
-        }
+    .pill:hover:not(.active) {
+      background-color: #f8fafc;
+    }
 
-        /* TABLE */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-        th {
-            background-color: #f8fafc;
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            text-align: left;
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border);
-        }
+    th {
+      background-color: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: left;
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+    }
 
-        td {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-            color: var(--text-main);
-        }
+    td {
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+    tr:last-child td {
+      border-bottom: none;
+    }
 
-        tr:hover td {
-            background-color: #f8fafc;
-        }
+    tr:hover td {
+      background-color: #f8fafc;
+    }
 
-        .user-cell {
-            display: flex;
-            flex-direction: column;
-        }
+    .user-cell {
+      display: flex;
+      flex-direction: column;
+    }
 
-        .user-name {
-            font-weight: 600;
-            color: var(--primary);
-        }
+    .user-name {
+      font-weight: 600;
+      color: var(--primary);
+    }
 
-        .user-email {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
+    .user-email {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
 
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background-color: #e2e8f0;
-            color: #475569;
-        }
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: #e2e8f0;
+      color: #475569;
+    }
 
-        .status-badge.rejected { background-color: #fee2e2; color: #991b1b; } .status-badge.active {
-            background-color: #dcfce7;
-            color: #166534;
-        }
+    .status-badge.rejected {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
 
-        /* PAGINATION */
-        .pagination-bar {
-            padding: 15px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
+    .status-badge.active {
+      background-color: #dcfce7;
+      color: #166534;
+    }
 
-        .page-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    /* PAGINATION */
+    .pagination-bar {
+      padding: 15px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
 
-        .page-btn {
-            border: 1px solid var(--border);
-            background: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
+    .page-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .page-btn:hover {
-            background: #f8fafc;
-        }
+    .page-btn {
+      border: 1px solid var(--border);
+      background: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
 
-        /* --- CALENDAR CSS --- */
-        .calendar-container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            width: 100%;
-        }
+    .page-btn:hover {
+      background: #f8fafc;
+    }
 
-        .calendar-title-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #1E355F;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+    /* --- CALENDAR CSS --- */
+    .calendar-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      width: 100%;
+    }
 
-        .calendar-title-bar h2 {
-            margin: 0;
-            color: #FCAE16;
-            font-size: 1.4rem;
-            font-weight: bold;
-        }
+    .calendar-title-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1E355F;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
 
-        .calendar-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            color: white;
-        }
+    .calendar-title-bar h2 {
+      margin: 0;
+      color: #FCAE16;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
 
-        .calendar-controls select {
-            padding: 5px 10px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-family: inherit;
-        }
+    .calendar-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: white;
+    }
 
-        .calendar-controls button {
-            background: #FCAE16;
-            color: #1E355F;
-            border: none;
-            padding: 5px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .calendar-controls select {
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
 
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 10px;
-        }
+    .calendar-controls button {
+      background: #FCAE16;
+      color: #1E355F;
+      border: none;
+      padding: 5px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-        .calendar-day-header {
-            background: #FCAE16;
-            color: #1E355F;
-            text-align: center;
-            padding: 10px 0;
-            font-weight: 600;
-            border-radius: 4px;
-        }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
 
-        .calendar-day {
-            background: #f1f5f9;
-            min-height: 100px;
-            border-radius: 4px;
-            padding: 10px;
-            font-weight: 600;
-            color: #1E355F;
-            display: flex;
-            flex-direction: column;
-        }
+    .calendar-day-header {
+      background: #FCAE16;
+      color: #1E355F;
+      text-align: center;
+      padding: 10px 0;
+      font-weight: 600;
+      border-radius: 4px;
+    }
 
-        .calendar-day.empty {
-            background: transparent;
-        }
+    .calendar-day {
+      background: #f1f5f9;
+      min-height: 100px;
+      border-radius: 4px;
+      padding: 10px;
+      font-weight: 600;
+      color: #1E355F;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .calendar-day.reserved {
-            background: #1E355F;
-            color: white;
-        }
+    .calendar-day.empty {
+      background: transparent;
+    }
 
-        .calendar-legend {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
+    .calendar-day.reserved {
+      background: #1E355F;
+      color: white;
+    }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: bold;
-        }
+    .calendar-legend {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
 
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: bold;
+    }
 
-        .legend-reserved {
-            background: #1E355F;
-        }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
 
-        .legend-available {
-            background: #f1f5f9;
-        }
+    .legend-reserved {
+      background: #1E355F;
+    }
 
-        /* VIEWS */
-        .view-section {
-            display: none;
-        }
+    .legend-available {
+      background: #f1f5f9;
+    }
 
-        .view-section.active {
-            display: block;
-        }
-    
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            margin-left: 260px;
-            padding: 10px 24px;
-            color: var(--text-muted, #718096);
-            background: var(--bg-surface, #ffffff);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            font-size: .78rem;
-            z-index: 999;
-        }
+    /* VIEWS */
+    .view-section {
+      display: none;
+    }
 
-        @media(max-width:900px) {
-            .footer {
-                margin-left: 0;
-            }
-        }
-        
-        main.main-wrapper {
-            padding-bottom: 50px;
-        }
-</style>
-<style id="mobile-shell-overrides">
-@media (max-width:900px) {
-  .header, .header-bar { padding-left:56px; padding-right:56px; }
-  .header-right { display:flex; gap:10px; }
-  .header-right .switch-admin, .header-right .switch-btn, .header-right .user-badge, .header-right .user-profile { display:none; }
-  .header-right .icon-btn { display:flex; align-items:center; justify-content:center; width:34px; height:34px; padding:0; }
-  .mobile-account-button { display:flex; align-items:center; justify-content:center; position:fixed; top:14px; right:12px; z-index:1300; width:36px; height:36px; padding:0; border:0; border-radius:50%; background:#d1fae5; color:#047857; font-size:0; cursor:pointer; }
-  .mobile-account-button i { font-size:.9rem; }
-  .mobile-menu-toggle { z-index:1300; }
-  .mobile-account-menu { top:58px; right:12px; }
-  body:not(.nav-open) .sidebar, body:not(.nav-open) .requestor-sidebar { display:none; }
-  body.nav-open::before { content:""; position:fixed; inset:0; z-index:1100; background:rgba(15,23,42,.48); }
-  body.nav-open .sidebar, body.nav-open .requestor-sidebar { display:block; position:fixed; top:0; left:0; width:min(78vw,280px); height:100vh; margin:0; padding:76px 0 20px; overflow-y:auto; z-index:1200; background:#fff; box-shadow:4px 0 18px rgba(0,0,0,.16); }
-  body.nav-open .sidebar nav, body.nav-open .requestor-sidebar nav { display:block; } body.nav-open .sidebar .sub-links, body.nav-open .requestor-sidebar .requestor-nav-sublinks { display:block; padding:0; } body.nav-open .sidebar .sub-link, body.nav-open .requestor-sidebar .requestor-nav-sublink { display:block; padding:10px 24px 10px 33px; }
-  body.nav-open .mobile-menu-toggle { left:auto; right:calc(100% - min(78vw,280px) + 10px); color:#1E355F; background:#fff; border-color:#e2e8f0; font-size:0; } body.nav-open .mobile-menu-toggle::after { content:"Ãƒâ€”"; font-size:1.5rem; line-height:1; }
-}
-</style><style>
-        .user-profile, .user-badge {
-            position: relative;
-            cursor: pointer;
-        }
+    .view-section.active {
+      display: block;
+    }
 
-        .profile-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: #ffffff;
-            border: 1px solid var(--border, #e2e8f0);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            min-width: 160px;
-            z-index: 1000;
-            flex-direction: column;
-            overflow: hidden;
-        }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin-left: 260px;
+      padding: 10px 24px;
+      color: var(--text-muted, #718096);
+      background: var(--bg-surface, #ffffff);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem;
+      z-index: 999;
+    }
 
-        .user-profile.active .profile-dropdown,
-        .user-badge.active .profile-dropdown {
-            display: flex;
-        }
+    @media(max-width:900px) {
+      .footer {
+        margin-left: 0;
+      }
+    }
 
-        .profile-dropdown a {
-            padding: 12px 16px;
-            color: #4a5568;
-            text-decoration: none;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.2s;
-            font-weight: 500;
-        }
+    main.main-wrapper {
+      padding-bottom: 50px;
+    }
+  </style>
+  <style id="mobile-shell-overrides">
+    @media (max-width:900px) {
 
-        .profile-dropdown a:hover {
-            background: #f7fafc;
-        }
+      .header,
+      .header-bar {
+        padding-left: 56px;
+        padding-right: 56px;
+      }
 
-        .profile-dropdown a.logout-link {
-            color: #ef4444;
-            border-top: 1px solid var(--border, #e2e8f0);
-        }
-        
-        .profile-dropdown a i {
-            width: 16px;
-            text-align: center;
-        }
-</style>
+      .header-right {
+        display: flex;
+        gap: 10px;
+      }
 
-<style>
+      .header-right .switch-admin,
+      .header-right .switch-btn,
+      .header-right .user-badge,
+      .header-right .user-profile {
+        display: none;
+      }
+
+      .header-right .icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+      }
+
+      .mobile-account-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 14px;
+        right: 12px;
+        z-index: 1300;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: #d1fae5;
+        color: #047857;
+        font-size: 0;
+        cursor: pointer;
+      }
+
+      .mobile-account-button i {
+        font-size: .9rem;
+      }
+
+      .mobile-menu-toggle {
+        z-index: 1300;
+      }
+
+      .mobile-account-menu {
+        top: 58px;
+        right: 12px;
+      }
+
+      body:not(.nav-open) .sidebar,
+      body:not(.nav-open) .requestor-sidebar {
+        display: none;
+      }
+
+      body.nav-open::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 1100;
+        background: rgba(15, 23, 42, .48);
+      }
+
+      body.nav-open .sidebar,
+      body.nav-open .requestor-sidebar {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: min(78vw, 280px);
+        height: 100vh;
+        margin: 0;
+        padding: 76px 0 20px;
+        overflow-y: auto;
+        z-index: 1200;
+        background: #fff;
+        box-shadow: 4px 0 18px rgba(0, 0, 0, .16);
+      }
+
+      body.nav-open .sidebar nav,
+      body.nav-open .requestor-sidebar nav {
+        display: block;
+      }
+
+      body.nav-open .sidebar .sub-links,
+      body.nav-open .requestor-sidebar .requestor-nav-sublinks {
+        display: block;
+        padding: 0;
+      }
+
+      body.nav-open .sidebar .sub-link,
+      body.nav-open .requestor-sidebar .requestor-nav-sublink {
+        display: block;
+        padding: 10px 24px 10px 33px;
+      }
+
+      body.nav-open .mobile-menu-toggle {
+        left: auto;
+        right: calc(100% - min(78vw, 280px) + 10px);
+        color: #1E355F;
+        background: #fff;
+        border-color: #e2e8f0;
+        font-size: 0;
+      }
+
+      body.nav-open .mobile-menu-toggle::after {
+        content: "Ãƒâ€”";
+        font-size: 1.5rem;
+        line-height: 1;
+      }
+    }
+  </style>
+  <style>
+    .user-profile,
+    .user-badge {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: #ffffff;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      min-width: 160px;
+      z-index: 1000;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .user-profile.active .profile-dropdown,
+    .user-badge.active .profile-dropdown {
+      display: flex;
+    }
+
+    .profile-dropdown a {
+      padding: 12px 16px;
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
+
+    .profile-dropdown a:hover {
+      background: #f7fafc;
+    }
+
+    .profile-dropdown a.logout-link {
+      color: #ef4444;
+      border-top: 1px solid var(--border, #e2e8f0);
+    }
+
+    .profile-dropdown a i {
+      width: 16px;
+      text-align: center;
+    }
+  </style>
+
+  <style>
     .ai-bot-wrapper {
       position: fixed;
       right: 0;
@@ -482,7 +592,7 @@
       background: white;
       padding: 8px 15px;
       border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
       font-size: 0.9rem;
       font-weight: 600;
       color: #1E355F;
@@ -492,7 +602,7 @@
       transform: translateX(-90px);
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    
+
     .ai-bot-wrapper.active .ai-bot-cloud {
       transform: translateX(0);
     }
@@ -519,10 +629,17 @@
     }
 
     @keyframes bounce {
-      0%, 100% { transform: translateY(0) translateX(var(--tx, -90px)); }
-      50% { transform: translateY(-5px) translateX(var(--tx, -90px)); }
+
+      0%,
+      100% {
+        transform: translateY(0) translateX(var(--tx, -90px));
+      }
+
+      50% {
+        transform: translateY(-5px) translateX(var(--tx, -90px));
+      }
     }
-    
+
     .ai-bot-wrapper.active .ai-bot-cloud {
       --tx: 0px;
       transform: translateX(0);
@@ -533,7 +650,7 @@
       height: 55px;
       border-radius: 50%;
       background-color: white;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -558,7 +675,7 @@
   </style>
 
 
-<style>
+  <style>
     .mobile-menu-toggle,
     .mobile-account-button {
       display: none;
@@ -673,7 +790,7 @@
       padding-bottom: 60px !important;
     }
   </style>
-<style>
+  <style>
     .header {
       height: 64px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
@@ -779,7 +896,7 @@
       }
     }
   </style>
-<style>
+  <style>
     html,
     body {
       overflow-x: hidden;
@@ -838,7 +955,7 @@
       }
     }
   </style>
-<style>
+  <style>
     :root {
       --primary: #1E355F;
       --accent: #FCAE16;
@@ -1138,7 +1255,7 @@
       }
     }
   </style>
-<style>
+  <style>
     .header {
       height: 64px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
@@ -1244,7 +1361,7 @@
       }
     }
   </style>
-<style id="mobile-shell-overrides">
+  <style id="mobile-shell-overrides">
     @media (max-width:900px) {
 
       .header,
@@ -1450,14 +1567,14 @@
       }
     }
   </style>
-<style>
+  <style>
     @media (min-width: 901px) {
       .sidebar-brand-mobile {
         display: none !important;
       }
     }
   </style>
-<style>
+  <style>
     .user-profile,
     .user-badge {
       position: relative;
@@ -1520,456 +1637,458 @@
 </head>
 
 <body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <img src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
+        alt="RII Logo">
+      <span>R-II BUILDERS, INC.</span>
+    </div>
+    <div class="header-right">
+      <a href="welcome.html" class="switch-admin" style="text-decoration:none;">
+        <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to Requestor</span>
+      </a>
+      <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
+      <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+      <div class="user-badge" onclick="this.classList.toggle('active')">
+        <span>Admin User</span>
+        <div class="avatar">AU</div>
+
+        <div class="profile-dropdown">
+          <a href="admin-profile.html"><i class="fa-regular fa-user"></i> Profile</a>
+          <a href="#" class="logout-link" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
+              class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Admin navigation">
+    <div class="sidebar-brand-mobile">
+      <div class="brand"><img
+          src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
+          alt="RII Logo"><span>R-II BUILDERS</span></div>
+      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
+          class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="nav-label">MAIN</div>
+    <nav>
+      <a href="#" class="nav-link active" onclick="switchView('view-dashboard', this)"><i
+          class="fa-solid fa-chart-pie"></i> Dashboard</a>
+      <a href="#" class="nav-link" onclick="switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i>
+        Facility Reservation</a>
+    </nav>
+
+    <div class="nav-label">FINANCE</div>
+    <nav>
+      <a href="#" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Budget Monitoring</a>
+    </nav>
+
+    <div class="nav-label">INVENTORY</div>
+    <nav>
+      <a href="#" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
+    </nav>
+
+    <div class="nav-label">FLEET MANAGEMENT</div>
+    <nav>
+      <a href="#" class="nav-link" onclick="switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i> Vehicle
+        List</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+
     <!-- HEADER -->
-    <header class="header">
-        <div class="brand">
-            <img src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png" alt="RII Logo">
-            <span>R-II BUILDERS, INC.</span>
+
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- DASHBOARD OVERVIEW -->
+      <div id="view-dashboard" class="view-section active">
+        <style>
+          .dashboard-banner {
+            background-color: #1E355F;
+            color: white;
+            border-radius: 12px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+          }
+
+          .dashboard-banner h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+          }
+
+          .dashboard-banner p {
+            font-size: 1rem;
+            color: #cbd5e1;
+            max-width: 60%;
+            line-height: 1.5;
+            margin: 0;
+          }
+
+          .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+          }
+
+          .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border, #e2e8f0);
+            transition: transform 0.2s, box-shadow 0.2s;
+          }
+
+          .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          }
+
+          .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+          }
+
+          .stat-icon.blue {
+            background-color: #3b82f6;
+          }
+
+          .stat-icon.green {
+            background-color: #22c55e;
+          }
+
+          .stat-icon.orange {
+            background-color: #f97316;
+          }
+
+          .stat-icon.red {
+            background-color: #ef4444;
+          }
+
+          .stat-icon.purple {
+            background-color: #9333ea;
+          }
+
+          .stat-icon.dark-blue {
+            background-color: #1e3a8a;
+          }
+
+          .stat-details {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .stat-title {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+          }
+
+          .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1E355F;
+            line-height: 1.2;
+            margin: 5px 0;
+          }
+
+          .stat-subtext {
+            font-size: 0.75rem;
+            color: #94a3b8;
+          }
+        </style>
+
+        <div class="dashboard-banner">
+          <h2>Welcome back!</h2>
+          <p>Manage reservations, service vehicles, inventory, expenses, facility requests, and reports from one
+            centralized Admin Services Portal.</p>
         </div>
-        <div class="header-right">
-            <a href="welcome.html" class="switch-admin" style="text-decoration:none;">
-                <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to Requestor</span>
-            </a>
-            <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-            <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
-            <div class="user-badge" onclick="this.classList.toggle('active')">
-                <span>Admin User</span>
-                <div class="avatar">AU</div>
-            
-                <div class="profile-dropdown">
-                    <a href="admin-profile.html"><i class="fa-regular fa-user"></i> Profile</a>
-                    <a href="#" class="logout-link" onclick="sessionStorage.clear(); window.location.href='index.html'"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
-                </div>
+
+        <div class="stats-grid">
+          <!-- Stat Card 1 -->
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div>
+            <div class="stat-details">
+              <span class="stat-title">Reservations Today</span>
+              <span class="stat-value">12</span>
+              <span class="stat-subtext">+3 from yesterday</span>
             </div>
+          </div>
+          <!-- Stat Card 2 -->
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fa-solid fa-car-side"></i></div>
+            <div class="stat-details">
+              <span class="stat-title">Vehicles on Trip</span>
+              <span class="stat-value">5</span>
+              <span class="stat-subtext">2 Returning Today</span>
+            </div>
+          </div>
+          <!-- Stat Card 3 -->
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="stat-details">
+              <span class="stat-title">Inventory Alerts</span>
+              <span class="stat-value">8</span>
+              <span class="stat-subtext">Low Stock Items</span>
+            </div>
+          </div>
+          <!-- Stat Card 4 -->
+          <div class="stat-card">
+            <div class="stat-icon red"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div class="stat-details">
+              <span class="stat-title">Pending Requests</span>
+              <span class="stat-value">16</span>
+              <span class="stat-subtext">Waiting Approval</span>
+            </div>
+          </div>
+          <!-- Stat Card 5 -->
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="fa-solid fa-peso-sign"></i></div>
+            <div class="stat-details">
+              <span class="stat-title">Monthly Expenses</span>
+              <span class="stat-value">â‚±235K</span>
+              <span class="stat-subtext">Current Month</span>
+            </div>
+          </div>
+          <!-- Stat Card 6 -->
+          <div class="stat-card">
+            <div class="stat-icon dark-blue"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="stat-details">
+              <span class="stat-title">Admin Efficiency</span>
+              <span class="stat-value">98%</span>
+              <span class="stat-subtext">System Performance</span>
+            </div>
+          </div>
         </div>
-    </header>
+      </div>
 
-
-
-    <!-- SIDEBAR -->
-    <aside class="sidebar" aria-label="Admin navigation">
-        <div class="sidebar-brand-mobile">
-            <div class="brand"><img src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png" alt="RII Logo"><span>R-II BUILDERS</span></div>
-            <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i class="fa-solid fa-xmark"></i></button>
+      <!-- VEHICLE LIST VIEW -->
+      <div id="view-vehicle" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-car"></i> Vehicle List</h1>
+          <button class="btn-primary"><i class="fa-solid fa-plus"></i> Add New Vehicle</button>
         </div>
-        
-        <div class="nav-label">MAIN</div>
-        <nav>
-            <a href="#" class="nav-link active" onclick="switchView('view-dashboard', this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="#" class="nav-link" onclick="switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i> Facility Reservation</a>
-        </nav>
 
-        <div class="nav-label">FINANCE</div>
-        <nav>
-            <a href="#" class="nav-link" onclick="switchView('view-statement', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
-            <a href="#" class="nav-link" onclick="switchView('view-budget', this)"><i class="fa-solid fa-chart-line"></i> Budget Monitoring</a>
-        </nav>
-
-        <div class="nav-label">INVENTORY</div>
-        <nav>
-            <a href="#" class="nav-link" onclick="switchView('view-supplies', this)"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
-        </nav>
-
-        <div class="nav-label">FLEET MANAGEMENT</div>
-        <nav>
-            <a href="#" class="nav-link" onclick="switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i> Vehicle List</a>
-        </nav>
-    </aside>
-
-    <!-- MAIN CONTENT -->
-    <main>
-
-        <!-- HEADER -->
-
-
-        <!-- CONTENT -->
-        <div class="content">
-
-                                    <!-- STATEMENT OF ACCOUNTS VIEW -->
-            <div id="view-statement" class="view-section">
-                <div class="page-header">
-                    <h1><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</h1>
-                </div>
-                <div class="data-card" style="padding: 50px; text-align: center;">
-                    <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
-                    <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
-                    <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
-                </div>
+        <div class="data-card">
+          <div class="toolbar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search vehicle or driver name...">
             </div>
-
-            <!-- BUDGET MONITORING VIEW -->
-            <div id="view-budget" class="view-section">
-                <div class="page-header">
-                    <h1><i class="fa-solid fa-chart-line"></i> Budget Monitoring</h1>
-                </div>
-                <div class="data-card" style="padding: 50px; text-align: center;">
-                    <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
-                    <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
-                    <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
-                </div>
+            <div class="filter-pills">
+              <div class="pill active">Active Vehicles</div>
+              <div class="pill">Under Maintenance</div>
+              <div class="pill">All Vehicles</div>
             </div>
+          </div>
 
-            <!-- SUPPLIES INVENTORY VIEW -->
-            <div id="view-supplies" class="view-section">
-                <div class="page-header">
-                    <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</h1>
-                </div>
-                <div class="data-card" style="padding: 50px; text-align: center;">
-                    <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
-                    <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
-                    <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
-                </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Vehicle Details</th>
+                <th>Plate Number</th>
+                <th>Vehicle Type</th>
+                <th>Assigned Driver</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="user-cell">
+                  <span class="user-name">Toyota Innova</span>
+                  <span class="user-email">2024 Model</span>
+                </td>
+                <td>NHM - 3386</td>
+                <td>SUV</td>
+                <td>Emmanuel Notarte</td>
+                <td><span class="status-badge active">Available</span></td>
+              </tr>
+              <tr>
+                <td class="user-cell">
+                  <span class="user-name">Nissan Urvan</span>
+                  <span class="user-email">Van - 2024 Model</span>
+                </td>
+                <td>NKI - 9501</td>
+                <td>Utility Vehicle</td>
+                <td>Emmanuel Notarte</td>
+                <td><span class="status-badge">Dispatched</span></td>
+              </tr>
+              <tr>
+                <td class="user-cell">
+                  <span class="user-name">Honda PCX</span>
+                  <span class="user-email">Motorcycle - 2024 Model</span>
+                </td>
+                <td>983HXK</td>
+                <td>Motorcycle</td>
+                <td>Emmanuel Notarte</td>
+                <td><span class="status-badge active">Available</span></td>
+              </tr>
+              <tr>
+                <td class="user-cell">
+                  <span class="user-name">Toyota Fortuner</span>
+                  <span class="user-email">MPV - 2023 Model</span>
+                </td>
+                <td>WIR - 316</td>
+                <td>MPV</td>
+                <td>Emmanuel Notarte</td>
+                <td><span class="status-badge active">Available</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination-bar">
+            <div>Showing 1 to 4 of 4 results</div>
+            <div class="page-controls">
+              <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
+              <span>Page 1 of 1</span>
+              <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-
-            <!-- DASHBOARD OVERVIEW -->
-            <div id="view-dashboard" class="view-section active">
-                <style>
-                    .dashboard-banner {
-                        background-color: #1E355F;
-                        color: white;
-                        border-radius: 12px;
-                        padding: 30px 40px;
-                        margin-bottom: 30px;
-                        position: relative;
-                        overflow: hidden;
-                    }
-                    .dashboard-banner h2 {
-                        font-size: 2rem;
-                        font-weight: 700;
-                        margin-bottom: 10px;
-                    }
-                    .dashboard-banner p {
-                        font-size: 1rem;
-                        color: #cbd5e1;
-                        max-width: 60%;
-                        line-height: 1.5;
-                        margin: 0;
-                    }
-                    .stats-grid {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                        gap: 20px;
-                    }
-                    .stat-card {
-                        background: white;
-                        border-radius: 12px;
-                        padding: 25px;
-                        display: flex;
-                        align-items: center;
-                        gap: 20px;
-                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-                        border: 1px solid var(--border, #e2e8f0);
-                        transition: transform 0.2s, box-shadow 0.2s;
-                    }
-                    .stat-card:hover {
-                        transform: translateY(-5px);
-                        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-                    }
-                    .stat-icon {
-                        width: 70px;
-                        height: 70px;
-                        border-radius: 16px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 2rem;
-                        color: white;
-                        flex-shrink: 0;
-                    }
-                    .stat-icon.blue { background-color: #3b82f6; }
-                    .stat-icon.green { background-color: #22c55e; }
-                    .stat-icon.orange { background-color: #f97316; }
-                    .stat-icon.red { background-color: #ef4444; }
-                    .stat-icon.purple { background-color: #9333ea; }
-                    .stat-icon.dark-blue { background-color: #1e3a8a; }
-                    
-                    .stat-details {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    .stat-title {
-                        font-size: 0.85rem;
-                        color: #64748b;
-                        font-weight: 600;
-                    }
-                    .stat-value {
-                        font-size: 2rem;
-                        font-weight: 700;
-                        color: #1E355F;
-                        line-height: 1.2;
-                        margin: 5px 0;
-                    }
-                    .stat-subtext {
-                        font-size: 0.75rem;
-                        color: #94a3b8;
-                    }
-                </style>
-
-                <div class="dashboard-banner">
-                    <h2>Welcome back!</h2>
-                    <p>Manage reservations, service vehicles, inventory, expenses, facility requests, and reports from one centralized Admin Services Portal.</p>
-                </div>
-
-                <div class="stats-grid">
-                    <!-- Stat Card 1 -->
-                    <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div>
-                        <div class="stat-details">
-                            <span class="stat-title">Reservations Today</span>
-                            <span class="stat-value">12</span>
-                            <span class="stat-subtext">+3 from yesterday</span>
-                        </div>
-                    </div>
-                    <!-- Stat Card 2 -->
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fa-solid fa-car-side"></i></div>
-                        <div class="stat-details">
-                            <span class="stat-title">Vehicles on Trip</span>
-                            <span class="stat-value">5</span>
-                            <span class="stat-subtext">2 Returning Today</span>
-                        </div>
-                    </div>
-                    <!-- Stat Card 3 -->
-                    <div class="stat-card">
-                        <div class="stat-icon orange"><i class="fa-solid fa-boxes-stacked"></i></div>
-                        <div class="stat-details">
-                            <span class="stat-title">Inventory Alerts</span>
-                            <span class="stat-value">8</span>
-                            <span class="stat-subtext">Low Stock Items</span>
-                        </div>
-                    </div>
-                    <!-- Stat Card 4 -->
-                    <div class="stat-card">
-                        <div class="stat-icon red"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                        <div class="stat-details">
-                            <span class="stat-title">Pending Requests</span>
-                            <span class="stat-value">16</span>
-                            <span class="stat-subtext">Waiting Approval</span>
-                        </div>
-                    </div>
-                    <!-- Stat Card 5 -->
-                    <div class="stat-card">
-                        <div class="stat-icon purple"><i class="fa-solid fa-peso-sign"></i></div>
-                        <div class="stat-details">
-                            <span class="stat-title">Monthly Expenses</span>
-                            <span class="stat-value">â‚±235K</span>
-                            <span class="stat-subtext">Current Month</span>
-                        </div>
-                    </div>
-                    <!-- Stat Card 6 -->
-                    <div class="stat-card">
-                        <div class="stat-icon dark-blue"><i class="fa-solid fa-chart-line"></i></div>
-                        <div class="stat-details">
-                            <span class="stat-title">Admin Efficiency</span>
-                            <span class="stat-value">98%</span>
-                            <span class="stat-subtext">System Performance</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VEHICLE LIST VIEW -->
-            <div id="view-vehicle" class="view-section">
-                <div class="page-header">
-                    <h1><i class="fa-solid fa-car"></i> Vehicle List</h1>
-                    <button class="btn-primary"><i class="fa-solid fa-plus"></i> Add New Vehicle</button>
-                </div>
-
-                <div class="data-card">
-                    <div class="toolbar">
-                        <div class="search-box">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" placeholder="Search vehicle or driver name...">
-                        </div>
-                        <div class="filter-pills">
-                            <div class="pill active">Active Vehicles</div>
-                            <div class="pill">Under Maintenance</div>
-                            <div class="pill">All Vehicles</div>
-                        </div>
-                    </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Vehicle Details</th>
-                                <th>Plate Number</th>
-                                <th>Vehicle Type</th>
-                                <th>Assigned Driver</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="user-cell">
-                                    <span class="user-name">Toyota Hiace Commuter</span>
-                                    <span class="user-email">Van - 2022 Model</span>
-                                </td>
-                                <td>ABC 1234</td>
-                                <td>Passenger Van</td>
-                                <td>Emmanuel Notarte</td>
-                                <td><span class="status-badge active">Available</span></td>
-                            </tr>
-                            <tr>
-                                <td class="user-cell">
-                                    <span class="user-name">Mitsubishi L300</span>
-                                    <span class="user-email">Utility - 2021 Model</span>
-                                </td>
-                                <td>DEF 5678</td>
-                                <td>Utility Vehicle</td>
-                                <td>Eduardo Reroma</td>
-                                <td><span class="status-badge">Dispatched</span></td>
-                            </tr>
-                            <tr>
-                                <td class="user-cell">
-                                    <span class="user-name">Isuzu NQR</span>
-                                    <span class="user-email">Truck - 2019 Model</span>
-                                </td>
-                                <td>GHI 9012</td>
-                                <td>Cargo Truck</td>
-                                <td>Eugene Developer</td>
-                                <td><span class="status-badge active">Available</span></td>
-                            </tr>
-                            <tr>
-                                <td class="user-cell">
-                                    <span class="user-name">Toyota Innova</span>
-                                    <span class="user-email">MPV - 2023 Model</span>
-                                </td>
-                                <td>JKL 3456</td>
-                                <td>MPV</td>
-                                <td>Jane Smith</td>
-                                <td><span class="status-badge active">Available</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="pagination-bar">
-                        <div>Showing 1 to 4 of 4 results</div>
-                        <div class="page-controls">
-                            <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                            <span>Page 1 of 1</span>
-                            <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            
-            <!-- FACILITY RESERVATION APPROVAL VIEW -->
-            <div id="view-calendar" class="view-section">
-                <div class="page-header">
-                    <h1><i class="fa-solid fa-building-circle-check"></i> Facility Requests Approval</h1>
-                </div>
-
-                <div class="data-card">
-                    <div class="toolbar">
-                        <div class="search-box">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" placeholder="Search requestor name...">
-                        </div>
-                        <div class="filter-pills">
-                            <div class="pill active">Pending</div>
-                            <div class="pill">Approved</div>
-                            <div class="pill">Rejected</div>
-                            <div class="pill">All</div>
-                        </div>
-                    </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Request Details</th>
-                                <th>Date & Time</th>
-                                <th>Department</th>
-                                <th>Participants</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="facilityRequestsTableBody">
-                            <tr><td colspan="6" style="text-align: center;">Loading requests...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+          </div>
         </div>
-</div>
 
-    </main>
+      </div>
 
 
-    
-    <script type="module">
-        import { supabase } from './supabase-client.js';
+      <!-- FACILITY RESERVATION APPROVAL VIEW -->
+      <div id="view-calendar" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-building-circle-check"></i> Facility Requests Approval</h1>
+        </div>
 
-        // Make switchView globally accessible since it's a module
-        window.switchView = function(viewId, menuItem) {
-            // Hide all views
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            // Show target view
-            document.getElementById(viewId).classList.add('active');
+        <div class="data-card">
+          <div class="toolbar">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search requestor name...">
+            </div>
+            <div class="filter-pills">
+              <div class="pill active">Pending</div>
+              <div class="pill">Approved</div>
+              <div class="pill">Rejected</div>
+              <div class="pill">All</div>
+            </div>
+          </div>
 
-            // Update sidebar active states
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            menuItem.classList.add('active');
+          <table>
+            <thead>
+              <tr>
+                <th>Request Details</th>
+                <th>Date & Time</th>
+                <th>Department</th>
+                <th>Participants</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="facilityRequestsTableBody">
+              <tr>
+                <td colspan="6" style="text-align: center;">Loading requests...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </main>
+
+
+
+  <script type="module">
+    import { supabase } from './supabase-client.js';
+
+    // Make switchView globally accessible since it's a module
+    window.switchView = function (viewId, menuItem) {
+      // Hide all views
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      // Show target view
+      document.getElementById(viewId).classList.add('active');
+
+      // Update sidebar active states
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+      menuItem.classList.add('active');
+    }
+
+    async function loadFacilityRequests() {
+      const tableBody = document.getElementById('facilityRequestsTableBody');
+
+      try {
+        // Fetch from all 5 facility tables
+        const queries = [
+          supabase.from('conference_requests').select('*').then(res => ({ ...res, type: 'Conference Room', table: 'conference_requests' })),
+          supabase.from('function_requests').select('*').then(res => ({ ...res, type: 'Function Hall', table: 'function_requests' })),
+          supabase.from('parking_requests').select('*').then(res => ({ ...res, type: 'Parking Slot', table: 'parking_requests' })),
+          supabase.from('zoom_requests').select('*').then(res => ({ ...res, type: 'Zoom Meeting', table: 'zoom_requests' })),
+          supabase.from('teams_requests').select('*').then(res => ({ ...res, type: 'MS Teams', table: 'teams_requests' }))
+        ];
+
+        const results = await Promise.all(queries);
+
+        // Combine and normalize data
+        let allRequests = [];
+        results.forEach(res => {
+          if (res.error) {
+            console.error('Error fetching ' + res.table, res.error);
+            return; // skip on error
+          }
+          const items = res.data.map(item => {
+            let titleText = item.title;
+            let timeText = `${item.start_time || ''} - ${item.end_time || ''}`;
+            let paxText = item.participants ? `${item.participants} pax` : '-';
+
+            if (res.table === 'parking_requests') {
+              titleText = `Visitor: ${item.visitor} (${item.plate})`;
+              timeText = item.request_time;
+              paxText = item.visit ? item.visit : '-';
+            }
+
+            return {
+              ...item,
+              display_title: titleText,
+              display_time: timeText,
+              display_pax: paxText,
+              request_type: res.type,
+              source_table: res.table
+            };
+          });
+          allRequests = allRequests.concat(items);
+        });
+
+        // Sort by created_at descending
+        allRequests.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        if (allRequests.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No requests found.</td></tr>';
+          return;
         }
 
-                        async function loadFacilityRequests() {
-            const tableBody = document.getElementById('facilityRequestsTableBody');
-            
-            try {
-                // Fetch from all 5 facility tables
-                const queries = [
-                    supabase.from('conference_requests').select('*').then(res => ({ ...res, type: 'Conference Room', table: 'conference_requests' })),
-                    supabase.from('function_requests').select('*').then(res => ({ ...res, type: 'Function Hall', table: 'function_requests' })),
-                    supabase.from('parking_requests').select('*').then(res => ({ ...res, type: 'Parking Slot', table: 'parking_requests' })),
-                    supabase.from('zoom_requests').select('*').then(res => ({ ...res, type: 'Zoom Meeting', table: 'zoom_requests' })),
-                    supabase.from('teams_requests').select('*').then(res => ({ ...res, type: 'MS Teams', table: 'teams_requests' }))
-                ];
-
-                const results = await Promise.all(queries);
-                
-                // Combine and normalize data
-                let allRequests = [];
-                results.forEach(res => {
-                    if (res.error) {
-                        console.error('Error fetching ' + res.table, res.error);
-                        return; // skip on error
-                    }
-                    const items = res.data.map(item => {
-                        let titleText = item.title;
-                        let timeText = `${item.start_time || ''} - ${item.end_time || ''}`;
-                        let paxText = item.participants ? `${item.participants} pax` : '-';
-                        
-                        if (res.table === 'parking_requests') {
-                            titleText = `Visitor: ${item.visitor} (${item.plate})`;
-                            timeText = item.request_time;
-                            paxText = item.visit ? item.visit : '-';
-                        }
-                        
-                        return {
-                            ...item,
-                            display_title: titleText,
-                            display_time: timeText,
-                            display_pax: paxText,
-                            request_type: res.type,
-                            source_table: res.table
-                        };
-                    });
-                    allRequests = allRequests.concat(items);
-                });
-
-                // Sort by created_at descending
-                allRequests.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-                if (allRequests.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No requests found.</td></tr>';
-                    return;
-                }
-
-                tableBody.innerHTML = allRequests.map(req => {
-                    const statusClass = req.status === 'Pending' ? '' : (req.status === 'Approved' ? 'active' : 'rejected');
-                    return `
+        tableBody.innerHTML = allRequests.map(req => {
+          const statusClass = req.status === 'Pending' ? '' : (req.status === 'Approved' ? 'active' : 'rejected');
+          return `
                         <tr>
                             <td class="user-cell">
                                 <span class="user-name">${req.display_title || req.request_type}</span>
@@ -1991,36 +2110,37 @@
                             </td>
                         </tr>
                     `;
-                }).join('');
-            } catch(e) {
-                console.error(e);
-                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error loading requests.</td></tr>';
-            }
-        }
+        }).join('');
+      } catch (e) {
+        console.error(e);
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error loading requests.</td></tr>';
+      }
+    }
 
-        window.updateRequestStatus = async function(id, table, newStatus) {
-            try {
-                const { error } = await supabase
-                    .from(table)
-                    .update({ status: newStatus })
-                    .eq('id', id);
-                    
-                if (error) throw error;
-                loadFacilityRequests(); // reload table
-            } catch (e) {
-                alert('Error updating status: ' + e.message);
-            }
-        }
+    window.updateRequestStatus = async function (id, table, newStatus) {
+      try {
+        const { error } = await supabase
+          .from(table)
+          .update({ status: newStatus })
+          .eq('id', id);
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFacilityRequests();
-        });
-    </script>
+        if (error) throw error;
+        loadFacilityRequests(); // reload table
+      } catch (e) {
+        alert('Error updating status: ' + e.message);
+      }
+    }
 
-<footer class="footer"><span>Ã‚Â© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span></footer>
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadFacilityRequests();
+    });
+  </script>
 
-<!-- AI Bot Wrapper -->
+  <footer class="footer"><span>Ã‚Â© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  </footer>
+
+  <!-- AI Bot Wrapper -->
   <div class="ai-bot-wrapper" id="aiBotWrapper">
     <div class="ai-bot-container" id="aiBotToggle" title="Chat">
       <div class="ai-bot-cloud">Chat</div>
@@ -2035,8 +2155,8 @@
     const aiBotWrapper = document.getElementById('aiBotWrapper');
 
     if (aiBotToggle && aiBotWrapper) {
-      aiBotToggle.addEventListener('click', function() {
-          aiBotWrapper.classList.toggle('active');
+      aiBotToggle.addEventListener('click', function () {
+        aiBotWrapper.classList.toggle('active');
       });
     }
   </script>
@@ -2044,33 +2164,28 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const storedName = sessionStorage.getItem('userFullName');
-        if (storedName) {
-            const badge = document.querySelector('.user-badge');
-            if (badge) {
-                const span = badge.querySelector('span');
-                if (span) span.textContent = storedName;
-                
-                const avatar = badge.querySelector('.avatar');
-                if (avatar) {
-                    const parts = storedName.trim().split(/\s+/);
-                    let initials = '';
-                    if (parts.length > 1) {
-                        initials = (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
-                    } else if (parts.length === 1 && parts[0].length > 0) {
-                        initials = parts[0].substring(0, 2).toUpperCase();
-                    }
-                    if (initials) avatar.textContent = initials;
-                }
+      const storedName = sessionStorage.getItem('userFullName');
+      if (storedName) {
+        const badge = document.querySelector('.user-badge');
+        if (badge) {
+          const span = badge.querySelector('span');
+          if (span) span.textContent = storedName;
+
+          const avatar = badge.querySelector('.avatar');
+          if (avatar) {
+            const parts = storedName.trim().split(/\s+/);
+            let initials = '';
+            if (parts.length > 1) {
+              initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+            } else if (parts.length === 1 && parts[0].length > 0) {
+              initials = parts[0].substring(0, 2).toUpperCase();
             }
+            if (initials) avatar.textContent = initials;
+          }
         }
+      }
     });
   </script>
 </body>
 
 </html>
-
-
-
-
-
