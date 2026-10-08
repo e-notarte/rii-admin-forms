@@ -441,11 +441,12 @@
                     // Fetch user role from profiles
                     const { data: profile } = await supabase
                         .from('profiles')
-                        .select('role')
+                        .select('role, full_name')
                         .eq('id', data.user.id)
                         .single();
 
                     const role = profile ? profile.role : 'user';
+                    const fullName = profile && profile.full_name ? profile.full_name : 'User';
 
                     if (rememberMe) {
                         localStorage.setItem('rememberedEmail', email);
@@ -455,6 +456,7 @@
 
                     sessionStorage.setItem('isAuthenticated', 'true');
                     sessionStorage.setItem('userRole', role);
+                    sessionStorage.setItem('userFullName', fullName);
 
                     window.location.href = 'welcome.html';
                 }
