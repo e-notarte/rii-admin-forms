@@ -1211,12 +1211,10 @@
 
   <!-- AI Bot Wrapper -->
   <div class="ai-bot-wrapper" id="aiBotWrapper">
-
     <!-- The small mark/tab on the right border -->
     <div class="ai-bot-toggle" id="aiBotToggle" title="Chat with Mae!">
       <span>◀</span> <!-- You can replace this icon -->
     </div>
-
     <!-- Your original AI Bot code -->
     <div class="ai-bot-container">
       <div class="ai-bot-cloud">Chat with Mae!</div>
@@ -1224,8 +1222,26 @@
         <img src="AI_Bot.png" alt="AI Bot">
       </div>
     </div>
-
   </div>
+
+  <script>
+    const aiBotToggle = document.getElementById('aiBotToggle');
+    const aiBotWrapper = document.getElementById('aiBotWrapper');
+
+    if (aiBotToggle && aiBotWrapper) {
+      aiBotToggle.addEventListener('click', function() {
+          // Toggles the 'active' class on and off, sliding the bot in and out
+          aiBotWrapper.classList.toggle('active');
+          
+          // Optional: Change the arrow direction when open
+          if (aiBotWrapper.classList.contains('active')) {
+              aiBotToggle.innerHTML = '<span>▶</span>';
+          } else {
+              aiBotToggle.innerHTML = '<span>◀</span>';
+          }
+      });
+    }
+  </script>
 
 </body>
 
