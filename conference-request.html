@@ -1559,6 +1559,31 @@
     }
   </script>
 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const storedName = sessionStorage.getItem('userFullName');
+        if (storedName) {
+            const badge = document.querySelector('.user-badge');
+            if (badge) {
+                const span = badge.querySelector('span');
+                if (span) span.textContent = storedName;
+                
+                const avatar = badge.querySelector('.avatar');
+                if (avatar) {
+                    const parts = storedName.trim().split(/\s+/);
+                    let initials = '';
+                    if (parts.length > 1) {
+                        initials = (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+                    } else if (parts.length === 1 && parts[0].length > 0) {
+                        initials = parts[0].substring(0, 2).toUpperCase();
+                    }
+                    if (initials) avatar.textContent = initials;
+                }
+            }
+        }
+    });
+  </script>
 </body>
 
 </html>
