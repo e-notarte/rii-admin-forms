@@ -1189,7 +1189,7 @@
       background: white;
       padding: 8px 15px;
       border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
       font-size: 0.9rem;
       font-weight: 600;
       color: #1E355F;
@@ -1220,8 +1220,15 @@
     }
 
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
     }
 
     .ai-bot-btn {
@@ -1229,7 +1236,7 @@
       height: 55px;
       border-radius: 50%;
       background-color: white;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1537,16 +1544,16 @@
     const aiBotWrapper = document.getElementById('aiBotWrapper');
 
     if (aiBotToggle && aiBotWrapper) {
-      aiBotToggle.addEventListener('click', function() {
-          // Toggles the 'active' class on and off, sliding the bot in and out
-          aiBotWrapper.classList.toggle('active');
-          
-          // Optional: Change the arrow direction when open
-          if (aiBotWrapper.classList.contains('active')) {
-              aiBotToggle.innerHTML = '<span>▶</span>';
-          } else {
-              aiBotToggle.innerHTML = '<span>◀</span>';
-          }
+      aiBotToggle.addEventListener('click', function () {
+        // Toggles the 'active' class on and off, sliding the bot in and out
+        aiBotWrapper.classList.toggle('active');
+
+        // Optional: Change the arrow direction when open
+        if (aiBotWrapper.classList.contains('active')) {
+          aiBotToggle.innerHTML = '<span>▶</span>';
+        } else {
+          aiBotToggle.innerHTML = '<span>◀</span>';
+        }
       });
     }
   </script>
