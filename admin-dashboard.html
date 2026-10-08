@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1555,8 +1555,8 @@
         
         <div class="nav-label">MAIN</div>
         <nav>
-            <a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-            <a href="#" class="nav-link active" onclick="switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i> Facility Reservation</a>
+            <a href="#" class="nav-link active" onclick="switchView('view-dashboard', this)"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            <a href="#" class="nav-link" onclick="switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i> Facility Reservation</a>
         </nav>
 
         <div class="nav-label">FINANCE</div>
@@ -1584,6 +1584,153 @@
 
         <!-- CONTENT -->
         <div class="content">
+
+                        <!-- DASHBOARD OVERVIEW -->
+            <div id="view-dashboard" class="view-section active">
+                <style>
+                    .dashboard-banner {
+                        background-color: #1E355F;
+                        color: white;
+                        border-radius: 12px;
+                        padding: 30px 40px;
+                        margin-bottom: 30px;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .dashboard-banner h2 {
+                        font-size: 2rem;
+                        font-weight: 700;
+                        margin-bottom: 10px;
+                    }
+                    .dashboard-banner p {
+                        font-size: 1rem;
+                        color: #cbd5e1;
+                        max-width: 60%;
+                        line-height: 1.5;
+                        margin: 0;
+                    }
+                    .stats-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                        gap: 20px;
+                    }
+                    .stat-card {
+                        background: white;
+                        border-radius: 12px;
+                        padding: 25px;
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                        border: 1px solid var(--border, #e2e8f0);
+                        transition: transform 0.2s, box-shadow 0.2s;
+                    }
+                    .stat-card:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                    }
+                    .stat-icon {
+                        width: 70px;
+                        height: 70px;
+                        border-radius: 16px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 2rem;
+                        color: white;
+                        flex-shrink: 0;
+                    }
+                    .stat-icon.blue { background-color: #3b82f6; }
+                    .stat-icon.green { background-color: #22c55e; }
+                    .stat-icon.orange { background-color: #f97316; }
+                    .stat-icon.red { background-color: #ef4444; }
+                    .stat-icon.purple { background-color: #9333ea; }
+                    .stat-icon.dark-blue { background-color: #1e3a8a; }
+                    
+                    .stat-details {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    .stat-title {
+                        font-size: 0.85rem;
+                        color: #64748b;
+                        font-weight: 600;
+                    }
+                    .stat-value {
+                        font-size: 2rem;
+                        font-weight: 700;
+                        color: #1E355F;
+                        line-height: 1.2;
+                        margin: 5px 0;
+                    }
+                    .stat-subtext {
+                        font-size: 0.75rem;
+                        color: #94a3b8;
+                    }
+                </style>
+
+                <div class="dashboard-banner">
+                    <h2>Welcome back!</h2>
+                    <p>Manage reservations, service vehicles, inventory, expenses, facility requests, and reports from one centralized Admin Services Portal.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <!-- Stat Card 1 -->
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Reservations Today</span>
+                            <span class="stat-value">12</span>
+                            <span class="stat-subtext">+3 from yesterday</span>
+                        </div>
+                    </div>
+                    <!-- Stat Card 2 -->
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fa-solid fa-car-side"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Vehicles on Trip</span>
+                            <span class="stat-value">5</span>
+                            <span class="stat-subtext">2 Returning Today</span>
+                        </div>
+                    </div>
+                    <!-- Stat Card 3 -->
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fa-solid fa-boxes-stacked"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Inventory Alerts</span>
+                            <span class="stat-value">8</span>
+                            <span class="stat-subtext">Low Stock Items</span>
+                        </div>
+                    </div>
+                    <!-- Stat Card 4 -->
+                    <div class="stat-card">
+                        <div class="stat-icon red"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Pending Requests</span>
+                            <span class="stat-value">16</span>
+                            <span class="stat-subtext">Waiting Approval</span>
+                        </div>
+                    </div>
+                    <!-- Stat Card 5 -->
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fa-solid fa-peso-sign"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Monthly Expenses</span>
+                            <span class="stat-value">₱235K</span>
+                            <span class="stat-subtext">Current Month</span>
+                        </div>
+                    </div>
+                    <!-- Stat Card 6 -->
+                    <div class="stat-card">
+                        <div class="stat-icon dark-blue"><i class="fa-solid fa-chart-line"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Admin Efficiency</span>
+                            <span class="stat-value">98%</span>
+                            <span class="stat-subtext">System Performance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- VEHICLE LIST VIEW -->
             <div id="view-vehicle" class="view-section">
@@ -1673,7 +1820,7 @@
 
             
             <!-- FACILITY RESERVATION APPROVAL VIEW -->
-            <div id="view-calendar" class="view-section active">
+            <div id="view-calendar" class="view-section">
                 <div class="page-header">
                     <h1><i class="fa-solid fa-building-circle-check"></i> Facility Requests Approval</h1>
                 </div>
@@ -1886,5 +2033,6 @@
 </body>
 
 </html>
+
 
 
