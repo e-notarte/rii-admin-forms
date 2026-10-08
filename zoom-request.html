@@ -1335,7 +1335,64 @@
       color: #94a3b8;
     }
 </style>
-\n</head>
+\n<style>
+    body.dark-mode {
+        --bg: #0f172a;
+        --bg-surface: #1e293b;
+        --border: #334155;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        color: var(--text-main);
+    }
+    body.dark-mode .data-card,
+    body.dark-mode .stat-card,
+    body.dark-mode .welcome-card,
+    body.dark-mode .dashboard-banner,
+    body.dark-mode .sidebar,
+    body.dark-mode .footer,
+    body.dark-mode .profile-dropdown,
+    body.dark-mode .ai-bot-container {
+        background-color: var(--bg-surface);
+        border-color: var(--border);
+        color: var(--text-main);
+    }
+    body.dark-mode .header {
+        background-color: #0f172a;
+        border-bottom: 1px solid var(--border);
+    }
+    body.dark-mode input,
+    body.dark-mode select,
+    body.dark-mode textarea {
+        background-color: #0f172a;
+        color: var(--text-main);
+        border-color: var(--border);
+    }
+    body.dark-mode th {
+        background-color: #0f172a;
+        color: var(--text-muted);
+    }
+    body.dark-mode tr:hover td {
+        background-color: #334155;
+    }
+    body.dark-mode .nav-link, body.dark-mode .sub-link {
+        color: var(--text-muted);
+    }
+    body.dark-mode .nav-link:hover, body.dark-mode .sub-link:hover {
+        background-color: #334155;
+        color: var(--text-main);
+    }
+    body.dark-mode .nav-link.active {
+        background-color: #1e355f;
+        color: white;
+    }
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode .stat-value {
+        color: var(--text-main);
+    }
+    body.dark-mode .icon-btn {
+        color: var(--text-main);
+    }
+</style>
+</head>
 
 <body>
   <button class="mobile-menu-toggle" type="button" aria-label="Open navigation"
@@ -1716,9 +1773,48 @@
       });
   });
 </script>
-\n</body>
+\n<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtns = document.querySelectorAll('button[title="Toggle dark mode"]');
+        
+        // Initialize
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            toggleBtns.forEach(btn => {
+                const icon = btn.querySelector('i');
+                if(icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            });
+        }
+
+        // Toggle
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const isDark = document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                
+                toggleBtns.forEach(b => {
+                    const icon = b.querySelector('i');
+                    if(icon) {
+                        if(isDark) {
+                            icon.classList.remove('fa-moon');
+                            icon.classList.add('fa-sun');
+                        } else {
+                            icon.classList.remove('fa-sun');
+                            icon.classList.add('fa-moon');
+                        }
+                    }
+                });
+            });
+        });
+    });
+</script>
+</body>
 
 </html>
+
 
 
 
