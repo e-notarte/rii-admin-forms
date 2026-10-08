@@ -111,7 +111,7 @@ if (match) {
     // If exact regex fails, try another approach
     const start = content.indexOf('async function loadFacilityRequests() {');
     const end = content.indexOf('// Initialize');
-    if(start !== -1 && end !== -1) {
+    if (start !== -1 && end !== -1) {
         content = content.substring(0, start) + newLoadFunction + "\n\n        " + content.substring(end);
         fs.writeFileSync('admin-dashboard.html', content);
         console.log("Updated admin-dashboard.html (fallback)!");
