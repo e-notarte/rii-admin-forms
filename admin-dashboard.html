@@ -1691,6 +1691,117 @@
         color: var(--text-main);
     }
 </style>
+<style>
+.ai-chat-window {
+    position: absolute;
+    bottom: 80px;
+    right: 10px;
+    width: 320px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000;
+}
+.ai-chat-window.open {
+    transform: scale(1);
+}
+.ai-chat-header {
+    background: #1E355F;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.ai-chat-header img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 2px solid #FCAE16;
+    background: white;
+}
+.ai-chat-header span {
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+}
+.ai-chat-body {
+    height: 300px;
+    padding: 16px;
+    background: #f8fafc;
+    overflow-y: auto;
+}
+.ai-chat-body p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #334155;
+    background: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    display: inline-block;
+    max-width: 90%;
+}
+.ai-chat-body p strong {
+    color: #1E355F;
+}
+.ai-chat-footer {
+    display: flex;
+    border-top: 1px solid #e2e8f0;
+    background: white;
+}
+.ai-chat-footer input {
+    flex: 1;
+    border: none;
+    padding: 12px 16px;
+    outline: none;
+    font-size: 0.9rem;
+    min-width: 0;
+}
+.ai-chat-footer button {
+    background: #FCAE16;
+    border: none;
+    padding: 0 20px;
+    color: #1E355F;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.ai-chat-footer button:hover {
+    background: #eab308;
+}
+
+body.dark-mode .ai-chat-window {
+    background: var(--bg-surface);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
+body.dark-mode .ai-chat-body {
+    background: #0f172a;
+}
+body.dark-mode .ai-chat-body p {
+    background: #1e293b;
+    border-color: #334155;
+    color: var(--text-main);
+}
+body.dark-mode .ai-chat-body p strong {
+    color: #cbd5e1;
+}
+body.dark-mode .ai-chat-footer {
+    border-color: #334155;
+    background: var(--bg-surface);
+}
+body.dark-mode .ai-chat-footer input {
+    background: transparent;
+    color: var(--text-main);
+}
+</style>
 </head>
 
 <body>
@@ -2235,6 +2346,19 @@
 
   <!-- AI Bot Wrapper -->
   <div class="ai-bot-wrapper" id="aiBotWrapper">
+    <div class="ai-chat-window" id="aiChatWindow">
+        <div class="ai-chat-header">
+            <img src="AI_Bot.png" alt="Mae">
+            <span>Mae</span>
+        </div>
+        <div class="ai-chat-body">
+            <p><strong>Mae:</strong> Hello! How can I help you today?</p>
+        </div>
+        <div class="ai-chat-footer">
+            <input type="text" placeholder="Type message...">
+            <button>Send</button>
+        </div>
+    </div>
     <div class="ai-bot-container" id="aiBotToggle" title="Chat">
       <div class="ai-bot-cloud">Chat</div>
       <div class="ai-bot-btn">
@@ -2246,10 +2370,17 @@
   <script>
     const aiBotToggle = document.getElementById('aiBotToggle');
     const aiBotWrapper = document.getElementById('aiBotWrapper');
+    const aiChatWindow = document.getElementById('aiChatWindow');
 
     if (aiBotToggle && aiBotWrapper) {
-      aiBotToggle.addEventListener('click', function () {
-        aiBotWrapper.classList.toggle('active');
+      aiBotToggle.addEventListener('click', function (e) {
+        if (!aiBotWrapper.classList.contains('active')) {
+          aiBotWrapper.classList.add('active');
+        } else {
+          if (aiChatWindow) {
+            aiChatWindow.classList.toggle('open');
+          }
+        }
       });
     }
   </script>
@@ -2320,4 +2451,5 @@
 </body>
 
 </html>
+
 
