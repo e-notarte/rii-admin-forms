@@ -1155,7 +1155,55 @@
         onclick="modal.classList.remove('open')">Close</button>
     </div>
   </div>
-  <script>var modal = document.getElementById('modal'); document.getElementById('requestForm').addEventListener('submit', function (e) { e.preventDefault(); var f = new FormData(e.target), r = JSON.parse(localStorage.getItem('fleetRequests') || '[]'), id = 'REQ-' + Math.floor(Math.random() * 900 + 100); r.push({ id: id, requestor: f.get('requestor'), destination: f.get('destination'), purpose: f.get('documents'), scheduleDate: f.get('date'), scheduleTime: f.get('time'), driver: '', car: '', status: 'pending', requestType: 'Messenger', company: f.get('company'), department: f.get('department'), contactPerson: f.get('contactPerson') }); localStorage.setItem('fleetRequests', JSON.stringify(r)); document.getElementById('reference').textContent = id; modal.classList.add('open'); e.target.reset() })</script>
+  <script type="module">
+    import { supabase } from './supabase-client.js';
+    
+    var modal = document.getElementById('modal'); 
+    document.getElementById('requestForm').addEventListener('submit', async function (e) { 
+        e.preventDefault(); 
+        var f = new FormData(e.target);
+        
+        // Show loading state on button
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Submitting...';
+        btn.disabled = true;
+
+        try {
+            const { data, error } = await supabase
+              .from('liaison_requests')
+              .insert([
+                {
+
+                  requestor_name: f.get('requestor'),
+                  company: f.get('company'),
+                  department: f.get('department'),
+                  destination: f.get('destination'),
+                  documents: f.get('documents'),
+                  contact_person: f.get('contactPerson'),
+                  request_date: f.get('date'),
+                  request_time: f.get('time') + ':00'
+    
+                }
+              ])
+              .select();
+
+            if (error) throw error;
+            
+            // success
+            const refId = data[0].id.split('-')[0].toUpperCase();
+            document.getElementById('reference').textContent = refId;
+            modal.classList.add('open'); 
+            e.target.reset();
+        } catch (err) {
+            alert('Error submitting request: ' + err.message);
+            console.error(err);
+        } finally {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
+    });
+  </script>
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
 
