@@ -1685,13 +1685,13 @@
 
     <div class="nav-label">FINANCE</div>
     <nav>
-      <a href="#" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Budget Monitoring</a>
+      <a href="#" class="nav-link" onclick="switchView('view-statement', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
+      <a href="#" class="nav-link" onclick="switchView('view-budget', this)"><i class="fa-solid fa-chart-line"></i> Budget Monitoring</a>
     </nav>
 
     <div class="nav-label">INVENTORY</div>
     <nav>
-      <a href="#" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
+      <a href="#" class="nav-link" onclick="switchView('view-supplies', this)"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
     </nav>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
@@ -1882,6 +1882,42 @@
               <span class="stat-subtext">System Performance</span>
             </div>
           </div>
+        </div>
+      </div>
+
+            <!-- STATEMENT OF ACCOUNTS VIEW -->
+      <div id="view-statement" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</h1>
+        </div>
+        <div class="data-card" style="padding: 50px; text-align: center;">
+          <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
+          <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
+          <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
+        </div>
+      </div>
+
+      <!-- BUDGET MONITORING VIEW -->
+      <div id="view-budget" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-chart-line"></i> Budget Monitoring</h1>
+        </div>
+        <div class="data-card" style="padding: 50px; text-align: center;">
+          <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
+          <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
+          <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
+        </div>
+      </div>
+
+      <!-- SUPPLIES INVENTORY VIEW -->
+      <div id="view-supplies" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</h1>
+        </div>
+        <div class="data-card" style="padding: 50px; text-align: center;">
+          <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
+          <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
+          <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
         </div>
       </div>
 
