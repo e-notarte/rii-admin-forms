@@ -12,7 +12,7 @@ const authGuard = `
 
 htmlFiles.forEach(file => {
   let content = fs.readFileSync(file, 'utf8');
-  
+
   // check if it already has the auth guard
   if (!content.includes("sessionStorage.getItem('isAuthenticated') !== 'true'")) {
     content = content.replace('</head>', authGuard + '\n</head>');
