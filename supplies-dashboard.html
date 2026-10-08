@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1050,7 +1050,7 @@
             }
 
             body.nav-open .mobile-menu-toggle::after {
-                content: "×";
+                content: "Ã—";
                 font-size: 1.5rem;
                 line-height: 1;
             }
@@ -1263,7 +1263,7 @@
                 <div class="avatar">AU</div>
 
                 <div class="profile-dropdown">
-                    <a href="#"><i class="fa-regular fa-user"></i> Profile</a>
+                    <a href="profile.html"><i class="fa-regular fa-user"></i> Profile</a>
                     <a href="#" class="logout-link"
                         onclick="sessionStorage.clear(); window.location.href='index.html'"><i
                             class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
@@ -1326,7 +1326,7 @@
                 </iframe>
                 <div class="iframe-note">
                     <i class="fa-solid fa-circle-info" style="color:#d97706;"></i>
-                    Live view from SharePoint — you must be signed in to your Microsoft 365 account to see the data.
+                    Live view from SharePoint â€” you must be signed in to your Microsoft 365 account to see the data.
                 </div>
             </div>
         </div>
@@ -1381,7 +1381,7 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <span>© 2026 RII Builders, Inc. All Rights Reserved.</span>
+        <span>Â© 2026 RII Builders, Inc. All Rights Reserved.</span>
         <span>developed by admin</span>
     </footer>
 
@@ -1391,18 +1391,18 @@
             <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
             <h2>Request Submitted!</h2>
             <p>Your supply request has been recorded.<br>Reference Number:</p>
-            <div class="ref" id="modalRef">—</div>
+            <div class="ref" id="modalRef">â€”</div>
             <br>
             <button class="btn-ok" id="modalOkBtn">OK</button>
         </div>
     </div>
 
     <script>
-        // ══════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         //  INVENTORY DATA
-        //  Source: 2026 MRR VS PO Excel – "On Hand" sheet
+        //  Source: 2026 MRR VS PO Excel â€“ "On Hand" sheet
         //  Headers: ITEM DESCRIPTION | ITEM CODE | MRR | MRS | ON HAND | UOM | ITEM CLASSIFICATION | STATUS
-        // ══════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         var INVENTORY = [
             { desc: "METAL STUD 2 X 40.4 MM THICKNESS", code: "CONSMAT-0005", mrr: 40, mrs: 0, onHand: 40, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "AVAILABLE" },
             { desc: "TEST PARAMETERS FOR WASTE WATER ANALYSIS", code: "CONSMAT-0011", mrr: 0, mrs: 0, onHand: 0, uom: "LT", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
@@ -1439,7 +1439,7 @@
         var filteredData = INVENTORY.slice();
         var rowCount = 0;
 
-        // ── RENDER TABLE ──
+        // â”€â”€ RENDER TABLE â”€â”€
         function renderTable() {
             var tbody = document.getElementById('inventoryBody');
             if (!tbody) return;
@@ -1504,7 +1504,7 @@
             pgBtns.appendChild(nextBtn);
         }
 
-        // ── FILTERS ──
+        // â”€â”€ FILTERS â”€â”€
         function applyFilters() {
             var search = document.getElementById('searchInput').value.trim().toLowerCase();
             var cat = document.getElementById('categoryFilter').value;
@@ -1532,9 +1532,9 @@
             });
         }
 
-        // ══════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         //  REQUEST FORM
-        // ══════════════════════════════════════════════════════
+        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         function getDescOptions() {
             var opts = '<option value="">Select item\u2026</option>';
             for (var i = 0; i < INVENTORY.length; i++) {
@@ -1719,4 +1719,5 @@
 </body>
 
 </html>
+
 
