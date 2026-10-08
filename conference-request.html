@@ -1189,7 +1189,7 @@
       background: white;
       padding: 8px 15px;
       border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
       font-size: 0.9rem;
       font-weight: 600;
       color: #1E355F;
@@ -1220,8 +1220,15 @@
     }
 
     @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
     }
 
     .ai-bot-btn {
@@ -1229,7 +1236,7 @@
       height: 55px;
       border-radius: 50%;
       background-color: white;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1360,51 +1367,51 @@
   </div>
   <script type="module">
     import { supabase } from './supabase-client.js';
-    
-    var modal = document.getElementById('modal'); 
-    document.getElementById('requestForm').addEventListener('submit', async function (e) { 
-        e.preventDefault(); 
-        var f = new FormData(e.target);
-        
-        // Show loading state on button
-        const btn = e.target.querySelector('button[type="submit"]');
-        const originalText = btn.textContent;
-        btn.textContent = 'Submitting...';
-        btn.disabled = true;
 
-        try {
-            const { data, error } = await supabase
-              .from('conference_requests')
-              .insert([
-                {
+    var modal = document.getElementById('modal');
+    document.getElementById('requestForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var f = new FormData(e.target);
 
-                  requestor_name: f.get('requestor'),
-                  company: f.get('company'),
-                  department: f.get('department'),
-                  title: f.get('title'),
-                  participants: parseInt(f.get('participants')),
-                  request_date: f.get('date'),
-                  start_time: f.get('startTime') + ':00',
-                  end_time: f.get('endTime') + ':00'
-    
-                }
-              ])
-              .select();
+      // Show loading state on button
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.textContent = 'Submitting...';
+      btn.disabled = true;
 
-            if (error) throw error;
-            
-            // success
-            const refId = data[0].id.split('-')[0].toUpperCase();
-            document.getElementById('reference').textContent = refId;
-            modal.classList.add('open'); 
-            e.target.reset();
-        } catch (err) {
-            alert('Error submitting request: ' + err.message);
-            console.error(err);
-        } finally {
-            btn.textContent = originalText;
-            btn.disabled = false;
-        }
+      try {
+        const { data, error } = await supabase
+          .from('conference_requests')
+          .insert([
+            {
+
+              requestor_name: f.get('requestor'),
+              company: f.get('company'),
+              department: f.get('department'),
+              title: f.get('title'),
+              participants: parseInt(f.get('participants')),
+              request_date: f.get('date'),
+              start_time: f.get('startTime') + ':00',
+              end_time: f.get('endTime') + ':00'
+
+            }
+          ])
+          .select();
+
+        if (error) throw error;
+
+        // success
+        const refId = data[0].id.split('-')[0].toUpperCase();
+        document.getElementById('reference').textContent = refId;
+        modal.classList.add('open');
+        e.target.reset();
+      } catch (err) {
+        alert('Error submitting request: ' + err.message);
+        console.error(err);
+      } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
     });
   </script>
 
@@ -1538,16 +1545,16 @@
     const aiBotWrapper = document.getElementById('aiBotWrapper');
 
     if (aiBotToggle && aiBotWrapper) {
-      aiBotToggle.addEventListener('click', function() {
-          // Toggles the 'active' class on and off, sliding the bot in and out
-          aiBotWrapper.classList.toggle('active');
-          
-          // Optional: Change the arrow direction when open
-          if (aiBotWrapper.classList.contains('active')) {
-              aiBotToggle.innerHTML = '<span>▶</span>';
-          } else {
-              aiBotToggle.innerHTML = '<span>◀</span>';
-          }
+      aiBotToggle.addEventListener('click', function () {
+        // Toggles the 'active' class on and off, sliding the bot in and out
+        aiBotWrapper.classList.toggle('active');
+
+        // Optional: Change the arrow direction when open
+        if (aiBotWrapper.classList.contains('active')) {
+          aiBotToggle.innerHTML = '<span>▶</span>';
+        } else {
+          aiBotToggle.innerHTML = '<span>◀</span>';
+        }
       });
     }
   </script>
