@@ -1383,8 +1383,24 @@
                 </iframe>
                 <div class="iframe-note">
                     <i class="fa-solid fa-circle-info" style="color:#d97706;"></i>
-                    Live view from SharePoint â€” you must be signed in to your Microsoft 365 account to see the data.
+                    Live view from SharePoint — you must be signed in to your Microsoft 365 account to see the data.
                 </div>
+            </div>
+
+            <!-- REQUESTOR INVENTORY VIEW (Hidden by default, shown if not admin) -->
+            <div id="requestorInventoryView" style="display: none; height: 100%; max-height: calc(100vh - 200px); overflow-y: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
+                    <thead style="position: sticky; top: 0; background: var(--primary); color: white; z-index: 10;">
+                        <tr>
+                            <th style="padding: 10px;">Item Code</th>
+                            <th style="padding: 10px;">Description</th>
+                            <th style="padding: 10px;">On Hand</th>
+                            <th style="padding: 10px;">UOM</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestorInventoryBody">
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -1596,8 +1612,12 @@
             var opts = '<option value="">Select item\u2026</option>';
             for (var i = 0; i < INVENTORY.length; i++) {
                 var item = INVENTORY[i];
-                opts += '<option value="' + item.desc + '">' + item.desc + ' (' + item.code + ')</option>';
+                if (item.onHand > 0) {
+                    opts += '<option value="' + item.desc + '">' + item.desc + ' (' + item.code + ')</option>';
+                }
             }
+            return opts;
+        }
             return opts;
         }
 
@@ -1721,6 +1741,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
             if (sessionStorage.getItem('userRole') !== 'admin') {
                 document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
             }
@@ -1751,6 +1772,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+
         const storedName = sessionStorage.getItem('userFullName');
         if (storedName) {
             const badge = document.querySelector('.user-badge');
@@ -1775,6 +1797,40 @@
   </script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+
+                // Role-based rendering for supplies inventory
+        const userRole = sessionStorage.getItem('userRole') || '';
+        const isAdmin = userRole.toLowerCase() === 'admin';
+        const iframeWrap = document.querySelector('.iframe-wrap');
+        const requestorView = document.getElementById('requestorInventoryView');
+        const requestorBody = document.getElementById('requestorInventoryBody');
+        
+        if (!isAdmin) {
+            if (iframeWrap) iframeWrap.style.display = 'none';
+            if (requestorView) {
+                requestorView.style.display = 'block';
+                let tableHTML = '';
+                for (let i = 0; i < INVENTORY.length; i++) {
+                    let item = INVENTORY[i];
+                    if (item.onHand > 0) {
+                        tableHTML += `
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 10px;">${item.code}</td>
+                                <td style="padding: 10px; font-weight: 500;">${item.desc}</td>
+                                <td style="padding: 10px; font-weight: 700; color: var(--green);">${item.onHand}</td>
+                                <td style="padding: 10px;">${item.uom}</td>
+                            </tr>
+                        `;
+                    }
+                }
+                if(requestorBody) requestorBody.innerHTML = tableHTML;
+            }
+            const panelTitle = document.querySelector('.panel-title');
+            if (panelTitle && panelTitle.innerHTML.includes('Item Summary')) {
+                panelTitle.innerHTML = '<i class="fa-solid fa-boxes-stacked" style="color:var(--accent);margin-right:8px;"></i>Available Items';
+            }
+        }
+
         const toggleBtns = document.querySelectorAll('button[title="Toggle dark mode"]');
         
         // Initialize
@@ -1814,6 +1870,8 @@
 </body>
 
 </html>
+
+
 
 
 
