@@ -1229,6 +1229,12 @@
     }
   </style>
 
+
+  <script>
+    if (sessionStorage.getItem('isAuthenticated') !== 'true') {
+      window.location.href = 'index.html';
+    }
+  </script>
 </head>
 
 <body>
