@@ -1332,17 +1332,55 @@
         onclick="document.getElementById('modal').classList.remove('open')">Close</button>
     </div>
   </div>
-  <script>
-    document.getElementById('meetingForm').addEventListener('submit', function (event) {
-      event.preventDefault();
-      var form = new FormData(event.target);
-      var requests = JSON.parse(localStorage.getItem('fleetRequests') || '[]');
-      var id = 'REQ-' + Math.floor(Math.random() * 900 + 100);
-      requests.push({ id: id, requestor: form.get('requestor'), destination: 'MS Teams Meeting', purpose: form.get('title'), scheduleDate: form.get('date'), scheduleTime: form.get('startTime') + ' - ' + form.get('endTime'), driver: '', car: '', status: 'pending', requestType: 'MS Teams Meeting', company: form.get('company'), department: form.get('department'), participants: form.get('participants'), accessDetails: form.get('accessDetails'), notes: form.get('notes') });
-      localStorage.setItem('fleetRequests', JSON.stringify(requests));
-      document.getElementById('reference').textContent = id;
-      document.getElementById('modal').classList.add('open');
-      event.target.reset();
+  <script type="module">
+    import { supabase } from './supabase-client.js';
+    
+    var modal = document.getElementById('modal'); 
+    document.getElementById('meetingForm').addEventListener('submit', async function (e) { 
+        e.preventDefault(); 
+        var f = new FormData(e.target);
+        
+        // Show loading state on button
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.textContent;
+        btn.textContent = 'Submitting...';
+        btn.disabled = true;
+
+        try {
+            const { data, error } = await supabase
+              .from('teams_requests')
+              .insert([
+                {
+
+                  requestor_name: f.get('requestor'),
+                  company: f.get('company'),
+                  department: f.get('department'),
+                  title: f.get('title'),
+                  participants: parseInt(f.get('participants')),
+                  request_date: f.get('date'),
+                  start_time: f.get('startTime') + ':00',
+                  end_time: f.get('endTime') + ':00',
+                  access_details: f.get('accessDetails'),
+                  notes: f.get('notes')
+    
+                }
+              ])
+              .select();
+
+            if (error) throw error;
+            
+            // success
+            const refId = data[0].id.split('-')[0].toUpperCase();
+            document.getElementById('reference').textContent = refId;
+            modal.classList.add('open'); 
+            e.target.reset();
+        } catch (err) {
+            alert('Error submitting request: ' + err.message);
+            console.error(err);
+        } finally {
+            btn.textContent = originalText;
+            btn.disabled = false;
+        }
     });
   </script>
 
