@@ -416,6 +416,15 @@
             try {
                 if (isSignup) {
                     // Sign Up
+                    
+                    // Domain restriction
+                    const allowedDomains = ['@riibuilders.com.ph', '@rmrriibuilders.com.ph', '@rmrriibuilders.com', '@riibuilders.com'];
+                    const isAllowedDomain = allowedDomains.some(domain => email.toLowerCase().endsWith(domain));
+                    
+                    if (!isAllowedDomain) {
+                        throw new Error('Only R-II Builders employee email addresses are allowed to register.');
+                    }
+
                     const { data, error } = await supabase.auth.signUp({
                         email: email,
                         password: password,
