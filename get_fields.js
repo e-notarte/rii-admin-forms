@@ -7,5 +7,5 @@ for (const file of files) {
     const html = fs.readFileSync(file, 'utf8');
     const matches = [...html.matchAll(/name=\"(.*?)\"/g)].map(m => m[1]);
     console.log(file + ": " + [...new Set(matches)].join(", "));
-  } catch(e) {}
+  } catch (e) { }
 }
