@@ -1151,52 +1151,52 @@
   </div>
   <script type="module">
     import { supabase } from './supabase-client.js';
-    
-    var modal = document.getElementById('modal'); 
-    document.getElementById('requestForm').addEventListener('submit', async function (e) { 
-        e.preventDefault(); 
-        var f = new FormData(e.target);
-        
-        // Show loading state on button
-        const btn = e.target.querySelector('button[type="submit"]');
-        const originalText = btn.textContent;
-        btn.textContent = 'Submitting...';
-        btn.disabled = true;
 
-        try {
-            const { data, error } = await supabase
-              .from('vehicle_requests')
-              .insert([
-                {
+    var modal = document.getElementById('modal');
+    document.getElementById('requestForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var f = new FormData(e.target);
 
-                  requestor_name: f.get('requestor'),
-                  company: f.get('company'),
-                  department: f.get('department'),
-                  destination: f.get('destination'),
-                  purpose: f.get('purpose'),
-                  request_date: f.get('date'),
-                  passengers: parseInt(f.get('passengers')),
-                  start_time: f.get('startTime') + ':00',
-                  end_time: f.get('endTime') + ':00'
-    
-                }
-              ])
-              .select();
+      // Show loading state on button
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.textContent = 'Submitting...';
+      btn.disabled = true;
 
-            if (error) throw error;
-            
-            // success
-            const refId = data[0].id.split('-')[0].toUpperCase();
-            document.getElementById('reference').textContent = refId;
-            modal.classList.add('open'); 
-            e.target.reset();
-        } catch (err) {
-            alert('Error submitting request: ' + err.message);
-            console.error(err);
-        } finally {
-            btn.textContent = originalText;
-            btn.disabled = false;
-        }
+      try {
+        const { data, error } = await supabase
+          .from('vehicle_requests')
+          .insert([
+            {
+
+              requestor_name: f.get('requestor'),
+              company: f.get('company'),
+              department: f.get('department'),
+              destination: f.get('destination'),
+              purpose: f.get('purpose'),
+              request_date: f.get('date'),
+              passengers: parseInt(f.get('passengers')),
+              start_time: f.get('startTime') + ':00',
+              end_time: f.get('endTime') + ':00'
+
+            }
+          ])
+          .select();
+
+        if (error) throw error;
+
+        // success
+        const refId = data[0].id.split('-')[0].toUpperCase();
+        document.getElementById('reference').textContent = refId;
+        modal.classList.add('open');
+        e.target.reset();
+      } catch (err) {
+        alert('Error submitting request: ' + err.message);
+        console.error(err);
+      } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
     });
   </script>
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
@@ -1209,12 +1209,22 @@
     });
   </script>
 
-  <!-- AI Bot -->
-  <div class="ai-bot-container">
-    <div class="ai-bot-cloud">Chat with Mae!</div>
-    <div class="ai-bot-btn" title="Chat with Mae!">
-      <img src="AI_Bot.png" alt="AI Bot">
+  <!-- AI Bot Wrapper -->
+  <div class="ai-bot-wrapper" id="aiBotWrapper">
+
+    <!-- The small mark/tab on the right border -->
+    <div class="ai-bot-toggle" id="aiBotToggle" title="Chat with Mae!">
+      <span>◀</span> <!-- You can replace this icon -->
     </div>
+
+    <!-- Your original AI Bot code -->
+    <div class="ai-bot-container">
+      <div class="ai-bot-cloud">Chat with Mae!</div>
+      <div class="ai-bot-btn" title="Chat with Mae!">
+        <img src="AI_Bot.png" alt="AI Bot">
+      </div>
+    </div>
+
   </div>
 
 </body>
