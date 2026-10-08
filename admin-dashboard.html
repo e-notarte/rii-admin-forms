@@ -1773,7 +1773,7 @@
             menuItem.classList.add('active');
         }
 
-                async function loadFacilityRequests() {
+                        async function loadFacilityRequests() {
             const tableBody = document.getElementById('facilityRequestsTableBody');
             
             try {
@@ -1861,16 +1861,6 @@
             try {
                 const { error } = await supabase
                     .from(table)
-                    .update({ status: newStatus })
-                    .eq('id', id);
-                    
-                if (error) throw error;
-                loadFacilityRequests(); // reload table
-            } catch (e) {
-                alert('Error updating status: ' + e.message);
-            }
-        } = await supabase
-                    .from('conference_requests')
                     .update({ status: newStatus })
                     .eq('id', id);
                     
