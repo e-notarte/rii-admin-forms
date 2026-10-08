@@ -1709,23 +1709,32 @@ body.dark-mode .ai-chat-footer input {
     </div>
   </div>
 
-  <script>
-    const calendarGrid = document.getElementById('calendarGrid');
+  <script type="module">
+    import { supabase } from './supabase-client.js';
 
-    function getMockEvents() {
-      return [
-        { date: '2026-10-08', title: 'Occupied' },
-        { date: '2026-10-15', title: 'Occupied' },
-        { date: '2026-10-16', title: 'Occupied' },
-        { date: '2026-10-23', title: 'Occupied' },
-        { date: '2026-11-05', title: 'Occupied' },
-        { date: '2026-11-12', title: 'Occupied' },
-      ];
+    const calendarGrid = document.getElementById('calendarGrid');
+    let approvedEvents = [];
+
+    async function loadApprovedEvents() {
+        const { data, error } = await supabase
+            .from('teams_requests')
+            .select('request_date, start_time, end_time, title')
+            .eq('status', 'Approved');
+
+        if (data && !error) {
+            approvedEvents = data;
+        }
+        
+        // Default to current month
+        const today = new Date();
+        const m = parseInt(document.getElementById('calMonth').value) || today.getMonth();
+        const y = parseInt(document.getElementById('calYear').value) || today.getFullYear();
+        renderCalendar(y, m);
     }
 
-    function renderCalendar(year, month) {
-      if (!calendarGrid) return;
-      calendarGrid.innerHTML = `
+    window.renderCalendar = function(year, month) {
+        if (!calendarGrid) return;
+        calendarGrid.innerHTML = \
             <div class="calendar-day-header">Sun</div>
             <div class="calendar-day-header">Mon</div>
             <div class="calendar-day-header">Tue</div>
@@ -1733,40 +1742,100 @@ body.dark-mode .ai-chat-footer input {
             <div class="calendar-day-header">Thu</div>
             <div class="calendar-day-header">Fri</div>
             <div class="calendar-day-header">Sat</div>
-        `;
+        \;
 
-      const events = getMockEvents();
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-      for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += `<div class="calendar-day empty"></div>`;
-      }
+        for (let i = 0; i < firstDay; i++) {
+            calendarGrid.innerHTML += \<div class="calendar-day empty"></div>\;
+        }
 
-      for (let i = 1; i <= daysInMonth; i++) {
-        const m = String(month + 1).padStart(2, '0');
-        const d = String(i).padStart(2, '0');
-        const dateString = `${year}-${m}-${d}`;
+        for (let i = 1; i <= daysInMonth; i++) {
+            const mStr = String(month + 1).padStart(2, '0');
+            const dStr = String(i).padStart(2, '0');
+            const dateString = \\-\-\\;
 
-        const hasEvent = events.some(e => e.date === dateString);
-        const classStr = hasEvent ? "calendar-day reserved" : "calendar-day";
-        const labelStr = hasEvent ? `<br><span style="font-size:0.75rem; color:var(--accent); margin-top:auto;">Occupied</span>` : "";
+            const dayEvents = approvedEvents.filter(e => e.request_date === dateString);
+            const hasEvent = dayEvents.length > 0;
+            
+            let classStr = hasEvent ? "calendar-day reserved" : "calendar-day";
+            let labelStr = hasEvent ? \<br><span style="font-size:0.75rem; color:var(--accent); margin-top:auto;">Occupied</span>\ : "";
 
-        calendarGrid.innerHTML += `<div class="${classStr}">${i}${labelStr}</div>`;
-      }
+            let clickHandler = hasEvent ? \onclick="showDayDetails('\')"\ : "";
+            if (hasEvent) {
+                classStr += " clickable";
+                calendarGrid.innerHTML += \<div class="\" style="cursor: pointer;" \>\\</div>\;
+            } else {
+                calendarGrid.innerHTML += \<div class="\">\\</div>\;
+            }
+        }
     }
 
-    function updateCal() {
-      const m = parseInt(document.getElementById('calMonth').value);
-      const y = parseInt(document.getElementById('calYear').value);
-      renderCalendar(y, m);
+    window.showDayDetails = function(dateStr) {
+        const dayEvents = approvedEvents.filter(e => e.request_date === dateStr);
+        if(dayEvents.length === 0) return;
+        
+        let html = \<h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for \</h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">\;
+        dayEvents.forEach(e => {
+            const start = e.start_time ? e.start_time.substring(0,5) : '';
+            const end = e.end_time ? e.end_time.substring(0,5) : '';
+            html += \<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
+                <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i> \ - \</div>
+                <div style="color:var(--primary); font-weight:600;">\</div>
+            </li>\;
+        });
+        html += '</ul>';
+
+        let popup = document.getElementById('dayDetailsPopup');
+        if(!popup) {
+            popup = document.createElement('div');
+            popup.id = 'dayDetailsPopup';
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.background = '#fff';
+            popup.style.padding = '24px';
+            popup.style.borderRadius = '12px';
+            popup.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
+            popup.style.zIndex = '10001';
+            popup.style.minWidth = '320px';
+            popup.style.maxWidth = '90vw';
+            popup.style.color = '#334155';
+            
+            const overlay = document.createElement('div');
+            overlay.id = 'dayDetailsOverlay';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'rgba(15,23,42,0.6)';
+            overlay.style.zIndex = '10000';
+            overlay.onclick = () => { popup.style.display = 'none'; overlay.style.display = 'none'; };
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(popup);
+        }
+        
+        const overlay = document.getElementById('dayDetailsOverlay');
+        popup.innerHTML = html + \<button onclick="document.getElementById('dayDetailsPopup').style.display='none'; document.getElementById('dayDetailsOverlay').style.display='none';" style="margin-top:20px; width:100%; padding:10px 16px; background:var(--primary); color:white; font-weight:600; font-family:'Poppins',sans-serif; border:none; border-radius:6px; cursor:pointer; transition: opacity 0.2s;">Close</button>\;
+        
+        popup.style.display = 'block';
+        overlay.style.display = 'block';
     }
 
-    // initialize for Oct 2026
+    window.updateCal = function() {
+        const m = parseInt(document.getElementById('calMonth').value);
+        const y = parseInt(document.getElementById('calYear').value);
+        renderCalendar(y, m);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      renderCalendar(2026, 9);
+        loadApprovedEvents();
     });
-  </script>
+</script>
 
   <footer class="footer"><span>Â© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
@@ -1945,6 +2014,7 @@ body.dark-mode .ai-chat-footer input {
 </body>
 
 </html>
+
 
 
 
