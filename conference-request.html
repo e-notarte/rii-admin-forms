@@ -1646,6 +1646,23 @@ body.dark-mode .ai-chat-footer input {
 
         if (error) throw error;
 
+          // Insert notification
+          try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+              await supabase.from('notifications').insert([{
+                user_id: user.id,
+                title: 'Request Submitted',
+                message: 'Your Conference Room request has been successfully submitted and is pending approval.',
+                request_type: 'Conference Room',
+                is_read: false
+              }]);
+              if (typeof loadNotifications === 'function') {
+                loadNotifications();
+              }
+            }
+          } catch(e) { console.error('Notification error', e); }
+
         // success
         const refId = data[0].id.split('-')[0].toUpperCase();
         document.getElementById('reference').textContent = refId;
@@ -2006,6 +2023,7 @@ body.dark-mode .ai-chat-footer input {
 </body>
 
 </html>
+
 
 
 
