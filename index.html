@@ -392,7 +392,7 @@
                 bindToggleListener();
             });
         }
-        
+
         bindToggleListener();
 
         if (localStorage.getItem('rememberedEmail')) {
@@ -416,11 +416,11 @@
             try {
                 if (isSignup) {
                     // Sign Up
-                    
+
                     // Domain restriction
                     const allowedDomains = ['@riibuilders.com.ph', '@rmrriibuilders.com.ph', '@rmrriibuilders.com', '@riibuilders.com'];
                     const isAllowedDomain = allowedDomains.some(domain => email.toLowerCase().endsWith(domain));
-                    
+
                     if (!isAllowedDomain) {
                         throw new Error('Only R-II Builders employee email addresses are allowed to register.');
                     }
@@ -434,7 +434,7 @@
                     });
 
                     if (error) throw error;
-                    
+
                     alert('Registration successful! Please sign in.');
                     // Switch back to sign in
                     document.getElementById('toggleSignup').click();
