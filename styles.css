@@ -408,7 +408,7 @@ input[type="date"]:focus {
   background: white;
   padding: 8px 15px;
   border-radius: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   font-size: 0.9rem;
   font-weight: 600;
   color: #1E355F;
@@ -439,8 +439,15 @@ input[type="date"]:focus {
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 .ai-bot-btn {
@@ -448,7 +455,7 @@ input[type="date"]:focus {
   height: 55px;
   border-radius: 50%;
   background-color: white;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
