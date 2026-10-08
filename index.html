@@ -348,7 +348,9 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { supabase } from './supabase-client.js';
+
         const loginForm = document.getElementById('loginForm');
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
@@ -356,7 +358,6 @@
         const loginBtn = document.getElementById('loginBtn');
         const btnText = loginBtn.querySelector('.btn-text');
         const spinner = loginBtn.querySelector('.spinner');
-
 
         const toggleSignup = document.getElementById('toggleSignup');
         const nameGroup = document.getElementById('nameGroup');
@@ -367,43 +368,41 @@
 
         let isSignup = false;
 
-        toggleSignup.addEventListener('click', (e) => {
-            e.preventDefault();
-            isSignup = !isSignup;
+        // Function to bind toggle listener
+        function bindToggleListener() {
+            document.getElementById('toggleSignup').addEventListener('click', (e) => {
+                e.preventDefault();
+                isSignup = !isSignup;
 
-            if (isSignup) {
-                // Switch to Sign Up
-                titleText.textContent = 'Create an Account';
-                subtitleText.textContent = 'Join Admin Request Management System';
-                btnText.textContent = 'Sign Up';
-                signupPromptText.innerHTML = 'Already have an account? <a href="#" id="toggleSignup">Sign In</a>';
-                nameGroup.style.display = 'block';
-                fullNameInput.required = true;
-            } else {
-                // Switch to Sign In
-                titleText.textContent = 'Welcome Back';
-                subtitleText.textContent = 'Admin Request Management System';
-                btnText.textContent = 'Sign In';
-                signupPromptText.innerHTML = 'Don\'t have an account? <a href="#" id="toggleSignup">Sign Up</a>';
-                nameGroup.style.display = 'none';
-                fullNameInput.required = false;
-            }
+                if (isSignup) {
+                    titleText.textContent = 'Create an Account';
+                    subtitleText.textContent = 'Join Admin Request Management System';
+                    btnText.textContent = 'Sign Up';
+                    signupPromptText.innerHTML = 'Already have an account? <a href="#" id="toggleSignup">Sign In</a>';
+                    nameGroup.style.display = 'block';
+                    fullNameInput.required = true;
+                } else {
+                    titleText.textContent = 'Welcome Back';
+                    subtitleText.textContent = 'Admin Request Management System';
+                    btnText.textContent = 'Sign In';
+                    signupPromptText.innerHTML = 'Don\'t have an account? <a href="#" id="toggleSignup">Sign Up</a>';
+                    nameGroup.style.display = 'none';
+                    fullNameInput.required = false;
+                }
+                bindToggleListener();
+            });
+        }
+        
+        bindToggleListener();
 
-            // Re-attach event listener because innerHTML replaced the element
-            document.getElementById('toggleSignup').addEventListener('click', arguments.callee);
-        });
-
-
-        // Check if remembered
         if (localStorage.getItem('rememberedEmail')) {
             emailInput.value = localStorage.getItem('rememberedEmail');
             document.getElementById('rememberMe').checked = true;
         }
 
-        loginForm.addEventListener('submit', function (e) {
+        loginForm.addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // UI Loading state
             btnText.style.display = 'none';
             spinner.style.display = 'block';
             loginBtn.disabled = true;
@@ -411,49 +410,62 @@
 
             const email = emailInput.value.trim();
             const password = passwordInput.value;
+            const fullName = fullNameInput.value.trim();
             const rememberMe = document.getElementById('rememberMe').checked;
 
-            // Simulate network request
-            setTimeout(() => {
-                if (email === 'admin@riibuilders.com' && password === 'admin1234') {
-                    // Admin Success
-                    if (rememberMe) {
-                        localStorage.setItem('rememberedEmail', email);
-                    } else {
-                        localStorage.removeItem('rememberedEmail');
-                    }
+            try {
+                if (isSignup) {
+                    // Sign Up
+                    const { data, error } = await supabase.auth.signUp({
+                        email: email,
+                        password: password,
+                        options: {
+                            data: { full_name: fullName }
+                        }
+                    });
 
-                    // Set auth state
-                    sessionStorage.setItem('isAuthenticated', 'true');
-                    sessionStorage.setItem('userRole', 'admin');
-
-                    // Redirect to dashboard
-                    window.location.href = 'welcome.html';
-                } else if (email === 'user@riibuilders.com' && password === 'admin1234') {
-                    // User Success
-                    if (rememberMe) {
-                        localStorage.setItem('rememberedEmail', email);
-                    } else {
-                        localStorage.removeItem('rememberedEmail');
-                    }
-
-                    // Set auth state
-                    sessionStorage.setItem('isAuthenticated', 'true');
-                    sessionStorage.setItem('userRole', 'user');
-
-                    // Redirect to user dashboard (vehicle request is the default first page)
-                    window.location.href = 'welcome.html';
+                    if (error) throw error;
+                    
+                    alert('Registration successful! Please sign in.');
+                    // Switch back to sign in
+                    document.getElementById('toggleSignup').click();
                 } else {
-                    // Failed
-                    errorMsg.style.display = 'flex';
-                    errorMsg.querySelector('span').textContent = 'Invalid email or password. Please try again.';
+                    // Sign In
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
 
-                    // Reset UI
-                    btnText.style.display = 'block';
-                    spinner.style.display = 'none';
-                    loginBtn.disabled = false;
+                    if (error) throw error;
+
+                    // Fetch user role from profiles
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', data.user.id)
+                        .single();
+
+                    const role = profile ? profile.role : 'user';
+
+                    if (rememberMe) {
+                        localStorage.setItem('rememberedEmail', email);
+                    } else {
+                        localStorage.removeItem('rememberedEmail');
+                    }
+
+                    sessionStorage.setItem('isAuthenticated', 'true');
+                    sessionStorage.setItem('userRole', role);
+
+                    window.location.href = 'welcome.html';
                 }
-            }, 800); // Fake delay for UX
+            } catch (error) {
+                errorMsg.style.display = 'flex';
+                errorMsg.querySelector('span').textContent = error.message || 'Authentication failed.';
+            } finally {
+                btnText.style.display = 'block';
+                spinner.style.display = 'none';
+                loginBtn.disabled = false;
+            }
         });
     </script>
 </body>
