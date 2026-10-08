@@ -117,7 +117,7 @@
       padding-bottom: 60px !important;
     }
 
-    \n
+    
 
     /* Overrides for welcome page */
     body {
@@ -307,7 +307,7 @@
       }
     }
 
-    \n
+    
   </style>
   </style>
   <style>
@@ -1332,7 +1332,7 @@
       color: #94a3b8;
     }
 </style>
-\n
+
     <style>
         .data-card {
             background-color: var(--bg-surface, #ffffff);
@@ -1447,8 +1447,9 @@
 
         <!-- CONTENT -->
         <div class="content">
-            <div class="page-header">
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h1><i class="fa-solid fa-user-circle"></i> User Profile</h1>
+                <a href="welcome.html" class="btn-primary" style="text-decoration: none; color: white;"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
             </div>
 
             <div class="data-card" style="max-width: 600px; padding: 30px; margin-top: 20px;">
@@ -1545,7 +1546,7 @@
     });
   </script>
 
-\n<script type="module">
+<script type="module">
         import { supabase } from './supabase-client.js';
 
         async function loadProfile() {
@@ -1588,6 +1589,8 @@
 </body>
 
 </html>
+
+
 
 
 
