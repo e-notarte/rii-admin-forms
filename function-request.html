@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1742,7 +1742,7 @@ body.dark-mode .ai-chat-footer input {
 
     window.renderCalendar = function(year, month) {
         if (!calendarGrid) return;
-        calendarGrid.innerHTML = \
+        calendarGrid.innerHTML = `
             <div class="calendar-day-header">Sun</div>
             <div class="calendar-day-header">Mon</div>
             <div class="calendar-day-header">Tue</div>
@@ -1750,32 +1750,32 @@ body.dark-mode .ai-chat-footer input {
             <div class="calendar-day-header">Thu</div>
             <div class="calendar-day-header">Fri</div>
             <div class="calendar-day-header">Sat</div>
-        \;
+        `;
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
         for (let i = 0; i < firstDay; i++) {
-            calendarGrid.innerHTML += \<div class="calendar-day empty"></div>\;
+            calendarGrid.innerHTML += `<div class="calendar-day empty"></div>`;
         }
 
         for (let i = 1; i <= daysInMonth; i++) {
             const mStr = String(month + 1).padStart(2, '0');
             const dStr = String(i).padStart(2, '0');
-            const dateString = \\-\-\\;
+            const dateString = `${year}-${mStr}-${dStr}`;
 
             const dayEvents = approvedEvents.filter(e => e.request_date === dateString);
             const hasEvent = dayEvents.length > 0;
             
             let classStr = hasEvent ? "calendar-day reserved" : "calendar-day";
-            let labelStr = hasEvent ? \<br><span style="font-size:0.75rem; color:var(--accent); margin-top:auto;">Occupied</span>\ : "";
+            let labelStr = hasEvent ? `<br><span style="font-size:0.75rem; color:var(--accent); margin-top:auto;">Occupied</span>` : "";
 
-            let clickHandler = hasEvent ? \onclick="showDayDetails('\')"\ : "";
+            let clickHandler = hasEvent ? `onclick="showDayDetails('${dateString}')"` : "";
             if (hasEvent) {
                 classStr += " clickable";
-                calendarGrid.innerHTML += \<div class="\" style="cursor: pointer;" \>\\</div>\;
+                calendarGrid.innerHTML += `<div class="${classStr}" style="cursor: pointer;" ${clickHandler}>${i}${labelStr}</div>`;
             } else {
-                calendarGrid.innerHTML += \<div class="\">\\</div>\;
+                calendarGrid.innerHTML += `<div class="${classStr}">${i}${labelStr}</div>`;
             }
         }
     }
