@@ -2280,6 +2280,55 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .liaison-table-wrap {
+      overflow-x: auto;
+    }
+
+    .liaison-table {
+      min-width: 1050px;
+    }
+
+    .liaison-table th {
+      background: var(--primary);
+      color: white;
+      text-transform: none;
+      letter-spacing: normal;
+      white-space: nowrap;
+    }
+
+    .liaison-table th:first-child {
+      border-radius: 8px 0 0 0;
+    }
+
+    .liaison-table th:last-child {
+      border-radius: 0 8px 0 0;
+    }
+
+    .liaison-table td {
+      vertical-align: middle;
+    }
+
+    .liaison-description {
+      max-width: 230px;
+      min-width: 180px;
+      line-height: 1.35;
+    }
+
+    .liaison-date {
+      min-width: 125px;
+      white-space: nowrap;
+    }
+
+    .liaison-status {
+      min-width: 125px;
+      padding: 7px 28px 7px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: white;
+      font: inherit;
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 
@@ -2329,6 +2378,8 @@
           class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
       <a href="#" class="nav-link" onclick="switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i>
         Facility Reservation</a>
+      <a href="#" class="nav-link" onclick="switchView('view-liaison', this)"><i
+          class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker</a>
     </nav>
 
     <div class="nav-label">FINANCE</div>
@@ -2624,6 +2675,50 @@
         </div>
       </div>
 
+      <!-- LIAISON TASK TRACKER VIEW -->
+      <div id="view-liaison" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker</h1>
+        </div>
+
+        <div class="data-card">
+          <div class="toolbar">
+            <div class="filter-pills" id="liaisonFilterPills">
+              <div class="pill active" data-filter="Pending"
+                onclick="filterLiaisonTasks('Pending', this)">Pending</div>
+              <div class="pill" data-filter="Acknowledged"
+                onclick="filterLiaisonTasks('Acknowledged', this)">Acknowledged</div>
+              <div class="pill" data-filter="Rejected"
+                onclick="filterLiaisonTasks('Rejected', this)">Rejected</div>
+              <div class="pill" data-filter="All"
+                onclick="filterLiaisonTasks('All', this)">All</div>
+            </div>
+          </div>
+          <div class="liaison-table-wrap">
+            <table class="liaison-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Requestor Email</th>
+                  <th>Description</th>
+                  <th>Destination / Address</th>
+                  <th>Department</th>
+                  <th>Completion Date Planned</th>
+                  <th>Priority Level</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="liaisonTasksTableBody">
+                <tr>
+                  <td colspan="9" style="text-align: center;">Loading liaison tasks...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- FACILITY RESERVATION APPROVAL VIEW -->
       <div id="view-calendar" class="view-section">
         <div class="page-header">
@@ -2800,6 +2895,8 @@
 
     let vehicleRequests = [];
     let vehicleDispatchFilter = 'Pending';
+    let liaisonTasks = [];
+    let liaisonTaskFilter = 'Pending';
 
     const dashboardAnalytics = [
       { table: 'vehicle_requests', elementId: 'analyticsVehicleCount' },
@@ -2990,6 +3087,137 @@
       if (dateInput && !dateInput.value) dateInput.value = today;
       renderVehicleSchedule(dateInput?.value || today);
     }
+
+    function liaisonStatus(value) {
+      const normalized = String(value || 'Pending').toLowerCase();
+      if (normalized === 'acknowledged') return 'Acknowledged';
+      if (normalized === 'rejected') return 'Rejected';
+      return 'Pending';
+    }
+
+    function renderLiaisonTasks() {
+      const tableBody = document.getElementById('liaisonTasksTableBody');
+      if (!tableBody) return;
+
+      const filteredTasks = liaisonTaskFilter === 'All'
+        ? liaisonTasks
+        : liaisonTasks.filter(task => liaisonStatus(task.status) === liaisonTaskFilter);
+
+      if (filteredTasks.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No liaison tasks found.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = filteredTasks.map(task => {
+        const status = liaisonStatus(task.status);
+        const taskId = escapeDispatchHtml(task.id);
+        const created = task.created_at ? new Date(task.created_at).toLocaleString() : '-';
+        const email = task.requestor_email || task.email || task.user_email || '-';
+        const plannedDate = task.completion_date || task.request_date || '-';
+        const priority = task.priority_level || 'Medium';
+        return `
+          <tr>
+            <td class="liaison-date">${escapeDispatchHtml(created)}</td>
+            <td>${escapeDispatchHtml(email)}</td>
+            <td class="liaison-description">${escapeDispatchHtml(task.documents || task.description || '-')}</td>
+            <td class="liaison-description">${escapeDispatchHtml(task.destination || '-')}</td>
+            <td>${escapeDispatchHtml(task.department || '-')}</td>
+            <td class="liaison-date">${escapeDispatchHtml(formatDispatchDate(plannedDate))}</td>
+            <td>${escapeDispatchHtml(priority)}</td>
+            <td>
+              <select class="liaison-status" data-task-id="${taskId}">
+                <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="Acknowledged" ${status === 'Acknowledged' ? 'selected' : ''}>Acknowledged</option>
+                <option value="Rejected" ${status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+              </select>
+            </td>
+            <td><button type="button" class="dispatch-save"
+              onclick="saveLiaisonTask('${taskId}')">Save</button></td>
+          </tr>`;
+      }).join('');
+    }
+
+    window.filterLiaisonTasks = function (filter, element) {
+      liaisonTaskFilter = filter;
+      document.querySelectorAll('#liaisonFilterPills .pill').forEach(pill => pill.classList.remove('active'));
+      if (element) element.classList.add('active');
+      renderLiaisonTasks();
+    };
+
+    async function loadLiaisonTasks() {
+      const tableBody = document.getElementById('liaisonTasksTableBody');
+      if (!tableBody) return;
+
+      const { data, error } = await supabase
+        .from('liaison_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching liaison tasks', error);
+        tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #b91c1c;">Error loading liaison tasks.</td></tr>';
+        return;
+      }
+
+      liaisonTasks = data || [];
+      renderLiaisonTasks();
+    }
+
+    window.saveLiaisonTask = async function (taskId) {
+      const task = liaisonTasks.find(item => item.id === taskId);
+      const statusSelect = document.querySelector(`.liaison-status[data-task-id="${CSS.escape(taskId)}"]`);
+      const button = statusSelect?.closest('tr')?.querySelector('.dispatch-save');
+      if (!task || !statusSelect || !button) return;
+
+      const previousStatus = liaisonStatus(task.status);
+      const nextStatus = statusSelect.value;
+      button.disabled = true;
+      button.textContent = 'Saving...';
+
+      const { error } = await supabase
+        .from('liaison_requests')
+        .update({ status: nextStatus })
+        .eq('id', taskId);
+
+      if (error) {
+        console.error('Error saving liaison task', error);
+        alert(`Error saving liaison task: ${error.message}`);
+        button.disabled = false;
+        button.textContent = 'Save';
+        return;
+      }
+
+      task.status = nextStatus;
+
+      if (task.user_id && nextStatus !== previousStatus) {
+        const { error: notificationError } = await supabase.from('notifications').insert([{
+          user_id: task.user_id,
+          title: `Liaison Task ${nextStatus}`,
+          message: [
+            `Destination: ${task.destination || 'Not specified'}`,
+            `Documents / Items: ${task.documents || 'Not specified'}`,
+            `Contact Person: ${task.contact_person || 'Not specified'}`,
+            `Department: ${task.department || 'Not specified'}`,
+            `Date: ${task.request_date || 'Not specified'}`,
+            `Time: ${task.request_time ? String(task.request_time).slice(0, 5) : 'Not specified'}`,
+            `Status: ${nextStatus}`
+          ].join('\n'),
+          request_type: 'Liaison',
+          is_read: false
+        }]);
+
+        if (notificationError) {
+          console.error('Error sending liaison notification', notificationError);
+        }
+      }
+
+      button.textContent = 'Saved';
+      renderLiaisonTasks();
+      setTimeout(() => {
+        button.disabled = false;
+        button.textContent = 'Save';
+      }, 1500);
+    };
 
     window.saveVehicleDispatch = async function (requestId) {
       const row = document.querySelector(`[data-request-id="${CSS.escape(requestId)}"]`)?.closest('tr');
@@ -3258,6 +3486,7 @@
       loadDashboardAnalytics();
       loadFacilityRequests();
       loadVehicleDispatchBoard();
+      loadLiaisonTasks();
       const scheduleDate = document.getElementById('dispatchScheduleDate');
       const todayButton = document.getElementById('dispatchTodayButton');
       if (scheduleDate) scheduleDate.addEventListener('change', () => renderVehicleSchedule(scheduleDate.value));
