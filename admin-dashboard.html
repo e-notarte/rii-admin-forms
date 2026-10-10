@@ -2329,6 +2329,35 @@
       font: inherit;
       font-size: 0.8rem;
     }
+
+    .supplies-table-wrap {
+      overflow-x: auto;
+    }
+
+    .supplies-table {
+      min-width: 900px;
+    }
+
+    .supplies-table th {
+      background: var(--primary);
+      color: white;
+      white-space: nowrap;
+    }
+
+    .supplies-items {
+      min-width: 260px;
+      line-height: 1.45;
+    }
+
+    .supplies-status {
+      min-width: 115px;
+      padding: 7px 24px 7px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: white;
+      font: inherit;
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 
@@ -2610,10 +2639,32 @@
         <div class="page-header">
           <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</h1>
         </div>
-        <div class="data-card" style="padding: 50px; text-align: center;">
-          <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
-          <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
-          <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
+        <div class="data-card">
+          <div class="toolbar">
+            <div class="filter-pills" id="suppliesFilterPills">
+              <div class="pill active" onclick="filterSupplyRequests('Pending', this)">Pending</div>
+              <div class="pill" onclick="filterSupplyRequests('Approved', this)">Approved</div>
+              <div class="pill" onclick="filterSupplyRequests('Rejected', this)">Rejected</div>
+              <div class="pill" onclick="filterSupplyRequests('All', this)">All</div>
+            </div>
+          </div>
+          <div class="supplies-table-wrap">
+            <table class="supplies-table">
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Department</th>
+                  <th>Requested Items</th>
+                  <th>Submitted</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="suppliesRequestsTableBody">
+                <tr><td colspan="6" style="text-align:center;">Loading supply requests...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -2897,6 +2948,8 @@
     let vehicleDispatchFilter = 'Pending';
     let liaisonTasks = [];
     let liaisonTaskFilter = 'Pending';
+    let supplyRequests = [];
+    let supplyRequestFilter = 'Pending';
 
     const dashboardAnalytics = [
       { table: 'vehicle_requests', elementId: 'analyticsVehicleCount' },
@@ -3219,6 +3272,144 @@
       }, 1500);
     };
 
+    function renderSupplyRequests() {
+      const tableBody = document.getElementById('suppliesRequestsTableBody');
+      if (!tableBody) return;
+
+      const filtered = supplyRequestFilter === 'All'
+        ? supplyRequests
+        : supplyRequests.filter(request => request.status === supplyRequestFilter);
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No supply requests found.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = filtered.map(request => {
+        const items = request.items.length
+          ? request.items.map(item =>
+            `${escapeDispatchHtml(item.description)} × ${escapeDispatchHtml(item.quantity)}`
+            + (item.purpose ? ` <small>(${escapeDispatchHtml(item.purpose)})</small>` : '')
+          ).join('<br>')
+          : 'No items listed';
+        const submitted = request.created_at
+          ? new Date(request.created_at).toLocaleString()
+          : '-';
+        const requestId = escapeDispatchHtml(String(request.id));
+        return `
+          <tr>
+            <td><strong>${escapeDispatchHtml(request.reference_number || `SUP-${request.id}`)}</strong></td>
+            <td>${escapeDispatchHtml(request.department || '-')}</td>
+            <td class="supplies-items">${items}</td>
+            <td>${escapeDispatchHtml(submitted)}</td>
+            <td>
+              <select class="supplies-status" data-request-id="${requestId}">
+                <option value="Pending" ${request.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="Approved" ${request.status === 'Approved' ? 'selected' : ''}>Approved</option>
+                <option value="Rejected" ${request.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+              </select>
+            </td>
+            <td><button type="button" class="dispatch-save"
+              onclick="saveSupplyRequest('${requestId}')">Save</button></td>
+          </tr>`;
+      }).join('');
+    }
+
+    window.filterSupplyRequests = function (filter, element) {
+      supplyRequestFilter = filter;
+      document.querySelectorAll('#suppliesFilterPills .pill').forEach(pill => pill.classList.remove('active'));
+      if (element) element.classList.add('active');
+      renderSupplyRequests();
+    };
+
+    async function loadSupplyRequests() {
+      const tableBody = document.getElementById('suppliesRequestsTableBody');
+      if (!tableBody) return;
+
+      const { data: requests, error: requestError } = await supabase
+        .from('supplies_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (requestError) {
+        console.error('Error fetching supply requests', requestError);
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#b91c1c;">Error loading supply requests.</td></tr>';
+        return;
+      }
+
+      const requestIds = (requests || []).map(request => request.id);
+      let items = [];
+      if (requestIds.length > 0) {
+        const { data, error: itemError } = await supabase
+          .from('supplies_items')
+          .select('*')
+          .in('request_id', requestIds);
+        if (itemError) {
+          console.error('Error fetching supply request items', itemError);
+          tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#b91c1c;">Error loading supply request items.</td></tr>';
+          return;
+        }
+        items = data || [];
+      }
+
+      supplyRequests = (requests || []).map(request => ({
+        ...request,
+        status: String(request.status || 'Pending').replace(/^./, character => character.toUpperCase()),
+        items: items.filter(item => item.request_id === request.id)
+      }));
+      renderSupplyRequests();
+    }
+
+    window.saveSupplyRequest = async function (requestId) {
+      const request = supplyRequests.find(item => String(item.id) === String(requestId));
+      const select = document.querySelector(`.supplies-status[data-request-id="${CSS.escape(String(requestId))}"]`);
+      const button = select?.closest('tr')?.querySelector('.dispatch-save');
+      if (!request || !select || !button) return;
+
+      const previousStatus = request.status;
+      const nextStatus = select.value;
+      button.disabled = true;
+      button.textContent = 'Saving...';
+
+      const { error } = await supabase
+        .from('supplies_requests')
+        .update({ status: nextStatus })
+        .eq('id', request.id);
+
+      if (error) {
+        console.error('Error saving supply request', error);
+        alert(`Error saving supply request: ${error.message}`);
+        button.disabled = false;
+        button.textContent = 'Save';
+        return;
+      }
+
+      request.status = nextStatus;
+      if (request.user_id && nextStatus !== previousStatus) {
+        const items = request.items.map(item => `${item.description} x ${item.quantity}`).join(', ');
+        const { error: notificationError } = await supabase.from('notifications').insert([{
+          user_id: request.user_id,
+          title: `Supplies Request ${nextStatus}`,
+          message: [
+            `Reference: ${request.reference_number || 'Not specified'}`,
+            `Department: ${request.department || 'Not specified'}`,
+            `Items: ${items || 'Not specified'}`,
+            `Status: ${nextStatus}`
+          ].join('\n'),
+          request_type: 'Supplies',
+          is_read: false
+        }]);
+        if (notificationError) console.error('Error sending supplies notification', notificationError);
+      }
+
+      renderSupplyRequests();
+      button.textContent = 'Saved';
+      setTimeout(() => {
+        button.disabled = false;
+        button.textContent = 'Save';
+      }, 1500);
+    };
+
     window.saveVehicleDispatch = async function (requestId) {
       const row = document.querySelector(`[data-request-id="${CSS.escape(requestId)}"]`)?.closest('tr');
       if (!row) return;
@@ -3499,6 +3690,7 @@
       loadFacilityRequests();
       loadVehicleDispatchBoard();
       loadLiaisonTasks();
+      loadSupplyRequests();
       const scheduleDate = document.getElementById('dispatchScheduleDate');
       const todayButton = document.getElementById('dispatchTodayButton');
       if (scheduleDate) scheduleDate.addEventListener('change', () => renderVehicleSchedule(scheduleDate.value));
