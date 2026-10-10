@@ -1509,7 +1509,7 @@ body.dark-mode .ai-chat-footer input {
   <button class="mobile-account-button" type="button" aria-label="Open account menu"
     onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i
       class="fa-solid fa-user"></i><span>Account</span></button>
-  <div class="mobile-account-menu" aria-label="Account menu"><button type="button"
+  <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
       title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
       title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button><button type="button"
       title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
@@ -1518,7 +1518,7 @@ body.dark-mode .ai-chat-footer input {
     <div class="brand"><img
         src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
         alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
-    <div class="header-right"><button class="icon-btn" type="button"
+    <div class="header-right"><a class="switch-admin" href="admin-dashboard.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button class="icon-btn" type="button"
         title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button><div class="notification-container" style="position: relative;">
           <button class="icon-btn notification-btn" type="button" title="Notifications" onclick="document.getElementById('notifDropdown').classList.toggle('active')">
             <i class="fa-regular fa-bell"></i>
