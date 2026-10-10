@@ -1705,7 +1705,7 @@
     .calendar-container {
         width: 100%;
     }
-    @media (max-width: 1024px) {
+    @media (max-width: 768px) {
         .facility-layout {
             grid-template-columns: 1fr;
         }
@@ -1815,9 +1815,10 @@
           </div>
           <div class="legend-item">
             <div class="legend-dot legend-available"></div><span>Available</span>
-          
-            </div>
+          </div>
         </div>
+      </div>
+    </div>
     <section class="form-card">
       <h1><i class="fa-solid fa-square-parking"></i> Parking Slot Request</h1>
       <p class="intro">Submit a request to reserve a parking slot.</p>
@@ -2047,9 +2048,7 @@
       renderCalendar(y, m);
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadApprovedEvents();
-    });
+    loadApprovedEvents();
   </script>
 
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
@@ -2376,6 +2375,8 @@
 </body>
 
 </html>
+
+
 
 
 
