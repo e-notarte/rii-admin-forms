@@ -1345,6 +1345,8 @@
     .notification-item .notif-desc {
       font-size: 0.8rem;
       color: #64748b;
+      white-space: pre-line;
+      line-height: 1.45;
     }
 
     .notification-item .notif-time {
@@ -1739,7 +1741,7 @@
   <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
         class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
       title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
-      title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button><button type="button"
+      title="User Notifications"><i class="fa-regular fa-bell"></i> User Notifications</button><button type="button"
       title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
         class="fa-solid fa-right-from-bracket"></i> Log out</button></div>
   <header class="header">
@@ -1750,13 +1752,14 @@
           class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button class="icon-btn" type="button"
         title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
       <div class="notification-container" style="position: relative;">
-        <button class="icon-btn notification-btn" type="button" title="Notifications"
+        <button class="icon-btn notification-btn" type="button" title="User Notifications"
+          aria-label="User Notifications"
           onclick="document.getElementById('notifDropdown').classList.toggle('active')">
           <i class="fa-regular fa-bell"></i>
           <span class="notification-badge" id="notifBadge" style="display: none;">0</span>
         </button>
         <div class="notification-dropdown" id="notifDropdown">
-          <div class="notification-header">Notifications</div>
+          <div class="notification-header">User Notifications</div>
           <div class="notification-list" id="notificationList">
             <div style="padding: 15px; text-align: center; color: #64748b; font-size: 0.85rem;">No new notifications
             </div>
