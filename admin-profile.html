@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -499,7 +499,7 @@
       }
 
       body.nav-open .mobile-menu-toggle::after {
-        content: "Ãƒâ€”";
+        content: "Ã—";
         font-size: 1.5rem;
         line-height: 1;
       }
@@ -1082,7 +1082,12 @@
     }
 
     .sub-links {
-      padding-left: 26px
+      padding-left: 26px;
+      display: none;
+    }
+
+    .sub-links.open {
+      display: block;
     }
 
     .sub-link {
@@ -1953,7 +1958,7 @@
             style="display: block; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Password</label>
           <div
             style="padding: 12px 15px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;">
-            <span>â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢</span>
+            <span>••••••••••••</span>
             <button class="btn-primary" style="padding: 6px 12px; font-size: 0.8rem;"
               onclick="alert('Password reset functionality will be implemented here.')"><i class="fa-solid fa-key"></i>
               Update</button>
@@ -2006,7 +2011,7 @@
     });
   </script>
 
-  <footer class="footer"><span>Â© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
 
   <!-- AI Bot Wrapper -->
