@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1047,8 +1047,8 @@
 
     .nav-link,
     .nav-group-title {
-            cursor: pointer;
-            user-select: none;
+      cursor: pointer;
+      user-select: none;
 
       display: flex;
       align-items: center;
@@ -2387,7 +2387,7 @@
               request_type: table.replace('_requests', '').toUpperCase(),
               is_read: false
             }]);
-          } catch(err) { console.error('Notification error', err); }
+          } catch (err) { console.error('Notification error', err); }
         }
         loadFacilityRequests(); // reload table
       } catch (e) {
@@ -2401,7 +2401,7 @@
     });
   </script>
 
-  <footer class="footer"><span>� 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
 
   <!-- AI Bot Wrapper -->
@@ -2509,20 +2509,17 @@
     });
   </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const activeSubLink = document.querySelector('.sub-link.active');
-            if (activeSubLink) {
-                const parentSubLinks = activeSubLink.closest('.sub-links');
-                if (parentSubLinks) {
-                    parentSubLinks.classList.add('open');
-                }
-            }
-        });
-    </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const activeSubLink = document.querySelector('.sub-link.active');
+      if (activeSubLink) {
+        const parentSubLinks = activeSubLink.closest('.sub-links');
+        if (parentSubLinks) {
+          parentSubLinks.classList.add('open');
+        }
+      }
+    });
+  </script>
 </body>
 
 </html>
-
-
-
