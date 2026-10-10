@@ -1630,154 +1630,9 @@
     </div>
 
     <script>
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-        //  INVENTORY DATA
-        //  Source: 2026 MRR VS PO Excel â€“ "On Hand" sheet
-        //  Headers: ITEM DESCRIPTION | ITEM CODE | MRR | MRS | ON HAND | UOM | ITEM CLASSIFICATION | STATUS
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-        var INVENTORY = [
-            { desc: "METAL STUD 2 X 40.4 MM THICKNESS", code: "CONSMAT-0005", mrr: 40, mrs: 0, onHand: 40, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "AVAILABLE" },
-            { desc: "TEST PARAMETERS FOR WASTE WATER ANALYSIS", code: "CONSMAT-0011", mrr: 0, mrs: 0, onHand: 0, uom: "LT", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "BOYSEN LACQUER PRIMER SURFACER", code: "CONSMAT-0016", mrr: 14, mrs: 0, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "AUTOMOTIVE LACQUER WHITE", code: "CONSMAT-0017", mrr: 8, mrs: 8, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "POLITUFF", code: "CONSMAT-0018", mrr: 4, mrs: 4, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "LACQUER SPOT PUTTY", code: "CONSMAT-0019", mrr: 3, mrs: 0, onHand: 0, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "PATCHING COMPOUND", code: "CONSMAT-0020", mrr: 2, mrs: 2, onHand: 0, uom: "KG", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "SANDING PAPER #100 3M", code: "CONSMAT-0021", mrr: 15, mrs: 0, onHand: 2, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "SANDING PAPER #240", code: "CONSMAT-0022", mrr: 35, mrs: 0, onHand: 2, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "CONSTRUCTION ADHESIVE (NO MORE NAIL)", code: "CONSMAT-0024", mrr: 2, mrs: 2, onHand: 0, uom: "TUBE", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "BABY ROLLER - COTTON", code: "CONSMAT-0029", mrr: 13, mrs: 0, onHand: 2, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "PAINT BRUSH #5", code: "CONSMAT-0030", mrr: 5, mrs: 0, onHand: 2, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "PAINT ROLLER #7", code: "CONSMAT-0031", mrr: 11, mrs: 10, onHand: 1, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "FLAT LATEX - WHITE", code: "CONSMAT-0032", mrr: 3, mrs: 0, onHand: 0, uom: "PAILS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "SEMI GLOSS LATEX", code: "CONSMAT-0033", mrr: 4, mrs: 0, onHand: 3, uom: "PAILS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: 'PAINT BRUSH 4"', code: "CONSMAT-0059", mrr: 10, mrs: 0, onHand: 10, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "AVAILABLE" },
-            { desc: "WELDING ROD 6013 NIHONWELD BRAND 3/32 12.5F", code: "CONSMAT-0063", mrr: 0, mrs: 0, onHand: 1, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: 'CUTTING DISC 4" BRAND: BDSN', code: "CONSMAT-0076", mrr: 0, mrs: 0, onHand: 2, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "CUTTING DISC 4\" RED SUPERTHIN 25'S BRAND:TYRC", code: "CONSMAT-0081", mrr: 0, mrs: 0, onHand: 2, uom: "BOX", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "CEMENT HOLCIM", code: "CONSMAT-0083", mrr: 20, mrs: 20, onHand: 0, uom: "BG", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "BISTSAY SAND (10KG)", code: "CONSMAT-0093", mrr: 48, mrs: 0, onHand: 0, uom: "BG", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "RSB 10MM X 6M GR.33", code: "CONSMAT-0094", mrr: 56, mrs: 56, onHand: 0, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "PLYWOOD 3/4 (ORDINARY)", code: "CONSMAT-0095", mrr: 22, mrs: 0, onHand: 0, uom: "PC", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "CONCEALING HINGES C1", code: "CONSMAT-0096", mrr: 28, mrs: 4, onHand: 0, uom: "PR", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "LACQUER THINNER (BOYSEN)", code: "CONSMAT-0097", mrr: 16, mrs: 12, onHand: 4, uom: "GAL", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "BLIND RIVETS 1/8 x 1/2", code: "CONSMAT-0098", mrr: 1, mrs: 0, onHand: 1, uom: "BOX", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "BLACK SCREW 1-1/2 POINTED (1000PCS/BOX)", code: "CONSMAT-0099", mrr: 2, mrs: 0, onHand: 2, uom: "BOX", classification: "CONSTRUCTION MATERIALS", status: "REORDER" },
-            { desc: "SANDING PAPER #150", code: "CONSMAT-0100", mrr: 10, mrs: 10, onHand: 0, uom: "PCS", classification: "CONSTRUCTION MATERIALS", status: "REORDER" }
-        ];
+        
 
-        var PAGE_SIZE = 15;
-        var currentPage = 1;
-        var filteredData = INVENTORY.slice();
         var rowCount = 0;
-
-        // â”€â”€ RENDER TABLE â”€â”€
-        function renderTable() {
-            var tbody = document.getElementById('inventoryBody');
-            if (!tbody) return;
-            var start = (currentPage - 1) * PAGE_SIZE;
-            var end = start + PAGE_SIZE;
-            var pageData = filteredData.slice(start, end);
-
-            if (pageData.length === 0) {
-                tbody.innerHTML = '<tr class="empty-row"><td colspan="6"><i class="fa-solid fa-box-open" style="font-size:1.8rem;opacity:.3;display:block;margin-bottom:8px;"></i>No items found.</td></tr>';
-            } else {
-                var html = '';
-                for (var i = 0; i < pageData.length; i++) {
-                    var item = pageData[i];
-                    var isAvail = item.status === 'AVAILABLE';
-                    var rowCls = isAvail ? '' : 'row-reorder';
-                    var bdgCls = isAvail ? 'badge-available' : 'badge-reorder';
-                    html += '<tr class="' + rowCls + '">' +
-                        '<td>' + item.desc + '</td>' +
-                        '<td>' + item.code + '</td>' +
-                        '<td style="text-align:center;font-weight:600;">' + item.onHand + '</td>' +
-                        '<td>' + item.uom + '</td>' +
-                        '<td style="font-size:.75rem;">' + item.classification + '</td>' +
-                        '<td><span class="badge ' + bdgCls + '">' + item.status + '</span></td>' +
-                        '</tr>';
-                }
-                tbody.innerHTML = html;
-            }
-
-            var total = filteredData.length;
-            var s = total === 0 ? 0 : start + 1;
-            var e = Math.min(end, total);
-            document.getElementById('paginationInfo').textContent = 'Showing ' + s + '\u2013' + e + ' of ' + total + ' items';
-
-            var totalPages = Math.ceil(total / PAGE_SIZE);
-            var pgBtns = document.getElementById('pgBtns');
-            pgBtns.innerHTML = '';
-
-            var prevBtn = document.createElement('button');
-            prevBtn.className = 'pg-btn';
-            prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
-            (function (p) {
-                prevBtn.onclick = function () { if (currentPage > 1) { currentPage--; renderTable(); } };
-            })(currentPage);
-            pgBtns.appendChild(prevBtn);
-
-            for (var p = 1; p <= totalPages; p++) {
-                var btn = document.createElement('button');
-                btn.className = 'pg-btn' + (p === currentPage ? ' active-pg' : '');
-                btn.textContent = p;
-                (function (pg) {
-                    btn.onclick = function () { currentPage = pg; renderTable(); };
-                })(p);
-                pgBtns.appendChild(btn);
-            }
-
-            var nextBtn = document.createElement('button');
-            nextBtn.className = 'pg-btn';
-            nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
-            nextBtn.onclick = function () {
-                if (currentPage < Math.ceil(filteredData.length / PAGE_SIZE)) { currentPage++; renderTable(); }
-            };
-            pgBtns.appendChild(nextBtn);
-        }
-
-        // â”€â”€ FILTERS â”€â”€
-        function applyFilters() {
-            var search = document.getElementById('searchInput').value.trim().toLowerCase();
-            var cat = document.getElementById('categoryFilter').value;
-            var stat = document.getElementById('statusFilter').value;
-
-            filteredData = INVENTORY.filter(function (item) {
-                var matchSearch = !search ||
-                    item.desc.toLowerCase().indexOf(search) !== -1 ||
-                    item.code.toLowerCase().indexOf(search) !== -1;
-                var matchCat = !cat || item.classification === cat;
-                var matchStat = !stat || item.status === stat;
-                return matchSearch && matchCat && matchStat;
-            });
-
-            currentPage = 1;
-            renderTable();
-        }
-
-        var searchButton = document.getElementById('searchBtn');
-        var searchInput = document.getElementById('searchInput');
-        if (searchButton && searchInput) {
-            searchButton.addEventListener('click', applyFilters);
-            searchInput.addEventListener('keyup', function (e) {
-                if (e.key === 'Enter') applyFilters();
-            });
-        }
-
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-        //  REQUEST FORM
-        // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-        function getDescOptions() {
-            var opts = '<option value="">Select item\u2026</option>';
-            for (var i = 0; i < INVENTORY.length; i++) {
-                var item = INVENTORY[i];
-                if (item.onHand > 0) {
-                    opts += '<option value="' + item.desc + '">' + item.desc + ' (' + item.code + ')</option>';
-                }
-            }
-            return opts;
-        }
-
         function addRequestRow() {
             rowCount++;
             var tbody = document.getElementById('requestBody');
@@ -1786,22 +1641,12 @@
 
             var id = rowCount;
             tr.innerHTML =
-                '<td>' +
-                '<input type="text" id="desc-' + id + '" list="desc-list-' + id + '" placeholder="Select or type item..." style="width:100%;padding:6px 8px;border:1px solid #d1d5db;border-radius:5px;font-family:Poppins,sans-serif;font-size:.75rem;outline:none;">' +
-                '<datalist id="desc-list-' + id + '">' +
-                getDescOptions() +
-                '</datalist></td>' +
+                '<td><input type="text" id="desc-' + id + '" placeholder="Type item description..." style="width:100%;padding:6px 8px;border:1px solid #d1d5db;border-radius:5px;font-family:Poppins,sans-serif;font-size:.75rem;outline:none;"></td>' +
                 '<td><input type="number" id="qty-' + id + '" min="1" placeholder="1" style="width:60px;"></td>' +
                 '<td><input type="text" id="purpose-' + id + '" placeholder="Purpose"></td>' +
                 '<td><button class="remove-btn" data-id="' + id + '" title="Remove"><i class="fa-solid fa-trash"></i></button></td>';
 
             tbody.appendChild(tr);
-
-            // auto-fill qty=1 on item select
-            document.getElementById('desc-' + id).addEventListener('change', function () {
-                var qtyEl = document.getElementById('qty-' + id);
-                if (this.value && !qtyEl.value) qtyEl.value = 1;
-            });
 
             tr.querySelector('.remove-btn').addEventListener('click', function () {
                 var rowId = this.getAttribute('data-id');
