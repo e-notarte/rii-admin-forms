@@ -879,7 +879,7 @@
         color: #9ca3af;
       }
 
-      
+
 
       .nav-link.active i {
         color: var(--accent);
@@ -1565,150 +1565,163 @@
       background: rgba(252, 174, 22, 0.05) !important;
       border-left: 3px solid var(--accent) !important;
     }
+
     .nav-link.active i,
     .sub-link.active i {
       color: var(--accent) !important;
     }
+
     .sub-link.active {
       padding-left: 30px !important;
     }
   </style>
   <style id="ai-bot-fix">
     .ai-chat-window {
-        display: none;
-        flex-direction: column;
-        width: 320px;
-        height: 400px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        margin-right: 15px;
-        margin-bottom: 20px;
-        border: 1px solid #e2e8f0;
+      display: none;
+      flex-direction: column;
+      width: 320px;
+      height: 400px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      margin-right: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
     }
-    
+
     .ai-chat-window.open {
-        display: flex;
-        animation: chatSlideIn 0.3s ease forwards;
+      display: flex;
+      animation: chatSlideIn 0.3s ease forwards;
     }
-    
+
     @keyframes chatSlideIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    
+
     .ai-chat-header {
-        background: #1E355F;
-        color: white;
-        padding: 12px 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 600;
-        font-size: 0.95rem;
+      background: #1E355F;
+      color: white;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
     }
-    
+
     .ai-chat-header img {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-        background: white;
-        padding: 2px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: white;
+      padding: 2px;
     }
-    
+
     .ai-chat-body {
-        flex: 1;
-        padding: 15px;
-        background: #f8fafc;
-        overflow-y: auto;
-        font-size: 0.85rem;
-        color: #2d3748;
+      flex: 1;
+      padding: 15px;
+      background: #f8fafc;
+      overflow-y: auto;
+      font-size: 0.85rem;
+      color: #2d3748;
     }
-    
+
     .ai-chat-body p {
-        background: white;
-        padding: 10px 15px;
-        border-radius: 15px;
-        border-bottom-left-radius: 4px;
-        display: inline-block;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        margin: 0;
-        max-width: 85%;
-        line-height: 1.4;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 15px;
+      border-bottom-left-radius: 4px;
+      display: inline-block;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      margin: 0;
+      max-width: 85%;
+      line-height: 1.4;
     }
-    
+
     .ai-chat-body strong {
-        color: #1E355F;
-        display: block;
-        margin-bottom: 3px;
+      color: #1E355F;
+      display: block;
+      margin-bottom: 3px;
     }
-    
+
     .ai-chat-footer {
-        padding: 12px 15px;
-        background: white;
-        border-top: 1px solid #e2e8f0;
-        display: flex;
-        gap: 8px;
+      padding: 12px 15px;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      gap: 8px;
     }
-    
+
     .ai-chat-footer input {
-        flex: 1;
-        padding: 8px 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 20px;
-        outline: none;
-        font-size: 0.85rem;
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      outline: none;
+      font-size: 0.85rem;
     }
-    
+
     .ai-chat-footer input:focus {
-        border-color: #FCAE16;
+      border-color: #FCAE16;
     }
-    
+
     .ai-chat-footer button {
-        background: #FCAE16;
-        color: #1E355F;
-        border: none;
-        border-radius: 20px;
-        padding: 0 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s;
-        font-size: 0.85rem;
+      background: #FCAE16;
+      color: #1E355F;
+      border: none;
+      border-radius: 20px;
+      padding: 0 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 0.85rem;
     }
-    
+
     .ai-chat-footer button:hover {
-        background: #e59c11;
+      background: #e59c11;
     }
   </style>
   <style id="facility-calendar-layout">
     .facility-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        align-items: start;
-        width: 100%;
-        max-width: 1500px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: start;
+      width: 100%;
+      max-width: 1500px;
     }
+
     .calendar-card {
-        background: #fff;
-        border-radius: 12px;
-        padding: 24px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        border: 1px solid var(--border, #e2e8f0);
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border, #e2e8f0);
     }
+
     body.dark-mode .calendar-card {
-        background: var(--bg-surface, #1e293b);
-        border-color: var(--border, #334155);
+      background: var(--bg-surface, #1e293b);
+      border-color: var(--border, #334155);
     }
+
     .calendar-container {
-        width: 100%;
+      width: 100%;
     }
+
     @media (max-width: 768px) {
-        .facility-layout {
-            grid-template-columns: 1fr;
-        }
+      .facility-layout {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -1788,66 +1801,66 @@
   </aside>
   <main>
     <div class="facility-layout">
-        <div class="calendar-card">
-            <div class="calendar-container">
+      <div class="calendar-card">
+        <div class="calendar-container">
 
-        <div class="calendar-title-bar">
-          <h2>Reservation Calendar</h2>
-          <div class="calendar-controls">
-            <label>Month:</label>
-            <select id="calMonth">
-              <option value="9">Oct</option>
-              <option value="10">Nov</option>
-              <option value="11">Dec</option>
-            </select>
-            <label>Year:</label>
-            <select id="calYear">
-              <option value="2026">2026</option>
-            </select>
-            <button type="button" onclick="updateCal()">Go</button>
-            
+          <div class="calendar-title-bar">
+            <h2>Reservation Calendar</h2>
+            <div class="calendar-controls">
+              <label>Month:</label>
+              <select id="calMonth">
+                <option value="9">Oct</option>
+                <option value="10">Nov</option>
+                <option value="11">Dec</option>
+              </select>
+              <label>Year:</label>
+              <select id="calYear">
+                <option value="2026">2026</option>
+              </select>
+              <button type="button" onclick="updateCal()">Go</button>
+
+            </div>
           </div>
-        </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-        <div class="calendar-legend">
-          <div class="legend-item">
-            <div class="legend-dot legend-reserved"></div><span>Occupied</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot legend-available"></div><span>Available</span>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="calendar-legend">
+            <div class="legend-item">
+              <div class="legend-dot legend-reserved"></div><span>Occupied</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot legend-available"></div><span>Available</span>
+            </div>
           </div>
         </div>
       </div>
+      <section class="form-card">
+        <h1><i class="fa-solid fa-square-parking"></i> Parking Slot Request</h1>
+        <p class="intro">Submit a request to reserve a parking slot.</p>
+        <form id="requestForm">
+          <div class="grid"><label>Requestor Name<input name="requestor" type="name" required
+                placeholder="Enter your Name"></label><label>Company<select name="company" required>
+                <option value="">Select Company</option>
+                <option>RMRCI</option>
+                <option>RBI</option>
+                <option>PESC</option>
+                <option>RLAND</option>
+              </select></label></div><label>Department<select name="department" required>
+              <option value="">Select Department</option>
+              <option>Admin</option>
+              <option>HR</option>
+              <option>Purchasing</option>
+              <option>BDG</option>
+              <option>Engineering</option>
+              <option>C&amp;C</option>
+              <option>Accounting</option>
+              <option>Finance</option>
+            </select></label><label>Visitor Name<input name="visitor" required></label><label>Plate Number<input
+              name="plate" required></label>
+          <div class="grid"><label>Date<input name="date" type="date" required></label><label>Start Time<input
+                name="time" type="time" required></label></div><label>Person to Visit<input name="visit"
+              required></label><button type="submit">Submit Parking Slot Request</button>
+        </form>
+      </section>
     </div>
-    <section class="form-card">
-      <h1><i class="fa-solid fa-square-parking"></i> Parking Slot Request</h1>
-      <p class="intro">Submit a request to reserve a parking slot.</p>
-      <form id="requestForm">
-        <div class="grid"><label>Requestor Name<input name="requestor" type="name" required
-              placeholder="Enter your Name"></label><label>Company<select name="company" required>
-              <option value="">Select Company</option>
-              <option>RMRCI</option>
-              <option>RBI</option>
-              <option>PESC</option>
-              <option>RLAND</option>
-            </select></label></div><label>Department<select name="department" required>
-            <option value="">Select Department</option>
-            <option>Admin</option>
-            <option>HR</option>
-            <option>Purchasing</option>
-            <option>BDG</option>
-            <option>Engineering</option>
-            <option>C&amp;C</option>
-            <option>Accounting</option>
-            <option>Finance</option>
-          </select></label><label>Visitor Name<input name="visitor" required></label><label>Plate Number<input
-            name="plate" required></label>
-        <div class="grid"><label>Date<input name="date" type="date" required></label><label>Start Time<input name="time"
-              type="time" required></label></div><label>Person to Visit<input name="visit" required></label><button
-          type="submit">Submit Parking Slot Request</button>
-      </form>
-    </section>
-      </div>
   </main>
   <div class="modal" id="modal">
     <div class="modal-box">
@@ -2240,145 +2253,144 @@
   <!-- AI Bot Logic and Styles -->
   <style id="ai-bot-logic-style">
     .ai-chat-body {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
+
     .ai-msg-bot {
-        align-self: flex-start;
-        background: white;
-        padding: 10px 15px;
-        border-radius: 15px;
-        border-bottom-left-radius: 4px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        max-width: 85%;
-        font-size: 0.85rem;
-        color: #2d3748;
-        line-height: 1.4;
+      align-self: flex-start;
+      background: white;
+      padding: 10px 15px;
+      border-radius: 15px;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      max-width: 85%;
+      font-size: 0.85rem;
+      color: #2d3748;
+      line-height: 1.4;
     }
+
     .ai-msg-bot strong {
-        color: #1E355F;
-        display: block;
-        margin-bottom: 3px;
+      color: #1E355F;
+      display: block;
+      margin-bottom: 3px;
     }
+
     .ai-msg-user {
-        align-self: flex-end;
-        background: #1E355F;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 15px;
-        border-bottom-right-radius: 4px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        max-width: 85%;
-        font-size: 0.85rem;
-        line-height: 1.4;
+      align-self: flex-end;
+      background: #1E355F;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 15px;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 85%;
+      font-size: 0.85rem;
+      line-height: 1.4;
     }
+
     .typing-indicator {
-        align-self: flex-start;
-        font-size: 0.8rem;
-        color: #94a3b8;
-        font-style: italic;
-        padding: 5px 15px;
+      align-self: flex-start;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      font-style: italic;
+      padding: 5px 15px;
     }
+
     body.dark-mode .ai-msg-bot {
-        background: #334155;
-        color: #f8fafc;
+      background: #334155;
+      color: #f8fafc;
     }
+
     body.dark-mode .ai-msg-bot strong {
-        color: #FCAE16;
+      color: #FCAE16;
     }
   </style>
   <script id="ai-bot-logic-script">
     document.addEventListener('DOMContentLoaded', () => {
-        const chatWrappers = document.querySelectorAll('.ai-chat-wrapper, .ai-bot-wrapper');
-        
-        chatWrappers.forEach(wrapper => {
-            const chatBody = wrapper.querySelector('.ai-chat-body');
-            const chatInput = wrapper.querySelector('.ai-chat-footer input');
-            const sendBtn = wrapper.querySelector('.ai-chat-footer button');
-            
-            if (!chatBody || !chatInput || !sendBtn) return;
-            
-            // Format existing default message to use the new class
-            const defaultMsg = chatBody.querySelector('p');
-            if (defaultMsg && !defaultMsg.classList.contains('ai-msg-bot')) {
-                const msgDiv = document.createElement('div');
-                msgDiv.className = 'ai-msg-bot';
-                msgDiv.innerHTML = defaultMsg.innerHTML;
-                chatBody.innerHTML = '';
-                chatBody.appendChild(msgDiv);
+      const chatWrappers = document.querySelectorAll('.ai-chat-wrapper, .ai-bot-wrapper');
+
+      chatWrappers.forEach(wrapper => {
+        const chatBody = wrapper.querySelector('.ai-chat-body');
+        const chatInput = wrapper.querySelector('.ai-chat-footer input');
+        const sendBtn = wrapper.querySelector('.ai-chat-footer button');
+
+        if (!chatBody || !chatInput || !sendBtn) return;
+
+        // Format existing default message to use the new class
+        const defaultMsg = chatBody.querySelector('p');
+        if (defaultMsg && !defaultMsg.classList.contains('ai-msg-bot')) {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = 'ai-msg-bot';
+          msgDiv.innerHTML = defaultMsg.innerHTML;
+          chatBody.innerHTML = '';
+          chatBody.appendChild(msgDiv);
+        }
+
+        function appendMessage(sender, text) {
+          const msg = document.createElement('div');
+          if (sender === 'user') {
+            msg.className = 'ai-msg-user';
+            msg.textContent = text;
+          } else {
+            msg.className = 'ai-msg-bot';
+            msg.innerHTML = '<strong>Mae:</strong> ' + text;
+          }
+          chatBody.appendChild(msg);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function showTyping() {
+          const typing = document.createElement('div');
+          typing.className = 'typing-indicator';
+          typing.textContent = 'Mae is typing...';
+          chatBody.appendChild(typing);
+          chatBody.scrollTop = chatBody.scrollHeight;
+          return typing;
+        }
+
+        function handleSend() {
+          const text = chatInput.value.trim();
+          if (!text) return;
+
+          // Add user message
+          appendMessage('user', text);
+          chatInput.value = '';
+
+          // Show typing indicator
+          const typing = showTyping();
+
+          // Simulate delay
+          setTimeout(() => {
+            typing.remove();
+
+            const lowerText = text.toLowerCase();
+            let reply = "I'm not quite sure how to help with that. Try checking the sidebar for our request forms!";
+
+            if (lowerText.includes('supply') || lowerText.includes('inventory') || lowerText.includes('item')) {
+              reply = "You can view available supplies and make requests on the Supplies Dashboard! Make sure you are logged in to see the live inventory.";
+            } else if (lowerText.includes('vehicle') || lowerText.includes('car') || lowerText.includes('driver')) {
+              reply = "Need a ride or a driver? Check out the Vehicle Request and Driver Request forms on the left sidebar.";
+            } else if (lowerText.includes('facility') || lowerText.includes('room') || lowerText.includes('meeting') || lowerText.includes('zoom')) {
+              reply = "You can book Conference Rooms, Function Halls, Parking, and Zoom Meetings under the 'Facility Request' dropdown menu!";
+            } else if (lowerText.includes('hello') || lowerText.includes('hi') || lowerText.includes('hey')) {
+              reply = "Hello there! Let me know if you need help finding a form or checking your requests.";
+            } else if (lowerText.includes('status') || lowerText.includes('pending') || lowerText.includes('approve')) {
+              reply = "Your pending requests will be reviewed by the admin team soon. You will receive an email once it's approved!";
             }
 
-            function appendMessage(sender, text) {
-                const msg = document.createElement('div');
-                if (sender === 'user') {
-                    msg.className = 'ai-msg-user';
-                    msg.textContent = text;
-                } else {
-                    msg.className = 'ai-msg-bot';
-                    msg.innerHTML = '<strong>Mae:</strong> ' + text;
-                }
-                chatBody.appendChild(msg);
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }
+            appendMessage('bot', reply);
+          }, 1200);
+        }
 
-            function showTyping() {
-                const typing = document.createElement('div');
-                typing.className = 'typing-indicator';
-                typing.textContent = 'Mae is typing...';
-                chatBody.appendChild(typing);
-                chatBody.scrollTop = chatBody.scrollHeight;
-                return typing;
-            }
-
-            function handleSend() {
-                const text = chatInput.value.trim();
-                if (!text) return;
-                
-                // Add user message
-                appendMessage('user', text);
-                chatInput.value = '';
-                
-                // Show typing indicator
-                const typing = showTyping();
-                
-                // Simulate delay
-                setTimeout(() => {
-                    typing.remove();
-                    
-                    const lowerText = text.toLowerCase();
-                    let reply = "I'm not quite sure how to help with that. Try checking the sidebar for our request forms!";
-                    
-                    if (lowerText.includes('supply') || lowerText.includes('inventory') || lowerText.includes('item')) {
-                        reply = "You can view available supplies and make requests on the Supplies Dashboard! Make sure you are logged in to see the live inventory.";
-                    } else if (lowerText.includes('vehicle') || lowerText.includes('car') || lowerText.includes('driver')) {
-                        reply = "Need a ride or a driver? Check out the Vehicle Request and Driver Request forms on the left sidebar.";
-                    } else if (lowerText.includes('facility') || lowerText.includes('room') || lowerText.includes('meeting') || lowerText.includes('zoom')) {
-                        reply = "You can book Conference Rooms, Function Halls, Parking, and Zoom Meetings under the 'Facility Request' dropdown menu!";
-                    } else if (lowerText.includes('hello') || lowerText.includes('hi') || lowerText.includes('hey')) {
-                        reply = "Hello there! Let me know if you need help finding a form or checking your requests.";
-                    } else if (lowerText.includes('status') || lowerText.includes('pending') || lowerText.includes('approve')) {
-                        reply = "Your pending requests will be reviewed by the admin team soon. You will receive an email once it's approved!";
-                    }
-                    
-                    appendMessage('bot', reply);
-                }, 1200);
-            }
-
-            sendBtn.addEventListener('click', handleSend);
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') handleSend();
-            });
+        sendBtn.addEventListener('click', handleSend);
+        chatInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') handleSend();
         });
+      });
     });
   </script>
 </body>
 
 </html>
-
-
-
-
-
-
-
