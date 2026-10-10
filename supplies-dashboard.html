@@ -1573,6 +1573,73 @@
         .ai-chat-footer button:hover {
             background: #e59c11;
         }
+
+        .notification-container {
+            position: relative;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: -10px;
+            width: 330px;
+            max-height: 390px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, .15);
+            z-index: 1000;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .notification-dropdown.active {
+            display: flex;
+        }
+
+        .notification-header {
+            padding: 15px;
+            font-weight: 600;
+            color: #1E355F;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .notification-item:hover,
+        .notification-item.unread {
+            background: #f0fdf4;
+        }
+
+        .notification-item .notif-title {
+            font-size: .85rem;
+            font-weight: 600;
+            color: #1E355F;
+        }
+
+        .notification-item .notif-desc {
+            font-size: .8rem;
+            color: #64748b;
+            white-space: pre-line;
+            line-height: 1.45;
+        }
+
+        .notification-item .notif-time {
+            font-size: .7rem;
+            color: #94a3b8;
+        }
     </style>
 </head>
 
@@ -1601,7 +1668,20 @@
                 <i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin
             </a>
             <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-            <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+            <div class="notification-container">
+                <button class="icon-btn notification-btn" type="button" title="User Notifications"
+                    aria-label="User Notifications"
+                    onclick="document.getElementById('notifDropdown').classList.toggle('active')">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
+                </button>
+                <div class="notification-dropdown" id="notifDropdown">
+                    <div class="notification-header">User Notifications</div>
+                    <div class="notification-list" id="notificationList">
+                        <div style="padding:15px;text-align:center;color:#64748b;font-size:.85rem;">Loading notifications...</div>
+                    </div>
+                </div>
+            </div>
             <div class="user-badge" onclick="this.classList.toggle('active')">
                 <span>Admin User</span>
                 <div class="avatar">AU</div>
@@ -1927,6 +2007,109 @@
                 document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
             }
         });
+    </script>
+    <script type="module">
+        import { supabase } from './supabase-client.js';
+
+        function escapeNotificationHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[character]));
+        }
+
+        async function loadNotifications() {
+            const { data: { user } } = await supabase.auth.getUser();
+            const list = document.getElementById('notificationList');
+            const badge = document.getElementById('notifBadge');
+            if (!list || !user) return;
+
+            const { data, error } = await supabase
+                .from('notifications')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('Error loading notifications', error);
+                list.innerHTML = '<div style="padding:15px;text-align:center;color:#b91c1c;font-size:.85rem;">Unable to load notifications.</div>';
+                return;
+            }
+
+            const notifications = data || [];
+            const unreadCount = notifications.filter(notification => !notification.is_read).length;
+            if (badge) {
+                badge.textContent = String(unreadCount);
+                badge.style.display = unreadCount ? 'flex' : 'none';
+            }
+
+            if (!notifications.length) {
+                list.innerHTML = '<div style="padding:15px;text-align:center;color:#64748b;font-size:.85rem;">No new notifications.</div>';
+                return;
+            }
+
+            list.innerHTML = notifications.map(notification => {
+                const createdAt = new Date(notification.created_at);
+                const timestamp = `${createdAt.toLocaleDateString()} ${createdAt.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}`;
+                return `
+                    <div class="notification-item ${notification.is_read ? '' : 'unread'}"
+                        data-notification-id="${escapeNotificationHtml(notification.id)}">
+                        <div class="notif-title">${escapeNotificationHtml(notification.title)}</div>
+                        <div class="notif-desc">${escapeNotificationHtml(notification.message)}</div>
+                        <div class="notif-time">${escapeNotificationHtml(timestamp)}</div>
+                    </div>`;
+            }).join('');
+        }
+
+        document.getElementById('notificationList')?.addEventListener('click', async event => {
+            const item = event.target.closest('.notification-item');
+            if (!item) return;
+
+            const notificationId = item.dataset.notificationId;
+            const { data: notification, error: notificationError } = await supabase
+                .from('notifications')
+                .select('title, message, created_at, is_read')
+                .eq('id', notificationId)
+                .single();
+            if (notificationError || !notification) {
+                console.error('Error loading notification details', notificationError);
+                return;
+            }
+
+            const { error } = await supabase
+                .from('notifications')
+                .update({ is_read: true })
+                .eq('id', notificationId);
+            if (error) console.error('Error marking notification as read', error);
+            item.classList.remove('unread');
+
+            document.getElementById('notificationDetailsModal')?.remove();
+            const modal = document.createElement('div');
+            modal.id = 'notificationDetailsModal';
+            modal.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;';
+            modal.innerHTML = '<div style="background:white;border-radius:12px;max-width:520px;width:100%;padding:24px;"><h2 style="margin:0 0 12px;color:#1E355F;"></h2><div style="white-space:pre-line;line-height:1.6;color:#334155;"></div><button type="button" style="margin-top:20px;width:100%;padding:10px;border:0;border-radius:6px;background:#1E355F;color:white;cursor:pointer;">Close</button></div>';
+            modal.querySelector('h2').textContent = notification.title || 'Notification';
+            modal.querySelector('div div').textContent = notification.message || '';
+            modal.querySelector('button').onclick = () => modal.remove();
+            document.body.appendChild(modal);
+            loadNotifications();
+        });
+
+        document.addEventListener('click', event => {
+            const dropdown = document.getElementById('notifDropdown');
+            const button = document.querySelector('.notification-btn');
+            if (dropdown && button && !dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', loadNotifications);
     </script>
 
     <!-- AI Bot Wrapper -->
