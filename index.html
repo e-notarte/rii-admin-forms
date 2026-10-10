@@ -685,6 +685,18 @@ body.dark-mode .ai-chat-footer input {
         });
     });
 </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeSubLink = document.querySelector('.sub-link.active');
+            if (activeSubLink) {
+                const parentSubLinks = activeSubLink.closest('.sub-links');
+                if (parentSubLinks) {
+                    parentSubLinks.classList.add('open');
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
