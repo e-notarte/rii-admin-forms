@@ -1800,7 +1800,7 @@
             return 'SUP-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 90000 + 10000);
         }
 
-        function submitRequest() {
+        async function submitRequest() {
             var dept = document.getElementById('deptSelect').value;
             if (!dept) { alert('Please select a department.'); return; }
 
@@ -1815,30 +1815,64 @@
                 var qty = inputs[1];
                 var pur = inputs[2];
                 if (!sel || !sel.value || !qty || !qty.value) { valid = false; return; }
-                items.push({ description: sel.value, qty: qty.value, purpose: pur ? pur.value : '' });
+                items.push({ description: sel.value.trim(), qty: Number(qty.value), purpose: pur ? pur.value.trim() : '' });
             });
 
             if (!valid) { alert('Please fill in all item descriptions and quantities.'); return; }
 
             var ref = generateRef();
-            var payload = {
-                reference: ref,
-                department: dept,
-                items: items,
-                timestamp: new Date().toISOString()
-            };
+            var button = document.getElementById('submitBtn');
+            var originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = 'Submitting...';
 
-            console.log('Supply Request Submitted:', payload);
+            try {
+                var supabaseModule = await import('./supabase-client.js');
+                var supabase = supabaseModule.supabase;
+                var authResult = await supabase.auth.getUser();
+                var userId = authResult.data.user ? authResult.data.user.id : null;
 
+                var requestResult = await supabase
+                    .from('supplies_requests')
+                    .insert([{
+                        user_id: userId,
+                        department: dept,
+                        reference_number: ref,
+                        status: 'Pending'
+                    }])
+                    .select('id')
+                    .single();
 
+                if (requestResult.error) throw requestResult.error;
 
-            document.getElementById('modalRef').textContent = ref;
-            document.getElementById('successModal').classList.add('show');
+                var itemRows = items.map(function (item) {
+                    return {
+                        request_id: requestResult.data.id,
+                        description: item.description,
+                        quantity: item.qty,
+                        purpose: item.purpose
+                    };
+                });
 
-            document.getElementById('requestBody').innerHTML = '';
-            document.getElementById('deptSelect').value = '';
-            rowCount = 0;
-            addRequestRow();
+                var itemsResult = await supabase
+                    .from('supplies_items')
+                    .insert(itemRows);
+
+                if (itemsResult.error) throw itemsResult.error;
+
+                document.getElementById('modalRef').textContent = ref;
+                document.getElementById('successModal').classList.add('show');
+                document.getElementById('requestBody').innerHTML = '';
+                document.getElementById('deptSelect').value = '';
+                rowCount = 0;
+                addRequestRow();
+            } catch (error) {
+                console.error('Error submitting supply request:', error);
+                alert('Unable to submit supply request: ' + (error.message || 'Unknown error.'));
+            } finally {
+                button.disabled = false;
+                button.textContent = originalText;
+            }
         }
 
         document.getElementById('addItemBtn').addEventListener('click', addRequestRow);
