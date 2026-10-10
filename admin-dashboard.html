@@ -2671,7 +2671,9 @@
       } catch (e) {
         alert('Error updating status: ' + e.message);
       }
-    }    window.renderFacilityTable = function () {
+    };
+
+    window.renderFacilityTable = function () {
       const tableBody = document.getElementById('facilityRequestsTableBody');
       if (!tableBody || !window._allRequests) return;
 
@@ -2687,28 +2689,27 @@
 
       tableBody.innerHTML = filtered.map(req => {
         const statusClass = req.status === 'Pending' ? '' : (req.status === 'Approved' ? 'active' : 'rejected');
-        return
+        return `
         <tr>
           <td class="user-cell">
-            <span class="user-name"> + (req.display_title || req.request_type) + </span>
-            <span class="user-email"> + req.requestor_name +  ( + req.company + )</span>
-            <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600; margin-top: 4px;"> + req.request_type + </span>
+            <span class="user-name">${req.display_title || req.request_type}</span>
+            <span class="user-email">${req.requestor_name || ''} (${req.company || ''})</span>
+            <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600; margin-top: 4px;">${req.request_type}</span>
           </td>
           <td>
-            <div> + req.request_date + </div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);"> + req.display_time + </div>
+            <div>${req.request_date || ''}</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">${req.display_time || ''}</div>
           </td>
-          <td> + req.department + </td>
-          <td> + req.display_pax + </td>
-          <td><span class="status-badge  + statusClass + "> + req.status + </span></td>
+          <td>${req.department || ''}</td>
+          <td>${req.display_pax || '-'}</td>
+          <td><span class="status-badge ${statusClass}">${req.status}</span></td>
           <td>
-            + (req.status === 'Pending' ?
-            <button onclick="updateRequestStatus(' + req.id + ', ' + req.source_table + ', 'Approved')" style="padding: 4px 8px; font-size: 0.75rem; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">Approve</button>
-            <button onclick="updateRequestStatus(' + req.id + ', ' + req.source_table + ', 'Rejected')" style="padding: 4px 8px; font-size: 0.75rem; background: #ef4444; color: white; margin-left: 5px; border: none; border-radius: 4px; cursor: pointer;">Reject</button>
-            : '-') +
+            ${req.status === 'Pending' ? `
+            <button onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Approved')" style="padding: 4px 8px; font-size: 0.75rem; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">Approve</button>
+            <button onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Rejected')" style="padding: 4px 8px; font-size: 0.75rem; background: #ef4444; color: white; margin-left: 5px; border: none; border-radius: 4px; cursor: pointer;">Reject</button>
+            ` : '-'}
           </td>
-        </tr>
-          ;
+        </tr>`;
       }).join('');
     };
 
@@ -2727,7 +2728,7 @@
       if (month === undefined) month = parseInt(document.getElementById('calMonth').value) || today.getMonth();
       if (year === undefined) year = parseInt(document.getElementById('calYear').value) || today.getFullYear();
 
-      calendarGrid.innerHTML = 
+      calendarGrid.innerHTML = `
             <div class="calendar-day-header">Sun</div>
             <div class="calendar-day-header">Mon</div>
             <div class="calendar-day-header">Tue</div>
@@ -2735,13 +2736,13 @@
             <div class="calendar-day-header">Thu</div>
             <div class="calendar-day-header">Fri</div>
             <div class="calendar-day-header">Sat</div>
-        ;
+        `;
 
       const firstDay = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
 
       for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += <div class="calendar-day empty"></div>;
+        calendarGrid.innerHTML += '<div class="calendar-day empty"></div>';
       }
 
       const approvedEvents = (window._allRequests || []).filter(req => req.status === 'Approved');
@@ -2755,14 +2756,14 @@
         const hasEvent = dayEvents.length > 0;
 
         let classStr = hasEvent ? "calendar-day reserved" : "calendar-day";
-        let labelStr = hasEvent ? <br><span style="font-size:0.75rem; color:white; margin-top:auto;">Occupied</span> : "";
+        let labelStr = hasEvent ? '<br><span style="font-size:0.75rem; color:white; margin-top:auto;">Occupied</span>' : "";
 
-          let clickHandler = hasEvent ? onclick="showAdminDayDetails(' + dateString + ')" : "";
-          if (hasEvent) {
-            classStr += " clickable";
-          calendarGrid.innerHTML += <div class=" + classStr + " style="cursor: pointer;"  + clickHandler + > + i + labelStr + </div>;
+        let clickHandler = hasEvent ? `onclick="showAdminDayDetails('${dateString}')"` : "";
+        if (hasEvent) {
+          classStr += " clickable";
+          calendarGrid.innerHTML += `<div class="${classStr}" style="cursor: pointer;" ${clickHandler}>${i}${labelStr}</div>`;
       } else {
-        calendarGrid.innerHTML += <div class=" + classStr + "> + i + labelStr + </div>;
+        calendarGrid.innerHTML += `<div class="${classStr}">${i}${labelStr}</div>`;
       }
     }
     };
@@ -2775,15 +2776,15 @@
       const dayEvents = (window._allRequests || []).filter(e => e.status === 'Approved' && e.request_date === dateStr);
       if (dayEvents.length === 0) return;
 
-      let html = <h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for  + dateStr + </h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">;
+      let html = `<h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for ${dateStr}</h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">`;
         dayEvents.forEach(e => {
             const start = e.start_time ? e.start_time.substring(0, 5) : '';
             const end = e.end_time ? e.end_time.substring(0, 5) : '';
             const title = e.display_title || e.request_type;
-            html += <li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
-                    <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i>  + start +  -  + end +  ( + e.request_type + )</div>
-                    <div style="color:var(--primary); font-weight:600;"> + title + </div>
-                </li>;
+            html += `<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
+                    <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i> ${start} - ${end} (${e.request_type})</div>
+                    <div style="color:var(--primary); font-weight:600;">${title}</div>
+                </li>`;
         });
         html += '</ul>';
 
@@ -2820,7 +2821,7 @@
       }
 
       const overlay = document.getElementById('dayDetailsOverlay');
-      popup.innerHTML = html + <button onclick="document.getElementById('dayDetailsPopup').style.display='none'; document.getElementById('dayDetailsOverlay').style.display='none';" style="margin-top:20px; width:100%; padding:10px 16px; background:var(--primary); color:white; font-weight:600; font-family:'Poppins',sans-serif; border:none; border-radius:6px; cursor:pointer; transition: opacity 0.2s;">Close</button>;
+      popup.innerHTML = html + `<button onclick="document.getElementById('dayDetailsPopup').style.display='none'; document.getElementById('dayDetailsOverlay').style.display='none';" style="margin-top:20px; width:100%; padding:10px 16px; background:var(--primary); color:white; font-weight:600; font-family:'Poppins',sans-serif; border:none; border-radius:6px; cursor:pointer; transition: opacity 0.2s;">Close</button>`;
 
       popup.style.display = 'block';
       overlay.style.display = 'block';
