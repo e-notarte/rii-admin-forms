@@ -574,6 +574,9 @@
 
     .nav-link,
     .nav-group-title {
+            cursor: pointer;
+            user-select: none;
+
       display: flex;
       align-items: center;
       gap: 15px;
@@ -1053,17 +1056,17 @@
 
       .nav-link.active,
       .sub-link.active {
-        color: #059669 !important;
+        color: var(--accent) !important;
         font-weight: 600;
       }
 
       .nav-link.active i {
-        color: #059669;
+        color: var(--accent);
       }
 
       .nav-link.active {
-        background: rgba(5, 150, 105, 0.05);
-        border-left-color: #059669;
+        background: rgba(252, 174, 22, 0.05);
+        border-left-color: var(--accent);
       }
 
       body.nav-open .sidebar .sub-links,
@@ -1594,7 +1597,7 @@ body.dark-mode .ai-chat-footer input {
       <a class="nav-link" href="vehicle-request.html"><i class="fa-solid fa-car"></i> Vehicle Request</a>
       <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
       <div class="nav-group">
-        <div class="nav-group-title"><i class="fa-solid fa-building"></i> Facility Request</div>
+        <div class="nav-group-title" onclick="this.nextElementSibling.classList.toggle('open')"><i class="fa-solid fa-building"></i> Facility Request <i class="fa-solid fa-chevron-down" style="margin-left:auto; font-size:0.8em;"></i></div>
         <div class="sub-links"><a class="sub-link" href="conference-request.html">Conference Room</a><a class="sub-link"
             href="function-request.html">Function Hall</a><a class="sub-link" href="parking-request.html">Parking
             Slot</a><a class="sub-link" href="zoom-request.html">Zoom Meeting</a><a class="sub-link"
@@ -1810,6 +1813,18 @@ body.dark-mode .ai-chat-footer input {
         });
     });
 </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeSubLink = document.querySelector('.sub-link.active');
+            if (activeSubLink) {
+                const parentSubLinks = activeSubLink.closest('.sub-links');
+                if (parentSubLinks) {
+                    parentSubLinks.classList.add('open');
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
