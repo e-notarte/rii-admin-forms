@@ -1810,12 +1810,20 @@
             var items = [];
             var valid = true;
             rows.forEach(function (row) {
-                var inputs = row.querySelectorAll('input');
-                var sel = inputs[0];
-                var qty = inputs[1];
-                var pur = inputs[2];
-                if (!sel || !sel.value || !qty || !qty.value) { valid = false; return; }
-                items.push({ description: sel.value.trim(), qty: Number(qty.value), purpose: pur ? pur.value.trim() : '' });
+                var description = row.querySelector('input[id^="desc-"]');
+                var quantity = row.querySelector('input[id^="qty-"]');
+                var purpose = row.querySelector('input[id^="purpose-"]');
+                var descriptionValue = description ? description.value.trim() : '';
+                var quantityValue = quantity ? Number(quantity.value) : NaN;
+                if (!descriptionValue || !Number.isFinite(quantityValue) || quantityValue < 1) {
+                    valid = false;
+                    return;
+                }
+                items.push({
+                    description: descriptionValue,
+                    qty: quantityValue,
+                    purpose: purpose ? purpose.value.trim() : ''
+                });
             });
 
             if (!valid) { alert('Please fill in all item descriptions and quantities.'); return; }
