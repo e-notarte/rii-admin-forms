@@ -1924,7 +1924,7 @@
           const unreadClass = n.is_read ? '' : 'unread';
           const dateStr = new Date(n.created_at).toLocaleDateString();
           const timeStr = new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          html += '<div class="notification-item ' + unreadClass + '" onclick="markAsRead(\'' + n.id + '\', \'' + n.request_type + '\')">';
+          html += '<div class="notification-item ' + unreadClass + '" onclick="showNotificationDetails(\'' + n.id + '\')">';
           html += '<div class="notif-title">' + n.title + '</div>';
           html += '<div class="notif-desc">' + n.message + '</div>';
           html += '<div class="notif-time">' + dateStr + ' ' + timeStr + '</div>';
@@ -1934,8 +1934,47 @@
       }
     }
 
-    window.markAsRead = async function (id, type) {
-      await supabase.from('notifications').update({ is_read: true }).eq('id', id);
+    function escapeNotificationHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[character]));
+    }
+
+    window.showNotificationDetails = async function (id) {
+      const { data: notification, error } = await supabase
+        .from('notifications')
+        .select('title, message, created_at, is_read')
+        .eq('id', id)
+        .single();
+
+      if (error || !notification) {
+        console.error('Error loading notification details', error);
+        return;
+      }
+
+      if (!notification.is_read) {
+        await supabase.from('notifications').update({ is_read: true }).eq('id', id);
+      }
+
+      document.getElementById('notificationDetailsModal')?.remove();
+      const date = new Date(notification.created_at);
+      const dateText = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      const modal = document.createElement('div');
+      modal.id = 'notificationDetailsModal';
+      modal.innerHTML = `
+        <div style="position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;">
+          <div style="background:white;border-radius:12px;max-width:520px;width:100%;padding:24px;box-shadow:0 20px 50px rgba(15,23,42,.25);">
+            <h2 style="margin:0 0 6px;color:#1E355F;font-size:1.1rem;">${escapeNotificationHtml(notification.title)}</h2>
+            <div style="color:#94a3b8;font-size:.75rem;margin-bottom:16px;">${escapeNotificationHtml(dateText)}</div>
+            <div style="white-space:pre-line;line-height:1.6;color:#334155;font-size:.9rem;">${escapeNotificationHtml(notification.message)}</div>
+            <button type="button" onclick="this.closest('#notificationDetailsModal').remove()" style="margin-top:20px;width:100%;padding:10px;border:0;border-radius:6px;background:#1E355F;color:white;font-weight:600;cursor:pointer;">Close</button>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
       loadNotifications();
     };
 
