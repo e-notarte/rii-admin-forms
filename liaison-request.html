@@ -382,8 +382,8 @@
 
     .nav-link,
     .nav-group-title {
-            cursor: pointer;
-            user-select: none;
+      cursor: pointer;
+      user-select: none;
 
       display: flex;
       align-items: center;
@@ -1381,7 +1381,8 @@
   <button class="mobile-account-button" type="button" aria-label="Open account menu"
     onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i
       class="fa-solid fa-user"></i><span>Account</span></button>
-  <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
+  <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
+        class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
       title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
       title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button><button type="button"
       title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
@@ -1390,7 +1391,8 @@
     <div class="brand"><img
         src="https://riibuilders.b-cdn.net/wp-content/uploads/2025/09/cropped-RII-Logo-site-icon-192x192.png"
         alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
-    <div class="header-right"><a class="switch-admin" href="admin-dashboard.html"><i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button class="icon-btn" type="button"
+    <div class="header-right"><a class="switch-admin" href="admin-dashboard.html"><i
+          class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button class="icon-btn" type="button"
         title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
       <div class="notification-container" style="position: relative;">
         <button class="icon-btn notification-btn" type="button" title="Notifications"
@@ -1430,7 +1432,9 @@
       <a class="nav-link" href="vehicle-request.html"><i class="fa-solid fa-car"></i> Vehicle Request</a>
       <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
       <div class="nav-group">
-        <div class="nav-group-title" onclick="this.nextElementSibling.classList.toggle('open')"><i class="fa-solid fa-building"></i> Facility Request <i class="fa-solid fa-chevron-down" style="margin-left:auto; font-size:0.8em;"></i></div>
+        <div class="nav-group-title" onclick="this.nextElementSibling.classList.toggle('open')"><i
+            class="fa-solid fa-building"></i> Facility Request <i class="fa-solid fa-chevron-down"
+            style="margin-left:auto; font-size:0.8em;"></i></div>
         <div class="sub-links"><a class="sub-link" href="conference-request.html">Conference Room</a><a class="sub-link"
             href="function-request.html">Function Hall</a><a class="sub-link" href="parking-request.html">Parking
             Slot</a><a class="sub-link" href="zoom-request.html">Zoom Meeting</a><a class="sub-link"
@@ -1527,22 +1531,22 @@
 
         if (error) throw error;
 
-          // Insert notification
-          try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-              await supabase.from('notifications').insert([{
-                user_id: user.id,
-                title: 'Request Submitted',
-                message: 'Your Liaison request has been successfully submitted and is pending approval.',
-                request_type: 'Liaison',
-                is_read: false
-              }]);
-              if (typeof loadNotifications === 'function') {
-                loadNotifications();
-              }
+        // Insert notification
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            await supabase.from('notifications').insert([{
+              user_id: user.id,
+              title: 'Request Submitted',
+              message: 'Your Liaison request has been successfully submitted and is pending approval.',
+              request_type: 'Liaison',
+              is_read: false
+            }]);
+            if (typeof loadNotifications === 'function') {
+              loadNotifications();
             }
-          } catch(e) { console.error('Notification error', e); }
+          }
+        } catch (e) { console.error('Notification error', e); }
 
         // success
         const refId = data[0].id.split('-')[0].toUpperCase();
@@ -1558,7 +1562,7 @@
       }
     });
   </script>
-  <footer class="footer"><span>Â© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
 
   <script>
@@ -1734,17 +1738,17 @@
     });
   </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const activeSubLink = document.querySelector('.sub-link.active');
-            if (activeSubLink) {
-                const parentSubLinks = activeSubLink.closest('.sub-links');
-                if (parentSubLinks) {
-                    parentSubLinks.classList.add('open');
-                }
-            }
-        });
-    </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const activeSubLink = document.querySelector('.sub-link.active');
+      if (activeSubLink) {
+        const parentSubLinks = activeSubLink.closest('.sub-links');
+        if (parentSubLinks) {
+          parentSubLinks.classList.add('open');
+        }
+      }
+    });
+  </script>
 </body>
 
 </html>
