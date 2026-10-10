@@ -188,6 +188,93 @@
       text-align: center;
     }
 
+    .request-dashboard {
+      display: none;
+    }
+
+    .request-dashboard.active {
+      display: block;
+    }
+
+    .request-dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .request-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .request-filter button {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 7px 13px;
+      cursor: pointer;
+      font: inherit;
+      font-size: .78rem;
+    }
+
+    .request-filter button.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .request-table-wrap {
+      overflow-x: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(15,23,42,.06);
+    }
+
+    .request-table {
+      width: 100%;
+      min-width: 850px;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: .82rem;
+    }
+
+    .request-table th {
+      background: var(--primary);
+      color: white;
+      padding: 11px;
+      white-space: nowrap;
+    }
+
+    .request-table td {
+      padding: 11px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .request-status {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 600;
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .request-status.approved {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .request-status.rejected {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
     .welcome-icon {
       font-size: 4rem;
       color: var(--accent, #FCAE16);
@@ -1747,7 +1834,7 @@
     </div>
     <div class="nav-label">User Accounts</div>
     <nav>
-      <a class="nav-link active" href="welcome.html"><i class="fa-solid fa-chart-pie"></i> User Dashboard</a>
+      <a class="nav-link active" href="welcome.html?view=requests"><i class="fa-solid fa-chart-pie"></i> User Dashboard</a>
       <a class="nav-link" href="vehicle-request.html"><i class="fa-solid fa-car"></i> Vehicle Request</a>
       <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
       <div class="nav-group">
@@ -1766,7 +1853,7 @@
     </nav>
   </aside>
   <main class="main-content">
-    <div class="welcome-container">
+    <div class="welcome-container" id="welcomePanel">
       <div class="welcome-card">
         <i class="fa-solid fa-handshake welcome-icon"></i>
         <h1>Welcome to the User Dashboard</h1>
@@ -1808,6 +1895,33 @@
         </button>
       </div>
     </div>
+    <section class="request-dashboard" id="requestDashboard">
+      <div class="request-dashboard-header">
+        <h1 style="color:var(--primary); margin:0;"><i class="fa-solid fa-list-check"></i> My Requests</h1>
+        <div class="request-filter" id="requestFilter">
+          <button class="active" data-filter="All">All</button>
+          <button data-filter="Pending">Pending</button>
+          <button data-filter="Approved">Approved</button>
+          <button data-filter="Rejected">Rejected</button>
+        </div>
+      </div>
+      <div class="request-table-wrap">
+        <table class="request-table">
+          <thead>
+            <tr>
+              <th>Request Type</th>
+              <th>Reference / Details</th>
+              <th>Date</th>
+              <th>Submitted</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="myRequestsTableBody">
+            <tr><td colspan="5" style="text-align:center;">Loading your requests...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
   <div class="modal" id="modal">
     <div class="modal-box">
@@ -1816,7 +1930,15 @@
         onclick="modal.classList.remove('open')">Close</button>
     </div>
   </div>
-  <script>var modal = document.getElementById('modal'); document.getElementById('requestForm').addEventListener('submit', function (e) { e.preventDefault(); var f = new FormData(e.target), r = JSON.parse(localStorage.getItem('fleetRequests') || '[]'), id = 'REQ-' + Math.floor(Math.random() * 900 + 100); r.push({ id: id, requestor: f.get('requestor'), destination: f.get('destination'), purpose: f.get('purpose'), scheduleDate: f.get('date'), scheduleTime: f.get('startTime') + ' - ' + f.get('endTime'), driver: '', car: '', status: 'pending', requestType: 'Vehicle Request', company: f.get('company'), department: f.get('department'), passengers: f.get('passengers') }); localStorage.setItem('fleetRequests', JSON.stringify(r)); document.getElementById('reference').textContent = id; modal.classList.add('open'); e.target.reset() })</script>
+  <script>
+    var modal = document.getElementById('modal');
+    var legacyRequestForm = document.getElementById('requestForm');
+    if (legacyRequestForm) {
+      legacyRequestForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+      });
+    }
+  </script>
   <footer class="footer"><span>� 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
   <script>
@@ -1895,6 +2017,128 @@
   </script>
   <script type="module">
     import { supabase } from './supabase-client.js';
+
+    let userRequests = [];
+    let userRequestFilter = 'All';
+
+    function requestStatus(value) {
+      const status = String(value || 'Pending').toLowerCase();
+      if (status === 'approved') return 'Approved';
+      if (status === 'rejected') return 'Rejected';
+      return 'Pending';
+    }
+
+    function escapeRequestHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[character]));
+    }
+
+    function renderUserRequests() {
+      const body = document.getElementById('myRequestsTableBody');
+      if (!body) return;
+
+      const requests = userRequestFilter === 'All'
+        ? userRequests
+        : userRequests.filter(request => requestStatus(request.status) === userRequestFilter);
+
+      if (!requests.length) {
+        body.innerHTML = '<tr><td colspan="5" style="text-align:center;">No requests found.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = requests.map(request => {
+        const status = requestStatus(request.status);
+        const statusClass = status.toLowerCase();
+        const submitted = request.created_at ? new Date(request.created_at).toLocaleString() : '-';
+        return `
+          <tr>
+            <td><strong>${escapeRequestHtml(request.type)}</strong></td>
+            <td>${escapeRequestHtml(request.details)}</td>
+            <td>${escapeRequestHtml(request.date || '-')}</td>
+            <td>${escapeRequestHtml(submitted)}</td>
+            <td><span class="request-status ${statusClass}">${status}</span></td>
+          </tr>`;
+      }).join('');
+    }
+
+    async function loadUserRequests() {
+      const body = document.getElementById('myRequestsTableBody');
+      if (!body) return;
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        body.innerHTML = '<tr><td colspan="5" style="text-align:center;">Please sign in to view your requests.</td></tr>';
+        return;
+      }
+
+      const sources = [
+        { table: 'vehicle_requests', type: 'Vehicle Request', details: request => `${request.destination || 'No destination'} — ${request.purpose || 'No purpose'}` },
+        { table: 'driver_requests', type: 'Driver Request', details: request => `${request.destination || request.purpose || 'Driver service request'}` },
+        { table: 'conference_requests', type: 'Conference Room', details: request => request.title || request.room || 'Conference reservation' },
+        { table: 'function_requests', type: 'Function Hall', details: request => request.title || request.event || 'Function hall reservation' },
+        { table: 'parking_requests', type: 'Parking Slot', details: request => `Visitor: ${request.visitor || 'Not specified'}${request.plate ? ` (${request.plate})` : ''}` },
+        { table: 'zoom_requests', type: 'Zoom Meeting', details: request => request.title || request.purpose || 'Zoom meeting' },
+        { table: 'teams_requests', type: 'MS Teams', details: request => request.title || request.purpose || 'MS Teams meeting' },
+        { table: 'liaison_requests', type: 'Liaison', details: request => `${request.destination || 'No destination'} — ${request.documents || 'No documents/items'}` }
+      ];
+
+      const responses = await Promise.all(sources.map(source =>
+        supabase.from(source.table).select('*').eq('user_id', user.id)
+          .then(result => ({ ...result, source }))
+      ));
+
+      userRequests = responses
+        .filter(result => {
+          if (result.error) {
+            console.error(`Error loading ${result.source.table}`, result.error);
+            return false;
+          }
+          return true;
+        })
+        .flatMap(result => (result.data || []).map(request => ({
+          ...request,
+          type: result.source.type,
+          details: result.source.details(request)
+        })));
+
+      const suppliesResult = await supabase
+        .from('supplies_requests')
+        .select('*, supplies_items(*)')
+        .eq('user_id', user.id);
+      if (suppliesResult.error) {
+        console.error('Error loading supplies requests', suppliesResult.error);
+      } else {
+        userRequests.push(...(suppliesResult.data || []).map(request => ({
+          ...request,
+          type: 'Supplies',
+          details: (request.supplies_items || []).map(item => `${item.description} × ${item.quantity}`).join(', ') || 'Supplies request',
+          date: request.request_date
+        })));
+      }
+
+      userRequests.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+      renderUserRequests();
+    }
+
+    function showUserRequestDashboard() {
+      document.getElementById('welcomePanel')?.style.setProperty('display', 'none');
+      document.getElementById('requestDashboard')?.classList.add('active');
+      loadUserRequests();
+    }
+
+    document.getElementById('requestFilter')?.addEventListener('click', event => {
+      const button = event.target.closest('button[data-filter]');
+      if (!button) return;
+      userRequestFilter = button.dataset.filter;
+      document.querySelectorAll('#requestFilter button').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      renderUserRequests();
+    });
 
     async function loadNotifications() {
       const { data: { user } } = await supabase.auth.getUser();
@@ -1981,6 +2225,9 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadNotifications();
+      if (new URLSearchParams(window.location.search).get('view') === 'requests') {
+        showUserRequestDashboard();
+      }
 
       document.addEventListener('click', (e) => {
         const dropdown = document.getElementById('notifDropdown');
