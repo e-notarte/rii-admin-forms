@@ -2573,6 +2573,18 @@
 
         <div class="dispatch-layout">
           <div class="data-card dispatch-card">
+            <div class="toolbar" style="padding: 0 0 16px;">
+              <div class="filter-pills" id="vehicleDispatchFilterPills">
+                <div class="pill active" data-filter="Pending"
+                  onclick="filterVehicleDispatch('Pending', this)">Pending</div>
+                <div class="pill" data-filter="Approved"
+                  onclick="filterVehicleDispatch('Approved', this)">Approved</div>
+                <div class="pill" data-filter="Rejected"
+                  onclick="filterVehicleDispatch('Rejected', this)">Rejected</div>
+                <div class="pill" data-filter="All"
+                  onclick="filterVehicleDispatch('All', this)">All</div>
+              </div>
+            </div>
             <div class="dispatch-table-wrap">
               <table class="dispatch-table">
                 <thead>
@@ -2786,6 +2798,7 @@
     ];
 
     let vehicleRequests = [];
+    let vehicleDispatchFilter = 'Pending';
 
     const dashboardAnalytics = [
       { table: 'vehicle_requests', elementId: 'analyticsVehicleCount' },
@@ -2865,13 +2878,19 @@
       const tableBody = document.getElementById('dispatchTableBody');
       if (!tableBody) return;
 
-      if (vehicleRequests.length === 0) {
+      const filteredRequests = vehicleDispatchFilter === 'All'
+        ? vehicleRequests
+        : vehicleRequests.filter(request =>
+          String(request.status || 'Pending').toLowerCase() === vehicleDispatchFilter.toLowerCase()
+        );
+
+      if (filteredRequests.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No vehicle requests found.</td></tr>';
         return;
       }
 
-      tableBody.innerHTML = vehicleRequests.map(request => {
-        const status = request.status || 'Pending';
+      tableBody.innerHTML = filteredRequests.map(request => {
+        const status = String(request.status || 'Pending').replace(/^./, character => character.toUpperCase());
         const rowId = escapeDispatchHtml(request.id);
         return `
           <tr>
@@ -2905,6 +2924,15 @@
       }).join('');
     }
 
+    window.filterVehicleDispatch = function (filter, element) {
+      vehicleDispatchFilter = filter;
+      document.querySelectorAll('#vehicleDispatchFilterPills .pill').forEach(pill => {
+        pill.classList.remove('active');
+      });
+      if (element) element.classList.add('active');
+      renderVehicleDispatchTable();
+    };
+
     function renderVehicleSchedule(dateValue) {
       const header = document.getElementById('dispatchScheduleHeader');
       const content = document.getElementById('dispatchScheduleContent');
@@ -2917,7 +2945,7 @@
         : date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
       const approvedRequests = vehicleRequests.filter(request =>
-        request.status === 'Approved' && request.request_date === selectedDate
+        String(request.status || '').toLowerCase() === 'approved' && request.request_date === selectedDate
       );
 
       if (approvedRequests.length === 0) {
@@ -2991,6 +3019,7 @@
       const request = vehicleRequests.find(item => item.id === requestId);
       if (request) Object.assign(request, updates);
       button.textContent = 'Saved';
+      renderVehicleDispatchTable();
       renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
       setTimeout(() => {
         button.disabled = false;
