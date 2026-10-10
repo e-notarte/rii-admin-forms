@@ -2699,7 +2699,7 @@
               <thead>
                 <tr>
                   <th>Timestamp</th>
-                  <th>Requestor Email</th>
+                  <th>Requestor Name</th>
                   <th>Description</th>
                   <th>Destination / Address</th>
                   <th>Department</th>
@@ -3112,13 +3112,13 @@
         const status = liaisonStatus(task.status);
         const taskId = escapeDispatchHtml(task.id);
         const created = task.created_at ? new Date(task.created_at).toLocaleString() : '-';
-        const email = task.requestor_email || task.email || task.user_email || '-';
+        const requestorName = task.requestor_name || '-';
         const plannedDate = task.completion_date || task.request_date || '-';
         const priority = task.priority_level || 'Medium';
         return `
           <tr>
             <td class="liaison-date">${escapeDispatchHtml(created)}</td>
-            <td>${escapeDispatchHtml(email)}</td>
+            <td>${escapeDispatchHtml(requestorName)}</td>
             <td class="liaison-description">${escapeDispatchHtml(task.documents || task.description || '-')}</td>
             <td class="liaison-description">${escapeDispatchHtml(task.destination || '-')}</td>
             <td>${escapeDispatchHtml(task.department || '-')}</td>
