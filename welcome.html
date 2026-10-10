@@ -108,6 +108,20 @@
         z-index: 900;
       }
 
+      body.request-view .sidebar {
+        display: block;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        height: calc(100vh - 64px);
+        z-index: 900;
+        overflow-y: auto;
+      }
+
+      body.request-view main {
+        margin-left: 260px;
+      }
+
       body.nav-open .sidebar nav {
         display: block;
       }
@@ -561,6 +575,43 @@
 
       .form-card {
         padding: 20px;
+      }
+    }
+
+    body.request-view .sidebar {
+      display: block !important;
+      position: fixed !important;
+      top: 64px !important;
+      left: 0 !important;
+      width: 260px !important;
+      height: calc(100vh - 64px) !important;
+      margin: 0 !important;
+      overflow-y: auto !important;
+      z-index: 900 !important;
+    }
+
+    body.request-view main {
+      margin-left: 260px;
+    }
+
+    .request-dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      body.request-view .sidebar {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        margin-top: 64px !important;
+      }
+
+      body.request-view main {
+        margin-left: 0;
       }
     }
   </style>
@@ -1170,6 +1221,53 @@
         color: #6b7280;
         font-size: 0.85rem;
         border: none;
+      }
+    }
+
+    body.request-view .sidebar {
+      display: block !important;
+      transform: translateX(0) !important;
+    }
+
+    body.request-view .main-content {
+      margin-left: 260px !important;
+      display: block;
+      align-items: initial;
+      justify-content: initial;
+      padding-top: 98px;
+    }
+
+    body.request-view .sidebar nav {
+      display: block !important;
+      min-width: 0 !important;
+      white-space: normal !important;
+    }
+
+    body.request-view .sidebar .nav-link,
+    body.request-view .sidebar .nav-group-title {
+      display: flex;
+      width: 100%;
+    }
+
+    body.request-view .sidebar .sub-links {
+      display: none;
+    }
+
+    body.request-view .sidebar .sub-links.open {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      body.request-view .sidebar {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        margin-top: 64px !important;
+      }
+
+      body.request-view .main-content {
+        margin-left: 0 !important;
+        padding: 34px 16px 70px !important;
       }
     }
   </style>
@@ -2126,6 +2224,7 @@
     }
 
     function showUserRequestDashboard() {
+      document.body.classList.add('request-view');
       document.getElementById('welcomePanel')?.style.setProperty('display', 'none');
       document.getElementById('requestDashboard')?.classList.add('active');
       loadUserRequests();
