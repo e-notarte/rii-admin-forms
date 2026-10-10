@@ -1862,7 +1862,143 @@
       }
     });
   </script>
+  <!-- AI Bot Logic and Styles -->
+  <style id="ai-bot-logic-style">
+    .ai-chat-body {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .ai-msg-bot {
+        align-self: flex-start;
+        background: white;
+        padding: 10px 15px;
+        border-radius: 15px;
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        max-width: 85%;
+        font-size: 0.85rem;
+        color: #2d3748;
+        line-height: 1.4;
+    }
+    .ai-msg-bot strong {
+        color: #1E355F;
+        display: block;
+        margin-bottom: 3px;
+    }
+    .ai-msg-user {
+        align-self: flex-end;
+        background: #1E355F;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 15px;
+        border-bottom-right-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        max-width: 85%;
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    .typing-indicator {
+        align-self: flex-start;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        font-style: italic;
+        padding: 5px 15px;
+    }
+    body.dark-mode .ai-msg-bot {
+        background: #334155;
+        color: #f8fafc;
+    }
+    body.dark-mode .ai-msg-bot strong {
+        color: #FCAE16;
+    }
+  </style>
+  <script id="ai-bot-logic-script">
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatWrappers = document.querySelectorAll('.ai-chat-wrapper, .ai-bot-wrapper');
+        
+        chatWrappers.forEach(wrapper => {
+            const chatBody = wrapper.querySelector('.ai-chat-body');
+            const chatInput = wrapper.querySelector('.ai-chat-footer input');
+            const sendBtn = wrapper.querySelector('.ai-chat-footer button');
+            
+            if (!chatBody || !chatInput || !sendBtn) return;
+            
+            // Format existing default message to use the new class
+            const defaultMsg = chatBody.querySelector('p');
+            if (defaultMsg && !defaultMsg.classList.contains('ai-msg-bot')) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'ai-msg-bot';
+                msgDiv.innerHTML = defaultMsg.innerHTML;
+                chatBody.innerHTML = '';
+                chatBody.appendChild(msgDiv);
+            }
+
+            function appendMessage(sender, text) {
+                const msg = document.createElement('div');
+                if (sender === 'user') {
+                    msg.className = 'ai-msg-user';
+                    msg.textContent = text;
+                } else {
+                    msg.className = 'ai-msg-bot';
+                    msg.innerHTML = '<strong>Mae:</strong> ' + text;
+                }
+                chatBody.appendChild(msg);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+
+            function showTyping() {
+                const typing = document.createElement('div');
+                typing.className = 'typing-indicator';
+                typing.textContent = 'Mae is typing...';
+                chatBody.appendChild(typing);
+                chatBody.scrollTop = chatBody.scrollHeight;
+                return typing;
+            }
+
+            function handleSend() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                
+                // Add user message
+                appendMessage('user', text);
+                chatInput.value = '';
+                
+                // Show typing indicator
+                const typing = showTyping();
+                
+                // Simulate delay
+                setTimeout(() => {
+                    typing.remove();
+                    
+                    const lowerText = text.toLowerCase();
+                    let reply = "I'm not quite sure how to help with that. Try checking the sidebar for our request forms!";
+                    
+                    if (lowerText.includes('supply') || lowerText.includes('inventory') || lowerText.includes('item')) {
+                        reply = "You can view available supplies and make requests on the Supplies Dashboard! Make sure you are logged in to see the live inventory.";
+                    } else if (lowerText.includes('vehicle') || lowerText.includes('car') || lowerText.includes('driver')) {
+                        reply = "Need a ride or a driver? Check out the Vehicle Request and Driver Request forms on the left sidebar.";
+                    } else if (lowerText.includes('facility') || lowerText.includes('room') || lowerText.includes('meeting') || lowerText.includes('zoom')) {
+                        reply = "You can book Conference Rooms, Function Halls, Parking, and Zoom Meetings under the 'Facility Request' dropdown menu!";
+                    } else if (lowerText.includes('hello') || lowerText.includes('hi') || lowerText.includes('hey')) {
+                        reply = "Hello there! Let me know if you need help finding a form or checking your requests.";
+                    } else if (lowerText.includes('status') || lowerText.includes('pending') || lowerText.includes('approve')) {
+                        reply = "Your pending requests will be reviewed by the admin team soon. You will receive an email once it's approved!";
+                    }
+                    
+                    appendMessage('bot', reply);
+                }, 1200);
+            }
+
+            sendBtn.addEventListener('click', handleSend);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSend();
+            });
+        });
+    });
+  </script>
 </body>
 
 </html>
+
 
