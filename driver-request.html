@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -879,11 +879,7 @@
         color: #9ca3af;
       }
 
-      .nav-link.active,
-      .sub-link.active {
-        color: var(--accent) !important;
-        font-weight: 600;
-      }
+      
 
       .nav-link.active i {
         color: var(--accent);
@@ -1377,6 +1373,22 @@
       color: var(--text-main);
     }
   </style>
+  <style id="pretty-active-design">
+    .nav-link.active,
+    .sub-link.active {
+      color: var(--accent) !important;
+      font-weight: 600 !important;
+      background: rgba(252, 174, 22, 0.05) !important;
+      border-left: 3px solid var(--accent) !important;
+    }
+    .nav-link.active i,
+    .sub-link.active i {
+      color: var(--accent) !important;
+    }
+    .sub-link.active {
+      padding-left: 30px !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -1555,7 +1567,7 @@
       }
     });
   </script>
-  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  <footer class="footer"><span>� 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
