@@ -2099,6 +2099,187 @@
         grid-template-columns: 1fr;
       }
     }
+
+    .dispatch-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2.5fr) minmax(320px, 1fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .dispatch-card {
+      padding: 20px;
+    }
+
+    .dispatch-table-wrap {
+      overflow-x: auto;
+    }
+
+    .dispatch-table {
+      min-width: 1000px;
+    }
+
+    .dispatch-table th {
+      background: var(--primary);
+      color: white;
+      text-transform: none;
+      letter-spacing: normal;
+      white-space: nowrap;
+    }
+
+    .dispatch-table th:first-child {
+      border-radius: 8px 0 0 0;
+    }
+
+    .dispatch-table th:last-child {
+      border-radius: 0 8px 0 0;
+    }
+
+    .dispatch-table td {
+      vertical-align: middle;
+    }
+
+    .dispatch-requestor {
+      min-width: 125px;
+      font-weight: 600;
+    }
+
+    .dispatch-destination {
+      max-width: 220px;
+      min-width: 180px;
+      line-height: 1.35;
+    }
+
+    .dispatch-purpose {
+      min-width: 150px;
+    }
+
+    .dispatch-schedule {
+      min-width: 110px;
+      white-space: nowrap;
+    }
+
+    .dispatch-muted {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    .dispatch-select {
+      min-width: 120px;
+      width: 100%;
+      padding: 7px 28px 7px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background-color: white;
+      font: inherit;
+      font-size: 0.8rem;
+    }
+
+    .dispatch-save {
+      padding: 7px 12px;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dispatch-save:hover {
+      background: #152748;
+    }
+
+    .schedule-controls {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .schedule-controls label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .schedule-controls input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font: inherit;
+    }
+
+    .schedule-controls button {
+      padding: 9px 12px;
+      border: none;
+      border-radius: 6px;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .schedule-header {
+      padding: 12px;
+      border-radius: 8px 8px 0 0;
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .schedule-content {
+      min-height: 300px;
+      padding: 20px 14px;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background: #f8fafc;
+    }
+
+    .schedule-empty {
+      display: flex;
+      min-height: 260px;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .schedule-item {
+      padding: 12px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      background: white;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+
+    .schedule-item strong {
+      display: block;
+      color: var(--primary);
+    }
+
+    .schedule-item span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      margin-top: 3px;
+    }
+
+    @media (max-width: 1200px) {
+      .dispatch-layout {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -2390,91 +2571,49 @@
         </div>
       </div>
 
-      <!-- VEHICLE LIST VIEW -->
+      <!-- VEHICLE DISPATCH BOARD VIEW -->
       <div id="view-vehicle" class="view-section">
         <div class="page-header">
-          <h1><i class="fa-solid fa-car"></i> Vehicle List</h1>
-          <button class="btn-primary"><i class="fa-solid fa-plus"></i> Add New Vehicle</button>
+          <h1><i class="fa-solid fa-car"></i> Vehicle Dispatch Board</h1>
         </div>
 
-        <div class="admin-facility-layout">
-          <div class="data-card">
-            <div class="toolbar">
-              <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search vehicle or driver name...">
-              </div>
-              <div class="filter-pills">
-                <div class="pill active">Active Vehicles</div>
-                <div class="pill">Under Maintenance</div>
-                <div class="pill">All Vehicles</div>
-              </div>
-            </div>
-
-            <table>
-              <thead>
-                <tr>
-                  <th>Vehicle Details</th>
-                  <th>Plate Number</th>
-                  <th>Vehicle Type</th>
-                  <th>Assigned Driver</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="user-cell">
-                    <span class="user-name">Toyota Innova</span>
-                    <span class="user-email">2024 Model</span>
-                  </td>
-                  <td>NHM - 3386</td>
-                  <td>SUV</td>
-                  <td>Emmanuel Notarte</td>
-                  <td><span class="status-badge active">Available</span></td>
-                </tr>
-                <tr>
-                  <td class="user-cell">
-                    <span class="user-name">Nissan Urvan</span>
-                    <span class="user-email">Van - 2024 Model</span>
-                  </td>
-                  <td>NKI - 9501</td>
-                  <td>Utility Vehicle</td>
-                  <td>Emmanuel Notarte</td>
-                  <td><span class="status-badge">Dispatched</span></td>
-                </tr>
-                <tr>
-                  <td class="user-cell">
-                    <span class="user-name">Honda PCX</span>
-                    <span class="user-email">Motorcycle - 2024 Model</span>
-                  </td>
-                  <td>983HXK</td>
-                  <td>Motorcycle</td>
-                  <td>Emmanuel Notarte</td>
-                  <td><span class="status-badge active">Available</span></td>
-                </tr>
-                <tr>
-                  <td class="user-cell">
-                    <span class="user-name">Toyota Fortuner</span>
-                    <span class="user-email">MPV - 2023 Model</span>
-                  </td>
-                  <td>WIR - 316</td>
-                  <td>MPV</td>
-                  <td>Emmanuel Notarte</td>
-                  <td><span class="status-badge active">Available</span></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="pagination-bar">
-              <div>Showing 1 to 4 of 4 results</div>
-              <div class="page-controls">
-                <button class="page-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                <span>Page 1 of 1</span>
-                <button class="page-btn"><i class="fa-solid fa-chevron-right"></i></button>
-              </div>
+        <div class="dispatch-layout">
+          <div class="data-card dispatch-card">
+            <div class="dispatch-table-wrap">
+              <table class="dispatch-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Requestor</th>
+                    <th>Destination</th>
+                    <th>Purpose</th>
+                    <th>Schedule</th>
+                    <th>Driver</th>
+                    <th>Car</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="dispatchTableBody">
+                  <tr>
+                    <td colspan="9" style="text-align: center;">Loading vehicle requests...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
+          <div class="data-card dispatch-card">
+            <h2 style="margin: 0 0 16px; color: var(--primary); font-size: 1.1rem;">Approved Schedule</h2>
+            <div class="schedule-controls">
+              <label>Date
+                <input type="date" id="dispatchScheduleDate">
+              </label>
+              <button type="button" id="dispatchTodayButton">Today</button>
+            </div>
+            <div class="schedule-header" id="dispatchScheduleHeader"></div>
+            <div class="schedule-content" id="dispatchScheduleContent"></div>
+          </div>
         </div>
       </div>
 
@@ -2640,6 +2779,190 @@
         tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error loading requests.</td></tr>';
       }
     }
+
+    const dispatchDrivers = [
+      { id: 'd1', name: 'Randy Sayon' },
+      { id: 'd2', name: 'Hilarion Garcia' },
+      { id: 'd3', name: 'Ryan Guna' }
+    ];
+
+    const dispatchCars = [
+      { id: 'c1', name: 'Toyota Innova - NHM-3386' },
+      { id: 'c2', name: 'Nissan Urvan - NKI-95017' }
+    ];
+
+    let vehicleRequests = [];
+
+    function escapeDispatchHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[character]));
+    }
+
+    function dispatchRequestId(request) {
+      return `REQ-${String(request.id || '').replace(/-/g, '').slice(0, 2).toUpperCase()}`;
+    }
+
+    function formatDispatchDate(dateValue) {
+      if (!dateValue) return '-';
+      const date = new Date(`${dateValue}T00:00:00`);
+      if (Number.isNaN(date.getTime())) return escapeDispatchHtml(dateValue);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function formatDispatchTime(startTime, endTime) {
+      const formatTime = value => value ? String(value).slice(0, 5) : '';
+      const start = formatTime(startTime);
+      const end = formatTime(endTime);
+      return start || end ? `${start} - ${end}` : '-';
+    }
+
+    function dispatchOptions(items, selectedValue) {
+      return `<option value="">Select</option>${items.map(item =>
+        `<option value="${escapeDispatchHtml(item.id)}" ${selectedValue === item.id ? 'selected' : ''}>${escapeDispatchHtml(item.name)}</option>`
+      ).join('')}`;
+    }
+
+    function renderVehicleDispatchTable() {
+      const tableBody = document.getElementById('dispatchTableBody');
+      if (!tableBody) return;
+
+      if (vehicleRequests.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No vehicle requests found.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = vehicleRequests.map(request => {
+        const status = request.status || 'Pending';
+        const rowId = escapeDispatchHtml(request.id);
+        return `
+          <tr>
+            <td><strong>${escapeDispatchHtml(dispatchRequestId(request))}</strong></td>
+            <td class="dispatch-requestor">${escapeDispatchHtml(request.requestor_name || '-')}</td>
+            <td class="dispatch-destination">${escapeDispatchHtml(request.destination || '-')}</td>
+            <td class="dispatch-purpose">${escapeDispatchHtml(request.purpose || '-')}</td>
+            <td class="dispatch-schedule">
+              <strong>${escapeDispatchHtml(formatDispatchDate(request.request_date))}</strong>
+              <span class="dispatch-muted">${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
+            </td>
+            <td>
+              <select class="dispatch-select" data-request-id="${rowId}" data-field="driver">
+                ${dispatchOptions(dispatchDrivers, request.driver)}
+              </select>
+            </td>
+            <td>
+              <select class="dispatch-select" data-request-id="${rowId}" data-field="car">
+                ${dispatchOptions(dispatchCars, request.car)}
+              </select>
+            </td>
+            <td>
+              <select class="dispatch-select" data-request-id="${rowId}" data-field="status">
+                <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="Approved" ${status === 'Approved' ? 'selected' : ''}>Approved</option>
+                <option value="Rejected" ${status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+              </select>
+            </td>
+            <td><button type="button" class="dispatch-save" onclick="saveVehicleDispatch('${rowId}')">Save</button></td>
+          </tr>`;
+      }).join('');
+    }
+
+    function renderVehicleSchedule(dateValue) {
+      const header = document.getElementById('dispatchScheduleHeader');
+      const content = document.getElementById('dispatchScheduleContent');
+      if (!header || !content) return;
+
+      const selectedDate = dateValue || new Date().toISOString().slice(0, 10);
+      const date = new Date(`${selectedDate}T00:00:00`);
+      header.textContent = Number.isNaN(date.getTime())
+        ? selectedDate
+        : date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+      const approvedRequests = vehicleRequests.filter(request =>
+        request.status === 'Approved' && request.request_date === selectedDate
+      );
+
+      if (approvedRequests.length === 0) {
+        content.innerHTML = '<div class="schedule-empty">No Schedule</div>';
+        return;
+      }
+
+      content.innerHTML = approvedRequests.map(request => {
+        const driver = dispatchDrivers.find(item => item.id === request.driver)?.name || 'Unassigned driver';
+        const car = dispatchCars.find(item => item.id === request.car)?.name || 'Unassigned vehicle';
+        return `
+          <div class="schedule-item">
+            <strong>${escapeDispatchHtml(request.requestor_name || 'Vehicle Request')}</strong>
+            <span>${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
+            <span>${escapeDispatchHtml(request.destination || 'No destination')}</span>
+            <span>${escapeDispatchHtml(driver)} · ${escapeDispatchHtml(car)}</span>
+          </div>`;
+      }).join('');
+    }
+
+    async function loadVehicleDispatchBoard() {
+      const tableBody = document.getElementById('dispatchTableBody');
+      if (!tableBody) return;
+
+      const { data, error } = await supabase
+        .from('vehicle_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching vehicle requests', error);
+        tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center; color: #b91c1c;">Error loading vehicle requests.</td></tr>';
+        return;
+      }
+
+      vehicleRequests = data || [];
+      renderVehicleDispatchTable();
+
+      const dateInput = document.getElementById('dispatchScheduleDate');
+      const today = new Date().toISOString().slice(0, 10);
+      if (dateInput && !dateInput.value) dateInput.value = today;
+      renderVehicleSchedule(dateInput?.value || today);
+    }
+
+    window.saveVehicleDispatch = async function (requestId) {
+      const row = document.querySelector(`[data-request-id="${CSS.escape(requestId)}"]`)?.closest('tr');
+      if (!row) return;
+
+      const updates = {};
+      row.querySelectorAll('.dispatch-select').forEach(select => {
+        updates[select.dataset.field] = select.value || null;
+      });
+
+      const button = row.querySelector('.dispatch-save');
+      button.disabled = true;
+      button.textContent = 'Saving...';
+
+      const { error } = await supabase
+        .from('vehicle_requests')
+        .update(updates)
+        .eq('id', requestId);
+
+      if (error) {
+        console.error('Error saving vehicle dispatch', error);
+        alert(`Error saving vehicle dispatch: ${error.message}`);
+        button.disabled = false;
+        button.textContent = 'Save';
+        return;
+      }
+
+      const request = vehicleRequests.find(item => item.id === requestId);
+      if (request) Object.assign(request, updates);
+      button.textContent = 'Saved';
+      renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
+      setTimeout(() => {
+        button.disabled = false;
+        button.textContent = 'Save';
+      }, 1500);
+    };
 
     window.updateRequestStatus = async function (id, table, newStatus) {
       try {
@@ -2830,6 +3153,14 @@
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       loadFacilityRequests();
+      loadVehicleDispatchBoard();
+      const scheduleDate = document.getElementById('dispatchScheduleDate');
+      const todayButton = document.getElementById('dispatchTodayButton');
+      if (scheduleDate) scheduleDate.addEventListener('change', () => renderVehicleSchedule(scheduleDate.value));
+      if (todayButton) todayButton.addEventListener('click', () => {
+        scheduleDate.value = new Date().toISOString().slice(0, 10);
+        renderVehicleSchedule(scheduleDate.value);
+      });
     });
   </script>
 
