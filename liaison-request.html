@@ -1639,11 +1639,13 @@
       btn.disabled = true;
 
       try {
+        const { data: { user } } = await supabase.auth.getUser();
         const { data, error } = await supabase
           .from('liaison_requests')
           .insert([
             {
-
+              user_id: user?.id || null,
+              requestor_email: user?.email || null,
               requestor_name: f.get('requestor'),
               company: f.get('company'),
               department: f.get('department'),
@@ -1651,7 +1653,8 @@
               documents: f.get('documents'),
               contact_person: f.get('contactPerson'),
               request_date: f.get('date'),
-              request_time: f.get('time') + ':00'
+              request_time: f.get('time') + ':00',
+              status: 'Pending'
 
             }
           ])
@@ -2015,4 +2018,3 @@
 </body>
 
 </html>
-
