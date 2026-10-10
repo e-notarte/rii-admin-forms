@@ -295,6 +295,9 @@
 
         .nav-link,
         .nav-group-title {
+            cursor: pointer;
+            user-select: none;
+
             align-items: center;
             border-left: 3px solid transparent;
             color: #2d3748;
@@ -330,21 +333,26 @@
 
         .nav-link.active,
         .sub-link.active {
-            color: #059669 !important;
+            color: var(--accent) !important;
             font-weight: 600;
         }
 
         .nav-link.active i {
-            color: #059669;
+            color: var(--accent);
         }
 
         .nav-link.active {
-            background: rgba(5, 150, 105, 0.05);
-            border-left-color: #059669;
+            background: rgba(252, 174, 22, 0.05);
+            border-left-color: var(--accent);
         }
 
         .sub-links {
             padding-left: 26px;
+            display: none;
+        }
+
+        .sub-links.open {
+            display: block;
         }
 
         .sub-link {
@@ -1492,9 +1500,9 @@
             </a>
             <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
             <div class="nav-group">
-                <div class="nav-group-title">
+                <div class="nav-group-title" onclick="this.nextElementSibling.classList.toggle('open')">
                     <i class="fa-solid fa-building"></i> Facility Request
-                </div>
+                 <i class="fa-solid fa-chevron-down" style="margin-left:auto; font-size:0.8em;"></i></div>
                 <div class="sub-links">
                     <a href="conference-request.html" class="sub-link">Conference Room</a>
                     <a href="function-request.html" class="sub-link">Function Hall</a>
@@ -2032,6 +2040,18 @@
                     });
                 });
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeSubLink = document.querySelector('.sub-link.active');
+            if (activeSubLink) {
+                const parentSubLinks = activeSubLink.closest('.sub-links');
+                if (parentSubLinks) {
+                    parentSubLinks.classList.add('open');
+                }
+            }
         });
     </script>
 </body>
