@@ -1981,25 +1981,6 @@
             const requestorBody = document.getElementById('requestorInventoryBody');
 
             if (!isAdmin) {
-                if (iframeWrap) iframeWrap.style.display = 'none';
-                if (requestorView) {
-                    requestorView.style.display = 'block';
-                    let tableHTML = '';
-                    for (let i = 0; i < INVENTORY.length; i++) {
-                        let item = INVENTORY[i];
-                        if (item.onHand > 0) {
-                            tableHTML += `
-                            <tr style="border-bottom: 1px solid var(--border);">
-                                <td style="padding: 10px;">${item.code}</td>
-                                <td style="padding: 10px; font-weight: 500;">${item.desc}</td>
-                                <td style="padding: 10px; font-weight: 700; color: var(--green);">${item.onHand}</td>
-                                <td style="padding: 10px;">${item.uom}</td>
-                            </tr>
-                        `;
-                        }
-                    }
-                    if (requestorBody) requestorBody.innerHTML = tableHTML;
-                }
                 const panelTitle = document.querySelector('.panel-title');
                 if (panelTitle && panelTitle.innerHTML.includes('Item Summary')) {
                     panelTitle.innerHTML = '<i class="fa-solid fa-boxes-stacked" style="color:var(--accent);margin-right:8px;"></i>Available Items';
