@@ -2864,6 +2864,8 @@
   <script type="module">
     import { supabase } from './supabase-client.js';
 
+    window.adminSupabase = supabase;
+
     // Make switchView globally accessible since it's a module
     window.switchView = function (viewId, menuItem) {
       // Hide all views
@@ -3712,7 +3714,7 @@
         <span>Mae</span>
       </div>
       <div class="ai-chat-body">
-        <p><strong>Mae:</strong> Hello! How can I help you today?</p>
+        <p><strong>Mae:</strong> Hello! I can check live request totals and help you find Admin Dashboard panels. Ask me about pending requests, vehicles, facilities, liaison tasks, or supplies.</p>
       </div>
       <div class="ai-chat-footer">
         <input type="text" placeholder="Type message...">
@@ -3879,85 +3881,140 @@
   </style>
   <script id="ai-bot-logic-script">
     document.addEventListener('DOMContentLoaded', () => {
-      const chatWrappers = document.querySelectorAll('.ai-chat-wrapper, .ai-bot-wrapper');
+      const wrapper = document.querySelector('.ai-chat-wrapper, .ai-bot-wrapper');
+      const chatBody = wrapper?.querySelector('.ai-chat-body');
+      const chatInput = wrapper?.querySelector('.ai-chat-footer input');
+      const sendBtn = wrapper?.querySelector('.ai-chat-footer button');
+      if (!chatBody || !chatInput || !sendBtn) return;
 
-      chatWrappers.forEach(wrapper => {
-        const chatBody = wrapper.querySelector('.ai-chat-body');
-        const chatInput = wrapper.querySelector('.ai-chat-footer input');
-        const sendBtn = wrapper.querySelector('.ai-chat-footer button');
+      const requestSources = [
+        { table: 'vehicle_requests', label: 'vehicle' },
+        { table: 'conference_requests', label: 'conference room' },
+        { table: 'function_requests', label: 'function hall' },
+        { table: 'parking_requests', label: 'parking' },
+        { table: 'zoom_requests', label: 'Zoom' },
+        { table: 'teams_requests', label: 'MS Teams' },
+        { table: 'liaison_requests', label: 'liaison' },
+        { table: 'supplies_requests', label: 'supplies' }
+      ];
 
-        if (!chatBody || !chatInput || !sendBtn) return;
+      const hasWord = (text, words) => words.some(word =>
+        new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)
+      );
 
-        // Format existing default message to use the new class
-        const defaultMsg = chatBody.querySelector('p');
-        if (defaultMsg && !defaultMsg.classList.contains('ai-msg-bot')) {
-          const msgDiv = document.createElement('div');
-          msgDiv.className = 'ai-msg-bot';
-          msgDiv.innerHTML = defaultMsg.innerHTML;
-          chatBody.innerHTML = '';
-          chatBody.appendChild(msgDiv);
+      function appendMessage(sender, text) {
+        const msg = document.createElement('div');
+        msg.className = sender === 'user' ? 'ai-msg-user' : 'ai-msg-bot';
+        if (sender === 'user') {
+          msg.textContent = text;
+        } else {
+          const name = document.createElement('strong');
+          name.textContent = 'Mae:';
+          msg.append(name, document.createTextNode(` ${text}`));
+        }
+        chatBody.appendChild(msg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      function showTyping() {
+        const typing = document.createElement('div');
+        typing.className = 'typing-indicator';
+        typing.textContent = 'Mae is checking the dashboard...';
+        chatBody.appendChild(typing);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        return typing;
+      }
+
+      async function getLiveSummary() {
+        if (!window.adminSupabase) {
+          throw new Error('The Supabase client is unavailable.');
         }
 
-        function appendMessage(sender, text) {
-          const msg = document.createElement('div');
-          if (sender === 'user') {
-            msg.className = 'ai-msg-user';
-            msg.textContent = text;
-          } else {
-            msg.className = 'ai-msg-bot';
-            msg.innerHTML = '<strong>Mae:</strong> ' + text;
+        const results = await Promise.all(requestSources.map(async source => {
+          const { data, error } = await window.adminSupabase
+            .from(source.table)
+            .select('id,status');
+          if (error) throw new Error(`${source.label}: ${error.message}`);
+
+          const counts = (data || []).reduce((summary, request) => {
+            const status = String(request.status || 'Pending').toLowerCase();
+            summary[status] = (summary[status] || 0) + 1;
+            return summary;
+          }, {});
+          return { ...source, counts, total: (data || []).length };
+        }));
+        return results;
+      }
+
+      async function buildReply(text) {
+        const lowerText = text.toLowerCase();
+        if (hasWord(lowerText, ['hello', 'hey', 'good morning', 'good afternoon'])) {
+          return 'Hello! I can check live Admin Dashboard request totals or guide you to a panel.';
+        }
+
+        if (hasWord(lowerText, ['help', 'what', 'can'])) {
+          return 'Ask me things like “How many pending requests?”, “Show vehicle status”, or “Where are liaison tasks?”';
+        }
+
+        if (hasWord(lowerText, ['where', 'panel', 'open', 'find'])) {
+          if (hasWord(lowerText, ['vehicle', 'dispatch', 'car', 'driver'])) return 'Open Vehicle Dispatch Board from the left navigation.';
+          if (hasWord(lowerText, ['liaison'])) return 'Open Liaison Task Tracker from the left navigation.';
+          if (hasWord(lowerText, ['supply', 'inventory', 'item'])) return 'Open Supplies Inventory from the left navigation.';
+          if (hasWord(lowerText, ['facility', 'room', 'hall', 'parking', 'zoom', 'teams'])) return 'Open Facility Reservation from the left navigation.';
+          return 'Use the left navigation to open Facility Reservation, Vehicle Dispatch Board, Liaison Task Tracker, or Supplies Inventory.';
+        }
+
+        const summary = await getLiveSummary();
+        const selected = summary.filter(source => {
+          if (hasWord(lowerText, ['vehicle', 'dispatch', 'car', 'driver'])) return source.label === 'vehicle';
+          if (hasWord(lowerText, ['liaison'])) return source.label === 'liaison';
+          if (hasWord(lowerText, ['supply', 'inventory', 'item'])) return source.label === 'supplies';
+          if (hasWord(lowerText, ['facility', 'reservation', 'room', 'hall', 'parking', 'zoom', 'teams', 'meeting'])) {
+            return ['conference room', 'function hall', 'parking', 'Zoom', 'MS Teams'].includes(source.label);
           }
-          chatBody.appendChild(msg);
-          chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        function showTyping() {
-          const typing = document.createElement('div');
-          typing.className = 'typing-indicator';
-          typing.textContent = 'Mae is typing...';
-          chatBody.appendChild(typing);
-          chatBody.scrollTop = chatBody.scrollHeight;
-          return typing;
-        }
-
-        function handleSend() {
-          const text = chatInput.value.trim();
-          if (!text) return;
-
-          // Add user message
-          appendMessage('user', text);
-          chatInput.value = '';
-
-          // Show typing indicator
-          const typing = showTyping();
-
-          // Simulate delay
-          setTimeout(() => {
-            typing.remove();
-
-            const lowerText = text.toLowerCase();
-            let reply = "I'm not quite sure how to help with that. Try checking the sidebar for our request forms!";
-
-            if (lowerText.includes('supply') || lowerText.includes('inventory') || lowerText.includes('item')) {
-              reply = "You can view available supplies and make requests on the Supplies Dashboard! Make sure you are logged in to see the live inventory.";
-            } else if (lowerText.includes('vehicle') || lowerText.includes('car') || lowerText.includes('driver')) {
-              reply = "Need a ride or a driver? Check out the Vehicle Request and Driver Request forms on the left sidebar.";
-            } else if (lowerText.includes('facility') || lowerText.includes('room') || lowerText.includes('meeting') || lowerText.includes('zoom')) {
-              reply = "You can book Conference Rooms, Function Halls, Parking, and Zoom Meetings under the 'Facility Request' dropdown menu!";
-            } else if (lowerText.includes('hello') || lowerText.includes('hi') || lowerText.includes('hey')) {
-              reply = "Hello there! Let me know if you need help finding a form or checking your requests.";
-            } else if (lowerText.includes('status') || lowerText.includes('pending') || lowerText.includes('approve')) {
-              reply = "Your pending requests will be reviewed by the admin team soon. You will receive an email once it's approved!";
-            }
-
-            appendMessage('bot', reply);
-          }, 1200);
-        }
-
-        sendBtn.addEventListener('click', handleSend);
-        chatInput.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') handleSend();
+          return true;
         });
+
+        const status = hasWord(lowerText, ['approved', 'approve']) ? 'approved'
+          : hasWord(lowerText, ['rejected', 'reject']) ? 'rejected'
+            : hasWord(lowerText, ['pending', 'waiting']) ? 'pending' : null;
+        const total = selected.reduce((count, source) =>
+          count + (status ? source.counts[status] || 0 : source.total), 0);
+        const category = selected.length === summary.length ? 'all request types' : selected.map(source => source.label).join(', ');
+        return status
+          ? `There are ${total} ${status} ${category}.`
+          : `There are ${total} ${category} in the live dashboard data. Ask for pending, approved, or rejected totals for a status breakdown.`;
+      }
+
+      async function handleSend() {
+        const text = chatInput.value.trim();
+        if (!text || sendBtn.disabled) return;
+        appendMessage('user', text);
+        chatInput.value = '';
+        sendBtn.disabled = true;
+        const typing = showTyping();
+
+        try {
+          const reply = await buildReply(text);
+          typing.remove();
+          appendMessage('bot', reply);
+        } catch (error) {
+          console.error('AI bot request failed', error);
+          typing.remove();
+          appendMessage('bot', 'I could not read the live dashboard data. Please check your Supabase connection and try again.');
+        } finally {
+          sendBtn.disabled = false;
+          chatInput.focus();
+        }
+      }
+
+      sendBtn.type = 'button';
+      sendBtn.addEventListener('click', handleSend);
+      chatInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          handleSend();
+        }
       });
     });
   </script>
