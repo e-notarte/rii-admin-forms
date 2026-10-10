@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -607,7 +607,12 @@
     }
 
     .sub-links {
-      padding-left: 26px
+      padding-left: 26px;
+      display: none;
+    }
+
+    .sub-links.open {
+      display: block;
     }
 
     .sub-link {
@@ -1716,7 +1721,7 @@
             style="display: block; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Password</label>
           <div
             style="padding: 12px 15px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;">
-            <span>â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢</span>
+            <span>••••••••••••</span>
             <button class="btn-primary" style="padding: 6px 12px; font-size: 0.8rem;"
               onclick="alert('Password reset functionality will be implemented here.')"><i class="fa-solid fa-key"></i>
               Update</button>
@@ -1733,7 +1738,7 @@
     </div>
   </div>
   <script>var modal = document.getElementById('modal'); document.getElementById('requestForm').addEventListener('submit', function (e) { e.preventDefault(); var f = new FormData(e.target), r = JSON.parse(localStorage.getItem('fleetRequests') || '[]'), id = 'REQ-' + Math.floor(Math.random() * 900 + 100); r.push({ id: id, requestor: f.get('requestor'), destination: f.get('destination'), purpose: f.get('purpose'), scheduleDate: f.get('date'), scheduleTime: f.get('startTime') + ' - ' + f.get('endTime'), driver: '', car: '', status: 'pending', requestType: 'Vehicle Request', company: f.get('company'), department: f.get('department'), passengers: f.get('passengers') }); localStorage.setItem('fleetRequests', JSON.stringify(r)); document.getElementById('reference').textContent = id; modal.classList.add('open'); e.target.reset() })</script>
-  <footer class="footer"><span>Â© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by admin</span>
   </footer>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
