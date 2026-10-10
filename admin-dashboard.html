@@ -3687,12 +3687,77 @@
     };
 
     // Initialize
+    let dashboardRefreshTimer;
+    let dashboardPollingTimer;
+    let dashboardRefreshInProgress = false;
+    let dashboardRefreshQueued = false;
+
+    async function refreshDashboardData() {
+      if (dashboardRefreshInProgress) {
+        dashboardRefreshQueued = true;
+        return;
+      }
+
+      dashboardRefreshInProgress = true;
+      try {
+        await Promise.all([
+          loadDashboardAnalytics(),
+          loadFacilityRequests(),
+          loadVehicleDispatchBoard(),
+          loadLiaisonTasks(),
+          loadSupplyRequests()
+        ]);
+      } finally {
+        dashboardRefreshInProgress = false;
+        if (dashboardRefreshQueued) {
+          dashboardRefreshQueued = false;
+          refreshDashboardData();
+        }
+      }
+    }
+
+    function scheduleDashboardRefresh() {
+      clearTimeout(dashboardRefreshTimer);
+      dashboardRefreshTimer = setTimeout(() => refreshDashboardData(), 250);
+    }
+
+    function subscribeToDashboardChanges() {
+      const requestTables = [
+        'vehicle_requests',
+        'conference_requests',
+        'function_requests',
+        'parking_requests',
+        'zoom_requests',
+        'teams_requests',
+        'liaison_requests',
+        'supplies_requests',
+        'supplies_items'
+      ];
+
+      const channel = supabase.channel('admin-dashboard-live-requests');
+      requestTables.forEach(table => {
+        channel.on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table },
+          scheduleDashboardRefresh
+        );
+      });
+      channel.subscribe((status, error) => {
+        if (error) {
+          console.error('Admin dashboard realtime subscription failed', error);
+        }
+        if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          console.warn('Realtime is unavailable; dashboard polling remains enabled.');
+        }
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      loadDashboardAnalytics();
-      loadFacilityRequests();
-      loadVehicleDispatchBoard();
-      loadLiaisonTasks();
-      loadSupplyRequests();
+      refreshDashboardData();
+      subscribeToDashboardChanges();
+      dashboardPollingTimer = setInterval(() => {
+        if (!document.hidden) refreshDashboardData();
+      }, 15000);
       const scheduleDate = document.getElementById('dispatchScheduleDate');
       const todayButton = document.getElementById('dispatchTodayButton');
       if (scheduleDate) scheduleDate.addEventListener('change', () => renderVehicleSchedule(scheduleDate.value));
