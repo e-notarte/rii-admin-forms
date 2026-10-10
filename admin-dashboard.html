@@ -1047,6 +1047,9 @@
 
     .nav-link,
     .nav-group-title {
+            cursor: pointer;
+            user-select: none;
+
       display: flex;
       align-items: center;
       gap: 15px;
@@ -1538,17 +1541,17 @@
 
       .nav-link.active,
       .sub-link.active {
-        color: #059669 !important;
+        color: var(--accent) !important;
         font-weight: 600;
       }
 
       .nav-link.active i {
-        color: #059669;
+        color: var(--accent);
       }
 
       .nav-link.active {
-        background: rgba(5, 150, 105, 0.05);
-        border-left-color: #059669;
+        background: rgba(252, 174, 22, 0.05);
+        border-left-color: var(--accent);
       }
 
       body.nav-open .sidebar .sub-links,
@@ -2500,6 +2503,18 @@
       });
     });
   </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const activeSubLink = document.querySelector('.sub-link.active');
+            if (activeSubLink) {
+                const parentSubLinks = activeSubLink.closest('.sub-links');
+                if (parentSubLinks) {
+                    parentSubLinks.classList.add('open');
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
