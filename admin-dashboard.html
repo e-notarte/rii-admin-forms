@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - R-II Builders</title>
+  <title>Admin Account Dashboard - R-II Builders</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -2293,7 +2293,7 @@
     </div>
     <div class="header-right">
       <a href="welcome.html" class="switch-admin" style="text-decoration:none;">
-        <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to Requestor</span>
+      <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to User Dashboard</span>
       </a>
       <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
       <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
@@ -2325,7 +2325,7 @@
     <div class="nav-label">MAIN</div>
     <nav>
       <a href="#" class="nav-link active" onclick="switchView('view-dashboard', this)"><i
-          class="fa-solid fa-chart-pie"></i> Dashboard</a>
+          class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
       <a href="#" class="nav-link" onclick="switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i>
         Facility Reservation</a>
     </nav>
@@ -2472,64 +2472,58 @@
         </style>
 
         <div class="dashboard-banner">
-          <h2>Welcome back!</h2>
+          <h2>Welcome to the Admin Account Dashboard!</h2>
           <p>Manage reservations, service vehicles, inventory, expenses, facility requests, and reports from one
             centralized Admin Services Portal.</p>
         </div>
 
         <div class="stats-grid">
-          <!-- Stat Card 1 -->
           <div class="stat-card">
             <div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div>
             <div class="stat-details">
-              <span class="stat-title">Reservations Today</span>
-              <span class="stat-value">12</span>
-              <span class="stat-subtext">+3 from yesterday</span>
+              <span class="stat-title">Vehicle Requests Today</span>
+              <span class="stat-value" id="analyticsVehicleCount">-</span>
+              <span class="stat-subtext">Vehicle trips scheduled today</span>
             </div>
           </div>
-          <!-- Stat Card 2 -->
           <div class="stat-card">
             <div class="stat-icon green"><i class="fa-solid fa-car-side"></i></div>
             <div class="stat-details">
-              <span class="stat-title">Vehicles on Trip</span>
-              <span class="stat-value">5</span>
-              <span class="stat-subtext">2 Returning Today</span>
+              <span class="stat-title">Conference Room Today</span>
+              <span class="stat-value" id="analyticsConferenceCount">-</span>
+              <span class="stat-subtext">Requests scheduled today</span>
             </div>
           </div>
-          <!-- Stat Card 3 -->
           <div class="stat-card">
             <div class="stat-icon orange"><i class="fa-solid fa-boxes-stacked"></i></div>
             <div class="stat-details">
-              <span class="stat-title">Inventory Alerts</span>
-              <span class="stat-value">8</span>
-              <span class="stat-subtext">Low Stock Items</span>
+              <span class="stat-title">Function Hall Today</span>
+              <span class="stat-value" id="analyticsFunctionCount">-</span>
+              <span class="stat-subtext">Requests scheduled today</span>
             </div>
           </div>
-          <!-- Stat Card 4 -->
           <div class="stat-card">
             <div class="stat-icon red"><i class="fa-solid fa-clock-rotate-left"></i></div>
             <div class="stat-details">
-              <span class="stat-title">Pending Requests</span>
-              <span class="stat-value">16</span>
-              <span class="stat-subtext">Waiting Approval</span>
+              <span class="stat-title">Parking Slots Today</span>
+              <span class="stat-value" id="analyticsParkingCount">-</span>
+              <span class="stat-subtext">Requests scheduled today</span>
             </div>
           </div>
-          <!-- Stat Card 5 -->
           <div class="stat-card">
             <div class="stat-icon purple"><i class="fa-solid fa-peso-sign"></i></div>
             <div class="stat-details">
-              <span class="stat-title">Monthly Expenses</span>
-              <span class="stat-value">?235K</span>
-              <span class="stat-subtext">Current Month</span>
+              <span class="stat-title">Zoom Meetings Today</span>
+              <span class="stat-value" id="analyticsZoomCount">-</span>
+              <span class="stat-subtext">Requests scheduled today</span>
             </div>
           </div>
-          <!-- Stat Card 6 -->
           <div class="stat-card">
             <div class="stat-icon dark-blue"><i class="fa-solid fa-chart-line"></i></div>
             <div class="stat-details">
-              <span class="stat-title">Admin Efficiency</span>
-              <span class="stat-value">98%</span>
-              <span class="stat-subtext">System Performance</span>
+              <span class="stat-title">MS Teams Today</span>
+              <span class="stat-value" id="analyticsTeamsCount">-</span>
+              <span class="stat-subtext">Requests scheduled today</span>
             </div>
           </div>
         </div>
@@ -2792,6 +2786,46 @@
     ];
 
     let vehicleRequests = [];
+
+    const dashboardAnalytics = [
+      { table: 'vehicle_requests', elementId: 'analyticsVehicleCount' },
+      { table: 'conference_requests', elementId: 'analyticsConferenceCount' },
+      { table: 'function_requests', elementId: 'analyticsFunctionCount' },
+      { table: 'parking_requests', elementId: 'analyticsParkingCount' },
+      { table: 'zoom_requests', elementId: 'analyticsZoomCount' },
+      { table: 'teams_requests', elementId: 'analyticsTeamsCount' }
+    ];
+
+    function getLocalDateString(date = new Date()) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    async function loadDashboardAnalytics() {
+      const today = getLocalDateString();
+
+      await Promise.all(dashboardAnalytics.map(async ({ table, elementId }) => {
+        const valueElement = document.getElementById(elementId);
+        if (!valueElement) return;
+
+        const { count, error } = await supabase
+          .from(table)
+          .select('id', { count: 'exact', head: true })
+          .eq('request_date', today);
+
+        if (error) {
+          console.error(`Error loading ${table} analytics`, error);
+          valueElement.textContent = '!';
+          valueElement.title = 'Unable to load analytics';
+          return;
+        }
+
+        valueElement.textContent = String(count ?? 0);
+        valueElement.title = `${count ?? 0} request(s) scheduled for ${today}`;
+      }));
+    }
 
     function escapeDispatchHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -3152,6 +3186,7 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
+      loadDashboardAnalytics();
       loadFacilityRequests();
       loadVehicleDispatchBoard();
       const scheduleDate = document.getElementById('dispatchScheduleDate');
