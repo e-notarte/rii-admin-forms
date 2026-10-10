@@ -2006,13 +2006,13 @@
       const dayEvents = approvedEvents.filter(e => e.request_date === dateStr);
       if (dayEvents.length === 0) return;
 
-      let html = \<h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for \</h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">\;
+      let html = `<h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for ${dateStr}</h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">`;
         dayEvents.forEach(e => {
             const start = e.request_time ? e.request_time.substring(0,5) : '';
-            html += \<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
-                <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i> \</div>
-                <div style="color:var(--primary); font-weight:600;">\</div>
-            </li>\;
+            html += `<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
+                <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i> ${start}</div>
+                <div style="color:var(--primary); font-weight:600;">${e.visitor || 'Reserved'}</div>
+            </li>`;
         });
         html += '</ul>';
 
@@ -2049,7 +2049,7 @@
       }
 
       const overlay = document.getElementById('dayDetailsOverlay');
-      popup.innerHTML = html + \<button onclick="document.getElementById('dayDetailsPopup').style.display='none'; document.getElementById('dayDetailsOverlay').style.display='none';" style="margin-top:20px; width:100%; padding:10px 16px; background:var(--primary); color:white; font-weight:600; font-family:'Poppins',sans-serif; border:none; border-radius:6px; cursor:pointer; transition: opacity 0.2s;">Close</button>\;
+      popup.innerHTML = html + `<button onclick="document.getElementById('dayDetailsPopup').style.display='none'; document.getElementById('dayDetailsOverlay').style.display='none';" style="margin-top:20px; width:100%; padding:10px 16px; background:var(--primary); color:white; font-weight:600; font-family:'Poppins',sans-serif; border:none; border-radius:6px; cursor:pointer; transition: opacity 0.2s;">Close</button>`;
 
       popup.style.display = 'block';
       overlay.style.display = 'block';
