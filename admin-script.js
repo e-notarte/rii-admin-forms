@@ -89,10 +89,22 @@
 
         if (targetUserId) {
           try {
+            const request = typeof window._allRequests !== "undefined"
+              ? window._allRequests.find(req => req.id === id)
+              : null;
+            const requestDetails = request ? [
+              `Request Type: ${request.request_type || table.replace('_requests', '')}`,
+              `Requestor: ${request.requestor_name || 'Not specified'}`,
+              `Date: ${request.request_date || 'Not specified'}`,
+              `Time: ${request.display_time || 'Not specified'}`,
+              `Destination / Resource: ${request.display_title || request.destination || 'Not specified'}`,
+              `Department: ${request.department || 'Not specified'}`,
+              `Status: ${newStatus}`
+            ].join('\n') : `Your request has been ${newStatus.toLowerCase()} by the administrator.`;
             await supabase.from('notifications').insert([{
               user_id: targetUserId,
               title: `Request ${newStatus}`,
-              message: `Your request has been ${newStatus.toLowerCase()} by the administrator.`,
+              message: requestDetails,
               request_type: table.replace('_requests', '').toUpperCase(),
               is_read: false
             }]);
