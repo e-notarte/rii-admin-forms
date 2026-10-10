@@ -1634,11 +1634,13 @@
       btn.disabled = true;
 
       try {
+        const { data: { user } } = await supabase.auth.getUser();
         const { data, error } = await supabase
           .from('vehicle_requests')
           .insert([
             {
 
+              user_id: user ? user.id : null,
               requestor_name: f.get('requestor'),
               company: f.get('company'),
               department: f.get('department'),
