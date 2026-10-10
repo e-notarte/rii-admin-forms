@@ -2296,7 +2296,8 @@
       <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to User Dashboard</span>
       </a>
       <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-      <button class="icon-btn" title="Notifications"><i class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" title="Admin Notifications" aria-label="Admin Notifications"><i
+        class="fa-regular fa-bell"></i></button>
       <div class="user-badge" onclick="this.classList.toggle('active')">
         <span>Admin User</span>
         <div class="avatar">AU</div>
@@ -2994,6 +2995,9 @@
       const row = document.querySelector(`[data-request-id="${CSS.escape(requestId)}"]`)?.closest('tr');
       if (!row) return;
 
+      const request = vehicleRequests.find(item => item.id === requestId);
+      if (!request) return;
+      const previousStatus = String(request.status || 'Pending');
       const updates = {};
       row.querySelectorAll('.dispatch-select').forEach(select => {
         updates[select.dataset.field] = select.value || null;
@@ -3016,8 +3020,44 @@
         return;
       }
 
-      const request = vehicleRequests.find(item => item.id === requestId);
-      if (request) Object.assign(request, updates);
+      Object.assign(request, updates);
+
+      if (request.user_id && updates.status && updates.status !== previousStatus) {
+        const driver = dispatchDrivers.find(item => item.id === request.driver)?.name || 'Unassigned';
+        const vehicle = dispatchCars.find(item => item.id === request.car)?.name || 'Unassigned';
+        const requestDate = request.request_date
+          ? new Date(`${request.request_date}T00:00:00`).toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          })
+          : 'Not specified';
+        const tripDetails = [
+          `Date: ${requestDate}`,
+          `Driver: ${driver}`,
+          `Vehicle: ${vehicle}`,
+          `Destination: ${request.destination || 'Not specified'}`,
+          `Purpose: ${request.purpose || 'Not specified'}`,
+          `Passenger: ${request.requestor_name || 'Not specified'}`,
+          `Start: ${request.start_time ? String(request.start_time).slice(0, 5) : 'Not specified'}`,
+          `End: ${request.end_time ? String(request.end_time).slice(0, 5) : 'Not specified'}`,
+          `Status: ${updates.status}`
+        ].join('\n');
+
+        const { error: notificationError } = await supabase.from('notifications').insert([{
+          user_id: request.user_id,
+          title: `Vehicle Trip ${updates.status}`,
+          message: tripDetails,
+          request_type: 'Vehicle Request',
+          is_read: false
+        }]);
+
+        if (notificationError) {
+          console.error('Error sending vehicle trip notification', notificationError);
+        }
+      }
+
       button.textContent = 'Saved';
       renderVehicleDispatchTable();
       renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
