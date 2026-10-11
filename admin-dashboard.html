@@ -2775,6 +2775,16 @@
         <div class="data-card">
           <div class="toolbar">
             <p style="margin: 0; color: var(--text-muted);">Review new employee registrations before allowing them to sign in.</p>
+            <div class="filter-pills" id="accountApprovalFilterPills">
+              <div class="pill active" data-filter="pending"
+                onclick="filterAccountApprovals('pending', this)">Pending</div>
+              <div class="pill" data-filter="approved"
+                onclick="filterAccountApprovals('approved', this)">Approved</div>
+              <div class="pill" data-filter="rejected"
+                onclick="filterAccountApprovals('rejected', this)">Rejected</div>
+              <div class="pill" data-filter="all"
+                onclick="filterAccountApprovals('all', this)">All</div>
+            </div>
           </div>
           <div style="overflow-x: auto;">
             <table>
@@ -3172,6 +3182,16 @@
       });
     }
 
+    let accountApprovalFilter = 'pending';
+
+    window.filterAccountApprovals = function (filter, element) {
+      accountApprovalFilter = filter;
+      document.querySelectorAll('#accountApprovalFilterPills .pill').forEach(pill => {
+        pill.classList.toggle('active', pill === element);
+      });
+      loadAccountApprovals();
+    };
+
     async function loadAccountApprovals() {
       const tableBody = document.getElementById('accountApprovalsTableBody');
       if (!tableBody) return;
@@ -3191,14 +3211,19 @@
       const pendingCount = (data || []).filter(profile => profile.approval_status === 'pending').length;
       updatePendingAccountIndicators(pendingCount);
 
-      if (!data || data.length === 0) {
+      const filteredData = accountApprovalFilter === 'all'
+        ? data
+        : data.filter(profile => (profile.approval_status || 'pending') === accountApprovalFilter);
+
+      if (filteredData.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No account registrations found.</td></tr>';
         return;
       }
 
-      tableBody.innerHTML = data.map(profile => {
+      tableBody.innerHTML = filteredData.map(profile => {
         const status = profile.approval_status || 'pending';
         const statusClass = status === 'approved' ? 'active' : (status === 'rejected' ? 'rejected' : '');
+        const displayStatus = status.charAt(0).toUpperCase() + status.slice(1);
         const actions = status === 'pending'
           ? `<button type="button" onclick="updateAccountApproval('${profile.id}', 'approved')" style="padding: 5px 9px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">Approve</button>
              <button type="button" onclick="updateAccountApproval('${profile.id}', 'rejected')" style="padding: 5px 9px; margin-left: 5px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">Reject</button>`
@@ -3207,7 +3232,7 @@
           <td class="user-cell"><span class="user-name">${profile.full_name || 'Unnamed applicant'}</span></td>
           <td>${profile.email || 'Not available'}</td>
           <td>${formatAccountDate(profile.requested_at)}</td>
-          <td><span class="status-badge ${statusClass}">${status}</span></td>
+          <td><span class="status-badge ${statusClass}">${displayStatus}</span></td>
           <td>${actions}</td>
         </tr>`;
       }).join('');
