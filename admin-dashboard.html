@@ -3179,6 +3179,7 @@
       const { data, error, count } = await supabase
         .from('profiles')
         .select('id, full_name, email, requested_at, approval_status', { count: 'exact' })
+        .eq('source_app', 'admin-request-management')
         .order('requested_at', { ascending: false });
 
       if (error) {
