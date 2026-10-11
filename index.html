@@ -940,7 +940,10 @@
                         email: email,
                         password: password,
                         options: {
-                            data: { full_name: fullName }
+                            data: {
+                                full_name: fullName,
+                                source_app: 'admin-request-management'
+                            }
                         }
                     });
 
