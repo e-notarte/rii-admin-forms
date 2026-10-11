@@ -1153,6 +1153,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+        z-index: 1;
+        pointer-events: auto;
       }
 
       .close-sidebar:hover {
@@ -1298,6 +1301,7 @@
         border-radius: 0;
         background: transparent;
         color: var(--primary);
+        cursor: pointer;
       }
     }
   </style>
