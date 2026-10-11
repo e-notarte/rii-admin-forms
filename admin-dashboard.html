@@ -841,6 +841,33 @@
       font-weight: 600
     }
 
+    .notification-badge {
+      display: none;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      margin-left: -12px;
+      border-radius: 999px;
+      background: #ef4444;
+      color: white;
+      font-size: .68rem;
+      line-height: 18px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .nav-count {
+      display: inline-block;
+      min-width: 18px;
+      margin-left: 5px;
+      padding: 1px 5px;
+      border-radius: 999px;
+      background: #ef4444;
+      color: white;
+      font-size: .68rem;
+      text-align: center;
+    }
+
     .sidebar {
       top: 64px;
       height: calc(100vh - 64px)
@@ -2374,8 +2401,10 @@
       <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to User Dashboard</span>
       </a>
       <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-      <button class="icon-btn" title="Admin Notifications" aria-label="Admin Notifications"><i
-        class="fa-regular fa-bell"></i></button>
+      <button class="icon-btn" title="Admin Notifications" aria-label="Admin Notifications"
+        onclick="switchView('view-account-approvals', document.querySelector('[data-account-approvals]'))">
+        <i class="fa-regular fa-bell"></i></button>
+      <span class="notification-badge" id="pendingAccountBadge" aria-live="polite"></span>
       <div class="user-badge" onclick="this.classList.toggle('active')">
         <span>Admin User</span>
         <div class="avatar">AU</div>
@@ -2405,6 +2434,9 @@
     <nav>
       <a href="#" class="nav-link active" onclick="return switchView('view-dashboard', this)"><i
           class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
+      <a href="#" class="nav-link" data-account-approvals
+          onclick="return switchView('view-account-approvals', this)"><i class="fa-solid fa-user-check"></i>
+          Account Approvals <span class="nav-count" id="pendingAccountNavCount"></span></a>
       <a href="#" class="nav-link" onclick="return switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i>
         Facility Reservation</a>
       <a href="#" class="nav-link" onclick="return switchView('view-liaison', this)"><i
@@ -2559,6 +2591,15 @@
         </div>
 
         <div class="stats-grid">
+          <div class="stat-card" role="button" tabindex="0"
+            onclick="switchView('view-account-approvals', document.querySelector('[data-account-approvals]'))">
+            <div class="stat-icon red"><i class="fa-solid fa-user-clock"></i></div>
+            <div class="stat-details">
+              <span class="stat-title">Pending Account Approvals</span>
+              <span class="stat-value" id="pendingAccountCount">-</span>
+              <span class="stat-subtext">New employee registrations to review</span>
+            </div>
+          </div>
           <div class="stat-card">
             <div class="stat-icon blue"><i class="fa-solid fa-calendar-check"></i></div>
             <div class="stat-details">
@@ -2726,6 +2767,34 @@
         </div>
       </div>
 
+      <!-- ACCOUNT APPROVALS VIEW -->
+      <div id="view-account-approvals" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-user-check"></i> Account Approvals</h1>
+        </div>
+        <div class="data-card">
+          <div class="toolbar">
+            <p style="margin: 0; color: var(--text-muted);">Review new employee registrations before allowing them to sign in.</p>
+          </div>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Applicant</th>
+                  <th>Email</th>
+                  <th>Submitted</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="accountApprovalsTableBody">
+                <tr><td colspan="5" style="text-align: center;">Loading account registrations...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- LIAISON TASK TRACKER VIEW -->
       <div id="view-liaison" class="view-section">
         <div class="page-header">
@@ -2869,6 +2938,11 @@
     const panelAccessPolicy = {
       'view-dashboard': {
         name: 'Admin Dashboard',
+        pin: null,
+        editors: []
+      },
+      'view-account-approvals': {
+        name: 'Account Approvals',
         pin: null,
         editors: []
       },
@@ -3083,6 +3157,78 @@
         valueElement.title = `${count ?? 0} request(s) scheduled for ${today}`;
       }));
     }
+
+    function formatAccountDate(value) {
+      if (!value) return 'Not available';
+      return new Date(value).toLocaleString();
+    }
+
+    function updatePendingAccountIndicators(count) {
+      ['pendingAccountCount', 'pendingAccountNavCount', 'pendingAccountBadge'].forEach(id => {
+        const element = document.getElementById(id);
+        if (!element) return;
+        element.textContent = count;
+        element.style.display = count > 0 ? 'inline-block' : (id === 'pendingAccountCount' ? 'block' : 'none');
+      });
+    }
+
+    async function loadAccountApprovals() {
+      const tableBody = document.getElementById('accountApprovalsTableBody');
+      if (!tableBody) return;
+
+      const { data, error, count } = await supabase
+        .from('profiles')
+        .select('id, full_name, email, requested_at, approval_status', { count: 'exact' })
+        .order('requested_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading account approvals', error);
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #b91c1c;">Unable to load account registrations.</td></tr>';
+        return;
+      }
+
+      const pendingCount = (data || []).filter(profile => profile.approval_status === 'pending').length;
+      updatePendingAccountIndicators(pendingCount);
+
+      if (!data || data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No account registrations found.</td></tr>';
+        return;
+      }
+
+      tableBody.innerHTML = data.map(profile => {
+        const status = profile.approval_status || 'pending';
+        const statusClass = status === 'approved' ? 'active' : (status === 'rejected' ? 'rejected' : '');
+        const actions = status === 'pending'
+          ? `<button type="button" onclick="updateAccountApproval('${profile.id}', 'approved')" style="padding: 5px 9px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">Approve</button>
+             <button type="button" onclick="updateAccountApproval('${profile.id}', 'rejected')" style="padding: 5px 9px; margin-left: 5px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">Reject</button>`
+          : '-';
+        return `<tr>
+          <td class="user-cell"><span class="user-name">${profile.full_name || 'Unnamed applicant'}</span></td>
+          <td>${profile.email || 'Not available'}</td>
+          <td>${formatAccountDate(profile.requested_at)}</td>
+          <td><span class="status-badge ${statusClass}">${status}</span></td>
+          <td>${actions}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    window.updateAccountApproval = async function (profileId, approvalStatus) {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          approval_status: approvalStatus,
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: (await supabase.auth.getUser()).data.user?.id || null
+        })
+        .eq('id', profileId);
+
+      if (error) {
+        console.error('Error updating account approval', error);
+        alert('Unable to update account approval: ' + error.message);
+        return;
+      }
+      await loadAccountApprovals();
+    };
 
     function escapeDispatchHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -3793,6 +3939,7 @@
       try {
         await Promise.all([
           loadDashboardAnalytics(),
+          loadAccountApprovals(),
           loadFacilityRequests(),
           loadVehicleDispatchBoard(),
           loadLiaisonTasks(),
@@ -3822,7 +3969,8 @@
         'teams_requests',
         'liaison_requests',
         'supplies_requests',
-        'supplies_items'
+        'supplies_items',
+        'profiles'
       ];
 
       const channel = supabase.channel('admin-dashboard-live-requests');
