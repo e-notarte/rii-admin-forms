@@ -841,6 +841,7 @@
             return localStorage.getItem(cookieConsentKey) === 'accepted' &&
                 localStorage.getItem(optionalCookiesKey) === 'true';
         }
+        window.hasOptionalCookieConsent = hasOptionalCookieConsent;
 
         function clearOptionalStorage() {
             localStorage.removeItem('rememberedEmail');
@@ -994,7 +995,7 @@
             const toggleBtns = document.querySelectorAll('button[title="Toggle dark mode"]');
 
             // Initialize
-            if (hasOptionalCookieConsent() && localStorage.getItem('darkMode') === 'true') {
+            if (window.hasOptionalCookieConsent() && localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
                 toggleBtns.forEach(btn => {
                     const icon = btn.querySelector('i');
@@ -1009,7 +1010,7 @@
             toggleBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const isDark = document.body.classList.toggle('dark-mode');
-                    if (hasOptionalCookieConsent()) {
+                    if (window.hasOptionalCookieConsent()) {
                         localStorage.setItem('darkMode', isDark);
                     }
 
@@ -1179,5 +1180,4 @@
 </body>
 
 </html>
-
 
