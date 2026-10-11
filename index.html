@@ -261,6 +261,113 @@
             color: var(--muted);
         }
 
+        .cookie-banner {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 20;
+            width: min(420px, calc(100% - 40px));
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .98);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .2);
+            font-size: .8rem;
+        }
+
+        .cookie-banner h2,
+        .cookie-dialog h2 {
+            margin-bottom: 6px;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .cookie-banner p,
+        .cookie-dialog p {
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .cookie-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .cookie-actions button,
+        .cookie-settings-link {
+            border: 0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cookie-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .cookie-secondary {
+            background: #e2e8f0;
+            color: var(--primary);
+        }
+
+        .cookie-settings-link {
+            padding: 8px 0;
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .cookie-dialog-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(15, 23, 42, .55);
+        }
+
+        .cookie-dialog-backdrop.open {
+            display: flex;
+        }
+
+        .cookie-dialog {
+            width: min(420px, 100%);
+            padding: 22px;
+            border-radius: 12px;
+            background: #fff;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, .25);
+        }
+
+        .cookie-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cookie-option strong {
+            display: block;
+            color: var(--primary);
+        }
+
+        .cookie-option small {
+            color: var(--muted);
+        }
+
+        .cookie-option input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
         .signup-prompt a {
             color: var(--primary);
             text-decoration: none;
@@ -675,6 +782,36 @@
         </div>
     </div>
 
+    <aside class="cookie-banner" id="cookieBanner" role="region" aria-label="Cookie settings">
+        <h2>Cookie settings</h2>
+        <p>We use essential storage to keep you signed in. Optional storage remembers your email and display preferences.</p>
+        <div class="cookie-actions">
+            <button type="button" class="cookie-primary" id="acceptOptionalCookies">Accept optional</button>
+            <button type="button" class="cookie-secondary" id="rejectOptionalCookies">Reject optional</button>
+            <button type="button" class="cookie-settings-link" id="openCookieSettings">Settings</button>
+        </div>
+    </aside>
+
+    <div class="cookie-dialog-backdrop" id="cookieDialogBackdrop" role="dialog" aria-modal="true"
+        aria-labelledby="cookieDialogTitle">
+        <section class="cookie-dialog">
+            <h2 id="cookieDialogTitle">Cookie settings</h2>
+            <p>Choose which storage categories you want to allow on this device.</p>
+            <label class="cookie-option">
+                <span><strong>Essential storage</strong><small>Required for authentication and security.</small></span>
+                <input type="checkbox" checked disabled>
+            </label>
+            <label class="cookie-option">
+                <span><strong>Optional storage</strong><small>Remembered email and display preferences.</small></span>
+                <input type="checkbox" id="optionalCookies">
+            </label>
+            <div class="cookie-actions">
+                <button type="button" class="cookie-primary" id="saveCookieSettings">Save settings</button>
+                <button type="button" class="cookie-secondary" id="closeCookieSettings">Cancel</button>
+            </div>
+        </section>
+    </div>
+
     <script type="module">
         import { supabase } from './supabase-client.js';
 
@@ -694,6 +831,52 @@
         const signupPromptText = document.getElementById('signupPrompt');
 
         let isSignup = false;
+        const cookieConsentKey = 'cookieConsent';
+        const optionalCookiesKey = 'optionalCookies';
+        const cookieBanner = document.getElementById('cookieBanner');
+        const cookieDialogBackdrop = document.getElementById('cookieDialogBackdrop');
+        const optionalCookiesInput = document.getElementById('optionalCookies');
+
+        function hasOptionalCookieConsent() {
+            return localStorage.getItem(cookieConsentKey) === 'accepted' &&
+                localStorage.getItem(optionalCookiesKey) === 'true';
+        }
+
+        function clearOptionalStorage() {
+            localStorage.removeItem('rememberedEmail');
+            localStorage.removeItem('darkMode');
+        }
+
+        function saveCookieChoice(allowOptional) {
+            localStorage.setItem(cookieConsentKey, allowOptional ? 'accepted' : 'configured');
+            localStorage.setItem(optionalCookiesKey, String(allowOptional));
+            if (!allowOptional) clearOptionalStorage();
+            cookieBanner.style.display = 'none';
+            cookieDialogBackdrop.classList.remove('open');
+        }
+
+        function openCookieSettings() {
+            optionalCookiesInput.checked = hasOptionalCookieConsent();
+            cookieDialogBackdrop.classList.add('open');
+        }
+
+        document.getElementById('acceptOptionalCookies').addEventListener('click', () => {
+            localStorage.setItem(cookieConsentKey, 'accepted');
+            localStorage.setItem(optionalCookiesKey, 'true');
+            cookieBanner.style.display = 'none';
+        });
+        document.getElementById('rejectOptionalCookies').addEventListener('click', () => saveCookieChoice(false));
+        document.getElementById('openCookieSettings').addEventListener('click', openCookieSettings);
+        document.getElementById('saveCookieSettings').addEventListener('click', () => {
+            saveCookieChoice(optionalCookiesInput.checked);
+        });
+        document.getElementById('closeCookieSettings').addEventListener('click', () => {
+            cookieDialogBackdrop.classList.remove('open');
+        });
+
+        if (localStorage.getItem(cookieConsentKey)) {
+            cookieBanner.style.display = 'none';
+        }
 
         // Function to bind toggle listener
         function bindToggleListener() {
@@ -722,7 +905,7 @@
 
         bindToggleListener();
 
-        if (localStorage.getItem('rememberedEmail')) {
+        if (hasOptionalCookieConsent() && localStorage.getItem('rememberedEmail')) {
             emailInput.value = localStorage.getItem('rememberedEmail');
             document.getElementById('rememberMe').checked = true;
         }
@@ -784,7 +967,7 @@
                     const role = profile ? profile.role : 'user';
                     const fullName = profile && profile.full_name ? profile.full_name : 'User';
 
-                    if (rememberMe) {
+                    if (rememberMe && hasOptionalCookieConsent()) {
                         localStorage.setItem('rememberedEmail', email);
                     } else {
                         localStorage.removeItem('rememberedEmail');
@@ -811,7 +994,7 @@
             const toggleBtns = document.querySelectorAll('button[title="Toggle dark mode"]');
 
             // Initialize
-            if (localStorage.getItem('darkMode') === 'true') {
+            if (hasOptionalCookieConsent() && localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
                 toggleBtns.forEach(btn => {
                     const icon = btn.querySelector('i');
@@ -826,7 +1009,9 @@
             toggleBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const isDark = document.body.classList.toggle('dark-mode');
-                    localStorage.setItem('darkMode', isDark);
+                    if (hasOptionalCookieConsent()) {
+                        localStorage.setItem('darkMode', isDark);
+                    }
 
                     toggleBtns.forEach(b => {
                         const icon = b.querySelector('i');
@@ -994,7 +1179,5 @@
 </body>
 
 </html>
-
-
 
 
