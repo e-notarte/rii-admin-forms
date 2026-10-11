@@ -1272,9 +1272,30 @@
     }
   </style>
   <style>
+    .mobile-menu-toggle,
+    .mobile-account-button {
+      z-index: 2000 !important;
+    }
+
     @media (min-width: 901px) {
       .sidebar-brand-mobile {
-        display: none !important;
+        display: flex !important;
+        justify-content: flex-end;
+        padding: 10px 14px 0;
+        margin-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .sidebar-brand-mobile .brand {
+        display: none;
+      }
+
+      .sidebar-brand-mobile .close-sidebar {
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: #f8fafc;
       }
     }
   </style>
@@ -1927,8 +1948,9 @@
       <div class="brand"><img
           src="RII_Logo.png"
           alt="RII Logo"><span>R-II BUILDERS</span></div>
-      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
-          class="fa-solid fa-xmark"></i></button>
+      <button class="close-sidebar" type="button" aria-label="Hide navigation"
+          title="Hide navigation"
+          onclick="document.body.classList.remove('nav-open')"><i class="fa-solid fa-arrow-left"></i></button>
     </div>
     <div class="nav-label">User Accounts</div>
     <nav>
