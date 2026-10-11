@@ -2403,31 +2403,31 @@
 
     <div class="nav-label">MAIN</div>
     <nav>
-      <a href="#" class="nav-link active" onclick="switchView('view-dashboard', this)"><i
+      <a href="#" class="nav-link active" onclick="return switchView('view-dashboard', this)"><i
           class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
-      <a href="#" class="nav-link" onclick="switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i>
+      <a href="#" class="nav-link" onclick="return switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i>
         Facility Reservation</a>
-      <a href="#" class="nav-link" onclick="switchView('view-liaison', this)"><i
+      <a href="#" class="nav-link" onclick="return switchView('view-liaison', this)"><i
           class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker</a>
     </nav>
 
     <div class="nav-label">FINANCE</div>
     <nav>
-      <a href="#" class="nav-link" onclick="switchView('view-statement', this)"><i
+      <a href="#" class="nav-link" onclick="return switchView('view-statement', this)"><i
           class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
-      <a href="#" class="nav-link" onclick="switchView('view-budget', this)"><i class="fa-solid fa-chart-line"></i>
+      <a href="#" class="nav-link" onclick="return switchView('view-budget', this)"><i class="fa-solid fa-chart-line"></i>
         Budget Monitoring</a>
     </nav>
 
     <div class="nav-label">INVENTORY</div>
     <nav>
-      <a href="#" class="nav-link" onclick="switchView('view-supplies', this)"><i class="fa-solid fa-boxes-stacked"></i>
+      <a href="#" class="nav-link" onclick="return switchView('view-supplies', this)"><i class="fa-solid fa-boxes-stacked"></i>
         Supplies Inventory</a>
     </nav>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
-      <a href="#" class="nav-link" onclick="switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i> Vehicle
+      <a href="#" class="nav-link" onclick="return switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i> Vehicle
         Dispatch Board</a>
     </nav>
   </aside>
@@ -2866,8 +2866,98 @@
 
     window.adminSupabase = supabase;
 
+    const panelAccessPolicy = {
+      'view-dashboard': {
+        name: 'Admin Dashboard',
+        pin: null,
+        editors: []
+      },
+      'view-calendar': {
+        name: 'Facility Reservation',
+        pin: '011',
+        editors: ['Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
+      },
+      'view-liaison': {
+        name: 'Liaison Task Tracker',
+        pin: '012',
+        editors: ['Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan']
+      },
+      'view-statement': {
+        name: 'Statement of Accounts',
+        pin: '013',
+        editors: ['Clarisa P. Lasam', 'Emmanuel Notarte', 'Michael N. Antiquin']
+      },
+      'view-budget': {
+        name: 'Budget Monitoring',
+        pin: '014',
+        editors: ['Clarisa P. Lasam', 'Emmanuel Notarte', 'Michael N. Antiquin']
+      },
+      'view-supplies': {
+        name: 'Supplies Inventory',
+        pin: '015',
+        editors: ['Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Niño F. Dela Cruz']
+      },
+      'view-vehicle': {
+        name: 'Vehicle Dispatch Board',
+        pin: '016',
+        editors: ['Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
+      }
+    };
+
+    function normalizeAccountName(name) {
+      return String(name || '').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
+    }
+
+    function getCurrentAccountName() {
+      return sessionStorage.getItem('userFullName') || '';
+    }
+
+    function hasEditorAccess(viewId) {
+      const panel = panelAccessPolicy[viewId];
+      if (!panel) return false;
+
+      const accountName = normalizeAccountName(getCurrentAccountName());
+      return panel.editors.some(editor => normalizeAccountName(editor) === accountName);
+    }
+
+    function hasGrantedPanelAccess(viewId) {
+      return sessionStorage.getItem(`adminPanelAccess:${viewId}`) === 'true';
+    }
+
+    function canAccessPanel(viewId) {
+      const panel = panelAccessPolicy[viewId];
+      return Boolean(panel && (panel.pin === null || hasEditorAccess(viewId) || hasGrantedPanelAccess(viewId)));
+    }
+
+    function requestPanelAccess(viewId) {
+      const panel = panelAccessPolicy[viewId];
+      if (!panel || panel.pin === null || hasEditorAccess(viewId) || hasGrantedPanelAccess(viewId)) {
+        return true;
+      }
+
+      const enteredPin = window.prompt(`Enter the PIN for ${panel.name}:`);
+      if (enteredPin === null) return false;
+
+      if (enteredPin.trim() !== panel.pin) {
+        window.alert('Incorrect PIN. You do not have access to this panel.');
+        return false;
+      }
+
+      sessionStorage.setItem(`adminPanelAccess:${viewId}`, 'true');
+      return true;
+    }
+
+    // Keep the policy available for the future account tracker.
+    window.adminPanelAccess = {
+      policy: panelAccessPolicy,
+      canAccess: canAccessPanel,
+      getCurrentAccountName
+    };
+
     // Make switchView globally accessible since it's a module
     window.switchView = function (viewId, menuItem) {
+      if (!requestPanelAccess(viewId)) return false;
+
       // Hide all views
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
       // Show target view
@@ -2876,6 +2966,7 @@
       // Update sidebar active states
       document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
       menuItem.classList.add('active');
+      return false;
     }
 
     async function loadFacilityRequests() {
