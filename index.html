@@ -946,7 +946,7 @@
 
                     if (error) throw error;
 
-                    alert('Registration successful! Please sign in.');
+                    alert('Registration submitted. An administrator must approve your account before you can sign in.');
                     // Switch back to sign in
                     document.getElementById('toggleSignup').click();
                 } else {
@@ -959,13 +959,25 @@
                     if (error) throw error;
 
                     // Fetch user role from profiles
-                    const { data: profile } = await supabase
+                    const { data: profile, error: profileError } = await supabase
                         .from('profiles')
-                        .select('role, full_name')
+                        .select('role, full_name, approval_status')
                         .eq('id', data.user.id)
                         .single();
 
-                    const role = profile ? profile.role : 'user';
+                    if (profileError || !profile) {
+                        await supabase.auth.signOut();
+                        throw new Error('Your account profile is not ready. Please contact an administrator.');
+                    }
+                    if (profile.approval_status !== 'approved') {
+                        await supabase.auth.signOut();
+                        const message = profile.approval_status === 'rejected'
+                            ? 'Your account registration was rejected. Please contact an administrator.'
+                            : 'Your account is awaiting administrator approval.';
+                        throw new Error(message);
+                    }
+
+                    const role = profile.role || 'user';
                     const fullName = profile && profile.full_name ? profile.full_name : 'User';
 
                     if (rememberMe && hasOptionalCookieConsent()) {
@@ -1180,4 +1192,3 @@
 </body>
 
 </html>
-
