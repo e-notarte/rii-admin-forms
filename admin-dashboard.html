@@ -199,6 +199,11 @@
       color: #166534;
     }
 
+    .status-badge.cancelled {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+
     /* PAGINATION */
     .pagination-bar {
       padding: 15px 20px;
@@ -2218,6 +2223,41 @@
       background: #152748;
     }
 
+    .dispatch-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-width: 210px;
+    }
+
+    .dispatch-action {
+      padding: 6px 8px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dispatch-action.approve {
+      background: #10b981;
+    }
+
+    .dispatch-action.reject {
+      background: #ef4444;
+    }
+
+    .dispatch-action.cancel {
+      background: #d97706;
+    }
+
+    .dispatch-action:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+
     .schedule-controls {
       display: flex;
       gap: 8px;
@@ -2392,13 +2432,12 @@
   <!-- HEADER -->
   <header class="header">
     <div class="brand">
-      <img src="RII_Logo.png"
-        alt="RII Logo">
+      <img src="RII_Logo.png" alt="RII Logo">
       <span>R-II BUILDERS, INC.</span>
     </div>
     <div class="header-right">
       <a href="welcome.html" class="switch-admin" style="text-decoration:none;">
-      <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to User Dashboard</span>
+        <i class="fa-solid fa-arrow-right-arrow-left"></i> <span>Switch to User Dashboard</span>
       </a>
       <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
       <button class="icon-btn" title="Admin Notifications" aria-label="Admin Notifications"
@@ -2423,9 +2462,7 @@
   <!-- SIDEBAR -->
   <aside class="sidebar" aria-label="Admin navigation">
     <div class="sidebar-brand-mobile">
-      <div class="brand"><img
-          src="RII_Logo.png"
-          alt="RII Logo"><span>R-II BUILDERS</span></div>
+      <div class="brand"><img src="RII_Logo.png" alt="RII Logo"><span>R-II BUILDERS</span></div>
       <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
           class="fa-solid fa-xmark"></i></button>
     </div>
@@ -2434,10 +2471,11 @@
     <nav>
       <a href="#" class="nav-link active" onclick="return switchView('view-dashboard', this)"><i
           class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
-      <a href="#" class="nav-link" data-account-approvals
-          onclick="return switchView('view-account-approvals', this)"><i class="fa-solid fa-user-check"></i>
-          Account Approvals <span class="nav-count" id="pendingAccountNavCount"></span></a>
-      <a href="#" class="nav-link" onclick="return switchView('view-calendar', this)"><i class="fa-solid fa-calendar-days"></i>
+      <a href="#" class="nav-link" data-account-approvals onclick="return switchView('view-account-approvals', this)"><i
+          class="fa-solid fa-user-check"></i>
+        Account Approvals <span class="nav-count" id="pendingAccountNavCount"></span></a>
+      <a href="#" class="nav-link" onclick="return switchView('view-calendar', this)"><i
+          class="fa-solid fa-calendar-days"></i>
         Facility Reservation</a>
       <a href="#" class="nav-link" onclick="return switchView('view-liaison', this)"><i
           class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker</a>
@@ -2447,19 +2485,22 @@
     <nav>
       <a href="#" class="nav-link" onclick="return switchView('view-statement', this)"><i
           class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
-      <a href="#" class="nav-link" onclick="return switchView('view-budget', this)"><i class="fa-solid fa-chart-line"></i>
+      <a href="#" class="nav-link" onclick="return switchView('view-budget', this)"><i
+          class="fa-solid fa-chart-line"></i>
         Budget Monitoring</a>
     </nav>
 
     <div class="nav-label">INVENTORY</div>
     <nav>
-      <a href="#" class="nav-link" onclick="return switchView('view-supplies', this)"><i class="fa-solid fa-boxes-stacked"></i>
+      <a href="#" class="nav-link" onclick="return switchView('view-supplies', this)"><i
+          class="fa-solid fa-boxes-stacked"></i>
         Supplies Inventory</a>
     </nav>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
-      <a href="#" class="nav-link" onclick="return switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i> Vehicle
+      <a href="#" class="nav-link" onclick="return switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i>
+        Vehicle
         Dispatch Board</a>
     </nav>
   </aside>
@@ -2702,7 +2743,9 @@
                 </tr>
               </thead>
               <tbody id="suppliesRequestsTableBody">
-                <tr><td colspan="6" style="text-align:center;">Loading supply requests...</td></tr>
+                <tr>
+                  <td colspan="6" style="text-align:center;">Loading supply requests...</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -2719,14 +2762,15 @@
           <div class="data-card dispatch-card">
             <div class="toolbar" style="padding: 0 0 16px;">
               <div class="filter-pills" id="vehicleDispatchFilterPills">
-                <div class="pill active" data-filter="Pending"
-                  onclick="filterVehicleDispatch('Pending', this)">Pending</div>
-                <div class="pill" data-filter="Approved"
-                  onclick="filterVehicleDispatch('Approved', this)">Approved</div>
-                <div class="pill" data-filter="Rejected"
-                  onclick="filterVehicleDispatch('Rejected', this)">Rejected</div>
-                <div class="pill" data-filter="All"
-                  onclick="filterVehicleDispatch('All', this)">All</div>
+                <div class="pill active" data-filter="Pending" onclick="filterVehicleDispatch('Pending', this)">Pending
+                </div>
+                <div class="pill" data-filter="Approved" onclick="filterVehicleDispatch('Approved', this)">Approved
+                </div>
+                <div class="pill" data-filter="Rejected" onclick="filterVehicleDispatch('Rejected', this)">Rejected
+                </div>
+                <div class="pill" data-filter="Cancelled" onclick="filterVehicleDispatch('Cancelled', this)">Cancelled
+                </div>
+                <div class="pill" data-filter="All" onclick="filterVehicleDispatch('All', this)">All</div>
               </div>
             </div>
             <div class="dispatch-table-wrap">
@@ -2774,16 +2818,14 @@
         </div>
         <div class="data-card">
           <div class="toolbar">
-            <p style="margin: 0; color: var(--text-muted);">Review new employee registrations before allowing them to sign in.</p>
+            <p style="margin: 0; color: var(--text-muted);">Review new employee registrations before allowing them to
+              sign in.</p>
             <div class="filter-pills" id="accountApprovalFilterPills">
-              <div class="pill active" data-filter="pending"
-                onclick="filterAccountApprovals('pending', this)">Pending</div>
-              <div class="pill" data-filter="approved"
-                onclick="filterAccountApprovals('approved', this)">Approved</div>
-              <div class="pill" data-filter="rejected"
-                onclick="filterAccountApprovals('rejected', this)">Rejected</div>
-              <div class="pill" data-filter="all"
-                onclick="filterAccountApprovals('all', this)">All</div>
+              <div class="pill active" data-filter="pending" onclick="filterAccountApprovals('pending', this)">Pending
+              </div>
+              <div class="pill" data-filter="approved" onclick="filterAccountApprovals('approved', this)">Approved</div>
+              <div class="pill" data-filter="rejected" onclick="filterAccountApprovals('rejected', this)">Rejected</div>
+              <div class="pill" data-filter="all" onclick="filterAccountApprovals('all', this)">All</div>
             </div>
           </div>
           <div style="overflow-x: auto;">
@@ -2798,7 +2840,9 @@
                 </tr>
               </thead>
               <tbody id="accountApprovalsTableBody">
-                <tr><td colspan="5" style="text-align: center;">Loading account registrations...</td></tr>
+                <tr>
+                  <td colspan="5" style="text-align: center;">Loading account registrations...</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -2814,14 +2858,11 @@
         <div class="data-card">
           <div class="toolbar">
             <div class="filter-pills" id="liaisonFilterPills">
-              <div class="pill active" data-filter="Pending"
-                onclick="filterLiaisonTasks('Pending', this)">Pending</div>
-              <div class="pill" data-filter="Acknowledged"
-                onclick="filterLiaisonTasks('Acknowledged', this)">Acknowledged</div>
-              <div class="pill" data-filter="Rejected"
-                onclick="filterLiaisonTasks('Rejected', this)">Rejected</div>
-              <div class="pill" data-filter="All"
-                onclick="filterLiaisonTasks('All', this)">All</div>
+              <div class="pill active" data-filter="Pending" onclick="filterLiaisonTasks('Pending', this)">Pending</div>
+              <div class="pill" data-filter="Acknowledged" onclick="filterLiaisonTasks('Acknowledged', this)">
+                Acknowledged</div>
+              <div class="pill" data-filter="Rejected" onclick="filterLiaisonTasks('Rejected', this)">Rejected</div>
+              <div class="pill" data-filter="All" onclick="filterLiaisonTasks('All', this)">All</div>
             </div>
           </div>
           <div class="liaison-table-wrap">
@@ -2868,6 +2909,8 @@
                 <div class="pill" data-filter="Approved" onclick="filterFacilityRequests('Approved', this)">Approved
                 </div>
                 <div class="pill" data-filter="Rejected" onclick="filterFacilityRequests('Rejected', this)">Rejected
+                </div>
+                <div class="pill" data-filter="Cancelled" onclick="filterFacilityRequests('Cancelled', this)">Cancelled
                 </div>
                 <div class="pill" data-filter="All" onclick="filterFacilityRequests('All', this)">All</div>
               </div>
@@ -3333,9 +3376,20 @@
                 <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
                 <option value="Approved" ${status === 'Approved' ? 'selected' : ''}>Approved</option>
                 <option value="Rejected" ${status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+                <option value="Cancelled" ${status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
               </select>
             </td>
-            <td><button type="button" class="dispatch-save" onclick="saveVehicleDispatch('${rowId}')">Save</button></td>
+            <td>
+              <div class="dispatch-actions">
+                <button type="button" class="dispatch-action approve"
+                  onclick="setVehicleDispatchStatus('${rowId}', 'Approved')">Approve</button>
+                <button type="button" class="dispatch-action reject"
+                  onclick="setVehicleDispatchStatus('${rowId}', 'Rejected')">Reject</button>
+                <button type="button" class="dispatch-action cancel"
+                  onclick="setVehicleDispatchStatus('${rowId}', 'Cancelled')">Cancel</button>
+                <button type="button" class="dispatch-save" onclick="saveVehicleDispatch('${rowId}')">Save</button>
+              </div>
+            </td>
           </tr>`;
       }).join('');
     }
@@ -3751,6 +3805,15 @@
       }, 1500);
     };
 
+    window.setVehicleDispatchStatus = function (requestId, status) {
+      const select = document.querySelector(
+        `.dispatch-select[data-request-id="${CSS.escape(requestId)}"][data-field="status"]`
+      );
+      if (!select) return;
+      select.value = status;
+      window.saveVehicleDispatch(requestId);
+    };
+
     window.updateRequestStatus = async function (id, table, newStatus) {
       try {
         // Find user id
@@ -3810,7 +3873,9 @@
       }
 
       tableBody.innerHTML = filtered.map(req => {
-        const statusClass = req.status === 'Pending' ? '' : (req.status === 'Approved' ? 'active' : 'rejected');
+        const statusClass = req.status === 'Pending'
+          ? ''
+          : (req.status === 'Approved' ? 'active' : (req.status === 'Cancelled' ? 'cancelled' : 'rejected'));
         return `
         <tr>
           <td class="user-cell">
@@ -3826,10 +3891,14 @@
           <td>${req.display_pax || '-'}</td>
           <td><span class="status-badge ${statusClass}">${req.status}</span></td>
           <td>
-            ${req.status === 'Pending' ? `
-            <button onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Approved')" style="padding: 4px 8px; font-size: 0.75rem; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">Approve</button>
-            <button onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Rejected')" style="padding: 4px 8px; font-size: 0.75rem; background: #ef4444; color: white; margin-left: 5px; border: none; border-radius: 4px; cursor: pointer;">Reject</button>
-            ` : '-'}
+            <div class="dispatch-actions">
+              <button type="button" class="dispatch-action approve"
+                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Approved')">Approve</button>
+              <button type="button" class="dispatch-action reject"
+                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Rejected')">Reject</button>
+              <button type="button" class="dispatch-action cancel"
+                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Cancelled')">Cancel</button>
+            </div>
           </td>
         </tr>`;
       }).join('');
@@ -3884,10 +3953,10 @@
         if (hasEvent) {
           classStr += " clickable";
           calendarGrid.innerHTML += `<div class="${classStr}" style="cursor: pointer;" ${clickHandler}>${i}${labelStr}</div>`;
-      } else {
-        calendarGrid.innerHTML += `<div class="${classStr}">${i}${labelStr}</div>`;
+        } else {
+          calendarGrid.innerHTML += `<div class="${classStr}">${i}${labelStr}</div>`;
+        }
       }
-    }
     };
 
     window.updateAdminCal = function () {
@@ -3899,16 +3968,16 @@
       if (dayEvents.length === 0) return;
 
       let html = `<h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for ${dateStr}</h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">`;
-        dayEvents.forEach(e => {
-            const start = e.start_time ? e.start_time.substring(0, 5) : '';
-            const end = e.end_time ? e.end_time.substring(0, 5) : '';
-            const title = e.display_title || e.request_type;
-            html += `<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
+      dayEvents.forEach(e => {
+        const start = e.start_time ? e.start_time.substring(0, 5) : '';
+        const end = e.end_time ? e.end_time.substring(0, 5) : '';
+        const title = e.display_title || e.request_type;
+        html += `<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
                     <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i> ${start} - ${end} (${e.request_type})</div>
                     <div style="color:var(--primary); font-weight:600;">${title}</div>
                 </li>`;
-        });
-        html += '</ul>';
+      });
+      html += '</ul>';
 
       let popup = document.getElementById('dayDetailsPopup');
       if (!popup) {
@@ -4033,7 +4102,8 @@
     });
   </script>
 
-  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by leo worksuite</span>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by leo
+      worksuite</span>
   </footer>
 
   <!-- AI Bot Wrapper -->
@@ -4044,7 +4114,8 @@
         <span>Mae</span>
       </div>
       <div class="ai-chat-body">
-        <p><strong>Mae:</strong> Hello! I can check live request totals and help you find Admin Dashboard panels. Ask me about pending requests, vehicles, facilities, liaison tasks, or supplies.</p>
+        <p><strong>Mae:</strong> Hello! I can check live request totals and help you find Admin Dashboard panels. Ask me
+          about pending requests, vehicles, facilities, liaison tasks, or supplies.</p>
       </div>
       <div class="ai-chat-footer">
         <input type="text" placeholder="Type message...">
