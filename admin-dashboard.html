@@ -105,6 +105,24 @@
       border-color: var(--primary);
     }
 
+    .date-filter {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: fit-content;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .date-filter input {
+      padding: 9px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font: inherit;
+      color: var(--text);
+    }
+
     .filter-pills {
       display: flex;
       gap: 10px;
@@ -2761,6 +2779,10 @@
         <div class="dispatch-layout">
           <div class="data-card dispatch-card">
             <div class="toolbar" style="padding: 0 0 16px;">
+              <label class="date-filter">
+                Request date
+                <input type="date" id="vehicleDispatchDateFilter" aria-label="Filter vehicle requests by date">
+              </label>
               <div class="filter-pills" id="vehicleDispatchFilterPills">
                 <div class="pill active" data-filter="Pending" onclick="filterVehicleDispatch('Pending', this)">Pending
                 </div>
@@ -2857,6 +2879,10 @@
 
         <div class="data-card">
           <div class="toolbar">
+            <label class="date-filter">
+              Planned date
+              <input type="date" id="liaisonTaskDateFilter" aria-label="Filter liaison tasks by planned date">
+            </label>
             <div class="filter-pills" id="liaisonFilterPills">
               <div class="pill active" data-filter="Pending" onclick="filterLiaisonTasks('Pending', this)">Pending</div>
               <div class="pill" data-filter="Acknowledged" onclick="filterLiaisonTasks('Acknowledged', this)">
@@ -2901,8 +2927,13 @@
             <div class="toolbar">
               <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search requestor name...">
+                <input type="text" id="facilityRequestorSearch" placeholder="Search requestor name..."
+                  aria-label="Search facility requests by requestor name">
               </div>
+              <label class="date-filter">
+                Request date
+                <input type="date" id="facilityRequestDateFilter" aria-label="Filter facility requests by date">
+              </label>
               <div class="filter-pills" id="facilityFilterPills">
                 <div class="pill active" data-filter="Pending" onclick="filterFacilityRequests('Pending', this)">
                   Pending</div>
@@ -3166,8 +3197,10 @@
 
     let vehicleRequests = [];
     let vehicleDispatchFilter = 'Pending';
+    let vehicleDispatchDateFilter = '';
     let liaisonTasks = [];
     let liaisonTaskFilter = 'Pending';
+    let liaisonTaskDateFilter = '';
     let supplyRequests = [];
     let supplyRequestFilter = 'Pending';
 
@@ -3337,11 +3370,12 @@
       const tableBody = document.getElementById('dispatchTableBody');
       if (!tableBody) return;
 
-      const filteredRequests = vehicleDispatchFilter === 'All'
-        ? vehicleRequests
-        : vehicleRequests.filter(request =>
-          String(request.status || 'Pending').toLowerCase() === vehicleDispatchFilter.toLowerCase()
-        );
+      const filteredRequests = vehicleRequests.filter(request => {
+        const matchesStatus = vehicleDispatchFilter === 'All'
+          || String(request.status || 'Pending').toLowerCase() === vehicleDispatchFilter.toLowerCase();
+        const matchesDate = !vehicleDispatchDateFilter || request.request_date === vehicleDispatchDateFilter;
+        return matchesStatus && matchesDate;
+      });
 
       if (filteredRequests.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No vehicle requests found.</td></tr>';
@@ -3400,6 +3434,11 @@
         pill.classList.remove('active');
       });
       if (element) element.classList.add('active');
+      renderVehicleDispatchTable();
+    };
+
+    window.filterVehicleDispatchByDate = function (dateValue) {
+      vehicleDispatchDateFilter = dateValue;
       renderVehicleDispatchTable();
     };
 
@@ -3471,9 +3510,13 @@
       const tableBody = document.getElementById('liaisonTasksTableBody');
       if (!tableBody) return;
 
-      const filteredTasks = liaisonTaskFilter === 'All'
-        ? liaisonTasks
-        : liaisonTasks.filter(task => liaisonStatus(task.status) === liaisonTaskFilter);
+      const filteredTasks = liaisonTasks.filter(task => {
+        const matchesStatus = liaisonTaskFilter === 'All'
+          || liaisonStatus(task.status) === liaisonTaskFilter;
+        const plannedDate = task.completion_date || task.request_date || '';
+        const matchesDate = !liaisonTaskDateFilter || plannedDate === liaisonTaskDateFilter;
+        return matchesStatus && matchesDate;
+      });
 
       if (filteredTasks.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No liaison tasks found.</td></tr>';
@@ -3513,6 +3556,11 @@
       liaisonTaskFilter = filter;
       document.querySelectorAll('#liaisonFilterPills .pill').forEach(pill => pill.classList.remove('active'));
       if (element) element.classList.add('active');
+      renderLiaisonTasks();
+    };
+
+    window.filterLiaisonTasksByDate = function (dateValue) {
+      liaisonTaskDateFilter = dateValue;
       renderLiaisonTasks();
     };
 
@@ -3863,9 +3911,16 @@
       if (!tableBody || !window._allRequests) return;
 
       let filtered = window._allRequests;
-      if (window._currentFacilityFilter !== 'All') {
-        filtered = window._allRequests.filter(req => req.status === window._currentFacilityFilter);
-      }
+      const searchTerm = (document.getElementById('facilityRequestorSearch')?.value || '').trim().toLowerCase();
+      const selectedDate = document.getElementById('facilityRequestDateFilter')?.value || '';
+      filtered = window._allRequests.filter(req => {
+        const matchesStatus = window._currentFacilityFilter === 'All'
+          || req.status === window._currentFacilityFilter;
+        const matchesName = !searchTerm
+          || String(req.requestor_name || '').toLowerCase().includes(searchTerm);
+        const matchesDate = !selectedDate || req.request_date === selectedDate;
+        return matchesStatus && matchesName && matchesDate;
+      });
 
       if (filtered.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No requests found.</td></tr>';
@@ -3908,6 +3963,14 @@
       window._currentFacilityFilter = filter;
       document.querySelectorAll('#facilityFilterPills .pill').forEach(p => p.classList.remove('active'));
       if (element) element.classList.add('active');
+      window.renderFacilityTable();
+    };
+
+    window.filterFacilityRequestsByDate = function () {
+      window.renderFacilityTable();
+    };
+
+    window.filterFacilityRequestsByName = function () {
       window.renderFacilityTable();
     };
 
@@ -4099,6 +4162,18 @@
         scheduleDate.value = new Date().toISOString().slice(0, 10);
         renderVehicleSchedule(scheduleDate.value);
       });
+      const vehicleDateFilter = document.getElementById('vehicleDispatchDateFilter');
+      const liaisonDateFilter = document.getElementById('liaisonTaskDateFilter');
+      const facilityDateFilter = document.getElementById('facilityRequestDateFilter');
+      const facilityNameSearch = document.getElementById('facilityRequestorSearch');
+      if (vehicleDateFilter) vehicleDateFilter.addEventListener('change', () => {
+        window.filterVehicleDispatchByDate(vehicleDateFilter.value);
+      });
+      if (liaisonDateFilter) liaisonDateFilter.addEventListener('change', () => {
+        window.filterLiaisonTasksByDate(liaisonDateFilter.value);
+      });
+      if (facilityDateFilter) facilityDateFilter.addEventListener('change', window.filterFacilityRequestsByDate);
+      if (facilityNameSearch) facilityNameSearch.addEventListener('input', window.filterFacilityRequestsByName);
     });
   </script>
 
