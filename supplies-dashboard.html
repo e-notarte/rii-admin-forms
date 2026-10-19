@@ -1640,6 +1640,200 @@
             font-size: .7rem;
             color: #94a3b8;
         }
+
+        /* BUDGET VS ACTUAL EXPENSE STYLES */
+        .budget-display-card {
+            margin-top: 12px;
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            box-shadow: 0 2px 8px rgba(30, 53, 95, 0.05);
+            transition: all 0.3s ease;
+            animation: fadeInBudget 0.25s ease-out;
+        }
+
+        @keyframes fadeInBudget {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .budget-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .budget-dept-badge {
+            background: rgba(30, 53, 95, 0.1);
+            color: var(--primary);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .budget-status-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #dcfce7;
+            color: #166534;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .budget-status-pill.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .budget-status-pill.danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .budget-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .budget-metric-item {
+            background: #ffffff;
+            border: 1px solid #edf2f7;
+            border-radius: 6px;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .budget-metric-item .metric-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--muted);
+        }
+
+        .budget-metric-item .metric-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .metric-value.budget-val {
+            color: var(--primary);
+        }
+
+        .metric-value.expense-val {
+            color: #d97706;
+        }
+
+        .metric-value.remaining-val {
+            color: #16a34a;
+        }
+
+        .metric-value.remaining-val.negative {
+            color: #dc2626;
+        }
+
+        .budget-progress-container {
+            margin-bottom: 6px;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 4px;
+        }
+
+        .budget-progress-bar-bg {
+            width: 100%;
+            height: 7px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .budget-progress-bar {
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.4s ease, background-color 0.3s ease;
+            background: #16a34a;
+        }
+
+        .budget-progress-bar.warning {
+            background: #f59e0b;
+        }
+
+        .budget-progress-bar.danger {
+            background: #dc2626;
+        }
+
+        .budget-footer-note {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.68rem;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        /* Dark mode overrides for budget card */
+        body.dark-mode .budget-display-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border-color: var(--border);
+        }
+
+        body.dark-mode .budget-header {
+            border-bottom-color: var(--border);
+        }
+
+        body.dark-mode .budget-title {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .budget-dept-badge {
+            background: rgba(252, 174, 22, 0.15);
+            color: var(--accent);
+        }
+
+        body.dark-mode .budget-metric-item {
+            background: #0f172a;
+            border-color: var(--border);
+        }
+
+        body.dark-mode .metric-value.budget-val {
+            color: #93c5fd;
+        }
+
+        body.dark-mode .progress-labels {
+            color: #cbd5e1;
+        }
+
+        body.dark-mode .budget-progress-bar-bg {
+            background: #334155;
+        }
     </style>
 </head>
 
@@ -1784,6 +1978,16 @@
             </div>
 
             <div class="req-dept">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <label for="deptSelect" style="font-size:0.8rem; font-weight:600; color:var(--primary); display:flex; align-items:center; gap:6px;">
+                        <i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Department Requisition
+                    </label>
+                    <label for="budgetFileInput" style="cursor:pointer; font-size:0.75rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border:1px solid var(--border); border-radius:5px; background:white;" title="Load custom budget file (.json/.csv)">
+                        <i class="fa-solid fa-file-import" style="color:var(--accent);"></i>
+                        <span id="budgetLoadBtnText">Import File</span>
+                        <input type="file" id="budgetFileInput" accept=".json,.csv" style="display:none;">
+                    </label>
+                </div>
                 <select id="deptSelect">
                     <option value="">Select Department</option>
                     <option>Admin</option>
@@ -1801,6 +2005,49 @@
                     <option>CEWD</option>                    
                     <option>Finance</option>
                 </select>
+
+                <!-- BUDGET VS ACTUAL EXPENSE INDICATOR -->
+                <div id="budgetDisplayCard" class="budget-display-card" style="display: none;">
+                    <div class="budget-header">
+                        <div class="budget-title">
+                            <i class="fa-solid fa-chart-pie" style="color:var(--accent);"></i>
+                            <span>Budget vs Actual Expense</span>
+                            <span class="budget-dept-badge" id="budgetDeptBadge">HR</span>
+                        </div>
+                        <span class="budget-status-pill" id="budgetStatusPill">Within Budget</span>
+                    </div>
+
+                    <div class="budget-metrics-grid">
+                        <div class="budget-metric-item">
+                            <div class="metric-label">Allocated Budget</div>
+                            <div class="metric-value budget-val" id="metricAllocated">₱0.00</div>
+                        </div>
+                        <div class="budget-metric-item">
+                            <div class="metric-label">Actual Expense</div>
+                            <div class="metric-value expense-val" id="metricActual">₱0.00</div>
+                        </div>
+                        <div class="budget-metric-item">
+                            <div class="metric-label">Remaining Balance</div>
+                            <div class="metric-value remaining-val" id="metricRemaining">₱0.00</div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar Container -->
+                    <div class="budget-progress-container">
+                        <div class="progress-labels">
+                            <span id="budgetUtilizationLabel">Utilization: 0.0%</span>
+                            <span id="budgetPeriodLabel" style="font-size:0.7rem; color:var(--muted);">FY 2026</span>
+                        </div>
+                        <div class="budget-progress-bar-bg">
+                            <div id="budgetProgressBar" class="budget-progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="budget-footer-note" id="budgetSourceNote">
+                        <i class="fa-solid fa-circle-check" style="color:#16a34a;"></i>
+                        <span id="budgetSourceText">Loaded from department_budgets.json</span>
+                    </div>
+                </div>
             </div>
 
             <div class="req-table-wrap">
@@ -1880,6 +2127,9 @@
             document.getElementById('deptSelect').value = '';
             rowCount = 0;
             addRequestRow();
+            if (typeof updateBudgetDisplay === 'function') {
+                updateBudgetDisplay();
+            }
         }
 
         function generateRef() {
@@ -1960,6 +2210,9 @@
                 document.getElementById('deptSelect').value = '';
                 rowCount = 0;
                 addRequestRow();
+                if (typeof updateBudgetDisplay === 'function') {
+                    updateBudgetDisplay();
+                }
             } catch (error) {
                 console.error('Error submitting supply request:', error);
                 alert('Unable to submit supply request: ' + (error.message || 'Unknown error.'));
@@ -1975,6 +2228,213 @@
         document.getElementById('modalOkBtn').addEventListener('click', function () {
             document.getElementById('successModal').classList.remove('show');
         });
+
+        // ==========================================
+        // BUDGET VS ACTUAL EXPENSE ENGINE
+        // ==========================================
+        const DEFAULT_DEPARTMENT_BUDGETS = {
+            "HR": { allocated_budget: 150000, actual_expense: 84250, period: "FY 2026" },
+            "Admin": { allocated_budget: 220000, actual_expense: 142800, period: "FY 2026" },
+            "Purchasing": { allocated_budget: 120000, actual_expense: 78900, period: "FY 2026" },
+            "BDG": { allocated_budget: 95000, actual_expense: 41200, period: "FY 2026" },
+            "Engineering": { allocated_budget: 180000, actual_expense: 115400, period: "FY 2026" },
+            "C&C": { allocated_budget: 85000, actual_expense: 39500, period: "FY 2026" },
+            "Accounting": { allocated_budget: 110000, actual_expense: 62300, period: "FY 2026" },
+            "CRMD": { allocated_budget: 75000, actual_expense: 28400, period: "FY 2026" },
+            "Operations": { allocated_budget: 250000, actual_expense: 210500, period: "FY 2026" },
+            "ESSH": { allocated_budget: 90000, actual_expense: 52100, period: "FY 2026" },
+            "OTP": { allocated_budget: 80000, actual_expense: 46300, period: "FY 2026" },
+            "OTC": { allocated_budget: 80000, actual_expense: 48900, period: "FY 2026" },
+            "CEWD": { allocated_budget: 95000, actual_expense: 61200, period: "FY 2026" },
+            "Finance": { allocated_budget: 130000, actual_expense: 54800, period: "FY 2026" }
+        };
+
+        var departmentBudgets = Object.assign({}, DEFAULT_DEPARTMENT_BUDGETS);
+        var currentBudgetSource = 'department_budgets.json';
+
+        function formatBudgetCurrency(val, currency) {
+            var curr = currency || 'PHP';
+            return new Intl.NumberFormat('en-PH', {
+                style: 'currency',
+                currency: curr,
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(Number(val) || 0);
+        }
+
+        async function loadBudgetDataset() {
+            try {
+                var res = await fetch('./department_budgets.json', { cache: 'no-store' });
+                if (res.ok) {
+                    var data = await res.json();
+                    if (data && typeof data === 'object') {
+                        var map = data.departments || data;
+                        for (var k in map) {
+                            if (map.hasOwnProperty(k)) {
+                                departmentBudgets[k] = map[k];
+                            }
+                        }
+                        currentBudgetSource = 'department_budgets.json';
+                        var note = document.getElementById('budgetSourceText');
+                        if (note) note.textContent = 'Loaded from department_budgets.json';
+                    }
+                } else {
+                    var cached = localStorage.getItem('cached_department_budgets');
+                    if (cached) {
+                        departmentBudgets = JSON.parse(cached);
+                        currentBudgetSource = 'Local Cache';
+                    }
+                }
+            } catch (err) {
+                console.warn('Budget file fetch fallback to default values:', err);
+                var cachedLocal = localStorage.getItem('cached_department_budgets');
+                if (cachedLocal) {
+                    try { departmentBudgets = JSON.parse(cachedLocal); } catch(e){}
+                }
+            }
+            updateBudgetDisplay();
+        }
+
+        function handleBudgetFileUpload(event) {
+            var file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var content = e.target.result;
+                try {
+                    if (file.name.endsWith('.json')) {
+                        var parsed = JSON.parse(content);
+                        var map = parsed.departments || parsed;
+                        for (var k in map) {
+                            if (map.hasOwnProperty(k)) {
+                                departmentBudgets[k] = map[k];
+                            }
+                        }
+                    } else if (file.name.endsWith('.csv')) {
+                        var lines = content.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
+                        if (lines.length > 1) {
+                            var headers = lines[0].split(',').map(function(h) { return h.trim().toLowerCase(); });
+                            var deptIdx = headers.findIndex(function(h) { return h.includes('dept') || h.includes('department'); });
+                            var budgetIdx = headers.findIndex(function(h) { return h.includes('budget') || h.includes('allocated'); });
+                            var expenseIdx = headers.findIndex(function(h) { return h.includes('expense') || h.includes('actual') || h.includes('spent'); });
+
+                            for (var i = 1; i < lines.length; i++) {
+                                var cols = lines[i].split(',').map(function(c) { return c.trim().replace(/^"|"$/g, ''); });
+                                if (deptIdx !== -1 && cols[deptIdx]) {
+                                    var deptName = cols[deptIdx];
+                                    departmentBudgets[deptName] = {
+                                        allocated_budget: budgetIdx !== -1 ? Number(cols[budgetIdx]) || 0 : 0,
+                                        actual_expense: expenseIdx !== -1 ? Number(cols[expenseIdx]) || 0 : 0,
+                                        period: 'Imported CSV'
+                                    };
+                                }
+                            }
+                        }
+                    }
+
+                    localStorage.setItem('cached_department_budgets', JSON.stringify(departmentBudgets));
+                    currentBudgetSource = file.name;
+                    var btnText = document.getElementById('budgetLoadBtnText');
+                    if (btnText) btnText.textContent = file.name.substring(0, 12) + '...';
+                    var note = document.getElementById('budgetSourceText');
+                    if (note) note.textContent = 'Imported from ' + file.name;
+
+                    updateBudgetDisplay();
+                    alert('Successfully loaded budget data from ' + file.name + '!');
+                } catch(parseErr) {
+                    console.error('Failed to parse budget file:', parseErr);
+                    alert('Error reading budget file: ' + parseErr.message);
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        function updateBudgetDisplay() {
+            var select = document.getElementById('deptSelect');
+            var card = document.getElementById('budgetDisplayCard');
+            if (!select || !card) return;
+
+            var dept = (select.value || '').trim();
+            if (!dept) {
+                card.style.display = 'none';
+                return;
+            }
+
+            var record = null;
+            var searchKey = dept.toLowerCase();
+            for (var k in departmentBudgets) {
+                if (departmentBudgets.hasOwnProperty(k)) {
+                    var normK = k.toLowerCase().replace(/&amp;/g, '&');
+                    var normSearch = searchKey.replace(/&amp;/g, '&');
+                    if (normK === normSearch) {
+                        record = departmentBudgets[k];
+                        break;
+                    }
+                }
+            }
+
+            if (!record) {
+                record = {
+                    allocated_budget: 0,
+                    actual_expense: 0,
+                    period: 'Awaiting File',
+                    currency: 'PHP'
+                };
+            }
+
+            var allocated = Number(record.allocated_budget != null ? record.allocated_budget : (record.allocatedBudget != null ? record.allocatedBudget : record.budget)) || 0;
+            var actual = Number(record.actual_expense != null ? record.actual_expense : (record.actualExpense != null ? record.actualExpense : record.expense)) || 0;
+            var remaining = allocated - actual;
+            var utilization = allocated > 0 ? (actual / allocated) * 100 : 0;
+            var curr = record.currency || 'PHP';
+
+            document.getElementById('budgetDeptBadge').textContent = dept;
+            document.getElementById('metricAllocated').textContent = formatBudgetCurrency(allocated, curr);
+            document.getElementById('metricActual').textContent = formatBudgetCurrency(actual, curr);
+            
+            var remEl = document.getElementById('metricRemaining');
+            remEl.textContent = formatBudgetCurrency(remaining, curr);
+            if (remaining < 0) {
+                remEl.classList.add('negative');
+                remEl.textContent += ' (Over)';
+            } else {
+                remEl.classList.remove('negative');
+            }
+
+            document.getElementById('budgetUtilizationLabel').textContent = 'Utilization: ' + utilization.toFixed(1) + '%';
+            document.getElementById('budgetPeriodLabel').textContent = record.period || 'FY 2026';
+
+            var pBar = document.getElementById('budgetProgressBar');
+            var statusPill = document.getElementById('budgetStatusPill');
+
+            pBar.style.width = Math.min(utilization, 100) + '%';
+            pBar.classList.remove('warning', 'danger');
+            statusPill.classList.remove('warning', 'danger');
+
+            if (utilization <= 75) {
+                statusPill.textContent = 'Within Budget';
+            } else if (utilization <= 90) {
+                pBar.classList.add('warning');
+                statusPill.classList.add('warning');
+                statusPill.textContent = 'Near Limit (' + utilization.toFixed(0) + '%)';
+            } else {
+                pBar.classList.add('danger');
+                statusPill.classList.add('danger');
+                statusPill.textContent = utilization > 100 ? 'Over Budget!' : 'Critical (' + utilization.toFixed(0) + '%)';
+            }
+
+            card.style.display = 'block';
+        }
+
+        // Attach listeners for Budget Engine
+        document.getElementById('deptSelect').addEventListener('change', updateBudgetDisplay);
+        var budgetFileInputEl = document.getElementById('budgetFileInput');
+        if (budgetFileInputEl) {
+            budgetFileInputEl.addEventListener('change', handleBudgetFileUpload);
+        }
+        loadBudgetDataset();
 
         // TAB SWITCHER
         function switchTab(tab) {
