@@ -170,68 +170,73 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
         }
 
+        .header:after {
+            content: "ADMIN SUPPLIES DASHBOARD";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
         .page-body {
             padding-top: 88px;
         }
 
-        .header-left {
+        .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            font-weight: 700;
         }
 
-        .header-left img {
-            width: 42px;
+        .brand img {
+            width: 44px;
         }
 
-        .header-left span {
+        .brand span {
             font-size: 1rem;
             font-weight: 700;
             color: var(--accent);
             letter-spacing: .03em;
         }
 
-        .header-center {
-            font-size: 1rem;
-            font-weight: 700;
-            color: white;
-            letter-spacing: .05em;
-            text-transform: uppercase;
-        }
-
         .header-right {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
-        .switch-btn {
-            background: rgba(252, 174, 22, .15);
-            color: var(--accent);
-            border: 1px solid rgba(252, 174, 22, .3);
-            padding: 6px 14px;
+        .switch-admin {
+            background: #fcae1626;
+            border: 1px solid #fcae164d;
             border-radius: 6px;
-            font-size: .8rem;
+            padding: 6px 14px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: .85rem;
             font-weight: 600;
-            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 7px;
-            text-decoration: none;
             transition: background .2s;
         }
 
-        .switch-btn:hover {
+        .switch-admin:hover {
             background: rgba(252, 174, 22, .3);
             color: white;
         }
 
         .icon-btn {
             background: none;
-            border: none;
-            font-size: 1.1rem;
-            color: white;
+            border: 0;
+            color: #fff;
             cursor: pointer;
+            font-size: 1.1rem;
         }
 
         .icon-btn:hover {
@@ -245,17 +250,17 @@
             color: var(--accent);
             font-size: .85rem;
             font-weight: 600;
+            position: relative;
             cursor: pointer;
         }
 
         .avatar {
             width: 34px;
             height: 34px;
-            background: rgba(255, 255, 255, .15);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #ffffff26;
+            display: grid;
+            place-items: center;
             font-size: .75rem;
             font-weight: 700;
             color: var(--accent);
@@ -1917,34 +1922,32 @@
 
     <!-- HEADER -->
     <header class="header">
-        <div class="header-left">
-            <img src="RII_Logo.png"
-                alt="RII Logo">
+        <div class="brand">
+            <img src="RII_Logo.png" alt="RII Logo">
             <span>R-II BUILDERS, INC.</span>
         </div>
-        <div class="header-center">ADMIN SUPPLIES DASHBOARD</div>
         <div class="header-right">
-            <a href="admin-dashboard.html" class="switch-btn">
+            <a class="switch-admin" href="admin-dashboard.html">
                 <i class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin
             </a>
-            <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-            <div class="notification-container">
-                <button class="icon-btn notification-btn" type="button" title="User Notifications"
-                    aria-label="User Notifications"
+            <button class="icon-btn" type="button" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
+            <div class="notification-container" style="position: relative;">
+                <button class="icon-btn notification-btn" type="button" title="Notifications"
+                    aria-label="Notifications"
                     onclick="document.getElementById('notifDropdown').classList.toggle('active')">
                     <i class="fa-regular fa-bell"></i>
                     <span class="notification-badge" id="notifBadge" style="display:none;">0</span>
                 </button>
                 <div class="notification-dropdown" id="notifDropdown">
-                    <div class="notification-header">User Notifications</div>
+                    <div class="notification-header">Notifications</div>
                     <div class="notification-list" id="notificationList">
-                        <div style="padding:15px;text-align:center;color:#64748b;font-size:.85rem;">Loading notifications...</div>
+                        <div style="padding:15px;text-align:center;color:#64748b;font-size:.85rem;">No new notifications</div>
                     </div>
                 </div>
             </div>
             <div class="user-badge" onclick="this.classList.toggle('active')">
-                <span>Admin User</span>
-                <div class="avatar">AU</div>
+                <span>User</span>
+                <div class="avatar">RU</div>
 
                 <div class="profile-dropdown">
                     <a href="user-profile.html"><i class="fa-regular fa-user"></i> Profile</a>
@@ -2748,9 +2751,29 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-
             if (sessionStorage.getItem('userRole') !== 'admin') {
                 document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
+            }
+
+            const storedName = sessionStorage.getItem('userFullName');
+            if (storedName) {
+                const badge = document.querySelector('.user-badge');
+                if (badge) {
+                    const span = badge.querySelector('span');
+                    if (span) span.textContent = storedName;
+
+                    const avatar = badge.querySelector('.avatar');
+                    if (avatar) {
+                        const parts = storedName.trim().split(/\s+/);
+                        let initials = '';
+                        if (parts.length > 1) {
+                            initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+                        } else if (parts.length === 1 && parts[0].length > 0) {
+                            initials = parts[0].substring(0, 2).toUpperCase();
+                        }
+                        if (initials) avatar.textContent = initials;
+                    }
+                }
             }
         });
     </script>
