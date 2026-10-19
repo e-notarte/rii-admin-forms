@@ -2328,21 +2328,49 @@
         // BUDGET VS ACTUAL EXPENSE ENGINE
         // ==========================================
         const DEFAULT_DEPARTMENT_BUDGETS = {
-            "HR": { allocated_budget: 150000, actual_expense: 84250, period: "FY 2026" },
-            "Admin": { allocated_budget: 220000, actual_expense: 142800, period: "FY 2026" },
-            "Purchasing": { allocated_budget: 120000, actual_expense: 78900, period: "FY 2026" },
-            "BDG": { allocated_budget: 95000, actual_expense: 41200, period: "FY 2026" },
-            "Engineering": { allocated_budget: 180000, actual_expense: 115400, period: "FY 2026" },
-            "C&C": { allocated_budget: 85000, actual_expense: 39500, period: "FY 2026" },
-            "Accounting": { allocated_budget: 110000, actual_expense: 62300, period: "FY 2026" },
-            "CRMD": { allocated_budget: 75000, actual_expense: 28400, period: "FY 2026" },
-            "Operations": { allocated_budget: 250000, actual_expense: 210500, period: "FY 2026" },
-            "ESSH": { allocated_budget: 90000, actual_expense: 52100, period: "FY 2026" },
-            "OTP": { allocated_budget: 80000, actual_expense: 46300, period: "FY 2026" },
-            "OTC": { allocated_budget: 80000, actual_expense: 48900, period: "FY 2026" },
-            "CEWD": { allocated_budget: 95000, actual_expense: 61200, period: "FY 2026" },
-            "Finance": { allocated_budget: 130000, actual_expense: 54800, period: "FY 2026" }
+            "Admin": { allocated_budget: 120000.00, actual_expense: 51988.00, period: "FY 2026" },
+            "HR": { allocated_budget: 60000.00, actual_expense: 85951.50, period: "FY 2026" },
+            "Engineering": { allocated_budget: 641705.50, actual_expense: 53157.00, period: "FY 2026" },
+            "Purchasing": { allocated_budget: 289989.75, actual_expense: 46335.50, period: "FY 2026" },
+            "Operations": { allocated_budget: 21000.00, actual_expense: 51666.50, period: "FY 2026" },
+            "C&C": { allocated_budget: 50400.00, actual_expense: 185262.00, period: "FY 2026" },
+            "BDG": { allocated_budget: 205137.80, actual_expense: 40860.00, period: "FY 2026" },
+            "CEWD": { allocated_budget: 7632.00, actual_expense: 6234.50, period: "FY 2026" },
+            "ESSH": { allocated_budget: 120000.00, actual_expense: 51619.80, period: "FY 2026" },
+            "CRMD": { allocated_budget: 90000.00, actual_expense: 22864.00, period: "FY 2026" },
+            "OTP": { allocated_budget: 28000.00, actual_expense: 16.00, period: "FY 2026" },
+            "Accounting": { allocated_budget: 0, actual_expense: 0, period: "FY 2026" },
+            "Finance": { allocated_budget: 0, actual_expense: 0, period: "FY 2026" },
+            "OTC": { allocated_budget: 0, actual_expense: 0, period: "FY 2026" }
         };
+
+        const DEPT_ALIASES = {
+            'adm': 'Admin',
+            'admin': 'Admin',
+            'pur': 'Purchasing',
+            'purchasing': 'Purchasing',
+            'eng': 'Engineering',
+            'engineering': 'Engineering',
+            'ops': 'Operations',
+            'operations': 'Operations',
+            'c&c': 'C&C',
+            'c & c': 'C&C',
+            'bdg': 'BDG',
+            'cewd': 'CEWD',
+            'essh': 'ESSH',
+            'crmd': 'CRMD',
+            'otp': 'OTP',
+            'otc': 'OTC',
+            'hr': 'HR',
+            'accounting': 'Accounting',
+            'finance': 'Finance'
+        };
+
+        function resolveDeptName(raw) {
+            if (!raw) return '';
+            var cleaned = String(raw).trim().toLowerCase().replace(/&amp;/g, '&');
+            return DEPT_ALIASES[cleaned] || raw;
+        }
 
         var departmentBudgets = Object.assign({}, DEFAULT_DEPARTMENT_BUDGETS);
         var currentBudgetSource = 'department_budgets.json';
@@ -2420,7 +2448,7 @@
             var delimiter = lines[0].includes('\t') ? '\t' : ',';
             var firstCols = lines[0].split(delimiter).map(function(c) { return c.trim().toLowerCase().replace(/^"|"$/g, ''); });
             var hasHeader = firstCols.some(function(c) { 
-                return c.includes('dept') || c.includes('department') || c.includes('budget') || c.includes('expense') || c.includes('actual'); 
+                return c.includes('dept') || c.includes('department') || c.includes('budget') || c.includes('expense') || c.includes('actual') || c.includes('account') || c.includes('title'); 
             });
             var startIndex = hasHeader ? 1 : 0;
 
@@ -2429,7 +2457,7 @@
             var expenseIdx = 2;
 
             if (hasHeader) {
-                var d = firstCols.findIndex(function(c) { return c.includes('dept') || c.includes('department') || c.includes('name'); });
+                var d = firstCols.findIndex(function(c) { return c.includes('dept') || c.includes('department') || c.includes('account') || c.includes('title') || c.includes('name'); });
                 var b = firstCols.findIndex(function(c) { return c.includes('budget') || c.includes('allocated'); });
                 var e = firstCols.findIndex(function(c) { return c.includes('expense') || c.includes('actual') || c.includes('spent'); });
                 if (d !== -1) deptIdx = d;
@@ -2439,14 +2467,51 @@
 
             var updatedCount = 0;
             for (var i = startIndex; i < lines.length; i++) {
-                var cols = lines[i].split(delimiter).map(function(c) { 
-                    return c.trim().replace(/^"|"$/g, '').replace(/,/g, ''); 
+                var rawCols = lines[i].split(delimiter).map(function(c) { 
+                    return c.trim().replace(/^"|"$/g, ''); 
                 });
-                if (cols.length >= 2 && cols[deptIdx]) {
-                    var dName = cols[deptIdx];
-                    var bVal = Number(cols[budgetIdx]) || 0;
-                    var eVal = Number(cols[expenseIdx]) || 0;
-                    departmentBudgets[dName] = {
+                if (rawCols.length === 0) continue;
+
+                var resolvedDept = '';
+                var bVal = 0;
+                var eVal = 0;
+
+                // Check if any column directly matches an alias (e.g. ADM, ENG, PUR, Admin, HR)
+                for (var cIdx = 0; cIdx < rawCols.length; cIdx++) {
+                    var cellText = rawCols[cIdx].toLowerCase().replace(/&amp;/g, '&');
+                    if (DEPT_ALIASES[cellText]) {
+                        resolvedDept = DEPT_ALIASES[cellText];
+                        // Extract numbers from the remaining columns
+                        var nums = [];
+                        for (var nIdx = 0; nIdx < rawCols.length; nIdx++) {
+                            if (nIdx !== cIdx) {
+                                var cleanedNum = rawCols[nIdx].replace(/,/g, '').replace(/[()]/g, '');
+                                var parsed = parseFloat(cleanedNum);
+                                if (!isNaN(parsed) && isFinite(parsed)) {
+                                    nums.push(parsed);
+                                }
+                            }
+                        }
+                        if (nums.length >= 2) {
+                            bVal = nums[0];
+                            eVal = nums[1];
+                        } else if (nums.length === 1) {
+                            bVal = nums[0];
+                        }
+                        break;
+                    }
+                }
+
+                // Fallback to standard index mapping if no alias matched
+                if (!resolvedDept && rawCols.length >= 2 && rawCols[deptIdx]) {
+                    var rawName = rawCols[deptIdx];
+                    resolvedDept = resolveDeptName(rawName);
+                    bVal = Number(String(rawCols[budgetIdx] || '').replace(/,/g, '')) || 0;
+                    eVal = Number(String(rawCols[expenseIdx] || '').replace(/,/g, '')) || 0;
+                }
+
+                if (resolvedDept && (bVal > 0 || eVal > 0)) {
+                    departmentBudgets[resolvedDept] = {
                         allocated_budget: bVal,
                         actual_expense: eVal,
                         period: 'SharePoint Excel'
@@ -2524,12 +2589,11 @@
             }
 
             var record = null;
-            var searchKey = dept.toLowerCase();
+            var searchKey = resolveDeptName(dept).toLowerCase();
             for (var k in departmentBudgets) {
                 if (departmentBudgets.hasOwnProperty(k)) {
-                    var normK = k.toLowerCase().replace(/&amp;/g, '&');
-                    var normSearch = searchKey.replace(/&amp;/g, '&');
-                    if (normK === normSearch) {
+                    var canonicalK = resolveDeptName(k).toLowerCase();
+                    if (canonicalK === searchKey) {
                         record = departmentBudgets[k];
                         break;
                     }
