@@ -1,0 +1,91 @@
+{
+  "_comment": "Department Budget vs Actual Expense Allocation for Admin Supplies Management. Update or replace this file anytime with your generated budget records.",
+  "fiscal_year": "2026",
+  "currency": "PHP",
+  "departments": {
+    "HR": {
+      "allocated_budget": 150000,
+      "actual_expense": 84250,
+      "period": "FY 2026",
+      "notes": "Human Resources departmental supplies allocation"
+    },
+    "Admin": {
+      "allocated_budget": 220000,
+      "actual_expense": 142800,
+      "period": "FY 2026",
+      "notes": "General administrative & office consumables"
+    },
+    "Purchasing": {
+      "allocated_budget": 120000,
+      "actual_expense": 78900,
+      "period": "FY 2026",
+      "notes": "Procurement department requisitions"
+    },
+    "BDG": {
+      "allocated_budget": 95000,
+      "actual_expense": 41200,
+      "period": "FY 2026",
+      "notes": "Business Development Group"
+    },
+    "Engineering": {
+      "allocated_budget": 180000,
+      "actual_expense": 115400,
+      "period": "FY 2026",
+      "notes": "Technical engineering supplies & drafting materials"
+    },
+    "C&C": {
+      "allocated_budget": 85000,
+      "actual_expense": 39500,
+      "period": "FY 2026",
+      "notes": "Credit & Collection"
+    },
+    "Accounting": {
+      "allocated_budget": 110000,
+      "actual_expense": 62300,
+      "period": "FY 2026",
+      "notes": "Audit, tax, and ledger supplies"
+    },
+    "CRMD": {
+      "allocated_budget": 75000,
+      "actual_expense": 28400,
+      "period": "FY 2026",
+      "notes": "Customer Relations Management Department"
+    },
+    "Operations": {
+      "allocated_budget": 250000,
+      "actual_expense": 210500,
+      "period": "FY 2026",
+      "notes": "Project site operations and logistics"
+    },
+    "ESSH": {
+      "allocated_budget": 90000,
+      "actual_expense": 52100,
+      "period": "FY 2026",
+      "notes": "Environmental, Safety, Security & Health"
+    },
+    "OTP": {
+      "allocated_budget": 80000,
+      "actual_expense": 46300,
+      "period": "FY 2026",
+      "notes": "Operations & Technical Planning"
+    },
+    "OTC": {
+      "allocated_budget": 80000,
+      "actual_expense": 48900,
+      "period": "FY 2026",
+      "notes": "Operations & Technical Control"
+    },
+    "CEWD": {
+      "allocated_budget": 95000,
+      "actual_expense": 61200,
+      "period": "FY 2026",
+      "notes": "Civil Engineering & Works Department"
+    },
+    "Finance": {
+      "allocated_budget": 130000,
+      "actual_expense": 54800,
+      "period": "FY 2026",
+      "notes": "Treasury & Financial Planning"
+    }
+  }
+}
