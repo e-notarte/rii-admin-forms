@@ -1834,6 +1834,46 @@
         body.dark-mode .budget-progress-bar-bg {
             background: #334155;
         }
+
+        /* PANEL TABS */
+        .panel-tab-btn {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--muted);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .panel-tab-btn:hover {
+            background: #f8fafc;
+            color: var(--primary);
+        }
+
+        .panel-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        body.dark-mode .panel-tab-btn {
+            background: #1e293b;
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
+
+        body.dark-mode .panel-tab-btn.active {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
     </style>
 </head>
 
@@ -1935,21 +1975,45 @@
     <!-- BODY -->
     <div class="page-body">
 
-        <!-- LEFT: Item Summary -->
+        <!-- LEFT: Item Summary & Live Budget View -->
         <div class="panel">
-            <div class="panel-title">
-                <i class="fa-solid fa-boxes-stacked" style="color:var(--accent);margin-right:8px;"></i>Item Summary
+            <div class="panel-title" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; flex-wrap: wrap; gap: 8px;">
+                <div class="panel-tabs" style="display: flex; gap: 8px;">
+                    <button type="button" id="tabInventoryBtn" class="panel-tab-btn active" onclick="switchLeftPanelTab('inventory')">
+                        <i class="fa-solid fa-boxes-stacked"></i> On-Hand Inventory
+                    </button>
+                    <button type="button" id="tabBudgetBtn" class="panel-tab-btn" onclick="switchLeftPanelTab('budget')">
+                        <i class="fa-solid fa-chart-pie" style="color:var(--accent);"></i> Budget vs Expense (Live)
+                    </button>
+                </div>
+                <a id="openSharePointExternal" href="https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQCdLpPE09xpR77uT6B535daAVPYEu2B4y9QXA_suGYQaj8?e=pHu8Rk" target="_blank" rel="noopener" style="font-size: 0.76rem; color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; font-weight: 600;" title="Open in Excel Online">
+                    <i class="fa-solid fa-file-excel" style="color:#16a34a;"></i>
+                    <span>Open in SharePoint</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.7rem; color:var(--muted);"></i>
+                </a>
             </div>
 
-            <!-- LIVE EXCEL IFRAME VIEW -->
-            <div class="iframe-wrap">
+            <!-- LIVE INVENTORY EXCEL IFRAME VIEW -->
+            <div id="inventoryIframeWrap" class="iframe-wrap">
                 <iframe id="excelFrame" class="excel-iframe"
                     src="https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQATn-9YklpERrSWDpO_hYkOAebQ9nRiGtcSg1WxKs2PsnM?action=embedview&wdHideSheetTabs=True&wdAllowInteractivity=False&wdHideGridlines=True&wdHideHeaders=True&Item='OnHand'!A:E"
                     frameborder="0" allowfullscreen title="Live Inventory Excel" loading="lazy">
                 </iframe>
                 <div class="iframe-note">
                     <i class="fa-solid fa-circle-info" style="color:#d97706;"></i>
-                    Live view from SharePoint ? you must be signed in to your Microsoft 365 account to see the data.
+                    Live inventory from SharePoint — signed in to Microsoft 365 required.
+                </div>
+            </div>
+
+            <!-- LIVE BUDGET VS EXPENSE EXCEL IFRAME VIEW -->
+            <div id="budgetIframeWrap" class="iframe-wrap" style="display: none;">
+                <iframe id="budgetExcelFrame" class="excel-iframe"
+                    src="https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQCdLpPE09xpR77uT6B535daAVPYEu2B4y9QXA_suGYQaj8?action=embedview&wdAllowInteractivity=True&wdHideGridlines=False&wdHideHeaders=False"
+                    frameborder="0" allowfullscreen title="Live Budget vs Expense Excel" loading="lazy">
+                </iframe>
+                <div class="iframe-note">
+                    <i class="fa-solid fa-circle-check" style="color:#16a34a;"></i>
+                    Live Budget vs Actual Expense spreadsheet connected to SharePoint.
                 </div>
             </div>
 
@@ -1978,15 +2042,21 @@
             </div>
 
             <div class="req-dept">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
                     <label for="deptSelect" style="font-size:0.8rem; font-weight:600; color:var(--primary); display:flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Department Requisition
                     </label>
-                    <label for="budgetFileInput" style="cursor:pointer; font-size:0.75rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border:1px solid var(--border); border-radius:5px; background:white;" title="Load custom budget file (.json/.csv)">
-                        <i class="fa-solid fa-file-import" style="color:var(--accent);"></i>
-                        <span id="budgetLoadBtnText">Import File</span>
-                        <input type="file" id="budgetFileInput" accept=".json,.csv" style="display:none;">
-                    </label>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <button type="button" onclick="openPasteBudgetModal()" style="border:1px solid var(--border); border-radius:5px; background:white; padding:3px 8px; font-size:0.75rem; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Paste copied rows from SharePoint Excel">
+                            <i class="fa-solid fa-paste" style="color:var(--accent);"></i>
+                            <span>Paste Excel</span>
+                        </button>
+                        <label for="budgetFileInput" style="cursor:pointer; font-size:0.75rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border:1px solid var(--border); border-radius:5px; background:white;" title="Load custom budget file (.json/.csv)">
+                            <i class="fa-solid fa-file-import" style="color:var(--accent);"></i>
+                            <span id="budgetLoadBtnText">Import File</span>
+                            <input type="file" id="budgetFileInput" accept=".json,.csv" style="display:none;">
+                        </label>
+                    </div>
                 </div>
                 <select id="deptSelect">
                     <option value="">Select Department</option>
@@ -2043,9 +2113,14 @@
                         </div>
                     </div>
 
-                    <div class="budget-footer-note" id="budgetSourceNote">
-                        <i class="fa-solid fa-circle-check" style="color:#16a34a;"></i>
-                        <span id="budgetSourceText">Loaded from department_budgets.json</span>
+                    <div class="budget-footer-note" id="budgetSourceNote" style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            <i class="fa-solid fa-file-excel" style="color:#16a34a;"></i>
+                            <span id="budgetSourceText">SharePoint Excel Connected</span>
+                        </div>
+                        <a href="javascript:void(0)" onclick="switchLeftPanelTab('budget')" style="color:var(--primary); font-weight:600; text-decoration:underline; font-size:0.7rem; display:inline-flex; align-items:center; gap:4px;" title="Switch left panel to Budget Excel">
+                            <i class="fa-solid fa-eye" style="color:var(--accent);"></i> View in Live Excel
+                        </a>
                     </div>
                 </div>
             </div>
@@ -2093,6 +2168,26 @@
             <div class="ref" id="modalRef">�</div>
             <br>
             <button class="btn-ok" id="modalOkBtn">OK</button>
+        </div>
+    </div>
+
+    <!-- BUDGET PASTE MODAL -->
+    <div class="modal-overlay" id="budgetPasteModal">
+        <div class="modal-box" style="max-width: 520px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-file-excel" style="color:#16a34a;"></i> Paste SharePoint Excel Data
+                </h3>
+                <button type="button" onclick="closePasteBudgetModal()" style="background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--muted); line-height:1;">&times;</button>
+            </div>
+            <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">
+                Copy your department rows from the <a href="https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQCdLpPE09xpR77uT6B535daAVPYEu2B4y9QXA_suGYQaj8?e=pHu8Rk" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; text-decoration:underline;">SharePoint Budget Sheet</a>, then paste below:
+            </p>
+            <textarea id="budgetPasteInput" rows="7" placeholder="Paste columns here (Department, Budget, Actual Expense)...&#10;Example:&#10;HR&#9;150000&#9;84250&#10;Admin&#9;220000&#9;142800" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:6px; font-family:monospace; font-size:0.8rem; outline:none; resize:vertical; box-sizing:border-box;"></textarea>
+            <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+                <button type="button" onclick="closePasteBudgetModal()" style="padding:8px 16px; border:1px solid var(--border); background:#f1f5f9; border-radius:6px; cursor:pointer; font-size:0.82rem; font-weight:600;">Cancel</button>
+                <button type="button" onclick="applyPastedBudgetData()" style="padding:8px 18px; border:none; background:var(--primary); color:white; border-radius:6px; cursor:pointer; font-size:0.82rem; font-weight:600;">Apply Data</button>
+            </div>
         </div>
     </div>
 
@@ -2295,6 +2390,82 @@
             updateBudgetDisplay();
         }
 
+        function parseBudgetTextData(text, sourceName) {
+            if (!text || !text.trim()) return false;
+            var trimmed = text.trim();
+
+            // 1. JSON Support
+            if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+                try {
+                    var parsed = JSON.parse(trimmed);
+                    var map = parsed.departments || parsed;
+                    for (var k in map) {
+                        if (map.hasOwnProperty(k)) {
+                            departmentBudgets[k] = map[k];
+                        }
+                    }
+                    localStorage.setItem('cached_department_budgets', JSON.stringify(departmentBudgets));
+                    currentBudgetSource = sourceName || 'Pasted Data';
+                    var note = document.getElementById('budgetSourceText');
+                    if (note) note.textContent = 'Updated from ' + currentBudgetSource;
+                    updateBudgetDisplay();
+                    return true;
+                } catch(e) {}
+            }
+
+            // 2. Tab-delimited (Excel Copy) or Comma-delimited (CSV)
+            var lines = trimmed.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
+            if (lines.length === 0) return false;
+
+            var delimiter = lines[0].includes('\t') ? '\t' : ',';
+            var firstCols = lines[0].split(delimiter).map(function(c) { return c.trim().toLowerCase().replace(/^"|"$/g, ''); });
+            var hasHeader = firstCols.some(function(c) { 
+                return c.includes('dept') || c.includes('department') || c.includes('budget') || c.includes('expense') || c.includes('actual'); 
+            });
+            var startIndex = hasHeader ? 1 : 0;
+
+            var deptIdx = 0;
+            var budgetIdx = 1;
+            var expenseIdx = 2;
+
+            if (hasHeader) {
+                var d = firstCols.findIndex(function(c) { return c.includes('dept') || c.includes('department') || c.includes('name'); });
+                var b = firstCols.findIndex(function(c) { return c.includes('budget') || c.includes('allocated'); });
+                var e = firstCols.findIndex(function(c) { return c.includes('expense') || c.includes('actual') || c.includes('spent'); });
+                if (d !== -1) deptIdx = d;
+                if (b !== -1) budgetIdx = b;
+                if (e !== -1) expenseIdx = e;
+            }
+
+            var updatedCount = 0;
+            for (var i = startIndex; i < lines.length; i++) {
+                var cols = lines[i].split(delimiter).map(function(c) { 
+                    return c.trim().replace(/^"|"$/g, '').replace(/,/g, ''); 
+                });
+                if (cols.length >= 2 && cols[deptIdx]) {
+                    var dName = cols[deptIdx];
+                    var bVal = Number(cols[budgetIdx]) || 0;
+                    var eVal = Number(cols[expenseIdx]) || 0;
+                    departmentBudgets[dName] = {
+                        allocated_budget: bVal,
+                        actual_expense: eVal,
+                        period: 'SharePoint Excel'
+                    };
+                    updatedCount++;
+                }
+            }
+
+            if (updatedCount > 0) {
+                localStorage.setItem('cached_department_budgets', JSON.stringify(departmentBudgets));
+                currentBudgetSource = sourceName || 'SharePoint Paste';
+                var noteEl = document.getElementById('budgetSourceText');
+                if (noteEl) noteEl.textContent = 'Updated from ' + currentBudgetSource;
+                updateBudgetDisplay();
+                return true;
+            }
+            return false;
+        }
+
         function handleBudgetFileUpload(event) {
             var file = event.target.files && event.target.files[0];
             if (!file) return;
@@ -2302,54 +2473,44 @@
             var reader = new FileReader();
             reader.onload = function(e) {
                 var content = e.target.result;
-                try {
-                    if (file.name.endsWith('.json')) {
-                        var parsed = JSON.parse(content);
-                        var map = parsed.departments || parsed;
-                        for (var k in map) {
-                            if (map.hasOwnProperty(k)) {
-                                departmentBudgets[k] = map[k];
-                            }
-                        }
-                    } else if (file.name.endsWith('.csv')) {
-                        var lines = content.split(/\r?\n/).filter(function(l) { return l.trim().length > 0; });
-                        if (lines.length > 1) {
-                            var headers = lines[0].split(',').map(function(h) { return h.trim().toLowerCase(); });
-                            var deptIdx = headers.findIndex(function(h) { return h.includes('dept') || h.includes('department'); });
-                            var budgetIdx = headers.findIndex(function(h) { return h.includes('budget') || h.includes('allocated'); });
-                            var expenseIdx = headers.findIndex(function(h) { return h.includes('expense') || h.includes('actual') || h.includes('spent'); });
-
-                            for (var i = 1; i < lines.length; i++) {
-                                var cols = lines[i].split(',').map(function(c) { return c.trim().replace(/^"|"$/g, ''); });
-                                if (deptIdx !== -1 && cols[deptIdx]) {
-                                    var deptName = cols[deptIdx];
-                                    departmentBudgets[deptName] = {
-                                        allocated_budget: budgetIdx !== -1 ? Number(cols[budgetIdx]) || 0 : 0,
-                                        actual_expense: expenseIdx !== -1 ? Number(cols[expenseIdx]) || 0 : 0,
-                                        period: 'Imported CSV'
-                                    };
-                                }
-                            }
-                        }
-                    }
-
-                    localStorage.setItem('cached_department_budgets', JSON.stringify(departmentBudgets));
-                    currentBudgetSource = file.name;
+                var ok = parseBudgetTextData(content, file.name);
+                if (ok) {
                     var btnText = document.getElementById('budgetLoadBtnText');
                     if (btnText) btnText.textContent = file.name.substring(0, 12) + '...';
-                    var note = document.getElementById('budgetSourceText');
-                    if (note) note.textContent = 'Imported from ' + file.name;
-
-                    updateBudgetDisplay();
                     alert('Successfully loaded budget data from ' + file.name + '!');
-                } catch(parseErr) {
-                    console.error('Failed to parse budget file:', parseErr);
-                    alert('Error reading budget file: ' + parseErr.message);
+                } else {
+                    alert('Could not parse valid budget data from ' + file.name + '. Please check format.');
                 }
             };
-
             reader.readAsText(file);
         }
+
+        window.openPasteBudgetModal = function() {
+            var modal = document.getElementById('budgetPasteModal');
+            if (modal) modal.classList.add('show');
+        };
+
+        window.closePasteBudgetModal = function() {
+            var modal = document.getElementById('budgetPasteModal');
+            if (modal) modal.classList.remove('show');
+        };
+
+        window.applyPastedBudgetData = function() {
+            var input = document.getElementById('budgetPasteInput');
+            var text = input ? input.value : '';
+            if (!text.trim()) {
+                alert('Please paste department budget data first.');
+                return;
+            }
+            var ok = parseBudgetTextData(text, 'SharePoint Excel Paste');
+            if (ok) {
+                closePasteBudgetModal();
+                if (input) input.value = '';
+                alert('Successfully synced budget & expense data from SharePoint Excel!');
+            } else {
+                alert('Could not recognize department columns. Please ensure columns include Department, Budget, and Actual Expense.');
+            }
+        };
 
         function updateBudgetDisplay() {
             var select = document.getElementById('deptSelect');
@@ -2435,6 +2596,35 @@
             budgetFileInputEl.addEventListener('change', handleBudgetFileUpload);
         }
         loadBudgetDataset();
+
+        // SWITCH LEFT PANEL TABS (INVENTORY VS BUDGET EXCEL)
+        window.switchLeftPanelTab = function(tab) {
+            var invWrap = document.getElementById('inventoryIframeWrap');
+            var bgtWrap = document.getElementById('budgetIframeWrap');
+            var invBtn = document.getElementById('tabInventoryBtn');
+            var bgtBtn = document.getElementById('tabBudgetBtn');
+            var extLink = document.getElementById('openSharePointExternal');
+
+            if (tab === 'budget') {
+                if (invWrap) invWrap.style.display = 'none';
+                if (bgtWrap) bgtWrap.style.display = 'flex';
+                if (invBtn) invBtn.classList.remove('active');
+                if (bgtBtn) bgtBtn.classList.add('active');
+                if (extLink) {
+                    extLink.href = 'https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQCdLpPE09xpR77uT6B535daAVPYEu2B4y9QXA_suGYQaj8?e=pHu8Rk';
+                    extLink.title = 'Open Budget vs Expense in Excel Online';
+                }
+            } else {
+                if (invWrap) invWrap.style.display = 'flex';
+                if (bgtWrap) bgtWrap.style.display = 'none';
+                if (invBtn) invBtn.classList.add('active');
+                if (bgtBtn) bgtBtn.classList.remove('active');
+                if (extLink) {
+                    extLink.href = 'https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQATn-9YklpERrSWDpO_hYkOAebQ9nRiGtcSg1WxKs2PsnM?action=embedview';
+                    extLink.title = 'Open On-Hand Inventory in Excel Online';
+                }
+            }
+        };
 
         // TAB SWITCHER
         function switchTab(tab) {
