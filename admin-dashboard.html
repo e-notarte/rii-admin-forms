@@ -2771,6 +2771,124 @@
       font: inherit;
       font-size: 0.8rem;
     }
+
+    /* System Theme Pop-Up Modal (Custom Alert) */
+    .system-alert-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .system-alert-backdrop.open {
+      display: flex;
+      animation: alertFadeIn 0.2s ease-out;
+    }
+
+    .system-alert-box {
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      padding: 32px 28px 26px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+      animation: alertSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .system-alert-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 2.2rem;
+    }
+
+    .system-alert-icon.success {
+      background: #dcfce7;
+      color: #10b981;
+    }
+
+    .system-alert-icon.warning {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .system-alert-icon.error {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .system-alert-icon.info {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .system-alert-title {
+      margin: 0 0 12px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1E355F;
+      line-height: 1.3;
+    }
+
+    .system-alert-message {
+      margin: 0 0 24px;
+      font-size: 0.9rem;
+      color: #475569;
+      line-height: 1.6;
+      text-align: left;
+      background: #f8fafc;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      word-break: break-word;
+      white-space: pre-line;
+    }
+
+    .system-alert-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .system-alert-btn {
+      min-width: 140px;
+      padding: 10px 28px;
+      background: #1E355F;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 10px rgba(30, 53, 95, 0.2);
+    }
+
+    .system-alert-btn:hover {
+      background: #162846;
+      transform: translateY(-1px);
+    }
+
+    @keyframes alertFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes alertSlideUp {
+      from { transform: translateY(20px) scale(0.96); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
   </style>
 </head>
 
@@ -4747,16 +4865,64 @@
 
       // Notify requestor
       if (request.user_id && nextStatus !== previousStatus) {
-        const items = (request.items || []).map(item => `${item.description} × ${item.quantity}`).join(', ');
+        const refNo = request.reference_number || `SUP-${request.id}`;
+        const deptName = request.department || 'General';
+        const itemsListStr = (request.items || []).map(item => `  • ${item.description} (Qty: ${item.quantity}${item.purpose ? ` — ${item.purpose}` : ''})`).join('\n');
+
+        let notifTitle = `Supplies Request ${nextStatus}`;
+        let notifMessage = '';
+
+        if (nextStatus === 'Approved') {
+          notifTitle = `✅ Supplies Request Approved (${refNo})`;
+          notifMessage = 
+`==============================================
+R-II BUILDERS, INC.
+NOTICE OF SUPPLIES REQUEST APPROVAL
+==============================================
+Reference No.   : ${refNo}
+Department      : ${deptName}
+Approval Status : APPROVED (Transmitted for Issuance)
+
+APPROVED ITEMS / MATERIALS:
+${itemsListStr || '  • Supplies as requested'}
+
+==============================================
+Your supplies request has been officially APPROVED by the Administration and routed to the Warehouse / Inventory Staff for stock release.
+
+Next Steps:
+Please present your Reference Number (${refNo}) to the Warehouse / Inventory Staff to claim your supplies. Once released, an official copy of your Requisition & Issue Slip (RIS) will be posted to your dashboard.`;
+        } else if (nextStatus === 'Rejected') {
+          notifTitle = `❌ Supplies Request Disapproved (${refNo})`;
+          notifMessage = 
+`==============================================
+R-II BUILDERS, INC.
+NOTICE OF SUPPLIES REQUEST DISAPPROVAL
+==============================================
+Reference No.   : ${refNo}
+Department      : ${deptName}
+Status          : DISAPPROVED / REJECTED
+
+ITEMS REQUESTED:
+${itemsListStr || '  • Supplies as requested'}
+
+==============================================
+Your request could not be approved at this time. Please coordinate with the Administrative Department for questions or budget clarifications.`;
+        } else {
+          notifTitle = `Supplies Request Status: ${nextStatus} (${refNo})`;
+          notifMessage = `Reference No.: ${refNo}\nDepartment: ${deptName}\nYour request status has been updated to: ${nextStatus}.`;
+        }
+
         try {
           await supabase.from('notifications').insert([{
             user_id: request.user_id,
-            title: `Supplies Request ${nextStatus}`,
-            message: `Reference: ${request.reference_number || 'SUP'}\nDepartment: ${request.department}\nItems: ${items}\nStatus: ${nextStatus} ${nextStatus === 'Approved' ? '(Ready for Warehouse Issuance)' : ''}`,
+            title: notifTitle,
+            message: notifMessage,
             request_type: 'Supplies',
             is_read: false
           }]);
-        } catch(e) {}
+        } catch(e) {
+          console.warn('Notice: Error dispatching requestor approval notification', e);
+        }
       }
 
       // If approved, seamlessly transition tab to 'Approved' so the Admin/Warehouse immediately sees the request under 'Approved (For Issuance)' with the 'Record Issuance' button
@@ -4767,6 +4933,11 @@
         } else {
           renderSupplyRequests();
         }
+        window.showSystemAlert(
+          'Supplies Request Approved',
+          `Reference: ${request.reference_number || `SUP-${request.id}`}\nDepartment: ${request.department}\n\nThe supplies request has been APPROVED and forwarded to the Warehouse / Inventory Staff for stock release. A formal approval notification has been sent to the requestor.`,
+          'success'
+        );
       } else {
         renderSupplyRequests();
       }
@@ -4895,35 +5066,49 @@
       const remarks = document.getElementById('issueRemarks')?.value.trim() || 'Supplies issued';
 
       try {
-        // 1. Update Supabase supplies_requests
-        try {
-          const { error: reqError } = await supabase
-            .from('supplies_requests')
-            .update({ status: 'Issued' })
-            .eq('id', request.id);
+        const refNo = request.reference_number || `SUP-${request.id}`;
+        const deptName = request.department || 'General';
+        const formattedDate = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
 
-          if (reqError) {
-            console.warn('Supabase issuance status update warning:', reqError);
-          }
-        } catch(e) {
-          console.warn('Supabase issuance update error:', e);
-        }
-
-        setSupplyStatusOverride(request.id, 'Issued');
-        request.status = 'Issued';
-
-        // 2. Save issuance record in localStorage
-        const issuances = getSuppliesIssuances();
-        issuances[request.id] = {
+        const issuanceRecord = {
           id: request.id,
-          reference: request.reference_number || `SUP-${request.id}`,
-          department: request.department,
+          reference: refNo,
+          department: deptName,
           items: issuedItemsList,
           totalCost: grandTotal,
           issuedAt: new Date().toISOString(),
           issuedBy: staffName,
           remarks: remarks
         };
+
+        // 1. Update Supabase supplies_requests
+        try {
+          const { error: reqError } = await supabase
+            .from('supplies_requests')
+            .update({ 
+              status: 'Issued',
+              issuance_details: issuanceRecord 
+            })
+            .eq('id', request.id);
+
+          if (reqError) {
+            // Fallback if issuance_details column does not exist yet
+            await supabase
+              .from('supplies_requests')
+              .update({ status: 'Issued' })
+              .eq('id', request.id);
+          }
+        } catch(e) {
+          console.warn('Supabase issuance update notice:', e);
+        }
+
+        setSupplyStatusOverride(request.id, 'Issued');
+        request.status = 'Issued';
+        request.issuance_details = issuanceRecord;
+
+        // 2. Save issuance record in localStorage
+        const issuances = getSuppliesIssuances();
+        issuances[String(request.id)] = issuanceRecord;
         saveSuppliesIssuances(issuances);
 
         // 3. Deduct from Department Budget
@@ -4951,8 +5136,8 @@
         } catch(e) {}
         txns.unshift({
           id: `TXN-${Date.now()}`,
-          reference: request.reference_number || `SUP-${request.id}`,
-          department: request.department,
+          reference: refNo,
+          department: deptName,
           itemsSummary: issuedItemsList.map(i => `${i.description} × ${i.issued_quantity}`).join(', '),
           amount: grandTotal,
           issuedBy: staffName,
@@ -4960,17 +5145,44 @@
         });
         localStorage.setItem('budget_transactions', JSON.stringify(txns));
 
-        // 5. Send notification to user
+        // 5. Send complete copy of issuance form (RIS) to the requestor
         if (request.user_id) {
+          const itemizedSlipText = issuedItemsList.map(it => 
+            `  • ${it.description}: ${it.issued_quantity} pc(s) @ ${formatPHP(it.unit_price)} = ${formatPHP(it.line_total)}`
+          ).join('\n');
+
+          const officialCopyMessage = 
+`==============================================
+R-II BUILDERS, INC.
+OFFICIAL SUPPLIES ISSUANCE SLIP (RIS COPY)
+==============================================
+Reference No.   : ${refNo}
+Department      : ${deptName}
+Date & Time     : ${formattedDate}
+Recorded By     : ${staffName} (Inventory Staff)
+Issuance Status : COMPLETED & RECORDED
+
+RELEASED ITEMS & MATERIALS BREAKDOWN:
+${itemizedSlipText}
+
+----------------------------------------------
+TOTAL VALUATION : ${formatPHP(grandTotal)}
+CHARGED TO      : ${deptName} Department Supplies Budget
+REMARKS         : ${remarks}
+==============================================
+This serves as your official electronic copy of the posted Requisition & Issue Slip (RIS). A printable copy of your official issuance form is now permanently available in your Requests Dashboard under "Issued".`;
+
           try {
             await supabase.from('notifications').insert([{
               user_id: request.user_id,
-              title: 'Supplies Issued by Warehouse',
-              message: `Your supplies request ${request.reference_number || 'SUP'} has been released by ${staffName}.\nTotal Issuance Value: ${formatPHP(grandTotal)}\nRemarks: ${remarks}`,
+              title: `📄 Official Supplies Issuance Slip (${refNo})`,
+              message: officialCopyMessage,
               request_type: 'Supplies',
               is_read: false
             }]);
-          } catch(e) {}
+          } catch(e) {
+            console.warn('Notice: Error dispatching requestor issuance copy notification', e);
+          }
         }
 
         closeDispatchModal('suppliesIssuanceModal');
@@ -4985,10 +5197,13 @@
 
         if (typeof loadBudgetMonitoringBoard === 'function') loadBudgetMonitoringBoard();
 
-        alert(`✅ Supplies Successfully Issued!\n\nReference: ${request.reference_number || 'SUP'}\nDepartment: ${request.department}\nTotal Cost Charged to Budget: ${formatPHP(grandTotal)}\nIssued By: ${staffName}`);
+        const alertMsg = `Reference: ${request.reference_number || 'SUP'}\nDepartment: ${request.department}\nTotal Cost Charged to Budget: ${formatPHP(grandTotal)}\nIssued By: ${staffName}`;
+        window.showSystemAlert('Supplies Successfully Issued!', alertMsg, 'success', () => {
+          openSuppliesReceiptModal(request.id);
+        });
       } catch (err) {
         console.error('Issuance error', err);
-        alert(`Error processing issuance: ${err.message}`);
+        window.showSystemAlert('Issuance Failed', `Error processing issuance: ${err.message}`, 'error');
       } finally {
         if (btn) {
           btn.disabled = false;
@@ -5232,6 +5447,84 @@
     window.closeDispatchModal = function (modalId) {
       const modal = document.getElementById(modalId);
       if (modal) modal.classList.remove('open');
+    };
+
+    // System Theme Pop-Up Modal Handlers
+    let systemAlertCallback = null;
+
+    window.showSystemAlert = function (title, message, type = 'success', onConfirm = null) {
+      const modal = document.getElementById('systemAlertModal');
+      const titleEl = document.getElementById('systemAlertTitle');
+      const messageEl = document.getElementById('systemAlertMessage');
+      const iconEl = document.getElementById('systemAlertIcon');
+
+      if (titleEl) titleEl.textContent = title;
+      if (messageEl) {
+        if (typeof message === 'string') {
+          messageEl.textContent = message;
+        } else {
+          messageEl.innerHTML = '';
+          messageEl.appendChild(message);
+        }
+      }
+
+      if (iconEl) {
+        iconEl.className = 'system-alert-icon ' + type;
+        if (type === 'success') {
+          iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        } else if (type === 'warning') {
+          iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        } else if (type === 'error') {
+          iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+        } else {
+          iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+        }
+      }
+
+      systemAlertCallback = onConfirm;
+
+      if (modal) {
+        modal.classList.add('open');
+      }
+    };
+
+    window.closeSystemAlert = function () {
+      const modal = document.getElementById('systemAlertModal');
+      if (modal) modal.classList.remove('open');
+      if (typeof systemAlertCallback === 'function') {
+        const cb = systemAlertCallback;
+        systemAlertCallback = null;
+        cb();
+      }
+    };
+
+    // Override native browser alert globally so all alerts match the system theme
+    window.alert = function (msg) {
+      const text = typeof msg === 'string' ? msg : String(msg ?? '');
+      let type = 'info';
+      if (text.includes('✅') || text.toLowerCase().includes('success')) {
+        type = 'success';
+      } else if (text.toLowerCase().includes('error') || text.toLowerCase().includes('failed') || text.toLowerCase().includes('rejected')) {
+        type = 'error';
+      } else if (text.toLowerCase().includes('warning') || text.toLowerCase().includes('blocked') || text.toLowerCase().includes('incorrect') || text.toLowerCase().includes('please')) {
+        type = 'warning';
+      }
+
+      const parts = text.split('\n\n');
+      let title = 'System Notification';
+      let body = text;
+
+      if (parts.length > 1) {
+        title = parts[0].replace(/^[✅⚠️❌ℹ️\s]+/, '').trim() || 'Notice';
+        body = parts.slice(1).join('\n\n');
+      } else {
+        if (type === 'success') title = 'Success';
+        else if (type === 'error') title = 'Notice';
+        else if (type === 'warning') title = 'Attention';
+        body = text.replace(/^[✅⚠️❌ℹ️\s]+/, '').trim();
+      }
+
+      window.showSystemAlert(title, body, type);
     };
 
     // 1. Pending Panel: Direct Approve from inline dropdowns or opens Approve Modal
@@ -6947,6 +7240,20 @@
         <button type="button" class="btn-primary" style="background: #64748b;" onclick="closeSuppliesReceiptModal()">
           Close
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. System Theme Custom Alert Modal -->
+  <div class="system-alert-backdrop" id="systemAlertModal">
+    <div class="system-alert-box">
+      <div class="system-alert-icon success" id="systemAlertIcon">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <h3 class="system-alert-title" id="systemAlertTitle">Notice</h3>
+      <div class="system-alert-message" id="systemAlertMessage">Message</div>
+      <div class="system-alert-actions">
+        <button type="button" class="system-alert-btn" id="systemAlertBtn" onclick="closeSystemAlert()">OK</button>
       </div>
     </div>
   </div>
