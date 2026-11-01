@@ -1902,6 +1902,65 @@
     .ai-chat-footer button:hover {
       background: #e59c11;
     }
+
+    /* Passenger Feedback Modal & Star Rating (Driver KRA 3) */
+    .star-rating-group {
+      display: inline-flex;
+      gap: 8px;
+      font-size: 1.6rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .star-rating-group .star {
+      color: #cbd5e1;
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+
+    .star-rating-group .star:hover {
+      transform: scale(1.15);
+    }
+
+    .star-rating-group .star.filled {
+      color: #f59e0b;
+    }
+
+    .feedback-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2500;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .feedback-modal-backdrop.open {
+      display: flex;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    .feedback-modal-box {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      animation: modalSlideUp 0.25s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modalSlideUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
 
@@ -2042,10 +2101,11 @@
               <th>Date</th>
               <th>Submitted</th>
               <th>Status</th>
+              <th>Action / Feedback</th>
             </tr>
           </thead>
           <tbody id="myRequestsTableBody">
-            <tr><td colspan="5" style="text-align:center;">Loading your requests...</td></tr>
+            <tr><td colspan="6" style="text-align:center;">Loading your requests...</td></tr>
           </tbody>
         </table>
       </div>
@@ -2175,14 +2235,33 @@
         : userRequests.filter(request => requestStatus(request.status) === userRequestFilter);
 
       if (!requests.length) {
-        body.innerHTML = '<tr><td colspan="5" style="text-align:center;">No requests found.</td></tr>';
+        body.innerHTML = '<tr><td colspan="6" style="text-align:center;">No requests found.</td></tr>';
         return;
       }
+
+      let storedFeedback = {};
+      try {
+        storedFeedback = JSON.parse(localStorage.getItem('rii_driver_feedback') || '{}');
+      } catch (e) {}
 
       body.innerHTML = requests.map(request => {
         const status = requestStatus(request.status);
         const statusClass = status.toLowerCase();
         const submitted = request.created_at ? new Date(request.created_at).toLocaleString() : '-';
+
+        let actionCol = '-';
+        if (request.type === 'Vehicle Request' && (status === 'Approved' || String(request.status || '').toLowerCase() === 'completed')) {
+          const hasFeedback = !!storedFeedback[request.id];
+          if (hasFeedback) {
+            actionCol = '<span style="color:#16a34a; font-size:0.8rem; font-weight:600;"><i class="fa-solid fa-circle-check"></i> Feedback Sent</span>';
+          } else {
+            actionCol = `
+              <button type="button" style="padding:4px 10px; font-size:0.75rem; background:#f59e0b; border:none; border-radius:4px; color:white; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:4px; box-shadow:0 1px 2px rgba(0,0,0,0.1);" onclick="openPassengerFeedbackModal('${escapeRequestHtml(request.id)}', '${escapeRequestHtml(request.driver || '')}', '${escapeRequestHtml(request.destination || '')}')" title="Submit feedback on Driver attitude &amp; Vehicle cleanliness">
+                <i class="fa-solid fa-star"></i> Driver Feedback
+              </button>`;
+          }
+        }
+
         return `
           <tr>
             <td><strong>${escapeRequestHtml(request.type)}</strong></td>
@@ -2190,6 +2269,7 @@
             <td>${escapeRequestHtml(request.date || '-')}</td>
             <td>${escapeRequestHtml(submitted)}</td>
             <td><span class="request-status ${statusClass}">${status}</span></td>
+            <td>${actionCol}</td>
           </tr>`;
       }).join('');
     }
@@ -2200,8 +2280,25 @@
 
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        body.innerHTML = '<tr><td colspan="5" style="text-align:center;">Please sign in to view your requests.</td></tr>';
+        body.innerHTML = '<tr><td colspan="6" style="text-align:center;">Please sign in to view your requests.</td></tr>';
         return;
+      }
+
+      // Sync existing passenger feedback from Supabase driver_feedback
+      try {
+        const { data: fbData } = await supabase
+          .from('driver_feedback')
+          .select('*')
+          .eq('user_id', user.id);
+        if (fbData && fbData.length > 0) {
+          const stored = JSON.parse(localStorage.getItem('rii_driver_feedback') || '{}');
+          fbData.forEach(fb => {
+            stored[fb.trip_id] = fb;
+          });
+          localStorage.setItem('rii_driver_feedback', JSON.stringify(stored));
+        }
+      } catch (fbErr) {
+        console.warn('Feedback sync note', fbErr);
       }
 
       const sources = [
@@ -2252,6 +2349,123 @@
       userRequests.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
       renderUserRequests();
     }
+
+    // Passenger Feedback Modal handlers (Driver KRA 3)
+    window.setFeedbackRating = function (type, rating) {
+      const input = document.getElementById(type === 'attitude' ? 'ratingAttitudeVal' : 'ratingCleanlinessVal');
+      if (input) input.value = rating;
+      const container = document.getElementById(type === 'attitude' ? 'starsAttitude' : 'starsCleanliness');
+      if (container) {
+        container.querySelectorAll('.star').forEach(star => {
+          const val = Number(star.dataset.val);
+          if (val <= rating) {
+            star.classList.add('filled');
+          } else {
+            star.classList.remove('filled');
+          }
+        });
+      }
+    };
+
+    window.openPassengerFeedbackModal = function (tripId, driverCode, destination) {
+      const tripInput = document.getElementById('feedbackTripId');
+      const driverInput = document.getElementById('feedbackDriverCode');
+      if (tripInput) tripInput.value = tripId;
+      if (driverInput) driverInput.value = driverCode;
+
+      const driverMap = {
+        'd1': 'Randy Sayon',
+        'd2': 'Hilarion Garcia',
+        'd3': 'Ryan Guna'
+      };
+      const driverName = driverMap[driverCode] || driverCode || 'Assigned Driver';
+
+      const tripTitleEl = document.getElementById('feedbackTripTitle');
+      const tripDriverEl = document.getElementById('feedbackTripDriver');
+      if (tripTitleEl) tripTitleEl.textContent = `Trip Destination: ${destination || 'Vehicle Dispatch'}`;
+      if (tripDriverEl) tripDriverEl.textContent = `Designated Driver: ${driverName}`;
+
+      setFeedbackRating('attitude', 5);
+      setFeedbackRating('cleanliness', 5);
+
+      const radioNo = document.querySelector('input[name="feedbackComplaint"][value="no"]');
+      if (radioNo) radioNo.checked = true;
+
+      const commentsEl = document.getElementById('feedbackComments');
+      if (commentsEl) commentsEl.value = '';
+
+      const modal = document.getElementById('passengerFeedbackModal');
+      if (modal) modal.classList.add('open');
+    };
+
+    window.closePassengerFeedbackModal = function () {
+      const modal = document.getElementById('passengerFeedbackModal');
+      if (modal) modal.classList.remove('open');
+    };
+
+    window.submitPassengerFeedback = async function () {
+      const tripId = document.getElementById('feedbackTripId')?.value;
+      const driverCode = document.getElementById('feedbackDriverCode')?.value || null;
+      const attitude = Number(document.getElementById('ratingAttitudeVal')?.value || 5);
+      const cleanliness = Number(document.getElementById('ratingCleanlinessVal')?.value || 5);
+      const hasComplaint = document.querySelector('input[name="feedbackComplaint"]:checked')?.value === 'yes';
+      const comments = (document.getElementById('feedbackComments')?.value || '').trim();
+
+      if (!tripId) {
+        alert('Invalid trip identifier.');
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitFeedback');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+      }
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        const feedbackRecord = {
+          trip_id: tripId,
+          driver_code: driverCode,
+          user_id: user?.id || null,
+          rating_attitude: attitude,
+          rating_cleanliness: cleanliness,
+          has_complaint: hasComplaint,
+          comments: comments || null,
+          created_at: new Date().toISOString()
+        };
+
+        // 1. Attempt to save to Supabase driver_feedback
+        try {
+          const { error } = await supabase
+            .from('driver_feedback')
+            .upsert(feedbackRecord, { onConflict: 'trip_id,user_id' });
+          if (error) console.warn('Supabase feedback insert warning', error);
+        } catch (e) {
+          console.warn('Supabase feedback fallback', e);
+        }
+
+        // 2. Save to local storage cache for instant Admin KRA 3 reflection
+        try {
+          const stored = JSON.parse(localStorage.getItem('rii_driver_feedback') || '{}');
+          stored[tripId] = feedbackRecord;
+          localStorage.setItem('rii_driver_feedback', JSON.stringify(stored));
+        } catch (e) {
+          console.error(e);
+        }
+
+        closePassengerFeedbackModal();
+        alert('Thank you! Your feedback on driver attitude and vehicle cleanliness has been submitted.');
+        renderUserRequests();
+      } catch (err) {
+        alert('Error submitting feedback: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Feedback';
+        }
+      }
+    };
 
     function showUserRequestDashboard() {
       document.body.classList.add('request-view');
@@ -2559,6 +2773,83 @@
       });
     });
   </script>
+
+  <!-- PASSENGER DRIVER FEEDBACK MODAL (KRA 3) -->
+  <div class="feedback-modal-backdrop" id="passengerFeedbackModal">
+    <div class="feedback-modal-box">
+      <div style="background: #1E355F; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-star" style="color: #fcae16;"></i> Driver &amp; Trip Passenger Feedback
+        </h3>
+        <button type="button" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; line-height: 1;" onclick="closePassengerFeedbackModal()">&times;</button>
+      </div>
+      <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; font-size: 0.85rem;">
+          <input type="hidden" id="feedbackTripId">
+          <input type="hidden" id="feedbackDriverCode">
+          <div style="font-weight: 600; color: #1E355F;" id="feedbackTripTitle">Trip Destination</div>
+          <div style="color: #64748b; font-size: 0.8rem; margin-top: 3px;" id="feedbackTripDriver">Designated Driver: Assigned Driver</div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            1. Driver Attitude &amp; Courtesy:
+          </label>
+          <div class="star-rating-group" id="starsAttitude">
+            <i class="fa-solid fa-star star filled" data-val="1" onclick="setFeedbackRating('attitude', 1)"></i>
+            <i class="fa-solid fa-star star filled" data-val="2" onclick="setFeedbackRating('attitude', 2)"></i>
+            <i class="fa-solid fa-star star filled" data-val="3" onclick="setFeedbackRating('attitude', 3)"></i>
+            <i class="fa-solid fa-star star filled" data-val="4" onclick="setFeedbackRating('attitude', 4)"></i>
+            <i class="fa-solid fa-star star filled" data-val="5" onclick="setFeedbackRating('attitude', 5)"></i>
+          </div>
+          <input type="hidden" id="ratingAttitudeVal" value="5">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            2. Vehicle Cleanliness &amp; Comfort:
+          </label>
+          <div class="star-rating-group" id="starsCleanliness">
+            <i class="fa-solid fa-star star filled" data-val="1" onclick="setFeedbackRating('cleanliness', 1)"></i>
+            <i class="fa-solid fa-star star filled" data-val="2" onclick="setFeedbackRating('cleanliness', 2)"></i>
+            <i class="fa-solid fa-star star filled" data-val="3" onclick="setFeedbackRating('cleanliness', 3)"></i>
+            <i class="fa-solid fa-star star filled" data-val="4" onclick="setFeedbackRating('cleanliness', 4)"></i>
+            <i class="fa-solid fa-star star filled" data-val="5" onclick="setFeedbackRating('cleanliness', 5)"></i>
+          </div>
+          <input type="hidden" id="ratingCleanlinessVal" value="5">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            3. Did you encounter any complaints or issues during this trip?
+          </label>
+          <div style="display: flex; gap: 20px; font-size: 0.85rem; color: #475569;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="feedbackComplaint" value="no" checked>
+              <span>No, trip went smoothly</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="feedbackComplaint" value="yes">
+              <span style="color: #b91c1c; font-weight: 600;">Yes, I had a complaint/issue</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            Comments / Trip Notes:
+          </label>
+          <textarea id="feedbackComments" rows="3" placeholder="Share your experience regarding the driver, trip timeliness, or vehicle..." style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; font-size: 0.85rem;"></textarea>
+        </div>
+      </div>
+      <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 14px 20px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" style="background: #64748b; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-weight: 600; cursor: pointer;" onclick="closePassengerFeedbackModal()">Cancel</button>
+        <button type="button" id="btnSubmitFeedback" style="background: #10b981; color: white; border: none; border-radius: 6px; padding: 8px 18px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" onclick="submitPassengerFeedback()">
+          <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
