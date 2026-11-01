@@ -1877,9 +1877,6 @@
                 required></label><label>Date<input name="date" type="date" required></label></div>
           <div class="grid"><label>Start Time<input name="startTime" type="time" required></label><label>End Time<input
                 name="endTime" type="time" required></label></div>
-          <label>Zoom Link or Meeting ID<textarea name="accessDetails" required
-              placeholder="Enter the Zoom link or meeting ID"></textarea></label>
-          <label>Additional Notes<textarea name="notes" placeholder="Optional notes"></textarea></label>
           <button type="submit">Submit Zoom Request</button>
         </form>
       </section>
@@ -1944,7 +1941,6 @@
           .from('zoom_requests')
           .insert([
             {
-
               requestor_name: f.get('requestor'),
               company: f.get('company'),
               department: f.get('department'),
@@ -1953,9 +1949,8 @@
               request_date: f.get('date'),
               start_time: f.get('startTime') + ':00',
               end_time: f.get('endTime') + ':00',
-              access_details: f.get('accessDetails'),
-              notes: f.get('notes')
-
+              access_details: null,
+              notes: null
             }
           ])
           .select();
