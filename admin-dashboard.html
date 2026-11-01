@@ -4493,49 +4493,6 @@
       }, 1500);
     };
 
-    function renderSupplyRequests() {
-      const tableBody = document.getElementById('suppliesRequestsTableBody');
-      if (!tableBody) return;
-
-      const filtered = supplyRequestFilter === 'All'
-        ? supplyRequests
-        : supplyRequests.filter(request => request.status === supplyRequestFilter);
-
-      if (filtered.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No supply requests found.</td></tr>';
-        return;
-      }
-
-      tableBody.innerHTML = filtered.map(request => {
-        const items = request.items.length
-          ? request.items.map(item =>
-            `${escapeDispatchHtml(item.description)} × ${escapeDispatchHtml(item.quantity)}`
-            + (item.purpose ? ` <small>(${escapeDispatchHtml(item.purpose)})</small>` : '')
-          ).join('<br>')
-          : 'No items listed';
-        const submitted = request.created_at
-          ? new Date(request.created_at).toLocaleString()
-          : '-';
-        const requestId = escapeDispatchHtml(String(request.id));
-        return `
-          <tr>
-            <td><strong>${escapeDispatchHtml(request.reference_number || `SUP-${request.id}`)}</strong></td>
-            <td>${escapeDispatchHtml(request.department || '-')}</td>
-            <td class="supplies-items">${items}</td>
-            <td>${escapeDispatchHtml(submitted)}</td>
-            <td>
-              <select class="supplies-status" data-request-id="${requestId}">
-                <option value="Pending" ${request.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                <option value="Approved" ${request.status === 'Approved' ? 'selected' : ''}>Approved</option>
-                <option value="Rejected" ${request.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
-              </select>
-            </td>
-            <td><button type="button" class="dispatch-save"
-              onclick="saveSupplyRequest('${requestId}')">Save</button></td>
-          </tr>`;
-      }).join('');
-    }
-
     // ==========================================
     // SUPPLIES ISSUANCE & BUDGET MONITORING ENGINE
     // ==========================================
