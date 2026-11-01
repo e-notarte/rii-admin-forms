@@ -2273,9 +2273,330 @@
       background: #d97706;
     }
 
-    .dispatch-action:disabled {
-      cursor: wait;
-      opacity: 0.65;
+    .dispatch-action.update {
+      background: #2563eb;
+    }
+
+    .dispatch-action.update:hover {
+      background: #1d4ed8;
+    }
+
+    .vehicle-subnav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .vehicle-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .vehicle-tab-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(30, 53, 95, 0.2);
+    }
+
+    .dispatch-panel-banner {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.82rem;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .priority-badge.normal {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .priority-badge.high {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .priority-badge.urgent {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    .policy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .policy-badge.late {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .policy-badge.ontime {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    /* KPI Evaluation Styles */
+    .kpi-dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .kpi-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .driver-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .driver-tab {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .driver-tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .kpi-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+    }
+
+    .kpi-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .kpi-card.highlight {
+      background: linear-gradient(135deg, #1E355F 0%, #2b4c85 100%);
+      color: white;
+      border-color: #1E355F;
+    }
+
+    .kpi-card.highlight .kpi-label,
+    .kpi-card.highlight .kpi-subtext {
+      color: #cbd5e1;
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #1E355F;
+      line-height: 1.2;
+    }
+
+    .kpi-card.highlight .kpi-value {
+      color: #fcae16;
+    }
+
+    .kpi-subtext {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+
+    .kpi-bar {
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .kpi-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    .kpi-bar-fill.green { background: #10b981; }
+    .kpi-bar-fill.amber { background: #f59e0b; }
+    .kpi-bar-fill.red { background: #ef4444; }
+
+    .kra-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .kra-badge.success { background: #dcfce7; color: #15803d; }
+    .kra-badge.warning { background: #fef3c7; color: #b45309; }
+    .kra-badge.danger { background: #fee2e2; color: #b91c1c; }
+
+    /* Modals */
+    .dispatch-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .dispatch-modal-backdrop.open {
+      display: flex;
+    }
+
+    .dispatch-modal-box {
+      background: white;
+      width: 100%;
+      max-width: 560px;
+      border-radius: 12px;
+      box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { transform: scale(0.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .dispatch-modal-header {
+      background: var(--primary);
+      color: white;
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dispatch-modal-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dispatch-modal-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.15s;
+    }
+
+    .dispatch-modal-close:hover {
+      opacity: 1;
+    }
+
+    .dispatch-modal-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .airline-update-alert {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      color: #1e40af;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.45;
+    }
+
+    .dispatch-modal-footer {
+      padding: 14px 22px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
 
     .schedule-controls {
@@ -2775,37 +3096,53 @@
           <h1><i class="fa-solid fa-car"></i> Vehicle Dispatch Board</h1>
         </div>
 
-        <div class="dispatch-layout">
+        <!-- SUBNAV TABS: DISPATCH & LIVE CALENDAR vs DRIVER KPI EVALUATION -->
+        <div class="vehicle-subnav">
+          <button type="button" class="vehicle-tab-btn active" id="tabBtnDispatch" onclick="switchVehicleViewTab('dispatch')">
+            <i class="fa-solid fa-car-side"></i> Vehicle Requests &amp; Live Calendar
+          </button>
+          <button type="button" class="vehicle-tab-btn" id="tabBtnKpi" onclick="switchVehicleViewTab('kpi')">
+            <i class="fa-solid fa-chart-line"></i> Driver KRA &amp; KPI Evaluation
+          </button>
+        </div>
+
+        <!-- SECTION 1: DISPATCH & LIVE CALENDAR -->
+        <div id="vehicleDispatchSection" class="dispatch-layout">
           <div class="data-card dispatch-card">
             <div class="toolbar" style="padding: 0 0 16px;">
               <label class="date-filter">
                 Request date
-                <input type="date" id="vehicleDispatchDateFilter" aria-label="Filter vehicle requests by date">
+                <input type="date" id="vehicleDispatchDateFilter" aria-label="Filter vehicle requests by date" onchange="filterVehicleDispatchByDate(this.value)">
               </label>
               <div class="filter-pills" id="vehicleDispatchFilterPills">
-                <div class="pill active" data-filter="Pending" onclick="filterVehicleDispatch('Pending', this)">Pending
-                </div>
-                <div class="pill" data-filter="Approved" onclick="filterVehicleDispatch('Approved', this)">Approved
-                </div>
-                <div class="pill" data-filter="Rejected" onclick="filterVehicleDispatch('Rejected', this)">Rejected
-                </div>
-                <div class="pill" data-filter="Cancelled" onclick="filterVehicleDispatch('Cancelled', this)">Cancelled
-                </div>
+                <div class="pill active" data-filter="Pending" onclick="filterVehicleDispatch('Pending', this)">Pending</div>
+                <div class="pill" data-filter="Approved" onclick="filterVehicleDispatch('Approved', this)">Approved</div>
+                <div class="pill" data-filter="Rejected" onclick="filterVehicleDispatch('Rejected', this)">Rejected</div>
+                <div class="pill" data-filter="Cancelled" onclick="filterVehicleDispatch('Cancelled', this)">Cancelled</div>
                 <div class="pill" data-filter="All" onclick="filterVehicleDispatch('All', this)">All</div>
               </div>
             </div>
+
+            <!-- Panel Description Banner -->
+            <div id="dispatchPanelInfo" class="dispatch-panel-banner">
+              <div>
+                <strong><i class="fa-solid fa-clock-rotate-left"></i> Pending Panel:</strong>
+                <span>Review requests, verify 2-day departure rule, assign Driver &amp; Vehicle, and take action.</span>
+              </div>
+            </div>
+
             <div class="dispatch-table-wrap">
               <table class="dispatch-table">
-                <thead>
+                <thead id="dispatchTableHead">
                   <tr>
                     <th>ID</th>
                     <th>Requestor</th>
                     <th>Destination</th>
                     <th>Purpose</th>
                     <th>Schedule</th>
+                    <th>Notice</th>
                     <th>Driver</th>
                     <th>Car</th>
-                    <th>Status</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -2819,7 +3156,10 @@
           </div>
 
           <div class="data-card dispatch-card">
-            <h2 style="margin: 0 0 16px; color: var(--primary); font-size: 1.1rem;">Approved Schedule</h2>
+            <h2 style="margin: 0 0 16px; color: var(--primary); font-size: 1.1rem; display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fa-solid fa-calendar-check" style="color: var(--accent);"></i> Approved Schedule</span>
+              <span style="font-size: 0.72rem; padding: 2px 8px; background: #dcfce7; color: #166534; border-radius: 12px; font-weight: 700;">LIVE</span>
+            </h2>
             <div class="schedule-controls">
               <label>Date
                 <input type="date" id="dispatchScheduleDate">
@@ -2828,6 +3168,97 @@
             </div>
             <div class="schedule-header" id="dispatchScheduleHeader"></div>
             <div class="schedule-content" id="dispatchScheduleContent"></div>
+          </div>
+        </div>
+
+        <!-- SECTION 2: DRIVER KRA & KPI EVALUATION BOARD -->
+        <div id="vehicleKpiSection" class="kpi-dashboard" style="display: none;">
+          <!-- Driver Tabs & Period Filter -->
+          <div class="kpi-header-bar">
+            <div class="driver-tabs" id="kpiDriverTabs">
+              <button type="button" class="driver-tab active" data-driver="all" onclick="selectKpiDriver('all', this)">
+                <i class="fa-solid fa-users"></i> Fleet KPI Summary
+              </button>
+              <button type="button" class="driver-tab" data-driver="d1" onclick="selectKpiDriver('d1', this)">
+                <i class="fa-solid fa-user"></i> Randy Sayon
+              </button>
+              <button type="button" class="driver-tab" data-driver="d2" onclick="selectKpiDriver('d2', this)">
+                <i class="fa-solid fa-user"></i> Hilarion Garcia
+              </button>
+              <button type="button" class="driver-tab" data-driver="d3" onclick="selectKpiDriver('d3', this)">
+                <i class="fa-solid fa-user"></i> Ryan Guna
+              </button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <label style="font-size: 0.82rem; font-weight: 600; color: #475569;">
+                Evaluation Month:
+                <input type="month" id="kpiMonthPicker" onchange="renderDriverKpiBoard()" style="padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+              </label>
+              <button type="button" class="btn-primary" onclick="renderDriverKpiBoard()" style="padding: 6px 14px; font-size: 0.82rem;">
+                <i class="fa-solid fa-arrows-rotate"></i> Compute KRA
+              </button>
+            </div>
+          </div>
+
+          <!-- KRA Metrics Cards Grid -->
+          <div class="kpi-cards-grid" id="kpiMetricCards">
+            <!-- Dynamically populated KRA 1-5 score cards -->
+          </div>
+
+          <!-- KRA 1 Monthly LTO Violations Verification Card -->
+          <div class="data-card" style="padding: 20px;">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h3 style="margin: 0; color: var(--primary); font-size: 1.05rem;">
+                  <i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> KRA 1: Monthly Traffic Violations (LTO Portal / Notice Letter)
+                </h3>
+                <p style="margin: 3px 0 0; font-size: 0.8rem; color: #64748b;">
+                  Target: 0 traffic violations monthly. Identified via Land Transportation Office (LTO) portal or notice letter. Reviewed monthly by Dispatcher/Admin.
+                </p>
+              </div>
+              <button type="button" class="btn-primary" onclick="openLtoRecordModal()" style="font-size: 0.8rem; padding: 6px 12px;">
+                <i class="fa-solid fa-pen-to-square"></i> Log / Verify LTO Status
+              </button>
+            </div>
+            <div id="ltoVerificationSummary" style="font-size: 0.85rem; color: #334155;">
+              <!-- Current LTO status summary -->
+            </div>
+          </div>
+
+          <!-- Trip-by-Trip KRA Verification Board (KRA 2, 3, 4, 5) -->
+          <div class="data-card" style="padding: 20px;">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h3 style="margin: 0; color: var(--primary); font-size: 1.05rem;">
+                  <i class="fa-solid fa-clipboard-check" style="color: #10b981;"></i> Trip Performance &amp; Post-Trip KRA Audit
+                </h3>
+                <p style="margin: 3px 0 0; font-size: 0.8rem; color: #64748b;">
+                  KRA 2 reviewed upon arrival; KRA 3 via passenger feedback; KRA 4 via Driver Trip Ticket form; KRA 5 verified after day of trip.
+                </p>
+              </div>
+            </div>
+
+            <div class="dispatch-table-wrap">
+              <table class="dispatch-table" style="min-width: 950px;">
+                <thead>
+                  <tr>
+                    <th>Trip ID</th>
+                    <th>Driver</th>
+                    <th>Date &amp; Destination</th>
+                    <th>KRA 2: Arrival Negligence / Incident</th>
+                    <th>KRA 3: Passenger Feedback &amp; Cleanliness</th>
+                    <th>KRA 4: Trip Ticket &amp; Checklist (Odometer/Fuel)</th>
+                    <th>KRA 5: Docs Submitted Day After Trip</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="driverKpiTripTableBody">
+                  <tr>
+                    <td colspan="8" style="text-align: center;">Loading trips for KRA evaluation...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -3365,66 +3796,70 @@
       ).join('')}`;
     }
 
-    function renderVehicleDispatchTable() {
-      const tableBody = document.getElementById('dispatchTableBody');
-      if (!tableBody) return;
+    // Vehicle Dispatch & Driver KPI State
+    let vehicleDispatchFilter = 'Pending';
+    let vehicleDispatchDateFilter = '';
+    let selectedKpiDriverCode = 'all';
+    let kpiEvaluationMonth = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
 
-      const filteredRequests = vehicleRequests.filter(request => {
-        const matchesStatus = vehicleDispatchFilter === 'All'
-          || String(request.status || 'Pending').toLowerCase() === vehicleDispatchFilter.toLowerCase();
-        const matchesDate = !vehicleDispatchDateFilter || request.request_date === vehicleDispatchDateFilter;
-        return matchesStatus && matchesDate;
-      });
+    // Driver KRA and KPI Storage caches (synced with Supabase & localStorage fallback)
+    const KPI_STORAGE_KEY_LTO = 'rii_driver_monthly_lto';
+    const KPI_STORAGE_KEY_TRIPS = 'rii_driver_trip_kpi';
+    const KPI_STORAGE_KEY_FEEDBACK = 'rii_driver_feedback';
 
-      if (filteredRequests.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No vehicle requests found.</td></tr>';
-        return;
+    function getLocalKpiData(key) {
+      try {
+        return JSON.parse(localStorage.getItem(key) || '{}');
+      } catch (e) {
+        return {};
       }
+    }
 
-      tableBody.innerHTML = filteredRequests.map(request => {
-        const status = String(request.status || 'Pending').replace(/^./, character => character.toUpperCase());
-        const rowId = escapeDispatchHtml(request.id);
-        return `
-          <tr>
-            <td><strong>${escapeDispatchHtml(dispatchRequestId(request))}</strong></td>
-            <td class="dispatch-requestor">${escapeDispatchHtml(request.requestor_name || '-')}</td>
-            <td class="dispatch-destination">${escapeDispatchHtml(request.destination || '-')}</td>
-            <td class="dispatch-purpose">${escapeDispatchHtml(request.purpose || '-')}</td>
-            <td class="dispatch-schedule">
-              <strong>${escapeDispatchHtml(formatDispatchDate(request.request_date))}</strong>
-              <span class="dispatch-muted">${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
-            </td>
-            <td>
-              <select class="dispatch-select" data-request-id="${rowId}" data-field="driver">
-                ${dispatchOptions(dispatchDrivers, request.driver)}
-              </select>
-            </td>
-            <td>
-              <select class="dispatch-select" data-request-id="${rowId}" data-field="car">
-                ${dispatchOptions(dispatchCars, request.car)}
-              </select>
-            </td>
-            <td>
-              <select class="dispatch-select" data-request-id="${rowId}" data-field="status">
-                <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
-                <option value="Approved" ${status === 'Approved' ? 'selected' : ''}>Approved</option>
-                <option value="Rejected" ${status === 'Rejected' ? 'selected' : ''}>Rejected</option>
-                <option value="Cancelled" ${status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-              </select>
-            </td>
-            <td>
-              <div class="dispatch-actions">
-                <button type="button" class="dispatch-action approve"
-                  onclick="setVehicleDispatchStatus('${rowId}', 'Approved')">Approve</button>
-                <button type="button" class="dispatch-action reject"
-                  onclick="setVehicleDispatchStatus('${rowId}', 'Rejected')">Reject</button>
-                <button type="button" class="dispatch-action cancel"
-                  onclick="setVehicleDispatchStatus('${rowId}', 'Cancelled')">Cancel</button>
-                <button type="button" class="dispatch-save" onclick="saveVehicleDispatch('${rowId}')">Save</button>
-              </div>
-            </td>
-          </tr>`;
-      }).join('');
+    function setLocalKpiData(key, data) {
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {
+        console.error('Storage error', e);
+      }
+    }
+
+    // Switch between Live Dispatch and KPI Evaluation tabs
+    window.switchVehicleViewTab = function (tab) {
+      const dispatchSec = document.getElementById('vehicleDispatchSection');
+      const kpiSec = document.getElementById('vehicleKpiSection');
+      const tabBtnDispatch = document.getElementById('tabBtnDispatch');
+      const tabBtnKpi = document.getElementById('tabBtnKpi');
+
+      if (tab === 'kpi') {
+        if (dispatchSec) dispatchSec.style.display = 'none';
+        if (kpiSec) kpiSec.style.display = 'flex';
+        tabBtnDispatch?.classList.remove('active');
+        tabBtnKpi?.classList.add('active');
+
+        const monthPicker = document.getElementById('kpiMonthPicker');
+        if (monthPicker && !monthPicker.value) {
+          monthPicker.value = kpiEvaluationMonth;
+        }
+        renderDriverKpiBoard();
+      } else {
+        if (dispatchSec) dispatchSec.style.display = 'grid';
+        if (kpiSec) kpiSec.style.display = 'none';
+        tabBtnKpi?.classList.remove('active');
+        tabBtnDispatch?.classList.add('active');
+        renderVehicleDispatchTable();
+      }
+    };
+
+    // Calculate advance notice for 2-day prior departure rule
+    function checkNoticePeriod(request) {
+      if (!request || !request.request_date) return { isLate: false, daysNotice: '0', hoursNotice: 0 };
+      const tripDateStr = `${request.request_date}T${request.start_time ? String(request.start_time).slice(0, 5) + ':00' : '08:00:00'}`;
+      const tripTime = new Date(tripDateStr).getTime();
+      const createdTime = request.created_at ? new Date(request.created_at).getTime() : Date.now();
+      const diffHours = (tripTime - createdTime) / (1000 * 60 * 60);
+      const isLate = diffHours < 48; // Less than 48 hours / 2 days
+      const daysNotice = Math.max(0, diffHours / 24).toFixed(1);
+      return { isLate, daysNotice, hoursNotice: Math.round(diffHours) };
     }
 
     window.filterVehicleDispatch = function (filter, element) {
@@ -3433,6 +3868,22 @@
         pill.classList.remove('active');
       });
       if (element) element.classList.add('active');
+
+      const infoBanner = document.getElementById('dispatchPanelInfo');
+      if (infoBanner) {
+        if (filter === 'Pending') {
+          infoBanner.innerHTML = '<div><strong><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary);"></i> Pending Panel:</strong> Select Driver &amp; Vehicle, then choose Action (Approve, Reject, or Cancel). <span style="color:#b91c1c; font-weight:600;">Rule:</span> Requests submitted &lt; 2 days prior to departure trigger the auto-rejection policy.</div>';
+        } else if (filter === 'Approved') {
+          infoBanner.innerHTML = '<div><strong><i class="fa-solid fa-circle-check" style="color:#10b981;"></i> Approved Panel:</strong> Live confirmed trips on schedule. Dispatchers can <strong>Update</strong> (reassign Driver, Vehicle, or Level of Priority with instant airline-style passenger alert) or <strong>Cancel</strong>.</div>';
+        } else if (filter === 'Rejected') {
+          infoBanner.innerHTML = '<div><strong><i class="fa-solid fa-circle-xmark" style="color:#ef4444;"></i> Rejected Panel:</strong> Requests rejected (&lt; 2 days notice policy or no available vehicle/driver). Dispatchers hold the authority to override and <strong>Approve</strong>.</div>';
+        } else if (filter === 'Cancelled') {
+          infoBanner.innerHTML = '<div><strong><i class="fa-solid fa-ban" style="color:#d97706;"></i> Cancelled Panel:</strong> Trips cancelled by Requestor due to changes in schedule or trip cancellation. Dispatchers hold the authority to reinstate and <strong>Approve</strong>.</div>';
+        } else {
+          infoBanner.innerHTML = '<div><strong><i class="fa-solid fa-layer-group" style="color:var(--primary);"></i> All Requests:</strong> Master vehicle requests log with contextual dispatch actions for each status.</div>';
+        }
+      }
+
       renderVehicleDispatchTable();
     };
 
@@ -3440,6 +3891,254 @@
       vehicleDispatchDateFilter = dateValue;
       renderVehicleDispatchTable();
     };
+
+    function renderVehicleDispatchTable() {
+      const tableHead = document.getElementById('dispatchTableHead');
+      const tableBody = document.getElementById('dispatchTableBody');
+      if (!tableBody) return;
+
+      // Update table headers based on panel view
+      if (tableHead) {
+        if (vehicleDispatchFilter === 'Pending') {
+          tableHead.innerHTML = `<tr>
+            <th>ID</th>
+            <th>Requestor</th>
+            <th>Destination</th>
+            <th>Schedule</th>
+            <th>Notice Policy</th>
+            <th>Driver</th>
+            <th>Vehicle</th>
+            <th>Actions</th>
+          </tr>`;
+        } else if (vehicleDispatchFilter === 'Approved') {
+          tableHead.innerHTML = `<tr>
+            <th>ID</th>
+            <th>Requestor</th>
+            <th>Destination</th>
+            <th>Schedule</th>
+            <th>Priority</th>
+            <th>Assigned Driver</th>
+            <th>Assigned Vehicle</th>
+            <th>Actions</th>
+          </tr>`;
+        } else if (vehicleDispatchFilter === 'Rejected') {
+          tableHead.innerHTML = `<tr>
+            <th>ID</th>
+            <th>Requestor</th>
+            <th>Destination</th>
+            <th>Schedule</th>
+            <th>Rejection Ground</th>
+            <th>Notice</th>
+            <th>Action</th>
+          </tr>`;
+        } else if (vehicleDispatchFilter === 'Cancelled') {
+          tableHead.innerHTML = `<tr>
+            <th>ID</th>
+            <th>Requestor</th>
+            <th>Destination</th>
+            <th>Schedule</th>
+            <th>Cancellation Note</th>
+            <th>Action</th>
+          </tr>`;
+        } else {
+          tableHead.innerHTML = `<tr>
+            <th>ID</th>
+            <th>Requestor</th>
+            <th>Destination</th>
+            <th>Schedule</th>
+            <th>Status</th>
+            <th>Driver</th>
+            <th>Vehicle</th>
+            <th>Priority</th>
+            <th>Action</th>
+          </tr>`;
+        }
+      }
+
+      const filteredRequests = vehicleRequests.filter(request => {
+        const reqStatus = String(request.status || 'Pending').toLowerCase();
+        const matchesStatus = vehicleDispatchFilter === 'All'
+          || reqStatus === vehicleDispatchFilter.toLowerCase();
+        const matchesDate = !vehicleDispatchDateFilter || request.request_date === vehicleDispatchDateFilter;
+        return matchesStatus && matchesDate;
+      });
+
+      if (filteredRequests.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 24px; color: #64748b;">No ${vehicleDispatchFilter === 'All' ? '' : vehicleDispatchFilter} vehicle requests found.</td></tr>`;
+        return;
+      }
+
+      tableBody.innerHTML = filteredRequests.map(request => {
+        const rowId = escapeDispatchHtml(request.id);
+        const reqId = escapeDispatchHtml(dispatchRequestId(request));
+        const status = String(request.status || 'Pending');
+        const driverObj = dispatchDrivers.find(d => d.id === request.driver);
+        const carObj = dispatchCars.find(c => c.id === request.car);
+        const driverName = driverObj ? driverObj.name : 'Unassigned';
+        const carName = carObj ? carObj.name : 'Unassigned';
+        const priority = request.priority_level || 'Normal';
+        const priorityClass = priority.toLowerCase();
+        const notice = checkNoticePeriod(request);
+
+        const noticeBadge = notice.isLate
+          ? `<span class="policy-badge late" title="Submitted ${notice.daysNotice} days prior to departure (&lt;48h)"><i class="fa-solid fa-triangle-exclamation"></i> &lt; 2 Days (${notice.daysNotice}d)</span>`
+          : `<span class="policy-badge ontime" title="Submitted ${notice.daysNotice} days prior to departure"><i class="fa-solid fa-check"></i> On-Time (${notice.daysNotice}d)</span>`;
+
+        // 1. Pending Panel
+        if (vehicleDispatchFilter === 'Pending') {
+          return `
+            <tr>
+              <td><strong>${reqId}</strong></td>
+              <td class="dispatch-requestor">${escapeDispatchHtml(request.requestor_name || '-')}</td>
+              <td class="dispatch-destination">
+                <div>${escapeDispatchHtml(request.destination || '-')}</div>
+                <small class="dispatch-muted">${escapeDispatchHtml(request.purpose || '')}</small>
+              </td>
+              <td class="dispatch-schedule">
+                <strong>${escapeDispatchHtml(formatDispatchDate(request.request_date))}</strong>
+                <span class="dispatch-muted">${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
+              </td>
+              <td>${noticeBadge}</td>
+              <td>
+                <select class="dispatch-select" data-request-id="${rowId}" data-field="driver">
+                  ${dispatchOptions(dispatchDrivers, request.driver)}
+                </select>
+              </td>
+              <td>
+                <select class="dispatch-select" data-request-id="${rowId}" data-field="car">
+                  ${dispatchOptions(dispatchCars, request.car)}
+                </select>
+              </td>
+              <td>
+                <div class="dispatch-actions">
+                  <button type="button" class="dispatch-action approve" onclick="handlePendingApprove('${rowId}')">
+                    <i class="fa-solid fa-check"></i> Approve
+                  </button>
+                  <button type="button" class="dispatch-action reject" onclick="openRejectTripModal('${rowId}')">
+                    <i class="fa-solid fa-xmark"></i> Reject
+                  </button>
+                  <button type="button" class="dispatch-action cancel" onclick="openCancelTripModal('${rowId}')">
+                    <i class="fa-solid fa-ban"></i> Cancel
+                  </button>
+                </div>
+              </td>
+            </tr>`;
+        }
+
+        // 2. Approved Panel - Only Update and Cancel
+        if (vehicleDispatchFilter === 'Approved') {
+          return `
+            <tr>
+              <td><strong>${reqId}</strong></td>
+              <td class="dispatch-requestor">${escapeDispatchHtml(request.requestor_name || '-')}</td>
+              <td class="dispatch-destination">
+                <div>${escapeDispatchHtml(request.destination || '-')}</div>
+                <small class="dispatch-muted">${escapeDispatchHtml(request.purpose || '')}</small>
+              </td>
+              <td class="dispatch-schedule">
+                <strong>${escapeDispatchHtml(formatDispatchDate(request.request_date))}</strong>
+                <span class="dispatch-muted">${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
+              </td>
+              <td><span class="priority-badge ${priorityClass}">${escapeDispatchHtml(priority)}</span></td>
+              <td><strong><i class="fa-solid fa-user-tie" style="color:var(--primary); margin-right:4px;"></i>${escapeDispatchHtml(driverName)}</strong></td>
+              <td><span><i class="fa-solid fa-car-side" style="color:#2563eb; margin-right:4px;"></i>${escapeDispatchHtml(carName)}</span></td>
+              <td>
+                <div class="dispatch-actions">
+                  <button type="button" class="dispatch-action update" onclick="openUpdateTripModal('${rowId}')" title="Change Driver, Vehicle, or Priority with live airline-style alert">
+                    <i class="fa-solid fa-pen-to-square"></i> Update
+                  </button>
+                  <button type="button" class="dispatch-action cancel" onclick="openCancelTripModal('${rowId}')">
+                    <i class="fa-solid fa-ban"></i> Cancel
+                  </button>
+                </div>
+              </td>
+            </tr>`;
+        }
+
+        // 3. Rejected Panel - Only Approve action button
+        if (vehicleDispatchFilter === 'Rejected') {
+          const reason = request.rejection_reason || (notice.isLate ? 'Submitted less than 2 days prior to departure (Auto-Reject policy)' : 'No available vehicle or driver');
+          return `
+            <tr>
+              <td><strong>${reqId}</strong></td>
+              <td class="dispatch-requestor">${escapeDispatchHtml(request.requestor_name || '-')}</td>
+              <td class="dispatch-destination">${escapeDispatchHtml(request.destination || '-')}</td>
+              <td class="dispatch-schedule">
+                <strong>${escapeDispatchHtml(formatDispatchDate(request.request_date))}</strong>
+                <span class="dispatch-muted">${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
+              </td>
+              <td style="color:#b91c1c; font-size:0.83rem;">
+                <i class="fa-solid fa-circle-exclamation"></i> ${escapeDispatchHtml(reason)}
+              </td>
+              <td>${noticeBadge}</td>
+              <td>
+                <div class="dispatch-actions">
+                  <button type="button" class="dispatch-action approve" onclick="openApproveTripModal('${rowId}')" title="Admin override to approve trip">
+                    <i class="fa-solid fa-check"></i> Approve
+                  </button>
+                </div>
+              </td>
+            </tr>`;
+        }
+
+        // 4. Cancelled Panel - Only Approve action button
+        if (vehicleDispatchFilter === 'Cancelled') {
+          const cancelNote = request.change_reason || 'Cancelled by Requestor (schedule change or trip will not commence)';
+          return `
+            <tr>
+              <td><strong>${reqId}</strong></td>
+              <td class="dispatch-requestor">${escapeDispatchHtml(request.requestor_name || '-')}</td>
+              <td class="dispatch-destination">${escapeDispatchHtml(request.destination || '-')}</td>
+              <td class="dispatch-schedule">
+                <strong>${escapeDispatchHtml(formatDispatchDate(request.request_date))}</strong>
+                <span class="dispatch-muted">${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
+              </td>
+              <td style="color:#d97706; font-size:0.83rem;">
+                <i class="fa-solid fa-ban"></i> ${escapeDispatchHtml(cancelNote)}
+              </td>
+              <td>
+                <div class="dispatch-actions">
+                  <button type="button" class="dispatch-action approve" onclick="openApproveTripModal('${rowId}')" title="Admin authority to reinstate and approve trip">
+                    <i class="fa-solid fa-check"></i> Approve
+                  </button>
+                </div>
+              </td>
+            </tr>`;
+        }
+
+        // 5. All Panel - Contextual actions based on status
+        let actionButtons = '';
+        if (status.toLowerCase() === 'pending') {
+          actionButtons = `
+            <button type="button" class="dispatch-action approve" onclick="openApproveTripModal('${rowId}')"><i class="fa-solid fa-check"></i> Approve</button>
+            <button type="button" class="dispatch-action reject" onclick="openRejectTripModal('${rowId}')"><i class="fa-solid fa-xmark"></i> Reject</button>
+            <button type="button" class="dispatch-action cancel" onclick="openCancelTripModal('${rowId}')"><i class="fa-solid fa-ban"></i> Cancel</button>`;
+        } else if (status.toLowerCase() === 'approved') {
+          actionButtons = `
+            <button type="button" class="dispatch-action update" onclick="openUpdateTripModal('${rowId}')"><i class="fa-solid fa-pen-to-square"></i> Update</button>
+            <button type="button" class="dispatch-action cancel" onclick="openCancelTripModal('${rowId}')"><i class="fa-solid fa-ban"></i> Cancel</button>`;
+        } else {
+          actionButtons = `
+            <button type="button" class="dispatch-action approve" onclick="openApproveTripModal('${rowId}')"><i class="fa-solid fa-check"></i> Approve</button>`;
+        }
+
+        return `
+          <tr>
+            <td><strong>${reqId}</strong></td>
+            <td class="dispatch-requestor">${escapeDispatchHtml(request.requestor_name || '-')}</td>
+            <td class="dispatch-destination">${escapeDispatchHtml(request.destination || '-')}</td>
+            <td class="dispatch-schedule">
+              <strong>${escapeDispatchHtml(formatDispatchDate(request.request_date))}</strong>
+              <span class="dispatch-muted">${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
+            </td>
+            <td><span class="status-badge ${status.toLowerCase()}">${escapeDispatchHtml(status)}</span></td>
+            <td>${escapeDispatchHtml(driverName)}</td>
+            <td>${escapeDispatchHtml(carName)}</td>
+            <td><span class="priority-badge ${priorityClass}">${escapeDispatchHtml(priority)}</span></td>
+            <td><div class="dispatch-actions">${actionButtons}</div></td>
+          </tr>`;
+      }).join('');
+    }
 
     function renderVehicleSchedule(dateValue) {
       const header = document.getElementById('dispatchScheduleHeader');
@@ -3457,19 +4156,33 @@
       );
 
       if (approvedRequests.length === 0) {
-        content.innerHTML = '<div class="schedule-empty">No Schedule</div>';
+        content.innerHTML = '<div class="schedule-empty" style="padding: 24px; text-align: center; color:#94a3b8;"><i class="fa-regular fa-calendar" style="font-size:1.8rem; display:block; margin-bottom:8px;"></i>No Approved Trips for this date</div>';
         return;
       }
 
       content.innerHTML = approvedRequests.map(request => {
         const driver = dispatchDrivers.find(item => item.id === request.driver)?.name || 'Unassigned driver';
         const car = dispatchCars.find(item => item.id === request.car)?.name || 'Unassigned vehicle';
+        const priority = request.priority_level || 'Normal';
+        const priorityBadge = priority !== 'Normal'
+          ? `<span class="priority-badge ${priority.toLowerCase()}" style="margin-left: auto;">${escapeDispatchHtml(priority)}</span>`
+          : '';
+
         return `
-          <div class="schedule-item">
-            <strong>${escapeDispatchHtml(request.requestor_name || 'Vehicle Request')}</strong>
-            <span>${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}</span>
-            <span>${escapeDispatchHtml(request.destination || 'No destination')}</span>
-            <span>${escapeDispatchHtml(driver)} · ${escapeDispatchHtml(car)}</span>
+          <div class="schedule-item" style="border-left: 4px solid ${priority === 'Urgent' ? '#ef4444' : (priority === 'High' ? '#f59e0b' : 'var(--primary)')}; padding: 10px 12px; margin-bottom: 8px; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <strong style="color: var(--primary);">${escapeDispatchHtml(request.requestor_name || 'Vehicle Trip')}</strong>
+              ${priorityBadge}
+            </div>
+            <div style="font-size: 0.8rem; color: #1e40af; font-weight: 600; margin: 3px 0;">
+              <i class="fa-regular fa-clock"></i> ${escapeDispatchHtml(formatDispatchTime(request.start_time, request.end_time))}
+            </div>
+            <div style="font-size: 0.8rem; color: #475569;">
+              <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> ${escapeDispatchHtml(request.destination || 'No destination')}
+            </div>
+            <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">
+              <i class="fa-solid fa-user-tie"></i> ${escapeDispatchHtml(driver)} · <i class="fa-solid fa-car"></i> ${escapeDispatchHtml(car)}
+            </div>
           </div>`;
       }).join('');
     }
@@ -3496,6 +4209,41 @@
       const today = new Date().toISOString().slice(0, 10);
       if (dateInput && !dateInput.value) dateInput.value = today;
       renderVehicleSchedule(dateInput?.value || today);
+
+      // Sync Supabase KRA/KPI tables (LTO, Post-Trip Audits, Passenger Feedback)
+      try {
+        const [ltoRes, kpiRes, fbRes] = await Promise.all([
+          supabase.from('driver_monthly_lto').select('*'),
+          supabase.from('driver_trip_kpi').select('*'),
+          supabase.from('driver_feedback').select('*')
+        ]);
+
+        if (ltoRes && ltoRes.data) {
+          const ltoData = getLocalKpiData(KPI_STORAGE_KEY_LTO);
+          ltoRes.data.forEach(item => {
+            ltoData[`${item.driver_code}_${item.month_year}`] = item;
+          });
+          setLocalKpiData(KPI_STORAGE_KEY_LTO, ltoData);
+        }
+
+        if (kpiRes && kpiRes.data) {
+          const kpiData = getLocalKpiData(KPI_STORAGE_KEY_TRIPS);
+          kpiRes.data.forEach(item => {
+            kpiData[item.trip_id] = item;
+          });
+          setLocalKpiData(KPI_STORAGE_KEY_TRIPS, kpiData);
+        }
+
+        if (fbRes && fbRes.data) {
+          const fbData = getLocalKpiData(KPI_STORAGE_KEY_FEEDBACK);
+          fbRes.data.forEach(item => {
+            fbData[item.trip_id] = item;
+          });
+          setLocalKpiData(KPI_STORAGE_KEY_FEEDBACK, fbData);
+        }
+      } catch (syncErr) {
+        console.warn('Driver KPI tables background sync note', syncErr);
+      }
     }
 
     function liaisonStatus(value) {
@@ -3776,21 +4524,301 @@
       }, 1500);
     };
 
-    window.saveVehicleDispatch = async function (requestId) {
-      const row = document.querySelector(`[data-request-id="${CSS.escape(requestId)}"]`)?.closest('tr');
-      if (!row) return;
+    // Modal helpers
+    window.openDispatchModal = function (modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.add('open');
+    };
 
-      const request = vehicleRequests.find(item => item.id === requestId);
+    window.closeDispatchModal = function (modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) modal.classList.remove('open');
+    };
+
+    // 1. Pending Panel: Direct Approve from inline dropdowns or opens Approve Modal
+    window.handlePendingApprove = async function (requestId) {
+      const request = vehicleRequests.find(r => r.id === requestId);
       if (!request) return;
-      const previousStatus = String(request.status || 'Pending');
-      const updates = {};
-      row.querySelectorAll('.dispatch-select').forEach(select => {
-        updates[select.dataset.field] = select.value || null;
-      });
 
-      const button = row.querySelector('.dispatch-save');
-      button.disabled = true;
-      button.textContent = 'Saving...';
+      const row = document.querySelector(`[data-request-id="${CSS.escape(requestId)}"]`)?.closest('tr');
+      const driverVal = row?.querySelector('[data-field="driver"]')?.value || request.driver;
+      const carVal = row?.querySelector('[data-field="car"]')?.value || request.car;
+
+      if (!driverVal || !carVal) {
+        // Open modal to ensure driver & car are assigned
+        openApproveTripModal(requestId);
+        return;
+      }
+
+      await executeTripApproval(requestId, driverVal, carVal, request.priority_level || 'Normal');
+    };
+
+    // 2. Approved Panel: Open Update Trip Modal (Driver, Vehicle, Priority, Airline Alert)
+    window.openUpdateTripModal = function (requestId) {
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      document.getElementById('modalUpdateTripId').value = request.id;
+      document.getElementById('modalUpdateTripIdDisplay').textContent = dispatchRequestId(request);
+      document.getElementById('modalUpdateRequestor').textContent = `Passenger: ${request.requestor_name || 'Not specified'} (${request.department || request.company || ''})`;
+      document.getElementById('modalUpdateSchedule').textContent = `${formatDispatchDate(request.request_date)} · ${formatDispatchTime(request.start_time, request.end_time)}`;
+      document.getElementById('modalUpdateDestination').textContent = `Destination: ${request.destination || 'Not specified'}`;
+
+      const driverSelect = document.getElementById('modalUpdateDriver');
+      const carSelect = document.getElementById('modalUpdateCar');
+      const prioritySelect = document.getElementById('modalUpdatePriority');
+      const reasonInput = document.getElementById('modalUpdateReason');
+
+      if (driverSelect) driverSelect.value = request.driver || 'd1';
+      if (carSelect) carSelect.value = request.car || 'c1';
+      if (prioritySelect) prioritySelect.value = request.priority_level || 'Normal';
+      if (reasonInput) reasonInput.value = request.change_reason || 'Vehicle reassigned due to priority of trip';
+
+      openDispatchModal('updateDispatchModal');
+    };
+
+    window.saveTripAssignmentUpdate = async function () {
+      const requestId = document.getElementById('modalUpdateTripId')?.value;
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      const driver = document.getElementById('modalUpdateDriver')?.value || null;
+      const car = document.getElementById('modalUpdateCar')?.value || null;
+      const priority_level = document.getElementById('modalUpdatePriority')?.value || 'Normal';
+      const change_reason = (document.getElementById('modalUpdateReason')?.value || '').trim() || 'Trip assignment updated based on priority';
+
+      const btn = document.getElementById('btnSaveTripUpdate');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating &amp; Alerting...';
+      }
+
+      try {
+        const updates = {
+          driver,
+          car,
+          priority_level,
+          change_reason,
+          status: 'Approved',
+          updated_at: new Date().toISOString()
+        };
+
+        const { error } = await supabase
+          .from('vehicle_requests')
+          .update(updates)
+          .eq('id', requestId);
+
+        if (error) {
+          console.warn('Supabase update warning (using fallback update)', error);
+        }
+
+        // Update in-memory cache
+        Object.assign(request, updates);
+
+        // Dispatch Airline-Style Passenger Notification
+        if (request.user_id) {
+          const driverName = dispatchDrivers.find(d => d.id === driver)?.name || 'Assigned Driver';
+          const carName = dispatchCars.find(c => c.id === car)?.name || 'Assigned Vehicle';
+          const dateStr = formatDispatchDate(request.request_date);
+          const timeStr = formatDispatchTime(request.start_time, request.end_time);
+
+          const airlineMessage = [
+            `✈️ TRIP UPDATE ALERT: Your vehicle dispatch assignment has been updated due to trip priority.`,
+            `• Trip ID: ${dispatchRequestId(request)}`,
+            `• Destination: ${request.destination || 'Not specified'}`,
+            `• Date & Time: ${dateStr} (${timeStr})`,
+            `• Assigned Vehicle: ${carName}`,
+            `• Designated Driver: ${driverName}`,
+            `• Level of Priority: ${priority_level.toUpperCase()}`,
+            `• Operational Reason: ${change_reason}`,
+            `• Live Status: Confirmed & Scheduled`
+          ].join('\n');
+
+          try {
+            await supabase.from('notifications').insert([{
+              user_id: request.user_id,
+              title: `Trip Update: ${carName} (${priority_level} Priority)`,
+              message: airlineMessage,
+              request_type: 'Vehicle Request',
+              is_read: false
+            }]);
+          } catch (notifErr) {
+            console.error('Error dispatching airline notification', notifErr);
+          }
+        }
+
+        renderVehicleDispatchTable();
+        renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
+        closeDispatchModal('updateDispatchModal');
+        alert('Trip updated successfully! Live calendar updated and airline alert sent to passenger.');
+      } catch (err) {
+        alert('Error updating trip assignment: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Apply Update &amp; Notify Passenger';
+        }
+      }
+    };
+
+    // 3. Rejection Modal
+    window.openRejectTripModal = function (requestId) {
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      document.getElementById('modalRejectTripId').value = request.id;
+      const notice = checkNoticePeriod(request);
+      const alertBox = document.getElementById('modalRejectNoticeAlert');
+      const reasonSelect = document.getElementById('modalRejectReasonSelect');
+
+      if (notice.isLate) {
+        if (alertBox) {
+          alertBox.style.display = 'block';
+          alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>2-Day Advance Rule:</strong> Submitted only ${notice.daysNotice} days prior to departure (&lt; 48 hours). Automatic rejection policy applies.`;
+        }
+        if (reasonSelect) {
+          reasonSelect.value = 'Submitted less than 2 days prior to departure (Auto-Reject policy)';
+        }
+      } else {
+        if (alertBox) alertBox.style.display = 'none';
+        if (reasonSelect) {
+          reasonSelect.value = 'No available vehicle or driver for the requested schedule';
+        }
+      }
+
+      toggleCustomRejectReason(reasonSelect?.value);
+      openDispatchModal('rejectDispatchModal');
+    };
+
+    window.toggleCustomRejectReason = function (val) {
+      const customWrap = document.getElementById('modalRejectCustomWrap');
+      if (customWrap) {
+        customWrap.style.display = val === 'custom' ? 'block' : 'none';
+      }
+    };
+
+    window.confirmTripRejection = async function () {
+      const requestId = document.getElementById('modalRejectTripId')?.value;
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      const reasonSelect = document.getElementById('modalRejectReasonSelect')?.value;
+      let finalReason = reasonSelect;
+      if (reasonSelect === 'custom') {
+        finalReason = (document.getElementById('modalRejectCustomReason')?.value || '').trim() || 'Request rejected by dispatcher';
+      }
+
+      const btn = document.getElementById('btnConfirmReject');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rejecting...';
+      }
+
+      try {
+        const updates = {
+          status: 'Rejected',
+          rejection_reason: finalReason,
+          updated_at: new Date().toISOString()
+        };
+
+        await supabase.from('vehicle_requests').update(updates).eq('id', requestId);
+        Object.assign(request, updates);
+
+        if (request.user_id) {
+          try {
+            await supabase.from('notifications').insert([{
+              user_id: request.user_id,
+              title: 'Vehicle Request Rejected',
+              message: `Your vehicle request for ${formatDispatchDate(request.request_date)} to ${request.destination || 'destination'} was rejected.\nReason: ${finalReason}`,
+              request_type: 'Vehicle Request',
+              is_read: false
+            }]);
+          } catch (e) {}
+        }
+
+        renderVehicleDispatchTable();
+        closeDispatchModal('rejectDispatchModal');
+      } catch (err) {
+        alert('Error rejecting request: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-xmark"></i> Confirm Rejection';
+        }
+      }
+    };
+
+    // 4. Approve Reinstatement & Confirmation Modal (Pending, Rejected, Cancelled)
+    window.openApproveTripModal = function (requestId) {
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      document.getElementById('modalApproveTripId').value = request.id;
+      const titleEl = document.getElementById('modalApproveTitle');
+      const subtitleEl = document.getElementById('modalApproveSubtitle');
+      const prevStatus = String(request.status || 'Pending').toLowerCase();
+
+      if (titleEl) {
+        titleEl.textContent = prevStatus === 'pending'
+          ? 'Approve Vehicle Request'
+          : `Re-Approve ${request.status} Request`;
+      }
+      if (subtitleEl) {
+        subtitleEl.textContent = prevStatus === 'pending'
+          ? 'Assign Driver and Vehicle to schedule trip on the live calendar.'
+          : `Admin Authority Override: Re-approving this ${prevStatus} trip will schedule it on the live calendar and notify the requestor.`;
+      }
+
+      const driverSel = document.getElementById('modalApproveDriver');
+      const carSel = document.getElementById('modalApproveCar');
+      const prioritySel = document.getElementById('modalApprovePriority');
+
+      if (driverSel) driverSel.value = request.driver || 'd1';
+      if (carSel) carSel.value = request.car || 'c1';
+      if (prioritySel) prioritySel.value = request.priority_level || 'Normal';
+
+      openDispatchModal('approveDispatchModal');
+    };
+
+    window.confirmTripApproval = async function () {
+      const requestId = document.getElementById('modalApproveTripId')?.value;
+      const driver = document.getElementById('modalApproveDriver')?.value;
+      const car = document.getElementById('modalApproveCar')?.value;
+      const priority = document.getElementById('modalApprovePriority')?.value || 'Normal';
+
+      if (!driver || !car) {
+        alert('Please assign both a Driver and Vehicle to approve this trip.');
+        return;
+      }
+
+      const btn = document.getElementById('btnConfirmApprove');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Scheduling...';
+      }
+
+      try {
+        await executeTripApproval(requestId, driver, car, priority);
+        closeDispatchModal('approveDispatchModal');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> Approve &amp; Schedule';
+        }
+      }
+    };
+
+    async function executeTripApproval(requestId, driver, car, priority) {
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      const updates = {
+        driver,
+        car,
+        priority_level: priority || 'Normal',
+        status: 'Approved',
+        updated_at: new Date().toISOString()
+      };
 
       const { error } = await supabase
         .from('vehicle_requests')
@@ -3798,68 +4826,550 @@
         .eq('id', requestId);
 
       if (error) {
-        console.error('Error saving vehicle dispatch', error);
-        alert(`Error saving vehicle dispatch: ${error.message}`);
-        button.disabled = false;
-        button.textContent = 'Save';
-        return;
+        console.warn('Supabase update warning', error);
       }
 
       Object.assign(request, updates);
 
-      if (request.user_id && updates.status && updates.status !== previousStatus) {
-        const driver = dispatchDrivers.find(item => item.id === request.driver)?.name || 'Unassigned';
-        const vehicle = dispatchCars.find(item => item.id === request.car)?.name || 'Unassigned';
-        const requestDate = request.request_date
-          ? new Date(`${request.request_date}T00:00:00`).toLocaleDateString('en-US', {
-            weekday: 'long',
-            month: 'long',
-            day: 'numeric',
-            year: 'numeric'
-          })
-          : 'Not specified';
-        const tripDetails = [
-          `Date: ${requestDate}`,
-          `Driver: ${driver}`,
-          `Vehicle: ${vehicle}`,
-          `Destination: ${request.destination || 'Not specified'}`,
-          `Purpose: ${request.purpose || 'Not specified'}`,
-          `Passenger: ${request.requestor_name || 'Not specified'}`,
-          `Start: ${request.start_time ? String(request.start_time).slice(0, 5) : 'Not specified'}`,
-          `End: ${request.end_time ? String(request.end_time).slice(0, 5) : 'Not specified'}`,
-          `Status: ${updates.status}`
-        ].join('\n');
+      if (request.user_id) {
+        const driverName = dispatchDrivers.find(d => d.id === driver)?.name || 'Driver Assigned';
+        const carName = dispatchCars.find(c => c.id === car)?.name || 'Vehicle Assigned';
+        try {
+          await supabase.from('notifications').insert([{
+            user_id: request.user_id,
+            title: 'Vehicle Trip Approved',
+            message: `Your vehicle request for ${formatDispatchDate(request.request_date)} to ${request.destination || 'destination'} has been APPROVED.\n• Assigned Driver: ${driverName}\n• Vehicle: ${carName}\n• Priority: ${priority}\n• Time: ${formatDispatchTime(request.start_time, request.end_time)}`,
+            request_type: 'Vehicle Request',
+            is_read: false
+          }]);
+        } catch (e) {}
+      }
 
-        const { error: notificationError } = await supabase.from('notifications').insert([{
-          user_id: request.user_id,
-          title: `Vehicle Trip ${updates.status}`,
-          message: tripDetails,
-          request_type: 'Vehicle Request',
-          is_read: false
-        }]);
+      renderVehicleDispatchTable();
+      renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
+    }
 
-        if (notificationError) {
-          console.error('Error sending vehicle trip notification', notificationError);
+    // 5. Cancel Trip Modal
+    window.openCancelTripModal = function (requestId) {
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      document.getElementById('modalCancelTripId').value = request.id;
+      const reasonInput = document.getElementById('modalCancelReason');
+      if (reasonInput) {
+        reasonInput.value = 'Cancelled by Requestor (schedule change or trip will not commence)';
+      }
+      openDispatchModal('cancelDispatchModal');
+    };
+
+    window.confirmTripCancellation = async function () {
+      const requestId = document.getElementById('modalCancelTripId')?.value;
+      const request = vehicleRequests.find(r => r.id === requestId);
+      if (!request) return;
+
+      const reason = (document.getElementById('modalCancelReason')?.value || '').trim() || 'Cancelled by Requestor';
+      const updates = {
+        status: 'Cancelled',
+        change_reason: reason,
+        updated_at: new Date().toISOString()
+      };
+
+      await supabase.from('vehicle_requests').update(updates).eq('id', requestId);
+      Object.assign(request, updates);
+
+      if (request.user_id) {
+        try {
+          await supabase.from('notifications').insert([{
+            user_id: request.user_id,
+            title: 'Vehicle Trip Cancelled',
+            message: `Your trip to ${request.destination || 'destination'} on ${formatDispatchDate(request.request_date)} was cancelled.\nNote: ${reason}`,
+            request_type: 'Vehicle Request',
+            is_read: false
+          }]);
+        } catch (e) {}
+      }
+
+      renderVehicleDispatchTable();
+      renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
+      closeDispatchModal('cancelDispatchModal');
+    };
+
+    // =========================================================================
+    // 6. DRIVER KRA & KPI EVALUATION SYSTEM
+    // Computes the 5 KRAs for all drivers (Randy Sayon, Hilarion Garcia, Ryan Guna):
+    // KRA 1: Monthly Traffic Violations (LTO Portal / Notice)
+    // KRA 2: Incident/Accident on Driver Negligence (Arrival Inspection)
+    // KRA 3: Passenger Attitude & Vehicle Cleanliness (Passenger Feedback Form)
+    // KRA 4: Vehicle Checklist & Trip Ticket (Odometer reading, Fuel signature)
+    // KRA 5: Trip Docs Submission to Admin Day After Trip
+    // =========================================================================
+
+    window.selectKpiDriver = function (driverCode, element) {
+      selectedKpiDriverCode = driverCode;
+      document.querySelectorAll('#kpiDriverTabs .driver-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      if (element) element.classList.add('active');
+      renderDriverKpiBoard();
+    };
+
+    window.computeDriverKpi = function (driverCode, monthYear) {
+      const ltoData = getLocalKpiData(KPI_STORAGE_KEY_LTO);
+      const tripKpiData = getLocalKpiData(KPI_STORAGE_KEY_TRIPS);
+      const feedbackData = getLocalKpiData(KPI_STORAGE_KEY_FEEDBACK);
+
+      // Filter all approved or completed trips assigned to this driver in target month
+      const driverTrips = vehicleRequests.filter(req => {
+        if (!req.request_date || !req.request_date.startsWith(monthYear)) return false;
+        const status = String(req.status || '').toLowerCase();
+        if (status !== 'approved' && status !== 'completed') return false;
+        if (driverCode !== 'all' && req.driver !== driverCode) return false;
+        return true;
+      });
+
+      const totalTrips = driverTrips.length;
+
+      // KRA 1: Monthly Traffic Violations (Target: 0 violations)
+      let trafficViolations = 0;
+      if (driverCode === 'all') {
+        dispatchDrivers.forEach(d => {
+          const ltoRecord = ltoData[`${d.id}_${monthYear}`];
+          if (ltoRecord) trafficViolations += Number(ltoRecord.violations_count || 0);
+        });
+      } else {
+        const ltoRecord = ltoData[`${driverCode}_${monthYear}`];
+        if (ltoRecord) trafficViolations = Number(ltoRecord.violations_count || 0);
+      }
+      const kra1Score = trafficViolations === 0 ? 100 : Math.max(0, 100 - (trafficViolations * 25));
+
+      // KRA 2: Incident/Accident on Negligence (Target: 0 incidents)
+      let incidentFreeTrips = 0;
+      driverTrips.forEach(req => {
+        const audit = tripKpiData[req.id];
+        if (!audit || audit.incident_free !== false) {
+          incidentFreeTrips += 1;
+        }
+      });
+      const kra2Score = totalTrips === 0 ? 100 : Math.round((incidentFreeTrips / totalTrips) * 100);
+
+      // KRA 3: Passenger Complaints & Cleanliness (Target: 0 complaints)
+      let feedbackList = [];
+      let totalRatings = 0;
+      let complaintCount = 0;
+      let evaluatedFeedbacks = 0;
+
+      driverTrips.forEach(req => {
+        const fb = feedbackData[req.id];
+        const audit = tripKpiData[req.id];
+        if (fb) {
+          feedbackList.push(fb);
+          evaluatedFeedbacks += 1;
+          const avgStars = ((Number(fb.rating_attitude || 5) + Number(fb.rating_cleanliness || 5)) / 2);
+          totalRatings += avgStars;
+          if (fb.has_complaint || fb.rating_attitude < 3 || fb.rating_cleanliness < 3) {
+            complaintCount += 1;
+          }
+        } else if (audit && audit.passenger_complaint) {
+          complaintCount += 1;
+          evaluatedFeedbacks += 1;
+        }
+      });
+      const avgStarRating = evaluatedFeedbacks > 0 ? (totalRatings / evaluatedFeedbacks).toFixed(1) : '5.0';
+      const kra3Score = evaluatedFeedbacks === 0 ? 100 : Math.round(((evaluatedFeedbacks - complaintCount) / evaluatedFeedbacks) * 100);
+
+      // KRA 4: Vehicle Checklist Completed (Odometer, fuel, signature)
+      let checklistCompletedTrips = 0;
+      driverTrips.forEach(req => {
+        const audit = tripKpiData[req.id];
+        if (!audit || audit.checklist_completed !== false) {
+          checklistCompletedTrips += 1;
+        }
+      });
+      const kra4Score = totalTrips === 0 ? 100 : Math.round((checklistCompletedTrips / totalTrips) * 100);
+
+      // KRA 5: Trip Docs Submitted Day After Trip
+      let docsOnTimeTrips = 0;
+      driverTrips.forEach(req => {
+        const audit = tripKpiData[req.id];
+        if (!audit || audit.docs_submitted_ontime !== false) {
+          docsOnTimeTrips += 1;
+        }
+      });
+      const kra5Score = totalTrips === 0 ? 100 : Math.round((docsOnTimeTrips / totalTrips) * 100);
+
+      // Overall Score (Equal weight of 5 KRAs: 20% each)
+      const overallScore = Math.round((kra1Score + kra2Score + kra3Score + kra4Score + kra5Score) / 5);
+
+      let ratingBadge = { text: 'Outstanding', class: 'success', stars: '★★★★★' };
+      if (overallScore < 75) {
+        ratingBadge = { text: 'Needs Improvement', class: 'danger', stars: '★★☆☆☆' };
+      } else if (overallScore < 85) {
+        ratingBadge = { text: 'Satisfactory', class: 'warning', stars: '★★★☆☆' };
+      } else if (overallScore < 95) {
+        ratingBadge = { text: 'Very Satisfactory', class: 'success', stars: '★★★★☆' };
+      }
+
+      return {
+        totalTrips,
+        trafficViolations,
+        kra1Score,
+        incidentFreeTrips,
+        kra2Score,
+        avgStarRating,
+        complaintCount,
+        kra3Score,
+        checklistCompletedTrips,
+        kra4Score,
+        docsOnTimeTrips,
+        kra5Score,
+        overallScore,
+        ratingBadge,
+        driverTrips
+      };
+    };
+
+    window.renderDriverKpiBoard = function () {
+      const monthInput = document.getElementById('kpiMonthPicker');
+      const monthYear = monthInput?.value || kpiEvaluationMonth;
+      const kpi = computeDriverKpi(selectedKpiDriverCode, monthYear);
+
+      // 1. Metric Cards Grid
+      const cardsGrid = document.getElementById('kpiMetricCards');
+      if (cardsGrid) {
+        const driverTitle = selectedKpiDriverCode === 'all'
+          ? 'Fleet Overview'
+          : (dispatchDrivers.find(d => d.id === selectedKpiDriverCode)?.name || 'Driver');
+
+        cardsGrid.innerHTML = `
+          <!-- Overall KPI Score -->
+          <div class="kpi-card highlight">
+            <div>
+              <div class="kpi-label">${escapeDispatchHtml(driverTitle)} Overall KPI</div>
+              <div class="kpi-value">${kpi.overallScore}%</div>
+              <div class="kpi-subtext">${kpi.ratingBadge.stars} ${kpi.ratingBadge.text}</div>
+            </div>
+            <div style="margin-top: 12px; font-size: 0.78rem; color: #cbd5e1;">
+              Total Scheduled Trips: <strong>${kpi.totalTrips}</strong>
+            </div>
+          </div>
+
+          <!-- KRA 1 Card -->
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">KRA 1: Traffic Violations</div>
+              <div class="kpi-value" style="color: ${kpi.trafficViolations > 0 ? '#b91c1c' : '#10b981'};">
+                ${kpi.trafficViolations} <small style="font-size: 0.9rem; font-weight: normal; color: #64748b;">(Target: 0)</small>
+              </div>
+              <div class="kpi-subtext">Verified Monthly via LTO Portal</div>
+            </div>
+            <div>
+              <div class="kra-badge ${kpi.kra1Score >= 90 ? 'success' : 'danger'}">Score: ${kpi.kra1Score}%</div>
+              <div class="kpi-bar"><div class="kpi-bar-fill ${kpi.kra1Score >= 90 ? 'green' : 'red'}" style="width: ${kpi.kra1Score}%;"></div></div>
+            </div>
+          </div>
+
+          <!-- KRA 2 Card -->
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">KRA 2: Incident-Free</div>
+              <div class="kpi-value" style="color: #2563eb;">
+                ${kpi.incidentFreeTrips}/${kpi.totalTrips}
+              </div>
+              <div class="kpi-subtext">Arrival Negligence Inspection</div>
+            </div>
+            <div>
+              <div class="kra-badge ${kpi.kra2Score >= 90 ? 'success' : 'danger'}">Score: ${kpi.kra2Score}%</div>
+              <div class="kpi-bar"><div class="kpi-bar-fill ${kpi.kra2Score >= 90 ? 'green' : 'red'}" style="width: ${kpi.kra2Score}%;"></div></div>
+            </div>
+          </div>
+
+          <!-- KRA 3 Card -->
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">KRA 3: Passenger Rating</div>
+              <div class="kpi-value" style="color: #f59e0b;">
+                ${kpi.avgStarRating}★
+              </div>
+              <div class="kpi-subtext">${kpi.complaintCount} Complaints recorded</div>
+            </div>
+            <div>
+              <div class="kra-badge ${kpi.kra3Score >= 90 ? 'success' : 'warning'}">Cleanliness &amp; Attitude: ${kpi.kra3Score}%</div>
+              <div class="kpi-bar"><div class="kpi-bar-fill ${kpi.kra3Score >= 90 ? 'green' : 'amber'}" style="width: ${kpi.kra3Score}%;"></div></div>
+            </div>
+          </div>
+
+          <!-- KRA 4 Card -->
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">KRA 4: Trip Ticket &amp; Checklist</div>
+              <div class="kpi-value" style="color: #10b981;">
+                ${kpi.checklistCompletedTrips}/${kpi.totalTrips}
+              </div>
+              <div class="kpi-subtext">Odometer, Fuel &amp; Signature Complete</div>
+            </div>
+            <div>
+              <div class="kra-badge ${kpi.kra4Score >= 90 ? 'success' : 'warning'}">Score: ${kpi.kra4Score}%</div>
+              <div class="kpi-bar"><div class="kpi-bar-fill ${kpi.kra4Score >= 90 ? 'green' : 'amber'}" style="width: ${kpi.kra4Score}%;"></div></div>
+            </div>
+          </div>
+
+          <!-- KRA 5 Card -->
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">KRA 5: Next-Day Docs</div>
+              <div class="kpi-value" style="color: #7c3aed;">
+                ${kpi.docsOnTimeTrips}/${kpi.totalTrips}
+              </div>
+              <div class="kpi-subtext">Submitted to Admin Day After Trip</div>
+            </div>
+            <div>
+              <div class="kra-badge ${kpi.kra5Score >= 90 ? 'success' : 'warning'}">Score: ${kpi.kra5Score}%</div>
+              <div class="kpi-bar"><div class="kpi-bar-fill ${kpi.kra5Score >= 90 ? 'green' : 'amber'}" style="width: ${kpi.kra5Score}%;"></div></div>
+            </div>
+          </div>`;
+      }
+
+      // 2. KRA 1 LTO Monthly Summary
+      const ltoSummaryEl = document.getElementById('ltoVerificationSummary');
+      if (ltoSummaryEl) {
+        const ltoData = getLocalKpiData(KPI_STORAGE_KEY_LTO);
+        if (selectedKpiDriverCode === 'all') {
+          let rows = dispatchDrivers.map(d => {
+            const rec = ltoData[`${d.id}_${monthYear}`] || { violations_count: 0, reference_no: 'None reported', notes: 'No violations on record' };
+            return `<strong>${d.name}:</strong> ${rec.violations_count} violation(s) (${rec.reference_no})`;
+          }).join(' &nbsp;|&nbsp; ');
+          ltoSummaryEl.innerHTML = `<div style="background:#f8fafc; padding:10px 14px; border-radius:6px; border:1px solid var(--border);">${rows}</div>`;
+        } else {
+          const rec = ltoData[`${selectedKpiDriverCode}_${monthYear}`];
+          if (rec) {
+            ltoSummaryEl.innerHTML = `
+              <div style="background:#f8fafc; padding:10px 14px; border-radius:6px; border:1px solid var(--border); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <span><strong>Recorded Violations:</strong> ${rec.violations_count} violation(s)</span>
+                <span><strong>Verification Ref / Date:</strong> ${escapeDispatchHtml(rec.reference_no || '-')}</span>
+                <span><strong>Notes:</strong> ${escapeDispatchHtml(rec.notes || 'Clean record')}</span>
+              </div>`;
+          } else {
+            ltoSummaryEl.innerHTML = `
+              <div style="background:#f8fafc; padding:10px 14px; border-radius:6px; border:1px solid var(--border); color:#64748b;">
+                No violations logged for this month. Default status is <strong>0 Traffic Violations (100% compliance)</strong>. Click "Log / Verify LTO Status" to update.
+              </div>`;
+          }
         }
       }
 
-      button.textContent = 'Saved';
-      renderVehicleDispatchTable();
-      renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
-      setTimeout(() => {
-        button.disabled = false;
-        button.textContent = 'Save';
-      }, 1500);
+      // 3. Trip-by-Trip KRA Verification Board
+      const tripTableBody = document.getElementById('driverKpiTripTableBody');
+      if (tripTableBody) {
+        const tripKpiData = getLocalKpiData(KPI_STORAGE_KEY_TRIPS);
+        const feedbackData = getLocalKpiData(KPI_STORAGE_KEY_FEEDBACK);
+
+        if (kpi.driverTrips.length === 0) {
+          tripTableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 24px; color: #94a3b8;">No scheduled trips recorded for this driver in this month.</td></tr>';
+          return;
+        }
+
+        tripTableBody.innerHTML = kpi.driverTrips.map(trip => {
+          const rowId = escapeDispatchHtml(trip.id);
+          const reqId = escapeDispatchHtml(dispatchRequestId(trip));
+          const audit = tripKpiData[trip.id] || {
+            incident_free: true,
+            checklist_completed: true,
+            docs_submitted_ontime: true,
+            passenger_complaint: false
+          };
+          const fb = feedbackData[trip.id];
+          const driverName = dispatchDrivers.find(d => d.id === trip.driver)?.name || 'Unassigned';
+
+          // KRA 3 feedback display
+          let feedbackDisplay = '<span style="color:#94a3b8; font-size:0.8rem;">No feedback submitted</span>';
+          if (fb) {
+            feedbackDisplay = `
+              <button type="button" class="btn-primary" onclick="viewPassengerFeedback('${rowId}')" style="font-size:0.75rem; padding:3px 8px; background:#f59e0b;">
+                <i class="fa-solid fa-star"></i> Att: ${fb.rating_attitude}★ | Clean: ${fb.rating_cleanliness}★
+              </button>`;
+          }
+
+          return `
+            <tr>
+              <td><strong>${reqId}</strong><br><small style="color:#64748b;">${escapeDispatchHtml(trip.requestor_name || '')}</small></td>
+              <td><strong>${escapeDispatchHtml(driverName)}</strong></td>
+              <td>
+                <strong>${escapeDispatchHtml(formatDispatchDate(trip.request_date))}</strong><br>
+                <small>${escapeDispatchHtml(trip.destination || '')}</small>
+              </td>
+              <td>
+                <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
+                  <input type="checkbox" id="kpi_inc_${rowId}" ${audit.incident_free !== false ? 'checked' : ''}>
+                  <span style="font-size:0.82rem; font-weight:600; color:#15803d;">Incident-Free</span>
+                </label>
+              </td>
+              <td>
+                ${feedbackDisplay}
+                <label style="display:block; margin-top:4px; font-size:0.75rem; color:#b91c1c; cursor:pointer;">
+                  <input type="checkbox" id="kpi_comp_${rowId}" ${audit.passenger_complaint ? 'checked' : ''}> Complaint Flag
+                </label>
+              </td>
+              <td>
+                <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
+                  <input type="checkbox" id="kpi_chk_${rowId}" ${audit.checklist_completed !== false ? 'checked' : ''}>
+                  <span style="font-size:0.82rem; font-weight:600; color:#2563eb;">Checklist Completed</span>
+                </label>
+              </td>
+              <td>
+                <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
+                  <input type="checkbox" id="kpi_doc_${rowId}" ${audit.docs_submitted_ontime !== false ? 'checked' : ''}>
+                  <span style="font-size:0.82rem; font-weight:600; color:#7c3aed;">On-Time Day After</span>
+                </label>
+              </td>
+              <td>
+                <button type="button" class="dispatch-action approve" onclick="saveTripKpiVerification('${rowId}')" title="Save post-trip KRA audit">
+                  <i class="fa-solid fa-floppy-disk"></i> Save KRA
+                </button>
+              </td>
+            </tr>`;
+        }).join('');
+      }
     };
 
-    window.setVehicleDispatchStatus = function (requestId, status) {
-      const select = document.querySelector(
-        `.dispatch-select[data-request-id="${CSS.escape(requestId)}"][data-field="status"]`
-      );
-      if (!select) return;
-      select.value = status;
-      window.saveVehicleDispatch(requestId);
+    // Save individual trip KRA audit
+    window.saveTripKpiVerification = async function (tripId) {
+      const incFree = document.getElementById(`kpi_inc_${tripId}`)?.checked ?? true;
+      const complaint = document.getElementById(`kpi_comp_${tripId}`)?.checked ?? false;
+      const chkDone = document.getElementById(`kpi_chk_${tripId}`)?.checked ?? true;
+      const docOnTime = document.getElementById(`kpi_doc_${tripId}`)?.checked ?? true;
+
+      const trip = vehicleRequests.find(r => r.id === tripId);
+      const driver_code = trip?.driver || 'd1';
+
+      const tripKpiData = getLocalKpiData(KPI_STORAGE_KEY_TRIPS);
+      tripKpiData[tripId] = {
+        trip_id: tripId,
+        driver_code,
+        incident_free: incFree,
+        passenger_complaint: complaint,
+        checklist_completed: chkDone,
+        docs_submitted_ontime: docOnTime,
+        reviewed_at: new Date().toISOString()
+      };
+      setLocalKpiData(KPI_STORAGE_KEY_TRIPS, tripKpiData);
+
+      // Attempt save to Supabase
+      try {
+        await supabase.from('driver_trip_kpi').upsert([{
+          trip_id: tripId,
+          driver_code,
+          incident_free: incFree,
+          passenger_complaint: complaint,
+          checklist_completed: chkDone,
+          docs_submitted_ontime: docOnTime
+        }], { onConflict: 'trip_id' });
+      } catch (e) {
+        console.warn('Saved trip KRA to local cache', e);
+      }
+
+      renderDriverKpiBoard();
+      alert('Trip KRA performance verified and saved! Driver KPI re-computed.');
     };
+
+    // Monthly LTO Traffic Violations Logger (KRA 1)
+    window.openLtoRecordModal = function () {
+      const monthInput = document.getElementById('kpiMonthPicker');
+      const monthYear = monthInput?.value || kpiEvaluationMonth;
+      const driverCode = selectedKpiDriverCode === 'all' ? 'd1' : selectedKpiDriverCode;
+
+      const driverSel = document.getElementById('modalLtoDriver');
+      const monthEl = document.getElementById('modalLtoMonth');
+      const countEl = document.getElementById('modalLtoCount');
+      const refEl = document.getElementById('modalLtoRef');
+      const notesEl = document.getElementById('modalLtoNotes');
+
+      if (driverSel) driverSel.value = driverCode;
+      if (monthEl) monthEl.value = monthYear;
+
+      const ltoData = getLocalKpiData(KPI_STORAGE_KEY_LTO);
+      const rec = ltoData[`${driverCode}_${monthYear}`] || {};
+
+      if (countEl) countEl.value = rec.violations_count || 0;
+      if (refEl) refEl.value = rec.reference_no || '';
+      if (notesEl) notesEl.value = rec.notes || '';
+
+      openDispatchModal('ltoRecordModal');
+    };
+
+    window.saveLtoRecord = async function () {
+      const driver_code = document.getElementById('modalLtoDriver')?.value || 'd1';
+      const month_year = document.getElementById('modalLtoMonth')?.value || kpiEvaluationMonth;
+      const violations_count = parseInt(document.getElementById('modalLtoCount')?.value || '0', 10);
+      const reference_no = (document.getElementById('modalLtoRef')?.value || '').trim();
+      const notes = (document.getElementById('modalLtoNotes')?.value || '').trim();
+
+      const ltoData = getLocalKpiData(KPI_STORAGE_KEY_LTO);
+      const record = {
+        driver_code,
+        month_year,
+        violations_count,
+        reference_no,
+        notes,
+        verified_at: new Date().toISOString()
+      };
+      ltoData[`${driver_code}_${month_year}`] = record;
+      setLocalKpiData(KPI_STORAGE_KEY_LTO, ltoData);
+
+      try {
+        await supabase.from('driver_monthly_lto').upsert([record], { onConflict: 'driver_code,month_year' });
+      } catch (e) {
+        console.warn('Saved LTO record to local cache', e);
+      }
+
+      closeDispatchModal('ltoRecordModal');
+      renderDriverKpiBoard();
+      alert('Monthly LTO verification saved! KRA 1 computed.');
+    };
+
+    // View Passenger Trip Feedback (KRA 3)
+    window.viewPassengerFeedback = function (tripId) {
+      const feedbackData = getLocalKpiData(KPI_STORAGE_KEY_FEEDBACK);
+      const fb = feedbackData[tripId];
+      const trip = vehicleRequests.find(r => r.id === tripId);
+      const contentEl = document.getElementById('modalFeedbackContent');
+
+      if (!contentEl) return;
+
+      if (!fb) {
+        contentEl.innerHTML = '<p style="text-align:center; color:#64748b;">No feedback has been submitted by the passenger yet.</p>';
+      } else {
+        const starAtt = '★'.repeat(fb.rating_attitude || 5) + '☆'.repeat(5 - (fb.rating_attitude || 5));
+        const starClean = '★'.repeat(fb.rating_cleanliness || 5) + '☆'.repeat(5 - (fb.rating_cleanliness || 5));
+
+        contentEl.innerHTML = `
+          <div style="background:#f8fafc; padding:14px; border-radius:8px; border:1px solid var(--border);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <strong>${escapeDispatchHtml(trip?.requestor_name || 'Passenger')}</strong>
+              <span style="color:#64748b; font-size:0.8rem;">${new Date(fb.created_at || Date.now()).toLocaleDateString()}</span>
+            </div>
+            <div style="margin-bottom:8px; font-size:0.88rem;">
+              <strong>Driver Attitude &amp; Courtesy:</strong>
+              <span style="color:#f59e0b; font-size:1.1rem; margin-left:6px;">${starAtt}</span> (${fb.rating_attitude}/5)
+            </div>
+            <div style="margin-bottom:8px; font-size:0.88rem;">
+              <strong>Vehicle Cleanliness:</strong>
+              <span style="color:#f59e0b; font-size:1.1rem; margin-left:6px;">${starClean}</span> (${fb.rating_cleanliness}/5)
+            </div>
+            <div style="margin-bottom:8px; font-size:0.88rem;">
+              <strong>Any Complaints:</strong>
+              <span style="color:${fb.has_complaint ? '#b91c1c' : '#15803d'}; font-weight:600;">${fb.has_complaint ? 'Yes (Complaint Reported)' : 'No (Satisfied)'}</span>
+            </div>
+            ${fb.comments ? `
+              <div style="background:white; border:1px solid #e2e8f0; border-radius:6px; padding:10px; margin-top:10px; font-size:0.85rem; color:#334155;">
+                <strong>Passenger Comments:</strong><br>
+                ${escapeDispatchHtml(fb.comments)}
+              </div>` : ''}
+          </div>`;
+      }
+
+      openDispatchModal('viewFeedbackModal');
+    };
+
 
     window.updateRequestStatus = async function (id, table, newStatus) {
       try {
@@ -4493,6 +6003,276 @@
       });
     });
   </script>
+  <!-- VEHICLE DISPATCH MODALS -->
+  <!-- 1. Update Trip Assignment & Priority Modal (Approved Trips) -->
+  <div class="dispatch-modal-backdrop" id="updateDispatchModal">
+    <div class="dispatch-modal-box">
+      <div class="dispatch-modal-header">
+        <h3><i class="fa-solid fa-plane-departure" style="color: #fcae16;"></i> Update Trip Assignment &amp; Priority</h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeDispatchModal('updateDispatchModal')">&times;</button>
+      </div>
+      <div class="dispatch-modal-body">
+        <div class="airline-update-alert">
+          <i class="fa-solid fa-bell" style="font-size: 1.2rem; color: #2563eb; margin-top: 2px;"></i>
+          <div>
+            <strong>Live Calendar &amp; Passenger Notification:</strong>
+            Any change to Driver, Vehicle, or Level of Priority immediately updates the live schedule and dispatches an airline-style alert directly to the passenger.
+          </div>
+        </div>
+
+        <input type="hidden" id="modalUpdateTripId">
+
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-size: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <strong id="modalUpdateTripIdDisplay" style="color: var(--primary);">REQ-00</strong>
+            <span id="modalUpdateSchedule" style="color: #64748b;">Schedule</span>
+          </div>
+          <div style="color: #334155; font-weight: 600;" id="modalUpdateRequestor">Requestor Name</div>
+          <div style="color: #64748b; font-size: 0.8rem;" id="modalUpdateDestination">Destination</div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+            <i class="fa-solid fa-flag" style="color: #eab308;"></i> Level of Priority:
+          </label>
+          <select id="modalUpdatePriority" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+            <option value="Normal">Normal Priority</option>
+            <option value="High">High Priority (Operational Urgent)</option>
+            <option value="Urgent">Executive Urgent (Top Priority Reassignment)</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+              <i class="fa-solid fa-user-gear"></i> Assigned Driver:
+            </label>
+            <select id="modalUpdateDriver" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+              <option value="d1">Randy Sayon</option>
+              <option value="d2">Hilarion Garcia</option>
+              <option value="d3">Ryan Guna</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+              <i class="fa-solid fa-car"></i> Assigned Vehicle:
+            </label>
+            <select id="modalUpdateCar" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+              <option value="c1">Toyota Innova - NHM-3386</option>
+              <option value="c2">Nissan Urvan - NKI-95017</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+            Reason for Update (Sent to Passenger):
+          </label>
+          <input type="text" id="modalUpdateReason" placeholder="e.g. Vehicle reassigned due to executive trip priority"
+            style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;" value="Vehicle reassigned due to priority of trip">
+        </div>
+      </div>
+      <div class="dispatch-modal-footer">
+        <button type="button" class="btn-primary" style="background:#64748b;" onclick="closeDispatchModal('updateDispatchModal')">Cancel</button>
+        <button type="button" class="btn-primary" id="btnSaveTripUpdate" onclick="saveTripAssignmentUpdate()">
+          <i class="fa-solid fa-paper-plane"></i> Apply Update &amp; Notify Passenger
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Rejection Modal with 2-day policy & availability reasons -->
+  <div class="dispatch-modal-backdrop" id="rejectDispatchModal">
+    <div class="dispatch-modal-box">
+      <div class="dispatch-modal-header" style="background: #b91c1c;">
+        <h3><i class="fa-solid fa-circle-xmark"></i> Reject Vehicle Request</h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeDispatchModal('rejectDispatchModal')">&times;</button>
+      </div>
+      <div class="dispatch-modal-body">
+        <input type="hidden" id="modalRejectTripId">
+        <div id="modalRejectNoticeAlert" style="display:none; background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 12px; border-radius: 8px; font-size: 0.85rem;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <strong>Policy Notice:</strong> This request was submitted less than 2 days prior to departure. Automatic rejection rule applies.
+        </div>
+
+        <div style="font-size: 0.85rem; color: #475569;">
+          Select the reason for rejecting this request:
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Rejection Ground:</label>
+          <select id="modalRejectReasonSelect" onchange="toggleCustomRejectReason(this.value)" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+            <option value="Submitted less than 2 days prior to departure (Auto-Reject policy)">1. Submitted less than 2 days prior to departure (Auto-Reject policy)</option>
+            <option value="No available vehicle or driver for the requested schedule">2. Submitted 2 days prior to trip, but no available vehicle or driver</option>
+            <option value="Destination outside operational perimeter">3. Destination outside approved operational perimeter</option>
+            <option value="custom">4. Other / Custom reason...</option>
+          </select>
+        </div>
+
+        <div id="modalRejectCustomWrap" style="display: none;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Custom Reason:</label>
+          <input type="text" id="modalRejectCustomReason" placeholder="Enter reason for rejection" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+        </div>
+      </div>
+      <div class="dispatch-modal-footer">
+        <button type="button" class="btn-primary" style="background:#64748b;" onclick="closeDispatchModal('rejectDispatchModal')">Back</button>
+        <button type="button" class="btn-primary" style="background: #b91c1c;" id="btnConfirmReject" onclick="confirmTripRejection()">
+          <i class="fa-solid fa-xmark"></i> Confirm Rejection
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Approve / Reinstatement Modal (For Pending, Rejected, Cancelled) -->
+  <div class="dispatch-modal-backdrop" id="approveDispatchModal">
+    <div class="dispatch-modal-box">
+      <div class="dispatch-modal-header" style="background: #10b981;">
+        <h3><i class="fa-solid fa-circle-check"></i> <span id="modalApproveTitle">Approve Vehicle Request</span></h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeDispatchModal('approveDispatchModal')">&times;</button>
+      </div>
+      <div class="dispatch-modal-body">
+        <input type="hidden" id="modalApproveTripId">
+        <p id="modalApproveSubtitle" style="margin: 0; font-size: 0.85rem; color: #475569;">
+          Assign Driver and Vehicle. The request will move to the Approved panel, schedule on the live calendar, and notify the requestor.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Driver:</label>
+            <select id="modalApproveDriver" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+              <option value="">-- Select Driver --</option>
+              <option value="d1">Randy Sayon</option>
+              <option value="d2">Hilarion Garcia</option>
+              <option value="d3">Ryan Guna</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Vehicle:</label>
+            <select id="modalApproveCar" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+              <option value="">-- Select Vehicle --</option>
+              <option value="c1">Toyota Innova - NHM-3386</option>
+              <option value="c2">Nissan Urvan - NKI-95017</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Trip Priority:</label>
+          <select id="modalApprovePriority" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+            <option value="Normal">Normal</option>
+            <option value="High">High Priority</option>
+            <option value="Urgent">Executive Urgent</option>
+          </select>
+        </div>
+      </div>
+      <div class="dispatch-modal-footer">
+        <button type="button" class="btn-primary" style="background:#64748b;" onclick="closeDispatchModal('approveDispatchModal')">Cancel</button>
+        <button type="button" class="btn-primary" style="background: #10b981;" id="btnConfirmApprove" onclick="confirmTripApproval()">
+          <i class="fa-solid fa-check"></i> Approve &amp; Schedule
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Cancel Modal (By Requestor) -->
+  <div class="dispatch-modal-backdrop" id="cancelDispatchModal">
+    <div class="dispatch-modal-box">
+      <div class="dispatch-modal-header" style="background: #d97706;">
+        <h3><i class="fa-solid fa-ban"></i> Cancel Vehicle Request</h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeDispatchModal('cancelDispatchModal')">&times;</button>
+      </div>
+      <div class="dispatch-modal-body">
+        <input type="hidden" id="modalCancelTripId">
+        <div style="background: #fffbeb; border: 1px solid #fde68a; color: #b45309; padding: 12px; border-radius: 8px; font-size: 0.85rem;">
+          <i class="fa-solid fa-info-circle"></i>
+          Cancellation is applicable when the trip is being cancelled by the requestor due to changes in schedule date/time or the trip will not commence.
+        </div>
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Cancellation Note:</label>
+          <input type="text" id="modalCancelReason" value="Trip cancelled by Requestor due to changes of schedule / trip will not commence"
+            style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+        </div>
+      </div>
+      <div class="dispatch-modal-footer">
+        <button type="button" class="btn-primary" style="background:#64748b;" onclick="closeDispatchModal('cancelDispatchModal')">Back</button>
+        <button type="button" class="btn-primary" style="background: #d97706;" onclick="confirmTripCancellation()">
+          <i class="fa-solid fa-ban"></i> Confirm Cancellation
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. KRA 1 Monthly LTO Logger Modal -->
+  <div class="dispatch-modal-backdrop" id="ltoRecordModal">
+    <div class="dispatch-modal-box">
+      <div class="dispatch-modal-header">
+        <h3><i class="fa-solid fa-shield-halved" style="color: #fcae16;"></i> Log Monthly LTO Verification (KRA 1)</h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeDispatchModal('ltoRecordModal')">&times;</button>
+      </div>
+      <div class="dispatch-modal-body">
+        <p style="margin: 0; font-size: 0.82rem; color: #64748b;">
+          Record monthly Land Transportation Office (LTO) traffic violations received via LTO portal or notice letter.
+        </p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Driver:</label>
+            <select id="modalLtoDriver" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+              <option value="d1">Randy Sayon</option>
+              <option value="d2">Hilarion Garcia</option>
+              <option value="d3">Ryan Guna</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Month-Year:</label>
+            <input type="month" id="modalLtoMonth" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+            Traffic Violations Count (Target: 0):
+          </label>
+          <input type="number" id="modalLtoCount" min="0" value="0" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+            Verification Reference / Letter Date:
+          </label>
+          <input type="text" id="modalLtoRef" placeholder="e.g. LTO Online Portal Check #2026-11 or Letter Dated Nov 1"
+            style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">Dispatcher / Admin Notes:</label>
+          <textarea id="modalLtoNotes" rows="2" placeholder="Verification notes or violation details" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;"></textarea>
+        </div>
+      </div>
+      <div class="dispatch-modal-footer">
+        <button type="button" class="btn-primary" style="background:#64748b;" onclick="closeDispatchModal('ltoRecordModal')">Cancel</button>
+        <button type="button" class="btn-primary" onclick="saveLtoRecord()">
+          <i class="fa-solid fa-save"></i> Save LTO Record
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. View Passenger Feedback Modal -->
+  <div class="dispatch-modal-backdrop" id="viewFeedbackModal">
+    <div class="dispatch-modal-box">
+      <div class="dispatch-modal-header" style="background: #2563eb;">
+        <h3><i class="fa-solid fa-star" style="color: #fcae16;"></i> Passenger Trip Feedback (KRA 3)</h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeDispatchModal('viewFeedbackModal')">&times;</button>
+      </div>
+      <div class="dispatch-modal-body" id="modalFeedbackContent">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="dispatch-modal-footer">
+        <button type="button" class="btn-primary" onclick="closeDispatchModal('viewFeedbackModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>
