@@ -993,7 +993,11 @@
                     sessionStorage.setItem('userRole', role);
                     sessionStorage.setItem('userFullName', fullName);
 
-                    window.location.href = 'welcome.html';
+                    if (role.toLowerCase() === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        window.location.href = 'welcome.html';
+                    }
                 }
             } catch (error) {
                 errorMsg.style.display = 'flex';
