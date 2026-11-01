@@ -289,6 +289,11 @@
       color: #991b1b;
     }
 
+    .request-status.cancelled {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
     .welcome-icon {
       font-size: 4rem;
       color: var(--accent, #FCAE16);
@@ -2087,10 +2092,11 @@
       <div class="request-dashboard-header">
         <h1 style="color:var(--primary); margin:0;"><i class="fa-solid fa-list-check"></i> My Requests</h1>
         <div class="request-filter" id="requestFilter">
-          <button class="active" data-filter="All">All</button>
-          <button data-filter="Pending">Pending</button>
+          <button class="active" data-filter="Pending">Pending</button>
           <button data-filter="Approved">Approved</button>
           <button data-filter="Rejected">Rejected</button>
+          <button data-filter="Cancelled">Cancelled</button>
+          <button data-filter="All">All</button>
         </div>
       </div>
       <div class="request-table-wrap">
@@ -2208,12 +2214,13 @@
     import { supabase } from './supabase-client.js';
 
     let userRequests = [];
-    let userRequestFilter = 'All';
+    let userRequestFilter = 'Pending';
 
     function requestStatus(value) {
       const status = String(value || 'Pending').toLowerCase();
       if (status === 'approved') return 'Approved';
       if (status === 'rejected') return 'Rejected';
+      if (status === 'cancelled') return 'Cancelled';
       return 'Pending';
     }
 
@@ -2524,6 +2531,13 @@
       document.body.classList.add('request-view');
       document.getElementById('welcomePanel')?.style.setProperty('display', 'none');
       document.getElementById('requestDashboard')?.classList.add('active');
+      document.querySelectorAll('#requestFilter button').forEach(item => {
+        if (item.dataset.filter === userRequestFilter) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
       loadUserRequests();
     }
 
