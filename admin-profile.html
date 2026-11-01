@@ -2014,26 +2014,26 @@
 
     <div class="nav-label">MAIN</div>
     <nav>
-      <a href="#" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
-      <a href="#" class="nav-link active" onclick="switchView('view-calendar', this)"><i
-          class="fa-solid fa-calendar-days"></i> Facility Reservation</a>
+      <a href="admin-dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
+      <a href="admin-dashboard.html?view=view-account-approvals" class="nav-link"><i class="fa-solid fa-user-check"></i> Account Approvals</a>
+      <a href="admin-dashboard.html?view=view-calendar" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Facility Reservation</a>
+      <a href="admin-dashboard.html?view=view-liaison" class="nav-link"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker</a>
     </nav>
 
     <div class="nav-label">FINANCE</div>
     <nav>
-      <a href="#" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-chart-line"></i> Budget Monitoring</a>
+      <a href="admin-dashboard.html?view=view-statement" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
+      <a href="admin-dashboard.html?view=view-budget" class="nav-link"><i class="fa-solid fa-chart-line"></i> Budget Monitoring</a>
     </nav>
 
     <div class="nav-label">INVENTORY</div>
     <nav>
-      <a href="#" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
+      <a href="admin-dashboard.html?view=view-supplies" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
     </nav>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
-      <a href="#" class="nav-link" onclick="switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i> Vehicle
-        List</a>
+      <a href="admin-dashboard.html?view=view-vehicle" class="nav-link"><i class="fa-solid fa-car"></i> Vehicle Dispatch Board</a>
     </nav>
   </aside>
 
@@ -2136,9 +2136,11 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadProfile);
+    } else {
       loadProfile();
-    });
+    }
   </script>
 
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by leo worksuite</span>
