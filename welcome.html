@@ -2566,7 +2566,7 @@
       loadNotifications();
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function initWelcome() {
       loadNotifications();
       if (new URLSearchParams(window.location.search).get('view') === 'requests') {
         showUserRequestDashboard();
@@ -2579,7 +2579,13 @@
           dropdown.classList.remove('active');
         }
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initWelcome);
+    } else {
+      initWelcome();
+    }
   </script>
   \n
   <script>
