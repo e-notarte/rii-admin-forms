@@ -1708,6 +1708,114 @@
       from { transform: translateY(16px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    /* System Theme Pop-Up Modal */
+    .system-alert-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 3500;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .system-alert-backdrop.open {
+      display: flex;
+      animation: alertFadeIn 0.2s ease-out;
+    }
+
+    .system-alert-box {
+      background: white;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 420px;
+      padding: 32px 28px 24px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+      animation: alertSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .system-alert-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 2.2rem;
+    }
+
+    .system-alert-icon.success {
+      background: #dcfce7;
+      color: #10b981;
+    }
+
+    .system-alert-icon.warning {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .system-alert-icon.error {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .system-alert-icon.info {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .system-alert-title {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1E355F;
+    }
+
+    .system-alert-message {
+      margin: 0 0 24px;
+      font-size: 0.95rem;
+      color: #64748b;
+      line-height: 1.55;
+    }
+
+    .system-alert-actions {
+      display: flex;
+      justify-content: center;
+    }
+
+    .system-alert-btn {
+      min-width: 130px;
+      padding: 10px 26px;
+      background: #1E355F;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 4px 10px rgba(30, 53, 95, 0.2);
+    }
+
+    .system-alert-btn:hover {
+      background: #162846;
+      transform: translateY(-1px);
+    }
+
+    @keyframes alertFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes alertSlideUp {
+      from { transform: translateY(20px) scale(0.96); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
   </style>
 </head>
 
@@ -1926,6 +2034,20 @@
         onclick="modal.classList.remove('open')">Close</button>
     </div>
   </div>
+
+  <!-- SYSTEM THEME ALERT MODAL -->
+  <div class="system-alert-backdrop" id="systemAlertModal">
+    <div class="system-alert-box">
+      <div class="system-alert-icon success" id="systemAlertIcon">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <h3 class="system-alert-title" id="systemAlertTitle">Notice</h3>
+      <p class="system-alert-message" id="systemAlertMessage">Message</p>
+      <div class="system-alert-actions">
+        <button type="button" class="system-alert-btn" id="systemAlertBtn" onclick="closeSystemAlert()">OK</button>
+      </div>
+    </div>
+  </div>
   <script type="module">
     import { supabase } from './supabase-client.js';
 
@@ -1952,6 +2074,46 @@
     }
 
     let pendingFeedbackTrips = [];
+    let systemAlertCallback = null;
+
+    window.showSystemAlert = function (title, message, type = 'success', onConfirm = null) {
+      const modal = document.getElementById('systemAlertModal');
+      const titleEl = document.getElementById('systemAlertTitle');
+      const messageEl = document.getElementById('systemAlertMessage');
+      const iconEl = document.getElementById('systemAlertIcon');
+
+      if (titleEl) titleEl.textContent = title;
+      if (messageEl) messageEl.textContent = message;
+
+      if (iconEl) {
+        iconEl.className = 'system-alert-icon ' + type;
+        if (type === 'success') {
+          iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        } else if (type === 'warning') {
+          iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        } else if (type === 'error') {
+          iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+        } else {
+          iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+        }
+      }
+
+      systemAlertCallback = onConfirm;
+
+      if (modal) {
+        modal.classList.add('open');
+      }
+    };
+
+    window.closeSystemAlert = function () {
+      const modal = document.getElementById('systemAlertModal');
+      if (modal) modal.classList.remove('open');
+      if (typeof systemAlertCallback === 'function') {
+        const cb = systemAlertCallback;
+        systemAlertCallback = null;
+        cb();
+      }
+    };
 
     // Passenger Feedback Modal handlers
     window.setFeedbackRating = function (type, rating) {
@@ -2010,7 +2172,7 @@
       const comments = (document.getElementById('feedbackComments')?.value || '').trim();
 
       if (!tripId) {
-        alert('Invalid trip identifier.');
+        showSystemAlert('Invalid Trip', 'Invalid trip identifier.', 'error');
         return;
       }
 
@@ -2052,12 +2214,12 @@
         }
 
         closePassengerFeedbackModal();
-        alert('Thank you! Your feedback on driver attitude and vehicle cleanliness has been submitted.');
+        showSystemAlert('Feedback Submitted', 'Thank you! Your feedback on driver attitude and vehicle cleanliness has been submitted.', 'success');
         
         // Re-check pending feedback and unblock panel if all trips are rated
         await checkPendingDriverFeedback(true);
       } catch (err) {
-        alert('Error submitting feedback: ' + err.message);
+        showSystemAlert('Error', 'Error submitting feedback: ' + err.message, 'error');
       } finally {
         if (btn) {
           btn.disabled = false;
@@ -2228,9 +2390,15 @@
       e.preventDefault();
 
       if (pendingFeedbackTrips.length > 0) {
-        alert('Vehicle request blocked: Please complete your pending driver feedback before submitting a new vehicle request.');
-        const first = pendingFeedbackTrips[0];
-        openPassengerFeedbackModal(first.id, first.driver, first.destination);
+        showSystemAlert(
+          'Vehicle Request Blocked',
+          'Please complete your pending driver feedback before submitting a new vehicle request.',
+          'warning',
+          () => {
+            const first = pendingFeedbackTrips[0];
+            if (first) openPassengerFeedbackModal(first.id, first.driver, first.destination);
+          }
+        );
         return;
       }
 
@@ -2248,7 +2416,7 @@
 
     async function executeSubmission() {
       if (pendingFeedbackTrips.length > 0) {
-        alert('Vehicle request is blocked due to pending driver feedback.');
+        showSystemAlert('Vehicle Request Blocked', 'Vehicle request is blocked due to pending driver feedback.', 'warning');
         return;
       }
 
@@ -2304,7 +2472,7 @@
         modal.classList.add('open');
         requestForm.reset();
       } catch (err) {
-        alert('Error submitting request: ' + err.message);
+        showSystemAlert('Submission Failed', 'Error submitting request: ' + err.message, 'error');
         console.error(err);
       } finally {
         btn.textContent = originalText;
