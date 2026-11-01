@@ -1281,18 +1281,6 @@
       z-index: 2000 !important;
     }
 
-    body.nav-open .sidebar {
-      z-index: 2500 !important;
-      display: block !important;
-      pointer-events: auto !important;
-    }
-
-    .sidebar .nav-link,
-    .sidebar .sub-link {
-      cursor: pointer !important;
-      pointer-events: auto !important;
-    }
-
     @media (min-width: 901px) {
       .sidebar-brand-mobile {
         display: flex !important;
@@ -2590,14 +2578,6 @@
         if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
           dropdown.classList.remove('active');
         }
-
-        if (document.body.classList.contains('nav-open')) {
-          const sidebar = document.querySelector('.sidebar');
-          const toggleBtn = document.querySelector('.mobile-menu-toggle');
-          if (sidebar && !sidebar.contains(e.target) && toggleBtn && !toggleBtn.contains(e.target)) {
-            document.body.classList.remove('nav-open');
-          }
-        }
       });
     }
 
@@ -2607,7 +2587,6 @@
       initWelcome();
     }
   </script>
-  \n
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const toggleBtns = document.querySelectorAll('button[title="Toggle dark mode"]');
