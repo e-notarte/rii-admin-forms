@@ -2267,7 +2267,7 @@
           <tr>
             <td><strong>${escapeRequestHtml(request.type)}</strong></td>
             <td>${escapeRequestHtml(request.details)}</td>
-            <td>${escapeRequestHtml(request.date || '-')}</td>
+            <td>${escapeRequestHtml(request.date || request.request_date || '-')}</td>
             <td>${escapeRequestHtml(submitted)}</td>
             <td><span class="request-status ${statusClass}">${status}</span></td>
             <td>${actionCol}</td>
@@ -2302,21 +2302,63 @@
         console.warn('Feedback sync note', fbErr);
       }
 
+      // Determine user's full name to query request tables that identify users via requestor_name
+      let userFullName = sessionStorage.getItem('userFullName') || user.user_metadata?.full_name || '';
+      if (!userFullName && user.id) {
+        try {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', user.id)
+            .maybeSingle();
+          if (profile && profile.full_name) {
+            userFullName = profile.full_name;
+            sessionStorage.setItem('userFullName', userFullName);
+          }
+        } catch (e) {
+          console.warn('Could not fetch user profile for request matching', e);
+        }
+      }
+      const cleanName = (userFullName || '').trim();
+
       const sources = [
-        { table: 'vehicle_requests', type: 'Vehicle Request', details: request => `${request.destination || 'No destination'} — ${request.purpose || 'No purpose'}` },
-        { table: 'driver_requests', type: 'Driver Request', details: request => `${request.destination || request.purpose || 'Driver service request'}` },
-        { table: 'conference_requests', type: 'Conference Room', details: request => request.title || request.room || 'Conference reservation' },
-        { table: 'function_requests', type: 'Function Hall', details: request => request.title || request.event || 'Function hall reservation' },
-        { table: 'parking_requests', type: 'Parking Slot', details: request => `Visitor: ${request.visitor || 'Not specified'}${request.plate ? ` (${request.plate})` : ''}` },
-        { table: 'zoom_requests', type: 'Zoom Meeting', details: request => request.title || request.purpose || 'Zoom meeting' },
-        { table: 'teams_requests', type: 'MS Teams', details: request => request.title || request.purpose || 'MS Teams meeting' },
-        { table: 'liaison_requests', type: 'Liaison', details: request => `${request.destination || 'No destination'} — ${request.documents || 'No documents/items'}` }
+        { table: 'vehicle_requests', type: 'Vehicle Request', hasUserId: true, details: request => `${request.destination || 'No destination'} — ${request.purpose || 'No purpose'}` },
+        { table: 'driver_requests', type: 'Driver Request', hasUserId: false, details: request => `${request.destination || request.purpose || 'Driver service request'}` },
+        { table: 'conference_requests', type: 'Conference Room', hasUserId: false, details: request => request.title || request.room || 'Conference reservation' },
+        { table: 'function_requests', type: 'Function Hall', hasUserId: false, details: request => request.title || request.event || 'Function hall reservation' },
+        { table: 'parking_requests', type: 'Parking Slot', hasUserId: false, details: request => `Visitor: ${request.visitor || 'Not specified'}${request.plate ? ` (${request.plate})` : ''}` },
+        { table: 'zoom_requests', type: 'Zoom Meeting', hasUserId: false, details: request => request.title || request.purpose || 'Zoom meeting' },
+        { table: 'teams_requests', type: 'MS Teams', hasUserId: false, details: request => request.title || request.purpose || 'MS Teams meeting' },
+        { table: 'liaison_requests', type: 'Liaison', hasUserId: false, details: request => `${request.destination || 'No destination'} — ${request.documents || 'No documents/items'}` }
       ];
 
-      const responses = await Promise.all(sources.map(source =>
-        supabase.from(source.table).select('*').eq('user_id', user.id)
-          .then(result => ({ ...result, source }))
-      ));
+      const responses = await Promise.all(sources.map(async source => {
+        try {
+          let query = supabase.from(source.table).select('*');
+          if (source.hasUserId) {
+            if (cleanName) {
+              query = query.or(`user_id.eq.${user.id},requestor_name.ilike.%${cleanName}%`);
+            } else {
+              query = query.eq('user_id', user.id);
+            }
+          } else {
+            if (cleanName) {
+              query = query.ilike('requestor_name', `%${cleanName}%`);
+            } else {
+              query = query.eq('user_id', user.id);
+            }
+          }
+          const res = await query;
+          if (res.error && res.error.code === '42703' && cleanName) {
+            // If user_id column does not exist, retry with requestor_name
+            const fallbackRes = await supabase.from(source.table).select('*').ilike('requestor_name', `%${cleanName}%`);
+            return { ...fallbackRes, source };
+          }
+          return { ...res, source };
+        } catch (err) {
+          return { error: err, source, data: [] };
+        }
+      }));
 
       userRequests = responses
         .filter(result => {
@@ -2329,7 +2371,8 @@
         .flatMap(result => (result.data || []).map(request => ({
           ...request,
           type: result.source.type,
-          details: result.source.details(request)
+          details: result.source.details(request),
+          date: request.request_date || request.date || '-'
         })));
 
       const suppliesResult = await supabase
@@ -2343,9 +2386,18 @@
           ...request,
           type: 'Supplies',
           details: (request.supplies_items || []).map(item => `${item.description} × ${item.quantity}`).join(', ') || 'Supplies request',
-          date: request.request_date
+          date: request.request_date || request.date || '-'
         })));
       }
+
+      // Deduplicate by ID if any record matched multiple filters
+      const seenIds = new Set();
+      userRequests = userRequests.filter(req => {
+        if (!req.id) return true;
+        if (seenIds.has(req.id)) return false;
+        seenIds.add(req.id);
+        return true;
+      });
 
       userRequests.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
       renderUserRequests();
