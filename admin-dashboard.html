@@ -2421,19 +2421,20 @@
 
     .kpi-cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
     }
 
     .kpi-card {
       background: white;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      border-radius: 8px;
+      padding: 10px 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      min-height: 105px;
     }
 
     .kpi-card.highlight {
@@ -2448,19 +2449,22 @@
     }
 
     .kpi-label {
-      font-size: 0.75rem;
+      font-size: 0.68rem;
       font-weight: 700;
       color: #64748b;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .kpi-value {
-      font-size: 1.85rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: #1E355F;
-      line-height: 1.2;
+      line-height: 1.15;
     }
 
     .kpi-card.highlight .kpi-value {
@@ -2468,22 +2472,23 @@
     }
 
     .kpi-subtext {
-      font-size: 0.75rem;
+      font-size: 0.68rem;
       color: #94a3b8;
-      margin-top: 6px;
+      margin-top: 3px;
+      line-height: 1.25;
     }
 
     .kpi-bar {
-      height: 6px;
+      height: 4px;
       background: #e2e8f0;
-      border-radius: 3px;
-      margin-top: 10px;
+      border-radius: 2px;
+      margin-top: 6px;
       overflow: hidden;
     }
 
     .kpi-bar-fill {
       height: 100%;
-      border-radius: 3px;
+      border-radius: 2px;
       transition: width 0.4s ease;
     }
 
@@ -2493,11 +2498,11 @@
 
     .kra-badge {
       display: inline-block;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-size: 0.65rem;
       font-weight: 700;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .kra-badge.success { background: #dcfce7; color: #15803d; }
@@ -5081,7 +5086,7 @@
               <div class="kpi-value">${kpi.overallScore}%</div>
               <div class="kpi-subtext">${kpi.ratingBadge.stars} ${kpi.ratingBadge.text}</div>
             </div>
-            <div style="margin-top: 12px; font-size: 0.78rem; color: #cbd5e1;">
+            <div style="margin-top: 6px; font-size: 0.7rem; color: #cbd5e1;">
               Total Scheduled Trips: <strong>${kpi.totalTrips}</strong>
             </div>
           </div>
@@ -5091,7 +5096,7 @@
             <div>
               <div class="kpi-label">KRA 1: Traffic Violations</div>
               <div class="kpi-value" style="color: ${kpi.trafficViolations > 0 ? '#b91c1c' : '#10b981'};">
-                ${kpi.trafficViolations} <small style="font-size: 0.9rem; font-weight: normal; color: #64748b;">(Target: 0)</small>
+                ${kpi.trafficViolations} <small style="font-size: 0.75rem; font-weight: normal; color: #64748b;">(Target: 0)</small>
               </div>
               <div class="kpi-subtext">Verified Monthly via LTO Portal</div>
             </div>
