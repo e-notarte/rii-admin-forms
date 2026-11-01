@@ -2843,8 +2843,9 @@
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
       <a href="#" class="nav-link" onclick="return switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i>
-        Vehicle
-        Dispatch Board</a>
+        Vehicle Dispatch Board</a>
+      <a href="#" class="nav-link" onclick="return switchView('view-driver-kra', this)"><i class="fa-solid fa-chart-line"></i>
+        Driver KRA &amp; KPI Evaluation</a>
     </nav>
   </aside>
 
@@ -3049,26 +3050,96 @@
 
       <!-- BUDGET MONITORING VIEW -->
       <div id="view-budget" class="view-section">
-        <div class="page-header">
-          <h1><i class="fa-solid fa-chart-line"></i> Budget Monitoring</h1>
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h1><i class="fa-solid fa-chart-line"></i> Budget Monitoring Dashboard</h1>
+            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
+              Departmental supplies budget tracking and actual expense allocations updated upon warehouse issuance.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn-primary" onclick="loadBudgetMonitoringBoard()" style="font-size:0.8rem; padding:6px 14px;">
+              <i class="fa-solid fa-arrows-rotate"></i> Refresh Budget
+            </button>
+          </div>
         </div>
-        <div class="data-card" style="padding: 50px; text-align: center;">
-          <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
-          <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
-          <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
+
+        <!-- Budget Metric Cards -->
+        <div class="kpi-cards-grid" id="budgetOverviewCards" style="margin-bottom: 24px;">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Department Budget Breakdown Table -->
+        <div class="data-card" style="margin-bottom: 24px; padding: 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-building-columns" style="color:var(--accent);"></i> Department Budget vs. Expense Allocation
+            </h3>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">FY 2026 Official Ledger</span>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="dispatch-table" style="min-width: 820px;">
+              <thead>
+                <tr>
+                  <th>Department</th>
+                  <th>Budget Code</th>
+                  <th style="text-align: right;">Allocated Budget</th>
+                  <th style="text-align: right;">Actual Expense</th>
+                  <th style="text-align: right;">Remaining Balance</th>
+                  <th style="width: 220px;">Utilization Progress</th>
+                  <th style="text-align: center;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="budgetDeptTableBody">
+                <tr><td colspan="7" style="text-align:center;">Loading department budgets...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Supplies Issuance & Expenditure Transaction Log -->
+        <div class="data-card" style="padding: 20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-receipt" style="color:#10b981;"></i> Recent Supplies Issuance &amp; Expense Ledger
+            </h3>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Real-time Issuance Debits</span>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="dispatch-table" style="min-width: 750px;">
+              <thead>
+                <tr>
+                  <th>Ref #</th>
+                  <th>Department</th>
+                  <th>Items Issued</th>
+                  <th style="text-align: right;">Amount Charged</th>
+                  <th>Date &amp; Time</th>
+                  <th>Issued By</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="budgetTransactionsTableBody">
+                <tr><td colspan="7" style="text-align:center;">No supplies issuance records yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       <!-- SUPPLIES INVENTORY VIEW -->
       <div id="view-supplies" class="view-section">
         <div class="page-header">
-          <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</h1>
+          <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory &amp; Warehouse Issuance</h1>
+          <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
+            Approve requests, record warehouse issuances, and automatically update department budgets.
+          </p>
         </div>
         <div class="data-card">
           <div class="toolbar">
             <div class="filter-pills" id="suppliesFilterPills">
               <div class="pill active" onclick="filterSupplyRequests('Pending', this)">Pending</div>
-              <div class="pill" onclick="filterSupplyRequests('Approved', this)">Approved</div>
+              <div class="pill" onclick="filterSupplyRequests('Approved', this)">Approved (For Issuance)</div>
+              <div class="pill" onclick="filterSupplyRequests('Issued', this)">Issued</div>
               <div class="pill" onclick="filterSupplyRequests('Rejected', this)">Rejected</div>
               <div class="pill" onclick="filterSupplyRequests('All', this)">All</div>
             </div>
@@ -3099,16 +3170,6 @@
       <div id="view-vehicle" class="view-section">
         <div class="page-header">
           <h1><i class="fa-solid fa-car"></i> Vehicle Dispatch Board</h1>
-        </div>
-
-        <!-- SUBNAV TABS: DISPATCH & LIVE CALENDAR vs DRIVER KPI EVALUATION -->
-        <div class="vehicle-subnav">
-          <button type="button" class="vehicle-tab-btn active" id="tabBtnDispatch" onclick="switchVehicleViewTab('dispatch')">
-            <i class="fa-solid fa-car-side"></i> Vehicle Requests &amp; Live Calendar
-          </button>
-          <button type="button" class="vehicle-tab-btn" id="tabBtnKpi" onclick="switchVehicleViewTab('kpi')">
-            <i class="fa-solid fa-chart-line"></i> Driver KRA &amp; KPI Evaluation
-          </button>
         </div>
 
         <!-- SECTION 1: DISPATCH & LIVE CALENDAR -->
@@ -3175,9 +3236,16 @@
             <div class="schedule-content" id="dispatchScheduleContent"></div>
           </div>
         </div>
+      </div>
 
-        <!-- SECTION 2: DRIVER KRA & KPI EVALUATION BOARD -->
-        <div id="vehicleKpiSection" class="kpi-dashboard" style="display: none;">
+      <!-- DRIVER KRA & KPI EVALUATION VIEW -->
+      <div id="view-driver-kra" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-chart-line"></i> Driver KRA &amp; KPI Evaluation</h1>
+        </div>
+
+        <!-- DRIVER KRA & KPI EVALUATION BOARD -->
+        <div id="vehicleKpiSection" class="kpi-dashboard">
           <!-- Driver Tabs & Period Filter -->
           <div class="kpi-header-bar">
             <div class="driver-tabs" id="kpiDriverTabs">
@@ -3494,6 +3562,11 @@
         name: 'Vehicle Dispatch Board',
         pin: '016',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
+      },
+      'view-driver-kra': {
+        name: 'Driver KRA & KPI Evaluation',
+        pin: '016',
+        editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
       }
     };
 
@@ -3584,12 +3657,26 @@
       // Trigger data refresh for the active view
       if (viewId === 'view-vehicle' && typeof loadVehicleDispatchBoard === 'function') {
         loadVehicleDispatchBoard();
+      } else if (viewId === 'view-driver-kra') {
+        if (typeof loadVehicleDispatchBoard === 'function' && (!vehicleRequests || vehicleRequests.length === 0)) {
+          loadVehicleDispatchBoard().then(() => {
+            if (typeof renderDriverKpiBoard === 'function') renderDriverKpiBoard();
+          });
+        } else if (typeof renderDriverKpiBoard === 'function') {
+          const monthPicker = document.getElementById('kpiMonthPicker');
+          if (monthPicker && !monthPicker.value && typeof kpiEvaluationMonth !== 'undefined') {
+            monthPicker.value = kpiEvaluationMonth;
+          }
+          renderDriverKpiBoard();
+        }
       } else if (viewId === 'view-calendar' && typeof loadFacilityRequests === 'function') {
         loadFacilityRequests();
       } else if (viewId === 'view-liaison' && typeof loadLiaisonTasks === 'function') {
         loadLiaisonTasks();
       } else if (viewId === 'view-supplies' && typeof loadSupplyRequests === 'function') {
         loadSupplyRequests();
+      } else if (viewId === 'view-budget' && typeof loadBudgetMonitoringBoard === 'function') {
+        loadBudgetMonitoringBoard();
       } else if (viewId === 'view-account-approvals' && typeof loadAccountApprovals === 'function') {
         loadAccountApprovals();
       }
@@ -3861,30 +3948,12 @@
       }
     }
 
-    // Switch between Live Dispatch and KPI Evaluation tabs
+    // Switch between Live Dispatch and KPI Evaluation (routes to dedicated views)
     window.switchVehicleViewTab = function (tab) {
-      const dispatchSec = document.getElementById('vehicleDispatchSection');
-      const kpiSec = document.getElementById('vehicleKpiSection');
-      const tabBtnDispatch = document.getElementById('tabBtnDispatch');
-      const tabBtnKpi = document.getElementById('tabBtnKpi');
-
-      if (tab === 'kpi') {
-        if (dispatchSec) dispatchSec.style.display = 'none';
-        if (kpiSec) kpiSec.style.display = 'flex';
-        tabBtnDispatch?.classList.remove('active');
-        tabBtnKpi?.classList.add('active');
-
-        const monthPicker = document.getElementById('kpiMonthPicker');
-        if (monthPicker && !monthPicker.value) {
-          monthPicker.value = kpiEvaluationMonth;
-        }
-        renderDriverKpiBoard();
+      if (tab === 'kpi' || tab === 'view-driver-kra') {
+        window.switchView('view-driver-kra');
       } else {
-        if (dispatchSec) dispatchSec.style.display = 'grid';
-        if (kpiSec) kpiSec.style.display = 'none';
-        tabBtnKpi?.classList.remove('active');
-        tabBtnDispatch?.classList.add('active');
-        renderVehicleDispatchTable();
+        window.switchView('view-vehicle');
       }
     };
 
@@ -4467,6 +4536,164 @@
       }).join('');
     }
 
+    // ==========================================
+    // SUPPLIES ISSUANCE & BUDGET MONITORING ENGINE
+    // ==========================================
+    let activeIssuingRequestId = null;
+
+    function formatPHP(amount) {
+      return new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(Number(amount) || 0);
+    }
+
+    function guessItemUnitPrice(description) {
+      const desc = String(description || '').toLowerCase();
+      if (desc.includes('paper') || desc.includes('ream') || desc.includes('bond')) return 240.00;
+      if (desc.includes('pen') || desc.includes('ballpen') || desc.includes('sign')) return 35.00;
+      if (desc.includes('folder') || desc.includes('envelope')) return 18.00;
+      if (desc.includes('tape') || desc.includes('scotch') || desc.includes('masking')) return 45.00;
+      if (desc.includes('staple') || desc.includes('stapler')) return 185.00;
+      if (desc.includes('marker') || desc.includes('highlighter')) return 55.00;
+      if (desc.includes('battery')) return 75.00;
+      if (desc.includes('notebook') || desc.includes('pad')) return 65.00;
+      if (desc.includes('correction') || desc.includes('whiteout')) return 40.00;
+      if (desc.includes('scissor') || desc.includes('cutter')) return 85.00;
+      return 120.00;
+    }
+
+    function getDeptBudgetKey(deptName, budgetsObj) {
+      if (!deptName || !budgetsObj) return 'Admin';
+      const clean = String(deptName).trim().toLowerCase();
+      for (const k in budgetsObj) {
+        if (k.toLowerCase() === clean) return k;
+      }
+      if (clean === 'admin' || clean.includes('administration')) return 'Admin';
+      if (clean === 'hr' || clean.includes('human')) return 'HR';
+      if (clean === 'eng' || clean.includes('engineering')) return 'Engineering';
+      if (clean === 'pur' || clean.includes('purchasing')) return 'Purchasing';
+      if (clean === 'ops' || clean.includes('operations')) return 'Operations';
+      if (clean === 'c&c' || clean.includes('c&amp;c')) return 'C&C';
+      if (clean === 'bdg' || clean.includes('business')) return 'BDG';
+      if (clean === 'cewd') return 'CEWD';
+      if (clean === 'essh') return 'ESSH';
+      if (clean === 'crmd') return 'CRMD';
+      if (clean === 'accounting' || clean.includes('acct')) return 'Accounting';
+      if (clean === 'finance') return 'Finance';
+      if (clean === 'otp') return 'OTP';
+      if (clean === 'otc') return 'OTC';
+      return Object.keys(budgetsObj)[0] || 'Admin';
+    }
+
+    function getDepartmentBudgets() {
+      const cached = localStorage.getItem('cached_department_budgets');
+      if (cached) {
+        try { return JSON.parse(cached); } catch(e) {}
+      }
+      return null;
+    }
+
+    function saveDepartmentBudgets(budgets) {
+      localStorage.setItem('cached_department_budgets', JSON.stringify(budgets));
+    }
+
+    function getSuppliesIssuances() {
+      try {
+        return JSON.parse(localStorage.getItem('supplies_issuances') || '{}');
+      } catch(e) {
+        return {};
+      }
+    }
+
+    function saveSuppliesIssuances(issuances) {
+      localStorage.setItem('supplies_issuances', JSON.stringify(issuances));
+    }
+
+    function renderSupplyRequests() {
+      const tableBody = document.getElementById('suppliesRequestsTableBody');
+      if (!tableBody) return;
+
+      const filtered = supplyRequestFilter === 'All'
+        ? supplyRequests
+        : supplyRequests.filter(request => {
+            if (supplyRequestFilter === 'Approved') return request.status === 'Approved';
+            if (supplyRequestFilter === 'Issued') return request.status === 'Issued';
+            return request.status === supplyRequestFilter;
+          });
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 25px; color: #64748b;">No supply requests found in this view.</td></tr>';
+        return;
+      }
+
+      const issuances = getSuppliesIssuances();
+
+      tableBody.innerHTML = filtered.map(request => {
+        const items = request.items.length
+          ? request.items.map(item =>
+            `<strong>${escapeDispatchHtml(item.description)}</strong> × ${escapeDispatchHtml(item.quantity)}`
+            + (item.purpose ? ` <small style="color:#64748b;">(${escapeDispatchHtml(item.purpose)})</small>` : '')
+          ).join('<br>')
+          : 'No items listed';
+
+        const submitted = request.created_at
+          ? new Date(request.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+          : '-';
+
+        const requestId = escapeDispatchHtml(String(request.id));
+        const status = request.status || 'Pending';
+
+        let statusHtml = '';
+        let actionHtml = '';
+
+        if (status === 'Pending') {
+          statusHtml = `<span style="background: #fef9c3; color: #854d0e; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; border: 1px solid #fef08a; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-clock"></i> Pending Approval</span>`;
+          actionHtml = `
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn-primary" style="background: #1E355F; font-size: 0.75rem; padding: 5px 10px; border-radius: 6px;" onclick="adminUpdateSupplyStatus('${requestId}', 'Approved')">
+                <i class="fa-solid fa-check"></i> Approve
+              </button>
+              <button type="button" class="btn-primary" style="background: #ef4444; font-size: 0.75rem; padding: 5px 10px; border-radius: 6px;" onclick="adminUpdateSupplyStatus('${requestId}', 'Rejected')">
+                <i class="fa-solid fa-xmark"></i> Reject
+              </button>
+            </div>`;
+        } else if (status === 'Approved') {
+          statusHtml = `<span style="background: #e0f2fe; color: #0369a1; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; border: 1px solid #bae6fd; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-hourglass-half"></i> Approved (For Issuance)</span>`;
+          actionHtml = `
+            <button type="button" class="btn-primary" style="background: #16a34a; font-size: 0.78rem; padding: 6px 14px; font-weight: 700; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(22, 163, 74, 0.2);" onclick="openSuppliesIssuanceModal('${requestId}')">
+              <i class="fa-solid fa-boxes-packing"></i> Record Issuance
+            </button>`;
+        } else if (status === 'Issued') {
+          const issuanceRecord = issuances[requestId];
+          const costText = issuanceRecord ? ` • ${formatPHP(issuanceRecord.totalCost)}` : '';
+          statusHtml = `<span style="background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; border: 1px solid #bbf7d0; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-solid fa-circle-check"></i> Issued${costText}</span>`;
+          actionHtml = `
+            <button type="button" class="btn-primary" style="background: #475569; font-size: 0.75rem; padding: 5px 12px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px;" onclick="openSuppliesReceiptModal('${requestId}')">
+              <i class="fa-solid fa-receipt"></i> View Slip
+            </button>`;
+        } else if (status === 'Rejected') {
+          statusHtml = `<span style="background: #fee2e2; color: #b91c1c; padding: 4px 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem; border: 1px solid #fecaca;">Rejected</span>`;
+          actionHtml = `
+            <button type="button" style="padding: 4px 10px; border: 1px solid var(--border); background: white; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; color: #475569;" onclick="adminUpdateSupplyStatus('${requestId}', 'Pending')">
+              Reinstate
+            </button>`;
+        }
+
+        return `
+          <tr>
+            <td><strong>${escapeDispatchHtml(request.reference_number || `SUP-${request.id}`)}</strong></td>
+            <td><span style="font-weight: 600; color: #1E355F;">${escapeDispatchHtml(request.department || '-')}</span></td>
+            <td class="supplies-items">${items}</td>
+            <td style="font-size: 0.8rem; color: #64748b;">${escapeDispatchHtml(submitted)}</td>
+            <td>${statusHtml}</td>
+            <td>${actionHtml}</td>
+          </tr>`;
+      }).join('');
+    }
+
     window.filterSupplyRequests = function (filter, element) {
       supplyRequestFilter = filter;
       document.querySelectorAll('#suppliesFilterPills .pill').forEach(pill => pill.classList.remove('active'));
@@ -4512,54 +4739,474 @@
       renderSupplyRequests();
     }
 
-    window.saveSupplyRequest = async function (requestId) {
+    window.adminUpdateSupplyStatus = async function (requestId, nextStatus) {
       const request = supplyRequests.find(item => String(item.id) === String(requestId));
-      const select = document.querySelector(`.supplies-status[data-request-id="${CSS.escape(String(requestId))}"]`);
-      const button = select?.closest('tr')?.querySelector('.dispatch-save');
-      if (!request || !select || !button) return;
+      if (!request) return;
 
       const previousStatus = request.status;
-      const nextStatus = select.value;
-      button.disabled = true;
-      button.textContent = 'Saving...';
-
       const { error } = await supabase
         .from('supplies_requests')
         .update({ status: nextStatus })
         .eq('id', request.id);
 
       if (error) {
-        console.error('Error saving supply request', error);
-        alert(`Error saving supply request: ${error.message}`);
-        button.disabled = false;
-        button.textContent = 'Save';
+        console.error('Error updating supply status', error);
+        alert(`Error updating request status: ${error.message}`);
         return;
       }
 
       request.status = nextStatus;
+
+      // Notify requestor
       if (request.user_id && nextStatus !== previousStatus) {
-        const items = request.items.map(item => `${item.description} x ${item.quantity}`).join(', ');
-        const { error: notificationError } = await supabase.from('notifications').insert([{
-          user_id: request.user_id,
-          title: `Supplies Request ${nextStatus}`,
-          message: [
-            `Reference: ${request.reference_number || 'Not specified'}`,
-            `Department: ${request.department || 'Not specified'}`,
-            `Items: ${items || 'Not specified'}`,
-            `Status: ${nextStatus}`
-          ].join('\n'),
-          request_type: 'Supplies',
-          is_read: false
-        }]);
-        if (notificationError) console.error('Error sending supplies notification', notificationError);
+        const items = request.items.map(item => `${item.description} × ${item.quantity}`).join(', ');
+        try {
+          await supabase.from('notifications').insert([{
+            user_id: request.user_id,
+            title: `Supplies Request ${nextStatus}`,
+            message: `Reference: ${request.reference_number || 'SUP'}\nDepartment: ${request.department}\nItems: ${items}\nStatus: ${nextStatus} ${nextStatus === 'Approved' ? '(Ready for Warehouse Issuance)' : ''}`,
+            request_type: 'Supplies',
+            is_read: false
+          }]);
+        } catch(e) {}
       }
 
       renderSupplyRequests();
-      button.textContent = 'Saved';
-      setTimeout(() => {
-        button.disabled = false;
-        button.textContent = 'Save';
-      }, 1500);
+    };
+
+    // ==============================
+    // WAREHOUSE ISSUANCE MODAL LOGIC
+    // ==============================
+    window.openSuppliesIssuanceModal = function (requestId) {
+      activeIssuingRequestId = requestId;
+      const request = supplyRequests.find(item => String(item.id) === String(requestId));
+      if (!request) return;
+
+      document.getElementById('issueRefNumber').textContent = request.reference_number || `SUP-${request.id}`;
+      document.getElementById('issueDeptBadge').textContent = request.department || 'General';
+      document.getElementById('issueSubmittedDate').textContent = request.created_at
+        ? new Date(request.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        : '-';
+
+      const tbody = document.getElementById('issueItemsTableBody');
+      if (tbody) {
+        tbody.innerHTML = (request.items || []).map((item, idx) => {
+          const defaultPrice = guessItemUnitPrice(item.description);
+          return `
+            <tr data-item-idx="${idx}">
+              <td style="padding: 10px;">
+                <strong>${escapeDispatchHtml(item.description)}</strong>
+                ${item.purpose ? `<br><small style="color:#64748b;">${escapeDispatchHtml(item.purpose)}</small>` : ''}
+              </td>
+              <td style="padding: 10px; text-align: center; color: #64748b; font-weight: 600;">
+                ${escapeDispatchHtml(String(item.quantity))}
+              </td>
+              <td style="padding: 10px; text-align: center;">
+                <input type="number" min="0" value="${escapeDispatchHtml(String(item.quantity))}" class="issue-qty-input" style="width: 70px; padding: 5px; text-align: center; border: 1px solid var(--border); border-radius: 4px; font: inherit;" oninput="recalculateIssuanceTotals()">
+              </td>
+              <td style="padding: 10px; text-align: right;">
+                <input type="number" min="0" step="0.5" value="${defaultPrice.toFixed(2)}" class="issue-price-input" style="width: 90px; padding: 5px; text-align: right; border: 1px solid var(--border); border-radius: 4px; font: inherit;" oninput="recalculateIssuanceTotals()">
+              </td>
+              <td style="padding: 10px; text-align: right; font-weight: 700; color: #1E355F;" class="issue-line-total">
+                ${formatPHP(Number(item.quantity) * defaultPrice)}
+              </td>
+            </tr>`;
+        }).join('');
+      }
+
+      document.getElementById('issueStaffName').value = 'Inventory Staff / Warehouseman';
+      document.getElementById('issueRemarks').value = 'Full items released to department requestor';
+
+      recalculateIssuanceTotals();
+      openDispatchModal('suppliesIssuanceModal');
+    };
+
+    window.closeSuppliesIssuanceModal = function () {
+      closeDispatchModal('suppliesIssuanceModal');
+      activeIssuingRequestId = null;
+    };
+
+    window.recalculateIssuanceTotals = function () {
+      const rows = document.querySelectorAll('#issueItemsTableBody tr');
+      let grandTotal = 0;
+
+      rows.forEach(row => {
+        const qty = parseFloat(row.querySelector('.issue-qty-input')?.value) || 0;
+        const price = parseFloat(row.querySelector('.issue-price-input')?.value) || 0;
+        const lineTotal = qty * price;
+        grandTotal += lineTotal;
+        const lineTotalEl = row.querySelector('.issue-line-total');
+        if (lineTotalEl) lineTotalEl.textContent = formatPHP(lineTotal);
+      });
+
+      const totalEl = document.getElementById('issueTotalAmount');
+      if (totalEl) totalEl.textContent = formatPHP(grandTotal);
+
+      // Preview budget impact
+      const deptName = document.getElementById('issueDeptBadge')?.textContent || '';
+      const budgets = getDepartmentBudgets() || {};
+      const deptKey = getDeptBudgetKey(deptName, budgets);
+      const budgetRecord = budgets[deptKey] || { allocated_budget: 0, actual_expense: 0 };
+
+      const allocated = Number(budgetRecord.allocated_budget) || 0;
+      const currentActual = Number(budgetRecord.actual_expense) || 0;
+      const newActual = currentActual + grandTotal;
+      const remaining = allocated - newActual;
+
+      const summaryEl = document.getElementById('deptBudgetSummary');
+      if (summaryEl) {
+        summaryEl.innerHTML = `
+          Allocated: <strong>${formatPHP(allocated)}</strong> | Current Spent: <strong>${formatPHP(currentActual)}</strong><br>
+          After Issuance: <strong>${formatPHP(newActual)}</strong> | Remaining: <strong style="color:${remaining < 0 ? '#b91c1c' : '#15803d'};">${formatPHP(remaining)} ${remaining < 0 ? '(Over Budget)' : ''}</strong>
+        `;
+      }
+    };
+
+    window.confirmSuppliesIssuance = async function () {
+      if (!activeIssuingRequestId) return;
+      const request = supplyRequests.find(item => String(item.id) === String(activeIssuingRequestId));
+      if (!request) return;
+
+      const btn = document.getElementById('confirmIssuanceBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing Issuance...';
+      }
+
+      const rows = document.querySelectorAll('#issueItemsTableBody tr');
+      let grandTotal = 0;
+      const issuedItemsList = [];
+
+      rows.forEach((row, i) => {
+        const originalItem = request.items[i] || {};
+        const qty = parseFloat(row.querySelector('.issue-qty-input')?.value) || 0;
+        const price = parseFloat(row.querySelector('.issue-price-input')?.value) || 0;
+        const lineTotal = qty * price;
+        grandTotal += lineTotal;
+
+        issuedItemsList.push({
+          description: originalItem.description || 'Supplies',
+          requested_quantity: originalItem.quantity,
+          issued_quantity: qty,
+          unit_price: price,
+          line_total: lineTotal
+        });
+      });
+
+      const staffName = document.getElementById('issueStaffName')?.value.trim() || 'Inventory Staff';
+      const remarks = document.getElementById('issueRemarks')?.value.trim() || 'Supplies issued';
+
+      try {
+        // 1. Update Supabase supplies_requests
+        const { error: reqError } = await supabase
+          .from('supplies_requests')
+          .update({ status: 'Issued' })
+          .eq('id', request.id);
+
+        if (reqError) throw reqError;
+        request.status = 'Issued';
+
+        // 2. Save issuance record in localStorage
+        const issuances = getSuppliesIssuances();
+        issuances[request.id] = {
+          id: request.id,
+          reference: request.reference_number || `SUP-${request.id}`,
+          department: request.department,
+          items: issuedItemsList,
+          totalCost: grandTotal,
+          issuedAt: new Date().toISOString(),
+          issuedBy: staffName,
+          remarks: remarks
+        };
+        saveSuppliesIssuances(issuances);
+
+        // 3. Deduct from Department Budget
+        let budgets = getDepartmentBudgets();
+        if (!budgets) {
+          try {
+            const resp = await fetch('./department_budgets.json');
+            const data = await resp.json();
+            budgets = data.departments || data;
+          } catch(e) {
+            budgets = {};
+          }
+        }
+
+        const deptKey = getDeptBudgetKey(request.department, budgets);
+        if (budgets[deptKey]) {
+          budgets[deptKey].actual_expense = (Number(budgets[deptKey].actual_expense) || 0) + grandTotal;
+          saveDepartmentBudgets(budgets);
+        }
+
+        // 4. Record Transaction in Budget Transactions Log
+        let txns = [];
+        try {
+          txns = JSON.parse(localStorage.getItem('budget_transactions') || '[]');
+        } catch(e) {}
+        txns.unshift({
+          id: `TXN-${Date.now()}`,
+          reference: request.reference_number || `SUP-${request.id}`,
+          department: request.department,
+          itemsSummary: issuedItemsList.map(i => `${i.description} × ${i.issued_quantity}`).join(', '),
+          amount: grandTotal,
+          issuedBy: staffName,
+          date: new Date().toISOString()
+        });
+        localStorage.setItem('budget_transactions', JSON.stringify(txns));
+
+        // 5. Send notification to user
+        if (request.user_id) {
+          try {
+            await supabase.from('notifications').insert([{
+              user_id: request.user_id,
+              title: 'Supplies Issued by Warehouse',
+              message: `Your supplies request ${request.reference_number || 'SUP'} has been released by ${staffName}.\nTotal Issuance Value: ${formatPHP(grandTotal)}\nRemarks: ${remarks}`,
+              request_type: 'Supplies',
+              is_read: false
+            }]);
+          } catch(e) {}
+        }
+
+        closeDispatchModal('suppliesIssuanceModal');
+        renderSupplyRequests();
+        if (typeof loadBudgetMonitoringBoard === 'function') loadBudgetMonitoringBoard();
+
+        alert(`✅ Supplies Successfully Issued!\n\nReference: ${request.reference_number || 'SUP'}\nDepartment: ${request.department}\nTotal Cost Charged to Budget: ${formatPHP(grandTotal)}\nIssued By: ${staffName}`);
+      } catch (err) {
+        console.error('Issuance error', err);
+        alert(`Error processing issuance: ${err.message}`);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-boxes-packing"></i> Complete &amp; Post Issuance';
+        }
+      }
+    };
+
+    // ==============================
+    // SUPPLIES RECEIPT / SLIP MODAL
+    // ==============================
+    window.openSuppliesReceiptModal = function (requestId) {
+      const issuances = getSuppliesIssuances();
+      const record = issuances[requestId];
+      const request = supplyRequests.find(item => String(item.id) === String(requestId));
+
+      const ref = record?.reference || request?.reference_number || `SUP-${requestId}`;
+      const dept = record?.department || request?.department || 'General';
+      const issuedAt = record?.issuedAt ? new Date(record.issuedAt).toLocaleString() : 'Recently';
+      const staff = record?.issuedBy || 'Warehouse Staff';
+      const totalCost = record?.totalCost || 0;
+      const remarks = record?.remarks || 'Complete issuance';
+
+      const itemsList = record?.items || (request?.items || []).map(i => ({
+        description: i.description,
+        issued_quantity: i.quantity,
+        unit_price: guessItemUnitPrice(i.description),
+        line_total: Number(i.quantity) * guessItemUnitPrice(i.description)
+      }));
+
+      const receiptBody = document.getElementById('receiptModalContent');
+      if (receiptBody) {
+        receiptBody.innerHTML = `
+          <div style="text-align: center; border-bottom: 2px dashed #cbd5e1; padding-bottom: 12px; margin-bottom: 14px;">
+            <div style="font-weight: 800; font-size: 1.15rem; color: #1E355F;">R-II BUILDERS, INC.</div>
+            <div style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Official Supplies Issuance Slip / Stock Out</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #15803d; margin-top: 6px;">${escapeDispatchHtml(ref)}</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem; margin-bottom: 12px;">
+            <div><strong>Department:</strong> ${escapeDispatchHtml(dept)}</div>
+            <div><strong>Date &amp; Time:</strong> ${escapeDispatchHtml(issuedAt)}</div>
+            <div><strong>Issued By:</strong> ${escapeDispatchHtml(staff)}</div>
+            <div><strong>Remarks:</strong> ${escapeDispatchHtml(remarks)}</div>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 14px;">
+            <thead style="background: #f1f5f9; border-bottom: 1px solid #cbd5e1;">
+              <tr>
+                <th style="padding: 6px; text-align: left;">Item</th>
+                <th style="padding: 6px; text-align: center;">Qty</th>
+                <th style="padding: 6px; text-align: right;">Unit Price</th>
+                <th style="padding: 6px; text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsList.map(it => `
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                  <td style="padding: 6px;">${escapeDispatchHtml(it.description)}</td>
+                  <td style="padding: 6px; text-align: center;">${it.issued_quantity || it.quantity}</td>
+                  <td style="padding: 6px; text-align: right;">${formatPHP(it.unit_price)}</td>
+                  <td style="padding: 6px; text-align: right; font-weight: 600;">${formatPHP(it.line_total)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+            <tfoot style="border-top: 2px solid #1E355F; font-size: 0.9rem;">
+              <tr>
+                <th colspan="3" style="padding: 8px; text-align: right;">Total Issuance Amount:</th>
+                <th style="padding: 8px; text-align: right; color: #1E355F; font-weight: 800;">${formatPHP(totalCost)}</th>
+              </tr>
+            </tfoot>
+          </table>
+          <div style="font-size: 0.72rem; color: #64748b; font-style: italic; text-align: center;">
+            This cost has been debited from the ${escapeDispatchHtml(dept)} FY 2026 Departmental Supplies Budget.
+          </div>
+        `;
+      }
+
+      openDispatchModal('suppliesReceiptModal');
+    };
+
+    window.closeSuppliesReceiptModal = function () {
+      closeDispatchModal('suppliesReceiptModal');
+    };
+
+    // ==========================================
+    // BUDGET MONITORING DASHBOARD ENGINE
+    // ==========================================
+    window.loadBudgetMonitoringBoard = async function () {
+      let budgets = getDepartmentBudgets();
+      if (!budgets) {
+        try {
+          const resp = await fetch('./department_budgets.json');
+          if (resp.ok) {
+            const data = await resp.json();
+            budgets = data.departments || data;
+            saveDepartmentBudgets(budgets);
+          }
+        } catch(e) {}
+      }
+
+      if (!budgets) budgets = {};
+
+      let totalAllocated = 0;
+      let totalActual = 0;
+
+      for (const k in budgets) {
+        if (budgets.hasOwnProperty(k)) {
+          totalAllocated += Number(budgets[k].allocated_budget) || 0;
+          totalActual += Number(budgets[k].actual_expense) || 0;
+        }
+      }
+
+      const totalRemaining = totalAllocated - totalActual;
+      const totalUtilization = totalAllocated > 0 ? (totalActual / totalAllocated) * 100 : 0;
+
+      // 1. Overview cards
+      const cardsGrid = document.getElementById('budgetOverviewCards');
+      if (cardsGrid) {
+        cardsGrid.innerHTML = `
+          <div class="kpi-card highlight">
+            <div>
+              <div class="kpi-label">Total Allocated Supplies Budget</div>
+              <div class="kpi-value" style="font-size: 1.5rem;">${formatPHP(totalAllocated)}</div>
+              <div class="kpi-subtext">FY 2026 Official Budget across 14 Departments</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Total Actual Expenses</div>
+              <div class="kpi-value" style="font-size: 1.5rem; color: #1E355F;">${formatPHP(totalActual)}</div>
+              <div class="kpi-subtext">Sum of Issued Supplies to Date</div>
+            </div>
+            <div>
+              <div class="kra-badge ${totalUtilization > 90 ? 'danger' : 'success'}">${totalUtilization.toFixed(1)}% Utilized</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Total Remaining Balance</div>
+              <div class="kpi-value" style="font-size: 1.5rem; color: ${totalRemaining < 0 ? '#b91c1c' : '#15803d'};">${formatPHP(totalRemaining)}</div>
+              <div class="kpi-subtext">${totalRemaining < 0 ? 'Exceeded allocation!' : 'Available for remaining fiscal year'}</div>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div>
+              <div class="kpi-label">Overall Budget Health</div>
+              <div class="kpi-value" style="font-size: 1.5rem; color: ${totalUtilization <= 75 ? '#15803d' : (totalUtilization <= 90 ? '#d97706' : '#b91c1c')};">
+                ${totalUtilization <= 75 ? 'Healthy' : (totalUtilization <= 90 ? 'Moderate' : 'Critical')}
+              </div>
+              <div class="kpi-subtext">${totalUtilization <= 75 ? 'Well within annual ceiling' : 'Approaching threshold'}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 2. Department Breakdown Table
+      const deptTbody = document.getElementById('budgetDeptTableBody');
+      if (deptTbody) {
+        const deptKeys = Object.keys(budgets);
+        if (deptKeys.length === 0) {
+          deptTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No departmental budget data found.</td></tr>';
+        } else {
+          deptTbody.innerHTML = deptKeys.map(k => {
+            const b = budgets[k];
+            const alloc = Number(b.allocated_budget) || 0;
+            const act = Number(b.actual_expense) || 0;
+            const rem = alloc - act;
+            const util = alloc > 0 ? (act / alloc) * 100 : 0;
+            const code = b.notes || 'Code 64';
+
+            let statusPill = '';
+            let barColor = 'green';
+            if (util <= 75) {
+              statusPill = '<span class="policy-badge ontime" style="background:#dcfce7; color:#15803d;">Healthy</span>';
+              barColor = 'green';
+            } else if (util <= 90) {
+              statusPill = '<span class="policy-badge" style="background:#fef9c3; color:#854d0e;">Near Limit</span>';
+              barColor = 'amber';
+            } else {
+              statusPill = '<span class="policy-badge late" style="background:#fee2e2; color:#b91c1c;">Over Budget</span>';
+              barColor = 'red';
+            }
+
+            return `
+              <tr>
+                <td><strong>${escapeDispatchHtml(k)}</strong></td>
+                <td><code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-size:0.75rem;">${escapeDispatchHtml(code)}</code></td>
+                <td style="text-align: right; font-weight: 600;">${formatPHP(alloc)}</td>
+                <td style="text-align: right; font-weight: 600; color: #1E355F;">${formatPHP(act)}</td>
+                <td style="text-align: right; font-weight: 700; color: ${rem < 0 ? '#b91c1c' : '#15803d'};">
+                  ${formatPHP(rem)}
+                </td>
+                <td>
+                  <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:3px;">
+                    <span>${util.toFixed(1)}%</span>
+                  </div>
+                  <div class="kpi-bar" style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;">
+                    <div style="height:100%; width:${Math.min(util, 100)}%; background:${barColor === 'green' ? '#10b981' : (barColor === 'amber' ? '#f59e0b' : '#ef4444')};"></div>
+                  </div>
+                </td>
+                <td style="text-align: center;">${statusPill}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+
+      // 3. Transactions Log
+      const txnTbody = document.getElementById('budgetTransactionsTableBody');
+      if (txnTbody) {
+        let txns = [];
+        try {
+          txns = JSON.parse(localStorage.getItem('budget_transactions') || '[]');
+        } catch(e) {}
+
+        if (txns.length === 0) {
+          txnTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px; color: #64748b;">No supplies issuance transactions logged yet. When warehouse releases approved items, they will appear here.</td></tr>';
+        } else {
+          txnTbody.innerHTML = txns.map(t => `
+            <tr>
+              <td><strong>${escapeDispatchHtml(t.reference)}</strong></td>
+              <td><span style="font-weight:600; color:#1E355F;">${escapeDispatchHtml(t.department)}</span></td>
+              <td style="font-size:0.8rem;">${escapeDispatchHtml(t.itemsSummary || 'Office Supplies')}</td>
+              <td style="text-align: right; font-weight: 700; color: #1E355F;">${formatPHP(t.amount)}</td>
+              <td style="font-size:0.75rem; color:#64748b;">${new Date(t.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+              <td style="font-size:0.8rem;">${escapeDispatchHtml(t.issuedBy || 'Warehouse Staff')}</td>
+              <td>
+                <span class="policy-badge ontime" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-check"></i> Debited</span>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
     };
 
     // Modal helpers
@@ -6181,6 +6828,111 @@
       </div>
       <div class="dispatch-modal-footer">
         <button type="button" class="btn-primary" onclick="closeDispatchModal('viewFeedbackModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Supplies Warehouse Issuance Modal (Debits Department Budget) -->
+  <div class="dispatch-modal-backdrop" id="suppliesIssuanceModal">
+    <div class="dispatch-modal-box" style="max-width: 720px; width: 95%;">
+      <div class="dispatch-modal-header" style="background: var(--primary);">
+        <h3><i class="fa-solid fa-boxes-packing" style="color: var(--accent);"></i> Warehouse Supplies Issuance &amp; Budget Debit</h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeSuppliesIssuanceModal()">&times;</button>
+      </div>
+      <div class="dispatch-modal-body">
+        <!-- Reference, Dept, Date summary bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); flex-wrap: wrap; gap: 10px;">
+          <div>
+            <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Request Reference</div>
+            <div id="issueRefNumber" style="font-size: 1.05rem; font-weight: 700; color: var(--primary);">SUP-2026-001</div>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Requesting Department</div>
+            <span id="issueDeptBadge" class="dept-badge" style="background: rgba(30, 53, 95, 0.1); color: var(--primary); font-weight: 700; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; display: inline-block;">General</span>
+          </div>
+          <div>
+            <div style="font-size: 0.72rem; color: #64748b; text-transform: uppercase; font-weight: 600;">Date Submitted</div>
+            <div id="issueSubmittedDate" style="font-size: 0.85rem; font-weight: 600; color: #334155;">-</div>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <div>
+          <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 6px;">
+            <i class="fa-solid fa-list-check"></i> Released Items &amp; Valuation
+          </div>
+          <div style="max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem;">
+              <thead style="background: #f1f5f9; position: sticky; top: 0; z-index: 1;">
+                <tr>
+                  <th style="padding: 8px 10px; text-align: left;">Item Description</th>
+                  <th style="padding: 8px 10px; text-align: center; width: 80px;">Requested</th>
+                  <th style="padding: 8px 10px; text-align: center; width: 90px;">Issue Qty</th>
+                  <th style="padding: 8px 10px; text-align: right; width: 110px;">Unit Price (₱)</th>
+                  <th style="padding: 8px 10px; text-align: right; width: 110px;">Total (₱)</th>
+                </tr>
+              </thead>
+              <tbody id="issueItemsTableBody">
+                <!-- populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Total Valuation & Budget Deduction Impact -->
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <div style="font-size: 0.72rem; color: #166534; font-weight: 700; text-transform: uppercase;">Total Issuance Amount to Debit:</div>
+            <div id="issueTotalAmount" style="font-size: 1.3rem; font-weight: 800; color: #15803d;">₱0.00</div>
+          </div>
+          <div style="text-align: right; font-size: 0.78rem; color: #1e3a8a;">
+            <div id="deptBudgetHeader" style="font-weight: 700; color: var(--primary);"><i class="fa-solid fa-calculator"></i> Department Budget Impact:</div>
+            <div id="deptBudgetSummary" style="color: #334155; margin-top: 3px;">Allocated: ₱0.00 | Remaining: ₱0.00</div>
+          </div>
+        </div>
+
+        <!-- Staff & Remarks -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+              <i class="fa-solid fa-user-check"></i> Released By (Warehouse / Inventory Staff):
+            </label>
+            <input type="text" id="issueStaffName" value="Inventory Staff / Warehouseman" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 5px;">
+              <i class="fa-solid fa-comment-dots"></i> Warehouse Remarks / Batch No.:
+            </label>
+            <input type="text" id="issueRemarks" value="Full items released to department requestor" style="width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font: inherit;">
+          </div>
+        </div>
+      </div>
+      <div class="dispatch-modal-footer">
+        <button type="button" class="btn-primary" style="background:#64748b;" onclick="closeSuppliesIssuanceModal()">Cancel</button>
+        <button type="button" class="btn-primary" id="confirmIssuanceBtn" style="background: #10b981;" onclick="confirmSuppliesIssuance()">
+          <i class="fa-solid fa-boxes-packing"></i> Complete &amp; Post Issuance
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Supplies Official Issuance Slip / Receipt Modal -->
+  <div class="dispatch-modal-backdrop" id="suppliesReceiptModal">
+    <div class="dispatch-modal-box" style="max-width: 620px; width: 95%;">
+      <div class="dispatch-modal-header" style="background: #15803d;">
+        <h3><i class="fa-solid fa-receipt"></i> Official Supplies Issuance Slip</h3>
+        <button type="button" class="dispatch-modal-close" onclick="closeSuppliesReceiptModal()">&times;</button>
+      </div>
+      <div class="dispatch-modal-body" id="receiptModalContent">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="dispatch-modal-footer" style="display: flex; justify-content: space-between;">
+        <button type="button" class="btn-primary" style="background: #1E355F;" onclick="window.print()">
+          <i class="fa-solid fa-print"></i> Print Slip
+        </button>
+        <button type="button" class="btn-primary" style="background: #64748b;" onclick="closeSuppliesReceiptModal()">
+          Close
+        </button>
       </div>
     </div>
   </div>
