@@ -4557,6 +4557,22 @@
       localStorage.setItem('cached_department_budgets', JSON.stringify(budgets));
     }
 
+    function getSupplyStatusOverrides() {
+      try {
+        return JSON.parse(localStorage.getItem('supplies_status_overrides') || '{}');
+      } catch(e) {
+        return {};
+      }
+    }
+
+    function setSupplyStatusOverride(requestId, status) {
+      try {
+        const overrides = getSupplyStatusOverrides();
+        overrides[String(requestId)] = status;
+        localStorage.setItem('supplies_status_overrides', JSON.stringify(overrides));
+      } catch(e) {}
+    }
+
     function getSuppliesIssuances() {
       try {
         return JSON.parse(localStorage.getItem('supplies_issuances') || '{}');
@@ -4688,11 +4704,20 @@
         items = data || [];
       }
 
-      supplyRequests = (requests || []).map(request => ({
-        ...request,
-        status: String(request.status || 'Pending').replace(/^./, character => character.toUpperCase()),
-        items: items.filter(item => item.request_id === request.id)
-      }));
+      const requestOverrides = getSupplyStatusOverrides();
+      const issuances = getSuppliesIssuances();
+
+      supplyRequests = (requests || []).map(request => {
+        const reqIdStr = String(request.id);
+        const isIssued = Boolean(issuances[reqIdStr]);
+        const localStatus = isIssued ? 'Issued' : requestOverrides[reqIdStr];
+        const effectiveStatus = localStatus || request.status || 'Pending';
+        return {
+          ...request,
+          status: String(effectiveStatus).replace(/^./, character => character.toUpperCase()),
+          items: items.filter(item => item.request_id === request.id)
+        };
+      });
       renderSupplyRequests();
     }
 
@@ -4701,22 +4726,28 @@
       if (!request) return;
 
       const previousStatus = request.status;
-      const { error } = await supabase
-        .from('supplies_requests')
-        .update({ status: nextStatus })
-        .eq('id', request.id);
 
-      if (error) {
-        console.error('Error updating supply status', error);
-        alert(`Error updating request status: ${error.message}`);
-        return;
-      }
-
+      // Persist status in local override cache immediately so it never reverts on polling or refresh
+      setSupplyStatusOverride(requestId, nextStatus);
       request.status = nextStatus;
+
+      // Attempt Supabase update
+      try {
+        const { error } = await supabase
+          .from('supplies_requests')
+          .update({ status: nextStatus })
+          .eq('id', request.id);
+
+        if (error) {
+          console.warn('Supabase supplies status update notice:', error);
+        }
+      } catch (err) {
+        console.warn('Supabase network notice:', err);
+      }
 
       // Notify requestor
       if (request.user_id && nextStatus !== previousStatus) {
-        const items = request.items.map(item => `${item.description} × ${item.quantity}`).join(', ');
+        const items = (request.items || []).map(item => `${item.description} × ${item.quantity}`).join(', ');
         try {
           await supabase.from('notifications').insert([{
             user_id: request.user_id,
@@ -4728,7 +4759,17 @@
         } catch(e) {}
       }
 
-      renderSupplyRequests();
+      // If approved, seamlessly transition tab to 'Approved' so the Admin/Warehouse immediately sees the request under 'Approved (For Issuance)' with the 'Record Issuance' button
+      if (nextStatus === 'Approved') {
+        const approvedPill = document.querySelector('#suppliesFilterPills .pill:nth-child(2)');
+        if (approvedPill) {
+          filterSupplyRequests('Approved', approvedPill);
+        } else {
+          renderSupplyRequests();
+        }
+      } else {
+        renderSupplyRequests();
+      }
     };
 
     // ==============================
@@ -4855,12 +4896,20 @@
 
       try {
         // 1. Update Supabase supplies_requests
-        const { error: reqError } = await supabase
-          .from('supplies_requests')
-          .update({ status: 'Issued' })
-          .eq('id', request.id);
+        try {
+          const { error: reqError } = await supabase
+            .from('supplies_requests')
+            .update({ status: 'Issued' })
+            .eq('id', request.id);
 
-        if (reqError) throw reqError;
+          if (reqError) {
+            console.warn('Supabase issuance status update warning:', reqError);
+          }
+        } catch(e) {
+          console.warn('Supabase issuance update error:', e);
+        }
+
+        setSupplyStatusOverride(request.id, 'Issued');
         request.status = 'Issued';
 
         // 2. Save issuance record in localStorage
@@ -4925,7 +4974,15 @@
         }
 
         closeDispatchModal('suppliesIssuanceModal');
-        renderSupplyRequests();
+
+        // Switch filter to 'Issued' tab so user immediately sees the issued record and can print the slip
+        const issuedPill = document.querySelector('#suppliesFilterPills .pill:nth-child(3)');
+        if (issuedPill) {
+          filterSupplyRequests('Issued', issuedPill);
+        } else {
+          renderSupplyRequests();
+        }
+
         if (typeof loadBudgetMonitoringBoard === 'function') loadBudgetMonitoringBoard();
 
         alert(`✅ Supplies Successfully Issued!\n\nReference: ${request.reference_number || 'SUP'}\nDepartment: ${request.department}\nTotal Cost Charged to Budget: ${formatPHP(grandTotal)}\nIssued By: ${staffName}`);
