@@ -1506,6 +1506,208 @@
     .ai-chat-footer button:hover {
       background: #e59c11;
     }
+
+    /* Driver Feedback Blocking Banner & Pending Trips */
+    .feedback-block-banner {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);
+      animation: feedbackFadeIn 0.3s ease-in-out;
+    }
+
+    .feedback-block-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .feedback-block-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #dc2626;
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .feedback-block-header h3 {
+      margin: 0;
+      color: #92400e;
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feedback-block-desc {
+      color: #78350f;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 0 0 16px;
+    }
+
+    .pending-trips-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pending-trip-item {
+      background: white;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .pending-trip-item .trip-details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .pending-trip-item .trip-dest {
+      font-weight: 700;
+      color: #1E355F;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pending-trip-item .trip-meta {
+      font-size: 0.8rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .pending-trip-item .btn-rate {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.25);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .pending-trip-item .btn-rate:hover {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(217, 119, 6, 0.35);
+    }
+
+    .form-blocked {
+      opacity: 0.55;
+      filter: grayscale(0.2);
+      pointer-events: none;
+      user-select: none;
+      position: relative;
+    }
+
+    .form-blocked button[type="submit"] {
+      background: #94a3b8 !important;
+      cursor: not-allowed !important;
+    }
+
+    .feedback-unlocked-banner {
+      background: #ecfdf5;
+      border: 1px solid #10b981;
+      border-radius: 8px;
+      color: #065f46;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: feedbackFadeIn 0.3s ease-out;
+    }
+
+    /* Passenger Feedback Modal & Star Rating */
+    .star-rating-group {
+      display: inline-flex;
+      gap: 8px;
+      font-size: 1.6rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .star-rating-group .star {
+      color: #cbd5e1;
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+
+    .star-rating-group .star:hover {
+      transform: scale(1.15);
+    }
+
+    .star-rating-group .star.filled {
+      color: #f59e0b;
+    }
+
+    .feedback-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2500;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .feedback-modal-backdrop.open {
+      display: flex;
+      animation: feedbackFadeIn 0.2s ease-out;
+    }
+
+    .feedback-modal-box {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      animation: feedbackSlideUp 0.25s ease-out;
+    }
+
+    @keyframes feedbackFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes feedbackSlideUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
 
@@ -1587,6 +1789,11 @@
     <section class="form-card">
       <h1><i class="fa-solid fa-car"></i> Vehicle Request</h1>
       <p class="intro">Submit a request for a service vehicle.</p>
+
+      <!-- DRIVER FEEDBACK BLOCKING & UNLOCKED BANNERS -->
+      <div id="feedbackBlockingBanner" style="display: none;"></div>
+      <div id="feedbackUnlockedBanner" class="feedback-unlocked-banner" style="display: none;"></div>
+
       <form id="requestForm">
         <div class="grid"><label>Requestor Name<input name="requestor" type="text" required
               placeholder="Enter your name"></label><label>Company<select name="company" required>
@@ -1635,6 +1842,83 @@
     </div>
   </div>
 
+  <!-- PASSENGER FEEDBACK MODAL (DRIVER KRA 3) -->
+  <div class="feedback-modal-backdrop" id="passengerFeedbackModal">
+    <div class="feedback-modal-box">
+      <div style="background: #1E355F; color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-star" style="color: #fcae16;"></i> Driver &amp; Trip Passenger Feedback
+        </h3>
+        <button type="button" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; line-height: 1;" onclick="closePassengerFeedbackModal()">&times;</button>
+      </div>
+      <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; font-size: 0.85rem;">
+          <input type="hidden" id="feedbackTripId">
+          <input type="hidden" id="feedbackDriverCode">
+          <div style="font-weight: 600; color: #1E355F;" id="feedbackTripTitle">Trip Destination</div>
+          <div style="color: #64748b; font-size: 0.8rem; margin-top: 3px;" id="feedbackTripDriver">Designated Driver: Assigned Driver</div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            1. Driver Attitude &amp; Courtesy:
+          </label>
+          <div class="star-rating-group" id="starsAttitude">
+            <i class="fa-solid fa-star star filled" data-val="1" onclick="setFeedbackRating('attitude', 1)"></i>
+            <i class="fa-solid fa-star star filled" data-val="2" onclick="setFeedbackRating('attitude', 2)"></i>
+            <i class="fa-solid fa-star star filled" data-val="3" onclick="setFeedbackRating('attitude', 3)"></i>
+            <i class="fa-solid fa-star star filled" data-val="4" onclick="setFeedbackRating('attitude', 4)"></i>
+            <i class="fa-solid fa-star star filled" data-val="5" onclick="setFeedbackRating('attitude', 5)"></i>
+          </div>
+          <input type="hidden" id="ratingAttitudeVal" value="5">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            2. Vehicle Cleanliness &amp; Comfort:
+          </label>
+          <div class="star-rating-group" id="starsCleanliness">
+            <i class="fa-solid fa-star star filled" data-val="1" onclick="setFeedbackRating('cleanliness', 1)"></i>
+            <i class="fa-solid fa-star star filled" data-val="2" onclick="setFeedbackRating('cleanliness', 2)"></i>
+            <i class="fa-solid fa-star star filled" data-val="3" onclick="setFeedbackRating('cleanliness', 3)"></i>
+            <i class="fa-solid fa-star star filled" data-val="4" onclick="setFeedbackRating('cleanliness', 4)"></i>
+            <i class="fa-solid fa-star star filled" data-val="5" onclick="setFeedbackRating('cleanliness', 5)"></i>
+          </div>
+          <input type="hidden" id="ratingCleanlinessVal" value="5">
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            3. Did you encounter any complaints or issues during this trip?
+          </label>
+          <div style="display: flex; gap: 20px; font-size: 0.85rem; color: #475569;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="feedbackComplaint" value="no" checked>
+              <span>No, trip went smoothly</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+              <input type="radio" name="feedbackComplaint" value="yes">
+              <span style="color: #b91c1c; font-weight: 600;">Yes, I had a complaint/issue</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 6px;">
+            Comments / Trip Notes:
+          </label>
+          <textarea id="feedbackComments" rows="3" placeholder="Share your experience regarding the driver, trip timeliness, or vehicle..." style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font: inherit; font-size: 0.85rem;"></textarea>
+        </div>
+      </div>
+      <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 14px 20px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" style="background: #64748b; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-weight: 600; cursor: pointer;" onclick="closePassengerFeedbackModal()">Cancel</button>
+        <button type="button" id="btnSubmitFeedback" style="background: #10b981; color: white; border: none; border-radius: 6px; padding: 8px 18px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" onclick="submitPassengerFeedback()">
+          <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="modal">
     <div class="modal-box">
       <h2>Request Submitted</h2>
@@ -1651,8 +1935,305 @@
     const confirmProceedBtn = document.getElementById('confirmProceedBtn');
     const requestForm = document.getElementById('requestForm');
 
+    const driverMap = {
+      'd1': 'Randy Sayon',
+      'd2': 'Hilarion Garcia',
+      'd3': 'Ryan Guna'
+    };
+
+    function escapeRequestHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }[character]));
+    }
+
+    let pendingFeedbackTrips = [];
+
+    // Passenger Feedback Modal handlers
+    window.setFeedbackRating = function (type, rating) {
+      const input = document.getElementById(type === 'attitude' ? 'ratingAttitudeVal' : 'ratingCleanlinessVal');
+      if (input) input.value = rating;
+      const container = document.getElementById(type === 'attitude' ? 'starsAttitude' : 'starsCleanliness');
+      if (container) {
+        container.querySelectorAll('.star').forEach(star => {
+          const val = Number(star.dataset.val);
+          if (val <= rating) {
+            star.classList.add('filled');
+          } else {
+            star.classList.remove('filled');
+          }
+        });
+      }
+    };
+
+    window.closePassengerFeedbackModal = function () {
+      const modal = document.getElementById('passengerFeedbackModal');
+      if (modal) modal.classList.remove('open');
+    };
+
+    window.openPassengerFeedbackModal = function (tripId, driverCode, destination) {
+      const tripInput = document.getElementById('feedbackTripId');
+      const driverInput = document.getElementById('feedbackDriverCode');
+      if (tripInput) tripInput.value = tripId;
+      if (driverInput) driverInput.value = driverCode || '';
+
+      const driverName = driverMap[driverCode] || driverCode || 'Assigned Driver';
+
+      const tripTitleEl = document.getElementById('feedbackTripTitle');
+      const tripDriverEl = document.getElementById('feedbackTripDriver');
+      if (tripTitleEl) tripTitleEl.textContent = `Trip Destination: ${destination || 'Vehicle Dispatch'}`;
+      if (tripDriverEl) tripDriverEl.textContent = `Designated Driver: ${driverName}`;
+
+      setFeedbackRating('attitude', 5);
+      setFeedbackRating('cleanliness', 5);
+
+      const radioNo = document.querySelector('input[name="feedbackComplaint"][value="no"]');
+      if (radioNo) radioNo.checked = true;
+
+      const commentsEl = document.getElementById('feedbackComments');
+      if (commentsEl) commentsEl.value = '';
+
+      const modal = document.getElementById('passengerFeedbackModal');
+      if (modal) modal.classList.add('open');
+    };
+
+    window.submitPassengerFeedback = async function () {
+      const tripId = document.getElementById('feedbackTripId')?.value;
+      const driverCode = document.getElementById('feedbackDriverCode')?.value || null;
+      const attitude = Number(document.getElementById('ratingAttitudeVal')?.value || 5);
+      const cleanliness = Number(document.getElementById('ratingCleanlinessVal')?.value || 5);
+      const hasComplaint = document.querySelector('input[name="feedbackComplaint"]:checked')?.value === 'yes';
+      const comments = (document.getElementById('feedbackComments')?.value || '').trim();
+
+      if (!tripId) {
+        alert('Invalid trip identifier.');
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitFeedback');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+      }
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        const feedbackRecord = {
+          trip_id: tripId,
+          driver_code: driverCode,
+          user_id: user?.id || null,
+          rating_attitude: attitude,
+          rating_cleanliness: cleanliness,
+          has_complaint: hasComplaint,
+          comments: comments || null,
+          created_at: new Date().toISOString()
+        };
+
+        // 1. Attempt to save to Supabase driver_feedback
+        try {
+          await supabase
+            .from('driver_feedback')
+            .upsert(feedbackRecord, { onConflict: 'trip_id,user_id' });
+        } catch (e) {
+          console.warn('Supabase feedback fallback', e);
+        }
+
+        // 2. Save to local storage cache for instant Admin KRA 3 reflection
+        try {
+          const stored = JSON.parse(localStorage.getItem('rii_driver_feedback') || '{}');
+          stored[tripId] = feedbackRecord;
+          localStorage.setItem('rii_driver_feedback', JSON.stringify(stored));
+        } catch (e) {
+          console.error(e);
+        }
+
+        closePassengerFeedbackModal();
+        alert('Thank you! Your feedback on driver attitude and vehicle cleanliness has been submitted.');
+        
+        // Re-check pending feedback and unblock panel if all trips are rated
+        await checkPendingDriverFeedback(true);
+      } catch (err) {
+        alert('Error submitting feedback: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Feedback';
+        }
+      }
+    };
+
+    // Check if the user has completed trips with pending driver feedback
+    async function checkPendingDriverFeedback(justSubmitted = false) {
+      const banner = document.getElementById('feedbackBlockingBanner');
+      const unlockedBanner = document.getElementById('feedbackUnlockedBanner');
+      const submitBtn = requestForm.querySelector('button[type="submit"]');
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // Sync stored driver feedback from Supabase driver_feedback & localStorage
+      let storedFeedback = {};
+      try {
+        storedFeedback = JSON.parse(localStorage.getItem('rii_driver_feedback') || '{}');
+      } catch (e) {}
+
+      try {
+        const { data: fbData } = await supabase
+          .from('driver_feedback')
+          .select('*')
+          .eq('user_id', user.id);
+        if (fbData && fbData.length > 0) {
+          fbData.forEach(fb => {
+            storedFeedback[fb.trip_id] = fb;
+          });
+          localStorage.setItem('rii_driver_feedback', JSON.stringify(storedFeedback));
+        }
+      } catch (e) {
+        console.warn('Feedback sync notice', e);
+      }
+
+      // Resolve user's full name
+      let userFullName = sessionStorage.getItem('userFullName') || user.user_metadata?.full_name || '';
+      if (!userFullName && user.id) {
+        try {
+          const { data: profile } = await supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle();
+          if (profile?.full_name) {
+            userFullName = profile.full_name;
+            sessionStorage.setItem('userFullName', userFullName);
+          }
+        } catch (e) {}
+      }
+      const cleanName = (userFullName || '').trim();
+
+      // Pre-fill requestor input if empty
+      const reqInput = requestForm.querySelector('input[name="requestor"]');
+      if (reqInput && !reqInput.value && cleanName) {
+        reqInput.value = cleanName;
+      }
+
+      // Query vehicle_requests for this user
+      let trips = [];
+      try {
+        let query = supabase.from('vehicle_requests').select('*');
+        if (cleanName) {
+          query = query.or(`user_id.eq.${user.id},requestor_name.ilike.%${cleanName}%`);
+        } else {
+          query = query.eq('user_id', user.id);
+        }
+        const { data, error } = await query;
+        if (!error && data) {
+          trips = data;
+        }
+      } catch (err) {
+        console.error('Error fetching vehicle trips for feedback check', err);
+      }
+
+      // Also check any mock or local fleetRequests
+      try {
+        const mockTrips = JSON.parse(localStorage.getItem('fleetRequests') || '[]');
+        mockTrips.forEach(mt => {
+          if (!trips.some(t => t.id === mt.id)) {
+            trips.push(mt);
+          }
+        });
+      } catch (e) {}
+
+      // Filter trips that are Approved or Completed and haven't received feedback yet
+      pendingFeedbackTrips = trips.filter(trip => {
+        const st = String(trip.status || '').toLowerCase();
+        if (st !== 'approved' && st !== 'completed') return false;
+        return !storedFeedback[trip.id];
+      });
+
+      // Sort latest first
+      pendingFeedbackTrips.sort((a, b) => new Date(b.created_at || b.scheduleDate || 0) - new Date(a.created_at || a.scheduleDate || 0));
+
+      if (pendingFeedbackTrips.length > 0) {
+        // BLOCK THE VEHICLE REQUEST PANEL
+        if (unlockedBanner) unlockedBanner.style.display = 'none';
+
+        if (banner) {
+          banner.style.display = 'block';
+          banner.innerHTML = `
+            <div class="feedback-block-banner">
+              <div class="feedback-block-header">
+                <span class="feedback-block-badge"><i class="fa-solid fa-lock"></i> ACTION REQUIRED</span>
+                <h3><i class="fa-solid fa-triangle-exclamation" style="color: #d97706;"></i> Vehicle Request Blocked</h3>
+              </div>
+              <p class="feedback-block-desc">
+                You have <strong>${pendingFeedbackTrips.length} completed trip(s)</strong> awaiting your Driver Feedback. 
+                In accordance with company policy, <strong>all pending driver feedback must be accomplished before submitting a new vehicle request</strong>. Please rate your last completed trip below to unlock the form.
+              </p>
+              <div class="pending-trips-list">
+                ${pendingFeedbackTrips.map(trip => {
+                  const driverName = driverMap[trip.driver] || trip.driver || 'Assigned Driver';
+                  const dest = trip.destination || 'Vehicle Trip';
+                  const date = trip.request_date || trip.scheduleDate || 'Recent Trip';
+                  return `
+                    <div class="pending-trip-item">
+                      <div class="trip-details">
+                        <div class="trip-dest"><i class="fa-solid fa-location-dot" style="color:#d97706;"></i> ${escapeRequestHtml(dest)}</div>
+                        <div class="trip-meta">
+                          <span><i class="fa-regular fa-calendar"></i> ${escapeRequestHtml(date)}</span>
+                          <span><i class="fa-solid fa-user-tie"></i> Driver: <strong>${escapeRequestHtml(driverName)}</strong></span>
+                          <span style="color:#b45309; font-weight:600;"><i class="fa-solid fa-star-half-stroke"></i> Feedback Required</span>
+                        </div>
+                      </div>
+                      <button type="button" class="btn-rate" onclick="openPassengerFeedbackModal('${escapeRequestHtml(trip.id)}', '${escapeRequestHtml(trip.driver || '')}', '${escapeRequestHtml(dest)}')">
+                        <i class="fa-solid fa-star"></i> Rate Trip Now
+                      </button>
+                    </div>`;
+                }).join('')}
+              </div>
+            </div>`;
+        }
+
+        // Apply visual and functional block on request form
+        requestForm.classList.add('form-blocked');
+        requestForm.querySelectorAll('input:not([type="hidden"]), select').forEach(el => el.disabled = true);
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Blocked — Complete Driver Feedback First';
+        }
+      } else {
+        // UNBLOCK THE VEHICLE REQUEST PANEL
+        if (banner) {
+          banner.style.display = 'none';
+          banner.innerHTML = '';
+        }
+
+        requestForm.classList.remove('form-blocked');
+        requestForm.querySelectorAll('input, select').forEach(el => el.disabled = false);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Submit Vehicle Request';
+        }
+
+        if (justSubmitted && unlockedBanner) {
+          unlockedBanner.style.display = 'flex';
+          unlockedBanner.innerHTML = '<i class="fa-solid fa-circle-check" style="font-size:1.2rem; color:#10b981;"></i> <span><strong>Feedback Submitted!</strong> All pending trips rated. The vehicle request panel is now unlocked.</span>';
+          setTimeout(() => {
+            unlockedBanner.style.display = 'none';
+          }, 6000);
+        }
+      }
+    }
+
+    // Intercept form submission
     requestForm.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      if (pendingFeedbackTrips.length > 0) {
+        alert('Vehicle request blocked: Please complete your pending driver feedback before submitting a new vehicle request.');
+        const first = pendingFeedbackTrips[0];
+        openPassengerFeedbackModal(first.id, first.driver, first.destination);
+        return;
+      }
+
       confirmModal.classList.add('open');
     });
 
@@ -1666,6 +2247,11 @@
     });
 
     async function executeSubmission() {
+      if (pendingFeedbackTrips.length > 0) {
+        alert('Vehicle request is blocked due to pending driver feedback.');
+        return;
+      }
+
       var f = new FormData(requestForm);
 
       // Show loading state on button
@@ -1680,7 +2266,6 @@
           .from('vehicle_requests')
           .insert([
             {
-
               user_id: user ? user.id : null,
               requestor_name: f.get('requestor'),
               company: f.get('company'),
@@ -1691,7 +2276,6 @@
               passengers: parseInt(f.get('passengers')),
               start_time: f.get('startTime') + ':00',
               end_time: f.get('endTime') + ':00'
-
             }
           ])
           .select();
@@ -1700,7 +2284,6 @@
 
         // Insert notification
         try {
-          const { data: { user } } = await supabase.auth.getUser();
           if (user) {
             await supabase.from('notifications').insert([{
               user_id: user.id,
@@ -1728,6 +2311,12 @@
         btn.disabled = false;
       }
     }
+
+    // Run check on page load
+    checkPendingDriverFeedback();
+    document.addEventListener('DOMContentLoaded', () => {
+      checkPendingDriverFeedback();
+    });
   </script>
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by leo worksuite</span>
   </footer>
