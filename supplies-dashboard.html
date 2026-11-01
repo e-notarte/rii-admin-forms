@@ -3101,8 +3101,418 @@
         body.dark-mode .ai-msg-bot strong {
             color: #FCAE16;
         }
+
+        /* System Theme Pop-Up Modal (Custom Alert) */
+        .system-alert-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .system-alert-backdrop.open {
+            display: flex;
+            animation: alertFadeIn 0.2s ease-out;
+        }
+
+        .system-alert-box {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 440px;
+            padding: 32px 28px 26px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+            animation: alertSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .system-alert-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 2.2rem;
+        }
+
+        .system-alert-icon.success {
+            background: #dcfce7;
+            color: #10b981;
+        }
+
+        .system-alert-icon.warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .system-alert-icon.error {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        .system-alert-icon.info {
+            background: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .system-alert-title {
+            margin: 0 0 12px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1E355F;
+            line-height: 1.3;
+        }
+
+        .system-alert-message {
+            margin: 0 0 24px;
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.6;
+            text-align: left;
+            background: #f8fafc;
+            padding: 14px 16px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            word-break: break-word;
+            white-space: pre-line;
+        }
+
+        .system-alert-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .system-alert-btn {
+            min-width: 140px;
+            padding: 10px 28px;
+            background: #1E355F;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(30, 53, 95, 0.2);
+        }
+
+        .system-alert-btn:hover {
+            background: #162846;
+            transform: translateY(-1px);
+        }
+
+        @keyframes alertFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes alertSlideUp {
+            from { transform: translateY(20px) scale(0.96); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
     </style>
     <script type="module" src="ai-bot.js" id="ai-bot-logic-script"></script>
+
+    <!-- System Theme Custom Alert Modal -->
+    <div class="system-alert-backdrop" id="systemAlertModal">
+        <div class="system-alert-box">
+            <div class="system-alert-icon success" id="systemAlertIcon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="system-alert-title" id="systemAlertTitle">Notice</h3>
+            <div class="system-alert-message" id="systemAlertMessage">Message</div>
+            <div class="system-alert-actions">
+                <button type="button" class="system-alert-btn" id="systemAlertBtn" onclick="closeSystemAlert()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let systemAlertCallback = null;
+
+        window.showSystemAlert = function (title, message, type = 'success', onConfirm = null) {
+            const modal = document.getElementById('systemAlertModal');
+            const titleEl = document.getElementById('systemAlertTitle');
+            const messageEl = document.getElementById('systemAlertMessage');
+            const iconEl = document.getElementById('systemAlertIcon');
+
+            if (titleEl) titleEl.textContent = title;
+            if (messageEl) {
+                if (typeof message === 'string') {
+                    messageEl.textContent = message;
+                } else {
+                    messageEl.innerHTML = '';
+                    messageEl.appendChild(message);
+                }
+            }
+
+            if (iconEl) {
+                iconEl.className = 'system-alert-icon ' + type;
+                if (type === 'success') {
+                    iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                } else if (type === 'warning') {
+                    iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+                } else if (type === 'error') {
+                    iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+                } else {
+                    iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+                }
+            }
+
+            systemAlertCallback = onConfirm;
+
+            if (modal) {
+                modal.classList.add('open');
+            }
+        };
+
+        window.closeSystemAlert = function () {
+            const modal = document.getElementById('systemAlertModal');
+            if (modal) modal.classList.remove('open');
+            if (typeof systemAlertCallback === 'function') {
+                const cb = systemAlertCallback;
+                systemAlertCallback = null;
+                cb();
+            }
+        };
+
+        // Override native browser alert globally
+        window.alert = function (msg) {
+            const text = typeof msg === 'string' ? msg : String(msg ?? '');
+            let type = 'info';
+            if (text.includes('✅') || text.toLowerCase().includes('success')) {
+                type = 'success';
+            } else if (text.toLowerCase().includes('error') || text.toLowerCase().includes('failed') || text.toLowerCase().includes('rejected')) {
+                type = 'error';
+            } else if (text.toLowerCase().includes('warning') || text.toLowerCase().includes('blocked') || text.toLowerCase().includes('please')) {
+                type = 'warning';
+            }
+
+            const parts = text.split('\n\n');
+            let title = 'System Notification';
+            let body = text;
+
+            if (parts.length > 1) {
+                title = parts[0].replace(/^[✅⚠️❌ℹ️\s]+/, '').trim() || 'Notice';
+                body = parts.slice(1).join('\n\n');
+            } else {
+                if (type === 'success') title = 'Success';
+                else if (type === 'error') title = 'Notice';
+                else if (type === 'warning') title = 'Attention';
+                body = text.replace(/^[✅⚠️❌ℹ️\s]+/, '').trim();
+            }
+
+            window.showSystemAlert(title, body, type);
+        };
+
+        // ==========================================
+        // NOTIFICATIONS & ISSUANCE SLIP ENGINE
+        // ==========================================
+        async function loadSuppliesNotifications() {
+            try {
+                const supabaseModule = await import('./supabase-client.js');
+                const supabase = supabaseModule.supabase;
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+
+                const { data, error } = await supabase
+                    .from('notifications')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false });
+
+                if (error || !data) return;
+
+                const unreadCount = data.filter(n => !n.is_read).length;
+                const badge = document.getElementById('notifBadge');
+                if (badge) {
+                    if (unreadCount > 0) {
+                        badge.style.display = 'flex';
+                        badge.textContent = unreadCount;
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                }
+
+                const list = document.getElementById('notificationList');
+                if (list && data.length > 0) {
+                    let html = '';
+                    data.forEach(n => {
+                        const unreadClass = n.is_read ? '' : 'unread';
+                        const dateStr = new Date(n.created_at).toLocaleDateString();
+                        const timeStr = new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        html += '<div class="notification-item ' + unreadClass + '" style="padding:10px 14px; border-bottom:1px solid var(--border); cursor:pointer;" onclick="showSuppliesNotifDetails(\'' + n.id + '\')">';
+                        html += '<div style="font-weight:700; font-size:0.85rem; color:var(--primary); margin-bottom:3px;">' + escapeHtml(n.title) + '</div>';
+                        html += '<div style="font-size:0.78rem; color:#64748b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + escapeHtml(n.message) + '</div>';
+                        html += '<div style="font-size:0.7rem; color:#94a3b8; margin-top:4px;">' + dateStr + ' ' + timeStr + '</div>';
+                        html += '</div>';
+                    });
+                    list.innerHTML = html;
+                }
+            } catch (err) {
+                console.warn('Notifications load notice:', err);
+            }
+        }
+
+        window.showSuppliesNotifDetails = async function (id) {
+            try {
+                const supabaseModule = await import('./supabase-client.js');
+                const supabase = supabaseModule.supabase;
+                const { data: notification, error } = await supabase
+                    .from('notifications')
+                    .select('title, message, created_at, is_read')
+                    .eq('id', id)
+                    .single();
+
+                if (error || !notification) return;
+
+                if (!notification.is_read) {
+                    await supabase.from('notifications').update({ is_read: true }).eq('id', id);
+                }
+
+                document.getElementById('suppliesNotifModal')?.remove();
+                const date = new Date(notification.created_at);
+                const dateText = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+                const notifTitle = notification.title || '';
+                const notifMsg = notification.message || '';
+                const isIssuance = notifTitle.includes('Issuance') || notifMsg.includes('OFFICIAL SUPPLIES ISSUANCE SLIP') || notifTitle.includes('Issued');
+                
+                const refMatch = notifMsg.match(/Reference No\.?\s*:\s*([A-Za-z0-9\-]+)/i) || notifTitle.match(/\(([A-Za-z0-9\-]+)\)/);
+                const matchedRef = refMatch ? refMatch[1].trim() : '';
+
+                let slipBtnHtml = '';
+                if (isIssuance) {
+                    slipBtnHtml = `
+                        <button type="button" onclick="this.closest('#suppliesNotifModal').remove(); openSuppliesSlipFromNotif('${escapeHtml(matchedRef)}')" style="margin-top:14px;width:100%;padding:10px;border:0;border-radius:6px;background:#15803d;color:white;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-size:0.88rem;">
+                            <i class="fa-solid fa-receipt"></i> Open Printable Official Issuance Slip (Copy)
+                        </button>`;
+                }
+
+                const modal = document.createElement('div');
+                modal.id = 'suppliesNotifModal';
+                modal.innerHTML = `
+                    <div style="position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;">
+                        <div style="background:white;border-radius:12px;max-width:540px;width:100%;padding:24px;box-shadow:0 20px 50px rgba(15,23,42,.25);">
+                            <h2 style="margin:0 0 6px;color:#1E355F;font-size:1.15rem;font-weight:700;">${escapeHtml(notification.title)}</h2>
+                            <div style="color:#94a3b8;font-size:.75rem;margin-bottom:14px;">${escapeHtml(dateText)}</div>
+                            <div style="white-space:pre-line;line-height:1.6;color:#334155;font-size:.88rem;max-height:60vh;overflow-y:auto;background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;">${escapeHtml(notification.message)}</div>
+                            ${slipBtnHtml}
+                            <button type="button" onclick="this.closest('#suppliesNotifModal').remove()" style="margin-top:10px;width:100%;padding:10px;border:0;border-radius:6px;background:#1E355F;color:white;font-weight:600;cursor:pointer;">Close</button>
+                        </div>
+                    </div>`;
+                document.body.appendChild(modal);
+                loadSuppliesNotifications();
+            } catch(e) {
+                console.warn('Error loading notif detail', e);
+            }
+        };
+
+        window.openSuppliesSlipFromNotif = function (refNo) {
+            let issuances = {};
+            try {
+                issuances = JSON.parse(localStorage.getItem('supplies_issuances') || '{}');
+            } catch(e) {}
+
+            let record = Object.values(issuances).find(r => r.reference === refNo);
+            const ref = record?.reference || refNo || 'SUP-ISSUED';
+            const dept = record?.department || 'Department Requestor';
+            const issuedAt = record?.issuedAt ? new Date(record.issuedAt).toLocaleString() : 'Recently Recorded';
+            const staff = record?.issuedBy || 'Warehouseman / Inventory Staff';
+            const totalCost = record?.totalCost || 0;
+            const remarks = record?.remarks || 'Complete supplies released';
+            const itemsList = record?.items || [];
+
+            const modal = document.createElement('div');
+            modal.id = 'dynamicSlipModal';
+            modal.innerHTML = `
+                <div style="position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(4px);z-index:11000;display:flex;align-items:center;justify-content:center;padding:16px;">
+                    <div style="background:white;border-radius:12px;max-width:650px;width:100%;box-shadow:0 25px 50px rgba(0,0,0,0.25);overflow:hidden;">
+                        <div style="background:#15803d;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+                            <h3 style="margin:0;font-size:1.05rem;display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-receipt"></i> Official Supplies Issuance Slip (Copy)</h3>
+                            <button type="button" onclick="this.closest('#dynamicSlipModal').remove()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;line-height:1;">&times;</button>
+                        </div>
+                        <div style="padding:22px;max-height:75vh;overflow-y:auto;">
+                            <div style="text-align:center;border-bottom:2px dashed #cbd5e1;padding-bottom:12px;margin-bottom:16px;">
+                                <div style="font-weight:800;font-size:1.25rem;color:#1E355F;">R-II BUILDERS, INC.</div>
+                                <div style="font-size:0.75rem;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Official Requisition &amp; Issue Slip (RIS) / Stock Out Copy</div>
+                                <div style="font-size:1.15rem;font-weight:700;color:#15803d;margin-top:8px;background:#dcfce7;display:inline-block;padding:4px 14px;border-radius:6px;border:1px solid #bbf7d0;">
+                                    ${escapeHtml(ref)}
+                                </div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:0.82rem;margin-bottom:16px;background:#f8fafc;padding:12px 14px;border-radius:8px;border:1px solid #e2e8f0;">
+                                <div><strong style="color:#1E355F;">Department:</strong> ${escapeHtml(dept)}</div>
+                                <div><strong style="color:#1E355F;">Date &amp; Time Released:</strong> ${escapeHtml(issuedAt)}</div>
+                                <div><strong style="color:#1E355F;">Recorded By:</strong> ${escapeHtml(staff)}</div>
+                                <div><strong style="color:#1E355F;">Issuance Remarks:</strong> ${escapeHtml(remarks)}</div>
+                            </div>
+                            <table style="width:100%;border-collapse:collapse;font-size:0.82rem;margin-bottom:16px;">
+                                <thead style="background:#f1f5f9;border-bottom:2px solid #cbd5e1;color:#1E355F;">
+                                    <tr>
+                                        <th style="padding:8px;text-align:left;">Item Description</th>
+                                        <th style="padding:8px;text-align:center;width:85px;">Qty Issued</th>
+                                        <th style="padding:8px;text-align:right;width:110px;">Unit Price</th>
+                                        <th style="padding:8px;text-align:right;width:110px;">Total (₱)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${itemsList.map(it => `
+                                        <tr style="border-bottom:1px solid #f1f5f9;">
+                                            <td style="padding:8px;font-weight:500;">${escapeHtml(it.description)}</td>
+                                            <td style="padding:8px;text-align:center;font-weight:600;">${it.issued_quantity ?? it.quantity ?? 1}</td>
+                                            <td style="padding:8px;text-align:right;">${it.unit_price ? '₱' + Number(it.unit_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}</td>
+                                            <td style="padding:8px;text-align:right;font-weight:600;color:#1E355F;">${it.line_total ? '₱' + Number(it.line_total).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '—'}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                                <tfoot style="border-top:2px solid #1E355F;font-size:0.92rem;">
+                                    <tr style="background:#f8fafc;">
+                                        <th colspan="3" style="padding:10px 8px;text-align:right;color:#1E355F;">Total Valuation Charged to Department Budget:</th>
+                                        <th style="padding:10px 8px;text-align:right;color:#15803d;font-weight:800;font-size:1.05rem;">
+                                            ₱${Number(totalCost).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <div style="font-size:0.75rem;color:#64748b;font-style:italic;text-align:center;background:#fffbeb;padding:10px;border-radius:6px;border:1px solid #fef3c7;">
+                                <i class="fa-solid fa-circle-check" style="color:#16a34a;"></i> This issuance slip represents official acknowledgement of supplies release and departmental budget deduction.
+                            </div>
+                        </div>
+                        <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:14px 20px;display:flex;justify-content:space-between;">
+                            <button type="button" style="background:#1E355F;color:white;border:none;border-radius:6px;padding:8px 18px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;" onclick="window.print()">
+                                <i class="fa-solid fa-print"></i> Print Copy
+                            </button>
+                            <button type="button" style="background:#64748b;color:white;border:none;border-radius:6px;padding:8px 18px;font-weight:600;cursor:pointer;font-size:0.85rem;" onclick="this.closest('#dynamicSlipModal').remove()">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        };
+
+        // Initialize notifications on load and setup click listener
+        document.addEventListener('DOMContentLoaded', function () {
+            loadSuppliesNotifications();
+            document.addEventListener('click', function (e) {
+                const dropdown = document.getElementById('notifDropdown');
+                const btn = document.querySelector('.notification-btn');
+                if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
