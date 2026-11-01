@@ -1885,6 +1885,21 @@
       </section>
     </div>
   </main>
+  <!-- CONFIRM SUBMISSION MODAL -->
+  <div class="modal" id="confirmModal" style="z-index: 2100;">
+    <div class="modal-box" style="max-width: 400px; padding: 28px; text-align: center; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+      <div style="width: 54px; height: 54px; border-radius: 50%; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.6rem;">
+        <i class="fa-solid fa-circle-question"></i>
+      </div>
+      <h2 style="margin: 0 0 10px; font-size: 1.35rem; color: #1E355F; font-weight: 700;">Confirm Submission</h2>
+      <p style="margin: 0 0 24px; font-size: 0.9rem; color: #64748b; line-height: 1.5;">Are you sure you want to submit this request? Please ensure all details entered are correct before proceeding.</p>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button type="button" id="confirmCancelBtn" style="flex: 1; padding: 10px 16px; border: 1px solid #cbd5e1; background: #fff; color: #475569; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Cancel</button>
+        <button type="button" id="confirmProceedBtn" style="flex: 1; padding: 10px 16px; border: none; background: #1E355F; color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Yes, Submit</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="modal">
     <div class="modal-box">
       <h2>Request Submitted</h2>
@@ -1895,13 +1910,31 @@
   <script type="module">
     import { supabase } from './supabase-client.js';
 
-    var modal = document.getElementById('modal');
-    document.getElementById('meetingForm').addEventListener('submit', async function (e) {
+    const modal = document.getElementById('modal');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+    const confirmProceedBtn = document.getElementById('confirmProceedBtn');
+    const meetingForm = document.getElementById('meetingForm');
+
+    meetingForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var f = new FormData(e.target);
+      confirmModal.classList.add('open');
+    });
+
+    confirmCancelBtn.addEventListener('click', function () {
+      confirmModal.classList.remove('open');
+    });
+
+    confirmProceedBtn.addEventListener('click', function () {
+      confirmModal.classList.remove('open');
+      executeSubmission();
+    });
+
+    async function executeSubmission() {
+      var f = new FormData(meetingForm);
 
       // Show loading state on button
-      const btn = e.target.querySelector('button[type="submit"]');
+      const btn = meetingForm.querySelector('button[type="submit"]');
       const originalText = btn.textContent;
       btn.textContent = 'Submitting...';
       btn.disabled = true;
@@ -1950,7 +1983,7 @@
         const refId = data[0].id.split('-')[0].toUpperCase();
         document.getElementById('reference').textContent = refId;
         modal.classList.add('open');
-        e.target.reset();
+        meetingForm.reset();
       } catch (err) {
         alert('Error submitting request: ' + err.message);
         console.error(err);
@@ -1958,7 +1991,7 @@
         btn.textContent = originalText;
         btn.disabled = false;
       }
-    });
+    }
   </script>
 
   </div>
