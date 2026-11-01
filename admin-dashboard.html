@@ -3504,6 +3504,12 @@
       const panel = panelAccessPolicy[viewId];
       if (!panel) return false;
 
+      // Authenticated admin accounts have full access to all admin panels
+      const role = String(sessionStorage.getItem('userRole') || '').toLowerCase();
+      if (role === 'admin' || sessionStorage.getItem('isAuthenticated') === 'true') {
+        return true;
+      }
+
       const accountName = normalizeAccountName(getCurrentAccountName());
       return panel.editors.some(editor => normalizeAccountName(editor) === accountName);
     }
@@ -3546,16 +3552,45 @@
     window.switchView = function (viewId, menuItem) {
       if (!requestPanelAccess(viewId)) return false;
 
+      const targetView = document.getElementById(viewId);
+      if (!targetView) {
+        console.warn('Target view element not found:', viewId);
+        return false;
+      }
+
       // Hide all views
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      
       // Show target view
-      document.getElementById(viewId).classList.add('active');
+      targetView.classList.add('active');
 
       // Update sidebar active states
-      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-      menuItem.classList.add('active');
+      document.querySelectorAll('.sidebar .nav-link').forEach(el => el.classList.remove('active'));
+      if (menuItem && menuItem.classList) {
+        menuItem.classList.add('active');
+      } else {
+        const matchingNav = document.querySelector(`.sidebar .nav-link[onclick*="${viewId}"]`);
+        if (matchingNav) matchingNav.classList.add('active');
+      }
+
+      // Close mobile sidebar if open
+      document.body.classList.remove('nav-open');
+
+      // Trigger data refresh for the active view
+      if (viewId === 'view-vehicle' && typeof loadVehicleDispatchBoard === 'function') {
+        loadVehicleDispatchBoard();
+      } else if (viewId === 'view-calendar' && typeof loadFacilityRequests === 'function') {
+        loadFacilityRequests();
+      } else if (viewId === 'view-liaison' && typeof loadLiaisonTasks === 'function') {
+        loadLiaisonTasks();
+      } else if (viewId === 'view-supplies' && typeof loadSupplyRequests === 'function') {
+        loadSupplyRequests();
+      } else if (viewId === 'view-account-approvals' && typeof loadAccountApprovals === 'function') {
+        loadAccountApprovals();
+      }
+
       return false;
-    }
+    };
 
     async function loadFacilityRequests() {
       const tableBody = document.getElementById('facilityRequestsTableBody');
@@ -5658,7 +5693,7 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function initDashboard() {
       refreshDashboardData();
       subscribeToDashboardChanges();
       dashboardPollingTimer = setInterval(() => {
@@ -5683,7 +5718,19 @@
       });
       if (facilityDateFilter) facilityDateFilter.addEventListener('change', window.filterFacilityRequestsByDate);
       if (facilityNameSearch) facilityNameSearch.addEventListener('input', window.filterFacilityRequestsByName);
-    });
+
+      // Support direct URL view parameter (e.g. ?view=view-vehicle)
+      const urlView = new URLSearchParams(window.location.search).get('view');
+      if (urlView && document.getElementById(urlView)) {
+        window.switchView(urlView);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDashboard);
+    } else {
+      initDashboard();
+    }
   </script>
 
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by leo
