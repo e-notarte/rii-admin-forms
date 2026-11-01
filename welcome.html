@@ -2490,6 +2490,11 @@
           date: request.request_date || request.date || '-'
         })));
 
+      let suppliesOverrides = {};
+      try {
+        suppliesOverrides = JSON.parse(localStorage.getItem('supplies_status_overrides') || '{}');
+      } catch(e) {}
+
       const suppliesResult = await supabase
         .from('supplies_requests')
         .select('*, supplies_items(*)')
@@ -2497,12 +2502,16 @@
       if (suppliesResult.error) {
         console.error('Error loading supplies requests', suppliesResult.error);
       } else {
-        userRequests.push(...(suppliesResult.data || []).map(request => ({
-          ...request,
-          type: 'Supplies',
-          details: (request.supplies_items || []).map(item => `${item.description} × ${item.quantity}`).join(', ') || 'Supplies request',
-          date: request.request_date || request.date || '-'
-        })));
+        userRequests.push(...(suppliesResult.data || []).map(request => {
+          const overrideStatus = suppliesOverrides[String(request.id)];
+          return {
+            ...request,
+            status: overrideStatus || request.status || 'Pending',
+            type: 'Supplies',
+            details: (request.supplies_items || []).map(item => `${item.description} × ${item.quantity}`).join(', ') || 'Supplies request',
+            date: request.request_date || request.date || '-'
+          };
+        }));
       }
 
       // Deduplicate by ID if any record matched multiple filters
