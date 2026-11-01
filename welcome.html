@@ -2021,7 +2021,10 @@
     </div>
     <div class="nav-label">User Accounts</div>
     <nav>
-      <a class="nav-link active" href="welcome.html?view=requests"><i class="fa-solid fa-chart-pie"></i> User Dashboard</a>
+      <a class="nav-link active" href="welcome.html?view=requests" onclick="if(typeof showUserRequestDashboard==='function'){showUserRequestDashboard();history.replaceState(null,'','welcome.html?view=requests');return false;}"><i class="fa-solid fa-chart-pie"></i> User Dashboard</a>
+    </nav>
+    <div class="nav-label">Navi Options</div>
+    <nav>
       <a class="nav-link" href="vehicle-request.html"><i class="fa-solid fa-car"></i> Vehicle Request</a>
       <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
       <div class="nav-group">
@@ -2033,8 +2036,6 @@
             Slot</a><a class="sub-link" href="zoom-request.html">Zoom Meeting</a><a class="sub-link"
             href="teams-request.html">MS Teams</a></div>
       </div>
-    </nav>
-    <nav>
       <a class="nav-link" href="liaison-request.html"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison</a>
       <a class="nav-link" href="supplies-dashboard.html"><i class="fa-solid fa-boxes-stacked"></i> Supplies</a>
     </nav>
