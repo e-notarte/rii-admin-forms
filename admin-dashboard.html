@@ -4356,38 +4356,30 @@
 
         <!-- RECEIVING REPORTS REGISTRY / LOG TABLE -->
         <div class="data-card" style="padding: 24px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-            <div>
-              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-clock-rotate-left" style="color:var(--accent);"></i> Receiving Reports Registry &amp; History
-              </h3>
-              <span style="font-size:0.75rem; color:var(--text-muted);">Master audit log of all accepted supplier shipments and warehouse intake reports.</span>
+          <!-- 1 Clean Row Filter Toolbar -->
+          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 18px; width: 100%; flex-wrap: nowrap;">
+            <select id="rrDeptFilter" onchange="filterReceivingReports()" style="min-width: 220px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-weight: 600; color: var(--primary); background: white; outline: none; cursor: pointer;">
+              <option value="ALL">All Departments (21)</option>
+              <option value="ADM">ADM - Admin Department</option>
+              <option value="OTC">OTC - Operations</option>
+              <option value="BDG">BDG - Budget &amp; Finance</option>
+              <option value="ENGG/C&C/OTP">ENGG / C&amp;C / OTP</option>
+              <option value="ESSH">ESSH - Safety &amp; Health</option>
+              <option value="ENG">ENG - Engineering</option>
+              <option value="PURCHASING">PURCHASING</option>
+              <option value="CRMD">CRMD - Cust Relations</option>
+              <option value="CEWD">CEWD - Water / Field</option>
+            </select>
+            <select id="rrSourceFilter" onchange="filterReceivingReports()" style="display: none;">
+              <option value="ALL">All Sources (406 Reports)</option>
+              <option value="2026">2026 Deliveries (MRRs)</option>
+              <option value="2025">2025 Opening Inventory</option>
+            </select>
+            <div style="flex: 1; min-width: 260px; position: relative;">
+              <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem;"></i>
+              <input type="text" id="rrSearchInput" placeholder="Search PRF, PO, MRR, item, plate, supplier..." oninput="filterReceivingReports()" style="width: 100%; box-sizing: border-box; padding: 9px 12px 9px 34px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; background: var(--bg-surface); outline: none;">
             </div>
-
-            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-              <select id="rrDeptFilter" onchange="filterReceivingReports()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
-                <option value="ALL">All Departments (21)</option>
-                <option value="ADM">ADM - Admin Department</option>
-                <option value="OTC">OTC - Operations</option>
-                <option value="BDG">BDG - Budget &amp; Finance</option>
-                <option value="ENGG/C&C/OTP">ENGG / C&amp;C / OTP</option>
-                <option value="ESSH">ESSH - Safety &amp; Health</option>
-                <option value="ENG">ENG - Engineering</option>
-                <option value="PURCHASING">PURCHASING</option>
-                <option value="CRMD">CRMD - Cust Relations</option>
-                <option value="CEWD">CEWD - Water / Field</option>
-              </select>
-              <select id="rrSourceFilter" onchange="filterReceivingReports()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
-                <option value="ALL">All Sources (406 Reports)</option>
-                <option value="2026">2026 Deliveries (MRRs)</option>
-                <option value="2025">2025 Opening Inventory</option>
-              </select>
-              <div class="search-box" style="margin:0;">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="rrSearchInput" placeholder="Search PRF, PO, MRR, item, plate..." oninput="filterReceivingReports()" style="width:230px;">
-              </div>
-              <input type="date" id="rrDateFilter" onchange="filterReceivingReports()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; background:white;">
-            </div>
+            <input type="date" id="rrDateFilter" onchange="filterReceivingReports()" style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; background: white; outline: none; cursor: pointer; min-width: 150px;">
           </div>
 
           <div style="overflow-x: auto;">
