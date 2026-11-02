@@ -4115,28 +4115,6 @@
 
       <!-- RECEIVING REPORT VIEW -->
       <div id="view-receiving-report" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
-          <div>
-            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-              <h1><i class="fa-solid fa-file-invoice" style="color:var(--accent);"></i> Receiving Report (RR)</h1>
-            </div>
-            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-              Official Material Receiving &amp; Inspection Entry Form for Inventory Staff warehouse intake. Tracks PRF, PO, MRR numbers, delivery line items, and cross-module budget &amp; fleet accounts.
-            </p>
-          </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-primary" onclick="document.getElementById('rrFormCard').scrollIntoView({ behavior: 'smooth' }); document.getElementById('rrPrfNo').focus();" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
-              <i class="fa-solid fa-plus"></i> New Receiving Report
-            </button>
-            <button type="button" class="btn-primary" onclick="exportReceivingReportsCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
-              <i class="fa-solid fa-file-excel"></i> Export Ledger CSV
-            </button>
-            <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
-              <i class="fa-solid fa-print"></i> Print Ledger
-            </button>
-          </div>
-        </div>
-
         <!-- ENTRY FORM CARD (REQUEST FORM FORMAT) -->
         <div class="data-card" id="rrFormCard" style="margin-bottom: 24px; padding: 28px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border: 1px solid var(--border); background: #ffffff;">
           <div class="rr-form-header-bar" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:16px; flex-wrap:wrap; gap:12px;">
@@ -4149,6 +4127,9 @@
               </p>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
+              <button type="button" class="btn-primary" onclick="exportReceivingReportsCSV()" style="font-size:0.75rem; padding:6px 12px; background:#0284c7; border:none; border-radius:6px; cursor:pointer; color:white; font-weight:600; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-file-excel"></i> Export CSV
+              </button>
               <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; padding:6px 12px; font-size:0.75rem; border-radius:6px; font-weight:600; display:inline-flex; align-items:center; gap:5px;">
                 <i class="fa-solid fa-warehouse"></i> Warehouse Intake
               </span>
