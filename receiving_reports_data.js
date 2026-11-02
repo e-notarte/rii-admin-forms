@@ -40,11 +40,11 @@ export const receivingReportsMasterData = {
       "PUR/HRAD",
       "PURCHASING"
     ],
-    "extracted_at": "2026-11-02T06:22:51.380Z"
+    "extracted_at": "2026-11-02T07:15:29.469Z"
   },
   "vouchers": [
     {
-      "id": "rr_INV_2025_BATCH_1",
+      "id": "rr_INV_2025_BATCH_1__1",
       "rr_no": "INV-2025-B01",
       "report_date": "2026-01-01",
       "po_no": "2025-OPENING",
@@ -387,7 +387,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_2",
+      "id": "rr_INV_2025_BATCH_2__2",
       "rr_no": "INV-2025-B02",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -730,7 +730,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_3",
+      "id": "rr_INV_2025_BATCH_3__3",
       "rr_no": "INV-2025-B03",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -1073,7 +1073,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_4",
+      "id": "rr_INV_2025_BATCH_4__4",
       "rr_no": "INV-2025-B04",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -1416,7 +1416,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_5",
+      "id": "rr_INV_2025_BATCH_5__5",
       "rr_no": "INV-2025-B05",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -1759,7 +1759,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_6",
+      "id": "rr_INV_2025_BATCH_6__6",
       "rr_no": "INV-2025-B06",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -2102,7 +2102,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_7",
+      "id": "rr_INV_2025_BATCH_7__7",
       "rr_no": "INV-2025-B07",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -2445,7 +2445,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_8",
+      "id": "rr_INV_2025_BATCH_8__8",
       "rr_no": "INV-2025-B08",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -2788,7 +2788,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_9",
+      "id": "rr_INV_2025_BATCH_9__9",
       "rr_no": "INV-2025-B09",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -3131,7 +3131,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_10",
+      "id": "rr_INV_2025_BATCH_10__10",
       "rr_no": "INV-2025-B10",
       "report_date": "2026-01-01",
       "po_no": "N/A",
@@ -3474,7 +3474,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_INV_2025_BATCH_11",
+      "id": "rr_INV_2025_BATCH_11__11",
       "rr_no": "INV-2025-B11",
       "report_date": "2026-01-08",
       "po_no": "N/A",
@@ -3726,7 +3726,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0
     },
     {
-      "id": "rr_MRR_29340__HO-PO_15395__TIMOG_TIREHAUS_CORPORATION",
+      "id": "rr_MRR_29340__HO-PO_15395__TIMOG_TIREHAUS_CORPORATION__2026-01-16__12",
       "rr_no": "MRR 29340",
       "report_date": "2026-01-16",
       "po_no": "HO-PO 15395",
@@ -3796,7 +3796,7 @@ export const receivingReportsMasterData = {
       "total_amount": 37600
     },
     {
-      "id": "rr_MRR_29901__15396__PAPERLINE_ENTERPRISES_INC__2026-",
+      "id": "rr_MRR_29901__15396__PAPERLINE_ENTERPRISES_INC__2026-01-27__13",
       "rr_no": "MRR 29901",
       "report_date": "2026-01-27",
       "po_no": "15396",
@@ -3827,7 +3827,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2150
     },
     {
-      "id": "rr_MRR_29925__15397__BREW_MASTER_INTERNATIONAL_INC__2",
+      "id": "rr_MRR_29925__15397__BREW_MASTER_INTERNATIONAL_INC__2026-02-18__14",
       "rr_no": "MRR 29925",
       "report_date": "2026-02-18",
       "po_no": "15397",
@@ -3858,7 +3858,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2838.5
     },
     {
-      "id": "rr_MRR_29937__15398__PURGOLD_JR__KALAYAAN__2026-02-03",
+      "id": "rr_MRR_29937__15398__PURGOLD_JR__KALAYAAN__2026-02-03__15",
       "rr_no": "MRR 29937",
       "report_date": "2026-02-03",
       "po_no": "15398",
@@ -3889,7 +3889,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3960
     },
     {
-      "id": "rr_MRR_29907_29908__HO-PO_15403__TOYOTA_COMMONWEALTH_",
+      "id": "rr_MRR_29907_29908__HO-PO_15403__TOYOTA_COMMONWEALTH__INC___2026-02-03__16",
       "rr_no": "MRR 29907&29908",
       "report_date": "2026-02-03",
       "po_no": "HO-PO 15403",
@@ -4141,7 +4141,7 @@ export const receivingReportsMasterData = {
       "total_amount": 21649
     },
     {
-      "id": "rr_MRR_29350__HO-PO_15404__ASHER-CHESKA_S_PRINTING_CO",
+      "id": "rr_MRR_29350__HO-PO_15404__ASHER-CHESKA_S_PRINTING_CORP__2026-01-23__17",
       "rr_no": "MRR 29350",
       "report_date": "2026-01-23",
       "po_no": "HO-PO 15404",
@@ -4172,7 +4172,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15750
     },
     {
-      "id": "rr_MRR-29337__HO-PO_15405__GATEWAY_MOTORS__CEBU_INC__",
+      "id": "rr_MRR-29337__HO-PO_15405__GATEWAY_MOTORS__CEBU_INC__2026-01-13__18",
       "rr_no": "MRR-29337",
       "report_date": "2026-01-13",
       "po_no": "HO-PO 15405",
@@ -4320,7 +4320,7 @@ export const receivingReportsMasterData = {
       "total_amount": 16117.04
     },
     {
-      "id": "rr_MRR-29338__HO-PO_15405__GATEWAY_MOTORS__CEBU_INC__",
+      "id": "rr_MRR-29338__HO-PO_15405__GATEWAY_MOTORS__CEBU_INC__2026-01-13__19",
       "rr_no": "MRR-29338",
       "report_date": "2026-01-13",
       "po_no": "HO-PO 15405",
@@ -4403,7 +4403,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9432.93
     },
     {
-      "id": "rr_MRR_29914_29915_29916__HO-PO_15406__TOYOTA__COMMON",
+      "id": "rr_MRR_29914_29915_29916__HO-PO_15406__TOYOTA__COMMONWEALTH_INC___2026-02-09__20",
       "rr_no": "MRR 29914&29915&29916",
       "report_date": "2026-02-09",
       "po_no": "HO-PO 15406",
@@ -4733,7 +4733,7 @@ export const receivingReportsMasterData = {
       "total_amount": 40617.2
     },
     {
-      "id": "rr_MRR_29339__HO-PO_15407__TIMOG_TIREHAUS_CORPORATION",
+      "id": "rr_MRR_29339__HO-PO_15407__TIMOG_TIREHAUS_CORPORATION__2026-01-16__21",
       "rr_no": "MRR 29339",
       "report_date": "2026-01-16",
       "po_no": "HO-PO 15407",
@@ -4790,7 +4790,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6750
     },
     {
-      "id": "rr_MRR_29343__HO-PO_15379__C3_ENGINEERING_PILIPINAS_C",
+      "id": "rr_MRR_29343__HO-PO_15379__C3_ENGINEERING_PILIPINAS_CO___2026-01-16__22",
       "rr_no": "MRR 29343",
       "report_date": "2026-01-16",
       "po_no": "HO-PO 15379",
@@ -4821,7 +4821,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8000
     },
     {
-      "id": "rr_MRR_29344__HO-PO_15376__C3_ENGINEERING_PILIPINAS_C",
+      "id": "rr_MRR_29344__HO-PO_15376__C3_ENGINEERING_PILIPINAS_CO___2026-01-16__23",
       "rr_no": "MRR 29344",
       "report_date": "2026-01-16",
       "po_no": "HO-PO 15376",
@@ -4891,7 +4891,7 @@ export const receivingReportsMasterData = {
       "total_amount": 41400
     },
     {
-      "id": "rr_MRR_29345__HO-PO_15352__PHILCOPY_CORPORATION__2026",
+      "id": "rr_MRR_29345__HO-PO_15352__PHILCOPY_CORPORATION__2026-01-16__24",
       "rr_no": "MRR 29345",
       "report_date": "2026-01-16",
       "po_no": "HO-PO 15352",
@@ -4961,7 +4961,7 @@ export const receivingReportsMasterData = {
       "total_amount": 57060
     },
     {
-      "id": "rr_MRR_29902__PETTY_CASH__3TECH_INNOVATION_MASTER_COR",
+      "id": "rr_MRR_29902__PETTY_CASH__3TECH_INNOVATION_MASTER_CORP___2026-01-28__25",
       "rr_no": "MRR 29902",
       "report_date": "2026-01-28",
       "po_no": "PETTY CASH",
@@ -4992,7 +4992,7 @@ export const receivingReportsMasterData = {
       "total_amount": 250
     },
     {
-      "id": "rr_MRR_29903__HO-PO_15421__TIMOG_TIREHAUS_CORPORATION",
+      "id": "rr_MRR_29903__HO-PO_15421__TIMOG_TIREHAUS_CORPORATION__2026-01-28__26",
       "rr_no": "MRR 29903",
       "report_date": "2026-01-28",
       "po_no": "HO-PO 15421",
@@ -5127,7 +5127,7 @@ export const receivingReportsMasterData = {
       "total_amount": 14165
     },
     {
-      "id": "rr_MRR_29920__HO-PO_15418__PAPERLINE_ENTERPRISES_INC_",
+      "id": "rr_MRR_29920__HO-PO_15418__PAPERLINE_ENTERPRISES_INC__2026-02-12__27",
       "rr_no": "MRR 29920",
       "report_date": "2026-02-12",
       "po_no": "HO-PO 15418",
@@ -5184,7 +5184,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5650
     },
     {
-      "id": "rr_MRR_29921__HO-PO_15423__PAPERLINE_ENTERPRISES_INC_",
+      "id": "rr_MRR_29921__HO-PO_15423__PAPERLINE_ENTERPRISES_INC__2026-02-12__28",
       "rr_no": "MRR 29921",
       "report_date": "2026-02-12",
       "po_no": "HO-PO 15423",
@@ -5228,7 +5228,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2395
     },
     {
-      "id": "rr_MRR_29906__HO-PO_15411__GRANKAMS_PRESS__2026-02-02",
+      "id": "rr_MRR_29906__HO-PO_15411__GRANKAMS_PRESS__2026-02-02__29",
       "rr_no": "MRR 29906",
       "report_date": "2026-02-02",
       "po_no": "HO-PO 15411",
@@ -5272,7 +5272,7 @@ export const receivingReportsMasterData = {
       "total_amount": 36000
     },
     {
-      "id": "rr_MRR_29918__HO-PO_15427__ARIOM__TECH_COMPUTER_SYSTE",
+      "id": "rr_MRR_29918__HO-PO_15427__ARIOM__TECH_COMPUTER_SYSTEM__2026-02-09__30",
       "rr_no": "MRR 29918",
       "report_date": "2026-02-09",
       "po_no": "HO-PO 15427",
@@ -5342,7 +5342,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3380
     },
     {
-      "id": "rr_MRR_29909__HO-PO_15428__NEW_MILLENNIUM_TRADING__20",
+      "id": "rr_MRR_29909__HO-PO_15428__NEW_MILLENNIUM_TRADING__2026-02-05__31",
       "rr_no": "MRR 29909",
       "report_date": "2026-02-05",
       "po_no": "HO-PO 15428",
@@ -5373,7 +5373,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1716
     },
     {
-      "id": "rr_MRR_29918__HO-PO_15429__GLORY_LUMBER_CONSTRUCTION_",
+      "id": "rr_MRR_29918__HO-PO_15429__GLORY_LUMBER_CONSTRUCTION_SUPPLIES__2026-02-12__32",
       "rr_no": "MRR 29918",
       "report_date": "2026-02-12",
       "po_no": "HO-PO 15429",
@@ -5482,7 +5482,7 @@ export const receivingReportsMasterData = {
       "total_amount": 19625
     },
     {
-      "id": "rr_MRR_29913__HO-PO_15430__GODSWILL_GENERAL_BUILDING_",
+      "id": "rr_MRR_29913__HO-PO_15430__GODSWILL_GENERAL_BUILDING_SUPPLIY_COMPANY__2026-02-09__33",
       "rr_no": "MRR 29913",
       "report_date": "2026-02-09",
       "po_no": "HO-PO 15430",
@@ -5526,7 +5526,7 @@ export const receivingReportsMasterData = {
       "total_amount": 29287
     },
     {
-      "id": "rr_MRR_29911__HO-PO_15431__JUDRHOMAY_ENTERPRISES_COMP",
+      "id": "rr_MRR_29911__HO-PO_15431__JUDRHOMAY_ENTERPRISES_COMPANY__2026-02-06__34",
       "rr_no": "MRR 29911",
       "report_date": "2026-02-06",
       "po_no": "HO-PO 15431",
@@ -5596,7 +5596,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1075
     },
     {
-      "id": "rr_MRR_29912__HO-PO_15432__MEGACOM_CONSTRUCTION_SUPPL",
+      "id": "rr_MRR_29912__HO-PO_15432__MEGACOM_CONSTRUCTION_SUPPLY_CO__2026-02-06__35",
       "rr_no": "MRR 29912",
       "report_date": "2026-02-06",
       "po_no": "HO-PO 15432",
@@ -5666,7 +5666,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7500
     },
     {
-      "id": "rr_MRR_29910__HO-PO_15433__JUDRHOMAY_ENTERPRISES_COMP",
+      "id": "rr_MRR_29910__HO-PO_15433__JUDRHOMAY_ENTERPRISES_COMPANY__2026-02-06__36",
       "rr_no": "MRR 29910",
       "report_date": "2026-02-06",
       "po_no": "HO-PO 15433",
@@ -5710,7 +5710,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1434
     },
     {
-      "id": "rr_MRR_29917__HO-PO_15437__ARIOM__TECH_COMPUTER_SYSTE",
+      "id": "rr_MRR_29917__HO-PO_15437__ARIOM__TECH_COMPUTER_SYSTEM__2026-02-09__37",
       "rr_no": "MRR 29917",
       "report_date": "2026-02-09",
       "po_no": "HO-PO 15437",
@@ -5780,7 +5780,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6700
     },
     {
-      "id": "rr_MRR_RR_29906__HO-PO_15438__GRANKAMS_PRESS__2026-01",
+      "id": "rr_MRR_RR_29906__HO-PO_15438__GRANKAMS_PRESS__2026-01-02__38",
       "rr_no": "MRR RR 29906",
       "report_date": "2026-01-02",
       "po_no": "HO-PO 15438",
@@ -5811,7 +5811,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6000
     },
     {
-      "id": "rr_MRR_29923__HO-PO_15422__MAILOS_ENTERPRISES_INC__20",
+      "id": "rr_MRR_29923__HO-PO_15422__MAILOS_ENTERPRISES_INC__2026-02-12__39",
       "rr_no": "MRR 29923",
       "report_date": "2026-02-12",
       "po_no": "HO-PO 15422",
@@ -5855,7 +5855,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1015
     },
     {
-      "id": "rr_MRR_RR_28466__HO-PO_15537__C3_ENGINEERING_PILIPINA",
+      "id": "rr_MRR_RR_28466__HO-PO_15537__C3_ENGINEERING_PILIPINAS_CO___2026-05-12__40",
       "rr_no": "MRR RR 28466",
       "report_date": "2026-05-12",
       "po_no": "HO-PO 15537",
@@ -5899,7 +5899,7 @@ export const receivingReportsMasterData = {
       "total_amount": 165710
     },
     {
-      "id": "rr_MRR_29926__HO-PO_15408__IGNITIONX_AUTOMOTIVE_REPAI",
+      "id": "rr_MRR_29926__HO-PO_15408__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-02-19__41",
       "rr_no": "MRR 29926",
       "report_date": "2026-02-19",
       "po_no": "HO-PO 15408",
@@ -6047,7 +6047,7 @@ export const receivingReportsMasterData = {
       "total_amount": 12000
     },
     {
-      "id": "rr_MRR_29930__HO-PO_15385__JCA__SYSTEM_CORPORATION__2",
+      "id": "rr_MRR_29930__HO-PO_15385__JCA__SYSTEM_CORPORATION__2026-02-20__42",
       "rr_no": "MRR 29930",
       "report_date": "2026-02-20",
       "po_no": "HO-PO 15385",
@@ -6078,7 +6078,7 @@ export const receivingReportsMasterData = {
       "total_amount": 155
     },
     {
-      "id": "rr_MRR_28569__HO-PO_15543__INDOPLAS_PHILS_INC___2026-",
+      "id": "rr_MRR_28569__HO-PO_15543__INDOPLAS_PHILS_INC___2026-06-29__43",
       "rr_no": "MRR 28569",
       "report_date": "2026-06-29",
       "po_no": "HO-PO 15543",
@@ -6109,7 +6109,7 @@ export const receivingReportsMasterData = {
       "total_amount": 50
     },
     {
-      "id": "rr_MRR_28384__HO-PO_15445__MERCURY_DRUG_CORPORATION__",
+      "id": "rr_MRR_28384__HO-PO_15445__MERCURY_DRUG_CORPORATION__2026-03-26__44",
       "rr_no": "MRR 28384",
       "report_date": "2026-03-26",
       "po_no": "HO-PO 15445",
@@ -6348,7 +6348,7 @@ export const receivingReportsMasterData = {
       "total_amount": 20561.25
     },
     {
-      "id": "rr_MRR_29934__HO-PO_15446__YRAMAR_TRADING__2026-02-26",
+      "id": "rr_MRR_29934__HO-PO_15446__YRAMAR_TRADING__2026-02-26__45",
       "rr_no": "MRR 29934",
       "report_date": "2026-02-26",
       "po_no": "HO-PO 15446",
@@ -6405,7 +6405,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2890
     },
     {
-      "id": "rr_MRR_29948__HO-PO_15447__VILLAFLORES_INDUSTRIAL_SUP",
+      "id": "rr_MRR_29948__HO-PO_15447__VILLAFLORES_INDUSTRIAL_SUPPLY__2026-03-03__46",
       "rr_no": "MRR 29948",
       "report_date": "2026-03-03",
       "po_no": "HO-PO 15447",
@@ -6449,7 +6449,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5300
     },
     {
-      "id": "rr_MRR_28463__HO-PO_15449__PAPERLINE_ENTERPRISES_INC_",
+      "id": "rr_MRR_28463__HO-PO_15449__PAPERLINE_ENTERPRISES_INC__2026-05-08__47",
       "rr_no": "MRR 28463",
       "report_date": "2026-05-08",
       "po_no": "HO-PO 15449",
@@ -6493,7 +6493,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11070
     },
     {
-      "id": "rr_MRR_29340__HO-PO_15395__TIMOG_TIREHAUS_CORPORATION",
+      "id": "rr_MRR_29340__HO-PO_15395__TIMOG_TIREHAUS_CORPORATION__2026-01-28__48",
       "rr_no": "MRR 29340",
       "report_date": "2026-01-28",
       "po_no": "HO-PO 15395",
@@ -6563,7 +6563,7 @@ export const receivingReportsMasterData = {
       "total_amount": 35960
     },
     {
-      "id": "rr_MRR_29903__HO-PO_15403__TOYOTA_COMMONWEALTH__INC__",
+      "id": "rr_MRR_29903__HO-PO_15403__TOYOTA_COMMONWEALTH__INC___2026-01-28__49",
       "rr_no": "MRR 29903",
       "report_date": "2026-01-28",
       "po_no": "HO-PO 15403",
@@ -6815,7 +6815,7 @@ export const receivingReportsMasterData = {
       "total_amount": 21649
     },
     {
-      "id": "rr_MRR_29350__HO-PO_15404__ASHER-CHESKA_S_PRINTING_CO",
+      "id": "rr_MRR_29350__HO-PO_15404__ASHER-CHESKA_S_PRINTING_CORP___2026-01-23__50",
       "rr_no": "MRR 29350",
       "report_date": "2026-01-23",
       "po_no": "HO-PO 15404",
@@ -6846,7 +6846,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15750
     },
     {
-      "id": "rr_MRR-29337__HO-PO_15405__GATEWAY_MOTORS_CEBU_INC___",
+      "id": "rr_MRR-29337__HO-PO_15405__GATEWAY_MOTORS_CEBU_INC___2026-01-13__51",
       "rr_no": "MRR-29337",
       "report_date": "2026-01-13",
       "po_no": "HO-PO 15405",
@@ -6994,7 +6994,7 @@ export const receivingReportsMasterData = {
       "total_amount": 16117.04
     },
     {
-      "id": "rr_MRR-29338__HO-PO_15405__GATEWAY_MOTORS_CEBU_INC___",
+      "id": "rr_MRR-29338__HO-PO_15405__GATEWAY_MOTORS_CEBU_INC___2026-01-13__52",
       "rr_no": "MRR-29338",
       "report_date": "2026-01-13",
       "po_no": "HO-PO 15405",
@@ -7077,7 +7077,7 @@ export const receivingReportsMasterData = {
       "total_amount": 12432.93
     },
     {
-      "id": "rr_MRR_29914_29915_29916__HO-PO_15406__TOYOTA_COMMONW",
+      "id": "rr_MRR_29914_29915_29916__HO-PO_15406__TOYOTA_COMMONWEALTH__INC___2026-02-09__53",
       "rr_no": "MRR 29914&29915&29916",
       "report_date": "2026-02-09",
       "po_no": "HO-PO 15406",
@@ -7407,7 +7407,7 @@ export const receivingReportsMasterData = {
       "total_amount": 40617.2
     },
     {
-      "id": "rr_MRR_29339__HO-PO_15407__TIMOG_TIREHAUS_CORPORATION",
+      "id": "rr_MRR_29339__HO-PO_15407__TIMOG_TIREHAUS_CORPORATION__2026-01-19__54",
       "rr_no": "MRR 29339",
       "report_date": "2026-01-19",
       "po_no": "HO-PO 15407",
@@ -7464,7 +7464,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6750
     },
     {
-      "id": "rr_MRR_29927__HO-PO_15409__IGNITIONX_AUTOMOTIVE_REPAI",
+      "id": "rr_MRR_29927__HO-PO_15409__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-02-20__55",
       "rr_no": "MRR 29927",
       "report_date": "2026-02-20",
       "po_no": "HO-PO 15409",
@@ -7547,7 +7547,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5700
     },
     {
-      "id": "rr_MRR-DIR-497__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REP",
+      "id": "rr_MRR-DIR-497__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-01-15__56",
       "rr_no": "MRR-DIR-497",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15410",
@@ -7578,7 +7578,7 @@ export const receivingReportsMasterData = {
       "total_amount": 350
     },
     {
-      "id": "rr_MRR-DIR-498__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REP",
+      "id": "rr_MRR-DIR-498__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-01-15__57",
       "rr_no": "MRR-DIR-498",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15410",
@@ -7609,7 +7609,7 @@ export const receivingReportsMasterData = {
       "total_amount": 350
     },
     {
-      "id": "rr_MRR-DIR-499__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REP",
+      "id": "rr_MRR-DIR-499__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-01-15__58",
       "rr_no": "MRR-DIR-499",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15410",
@@ -7640,7 +7640,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1600
     },
     {
-      "id": "rr_MRR-DIR-500__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REP",
+      "id": "rr_MRR-DIR-500__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-01-15__59",
       "rr_no": "MRR-DIR-500",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15410",
@@ -7671,7 +7671,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1600
     },
     {
-      "id": "rr_MRR-DIR-501__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REP",
+      "id": "rr_MRR-DIR-501__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-01-15__60",
       "rr_no": "MRR-DIR-501",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15410",
@@ -7702,7 +7702,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6599
     },
     {
-      "id": "rr_MRR-DIR-502__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REP",
+      "id": "rr_MRR-DIR-502__HO-PO_15410__IGNITIONX_AUTOMOTIVE_REPAIR_SERVICES__2026-01-15__61",
       "rr_no": "MRR-DIR-502",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15410",
@@ -7733,7 +7733,7 @@ export const receivingReportsMasterData = {
       "total_amount": 350
     },
     {
-      "id": "rr_MRR-DIR-504__HO-PO_15422__TIMOG_TIREHAUS_CORPORATI",
+      "id": "rr_MRR-DIR-504__HO-PO_15422__TIMOG_TIREHAUS_CORPORATION__2026-01-15__62",
       "rr_no": "MRR-DIR-504",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15422",
@@ -7764,7 +7764,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2400
     },
     {
-      "id": "rr_MRR-DIR-505__HO-PO_15412__TIMOG_TIREHAUS_CORPORATI",
+      "id": "rr_MRR-DIR-505__HO-PO_15412__TIMOG_TIREHAUS_CORPORATION__2026-01-15__63",
       "rr_no": "MRR-DIR-505",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15412",
@@ -7795,7 +7795,7 @@ export const receivingReportsMasterData = {
       "total_amount": 850
     },
     {
-      "id": "rr_MRR-DIR-506__HO-PO_15412__TIMOG_TIREHAUS_CORPORATI",
+      "id": "rr_MRR-DIR-506__HO-PO_15412__TIMOG_TIREHAUS_CORPORATION__2026-01-15__64",
       "rr_no": "MRR-DIR-506",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15412",
@@ -7826,7 +7826,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2200
     },
     {
-      "id": "rr_MRR-DIR-507__HO-PO_15412__TIMOG_TIREHAUS_CORPORATI",
+      "id": "rr_MRR-DIR-507__HO-PO_15412__TIMOG_TIREHAUS_CORPORATION__2026-01-15__65",
       "rr_no": "MRR-DIR-507",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15412",
@@ -7857,7 +7857,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3800
     },
     {
-      "id": "rr_MRR-DIR-508__HO-PO_15412__TIMOG_TIREHAUS_CORPORATI",
+      "id": "rr_MRR-DIR-508__HO-PO_15412__TIMOG_TIREHAUS_CORPORATION__2026-01-15__66",
       "rr_no": "MRR-DIR-508",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15412",
@@ -7888,7 +7888,7 @@ export const receivingReportsMasterData = {
       "total_amount": 550
     },
     {
-      "id": "rr_MRR-DIR-509__HO-PO_15412__TIMOG_TIREHAUS_CORPORATI",
+      "id": "rr_MRR-DIR-509__HO-PO_15412__TIMOG_TIREHAUS_CORPORATION__2026-01-15__67",
       "rr_no": "MRR-DIR-509",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15412",
@@ -7919,7 +7919,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3850
     },
     {
-      "id": "rr_MRR-DIR-510__HO-PO_15412__TIMOG_TIREHAUS_CORPORATI",
+      "id": "rr_MRR-DIR-510__HO-PO_15412__TIMOG_TIREHAUS_CORPORATION__2026-01-15__68",
       "rr_no": "MRR-DIR-510",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15412",
@@ -7950,7 +7950,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5500
     },
     {
-      "id": "rr_MRR_SUPERSEDED__SUPERSEDED-PO_HO_15416__PITSTOP_MO",
+      "id": "rr_MRR_SUPERSEDED__SUPERSEDED-PO_HO_15416__PITSTOP_MOTORS__PSM__INC___SUPERSEDED__69",
       "rr_no": "MRR SUPERSEDED",
       "report_date": "SUPERSEDED",
       "po_no": "SUPERSEDED-PO HO 15416",
@@ -8137,7 +8137,7 @@ export const receivingReportsMasterData = {
       "total_amount": 44320
     },
     {
-      "id": "rr_MRR_28355__HO-PO_15417__CROWN_SUPPLY_CORPORATION__",
+      "id": "rr_MRR_28355__HO-PO_15417__CROWN_SUPPLY_CORPORATION__2026-03-11__70",
       "rr_no": "MRR 28355",
       "report_date": "2026-03-11",
       "po_no": "HO-PO 15417",
@@ -8194,7 +8194,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1173
     },
     {
-      "id": "rr_MRR_29946__HO-PO_15419__3J2S_SCHOOL_AND_OFFICE_SUP",
+      "id": "rr_MRR_29946__HO-PO_15419__3J2S_SCHOOL_AND_OFFICE_SUPPLIES__2026-03-02__71",
       "rr_no": "MRR 29946",
       "report_date": "2026-03-02",
       "po_no": "HO-PO 15419",
@@ -8225,7 +8225,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4700
     },
     {
-      "id": "rr_MRR_29936__HO-PO_15420__ROBINSON_S_SUPERMARKET_COR",
+      "id": "rr_MRR_29936__HO-PO_15420__ROBINSON_S_SUPERMARKET_CORPORATION__2026-02-26__72",
       "rr_no": "MRR 29936",
       "report_date": "2026-02-26",
       "po_no": "HO-PO 15420",
@@ -8282,7 +8282,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11970
     },
     {
-      "id": "rr_MRR_RR-29903__HO-PO_15421__TIMOG_TIREHAUS_CORPORAT",
+      "id": "rr_MRR_RR-29903__HO-PO_15421__TIMOG_TIREHAUS_CORPORATION__2026-01-28__73",
       "rr_no": "MRR RR-29903",
       "report_date": "2026-01-28",
       "po_no": "HO-PO 15421",
@@ -8417,7 +8417,7 @@ export const receivingReportsMasterData = {
       "total_amount": 14165
     },
     {
-      "id": "rr_MRR_29921__HO-PO_15423__PAPERLINE_ENTERPRISES_INC_",
+      "id": "rr_MRR_29921__HO-PO_15423__PAPERLINE_ENTERPRISES_INC___2026-02-12__74",
       "rr_no": "MRR 29921",
       "report_date": "2026-02-12",
       "po_no": "HO-PO 15423",
@@ -8448,7 +8448,7 @@ export const receivingReportsMasterData = {
       "total_amount": 270
     },
     {
-      "id": "rr_MRR_29947__HO-PO_15425__WESTERN_MARKETING_CORPORAT",
+      "id": "rr_MRR_29947__HO-PO_15425__WESTERN_MARKETING_CORPORATION__2026-03-02__75",
       "rr_no": "MRR 29947",
       "report_date": "2026-03-02",
       "po_no": "HO-PO 15425",
@@ -8479,7 +8479,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4399
     },
     {
-      "id": "rr_MRR_29918__HO-PO_15427__ARIOM_TECH_COMPUTER_SYSTEM",
+      "id": "rr_MRR_29918__HO-PO_15427__ARIOM_TECH_COMPUTER_SYSTEM__2026-02-09__76",
       "rr_no": "MRR 29918",
       "report_date": "2026-02-09",
       "po_no": "HO-PO 15427",
@@ -8549,7 +8549,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7560
     },
     {
-      "id": "rr_MRR_29922__HO-PO_15429__GLORY_LUMBER_CONSTRUCTION_",
+      "id": "rr_MRR_29922__HO-PO_15429__GLORY_LUMBER_CONSTRUCTION_SUPPLIES_INC___2026-02-12__77",
       "rr_no": "MRR 29922",
       "report_date": "2026-02-12",
       "po_no": "HO-PO 15429",
@@ -8658,7 +8658,7 @@ export const receivingReportsMasterData = {
       "total_amount": 19625
     },
     {
-      "id": "rr_MRR_RR-28494__15434__HONDA_MOTORALI__CUBAO_BRANCH_",
+      "id": "rr_MRR_RR-28494__15434__HONDA_MOTORALI__CUBAO_BRANCH___2026-06-03__78",
       "rr_no": "MRR RR-28494",
       "report_date": "2026-06-03",
       "po_no": "15434",
@@ -8806,7 +8806,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3830
     },
     {
-      "id": "rr_MRR_28354__15435__PEPPERNIMBUS_ONLINE_STORE__2026-",
+      "id": "rr_MRR_28354__15435__PEPPERNIMBUS_ONLINE_STORE__2026-03-11__79",
       "rr_no": "MRR 28354",
       "report_date": "2026-03-11",
       "po_no": "15435",
@@ -8837,7 +8837,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1600
     },
     {
-      "id": "rr_MRR_29917__HO-PO_15437__ARIOM_TECH_COMPUTER_SYSTEM",
+      "id": "rr_MRR_29917__HO-PO_15437__ARIOM_TECH_COMPUTER_SYSTEM__2026-02-09__80",
       "rr_no": "MRR 29917",
       "report_date": "2026-02-09",
       "po_no": "HO-PO 15437",
@@ -8907,7 +8907,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6700
     },
     {
-      "id": "rr_MRR_29932__HO-PO_15439__DJA_GROUP_OPC__2026-02-23",
+      "id": "rr_MRR_29932__HO-PO_15439__DJA_GROUP_OPC__2026-02-23__81",
       "rr_no": "MRR 29932",
       "report_date": "2026-02-23",
       "po_no": "HO-PO 15439",
@@ -8938,7 +8938,7 @@ export const receivingReportsMasterData = {
       "total_amount": 50696
     },
     {
-      "id": "rr_MRR_29943__HO-PO_15440__MAILOS_ENTERPRISE_INC__202",
+      "id": "rr_MRR_29943__HO-PO_15440__MAILOS_ENTERPRISE_INC__2026-02-27__82",
       "rr_no": "MRR 29943",
       "report_date": "2026-02-27",
       "po_no": "HO-PO 15440",
@@ -8969,7 +8969,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5900
     },
     {
-      "id": "rr_MRR_28569__HO-PO_15443__INDOPLAS_PHILS_INC___2026-",
+      "id": "rr_MRR_28569__HO-PO_15443__INDOPLAS_PHILS_INC___2026-06-29__83",
       "rr_no": "MRR 28569",
       "report_date": "2026-06-29",
       "po_no": "HO-PO 15443",
@@ -9000,7 +9000,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8000
     },
     {
-      "id": "rr_MRR_28384__HO-PO_15448__MERCURY_DRUG_CORPORATION__",
+      "id": "rr_MRR_28384__HO-PO_15448__MERCURY_DRUG_CORPORATION__2026-03-26__84",
       "rr_no": "MRR 28384",
       "report_date": "2026-03-26",
       "po_no": "HO-PO 15448",
@@ -9031,7 +9031,7 @@ export const receivingReportsMasterData = {
       "total_amount": 864
     },
     {
-      "id": "rr_MRR_28384__HO-PO_15446__YRAMAR_TRADING__2026-02-26",
+      "id": "rr_MRR_28384__HO-PO_15446__YRAMAR_TRADING__2026-02-26__85",
       "rr_no": "MRR 28384",
       "report_date": "2026-02-26",
       "po_no": "HO-PO 15446",
@@ -9088,7 +9088,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2890
     },
     {
-      "id": "rr_MRR_29933__HO-PO_15448__NEW_MILLENNIUM_TRADING__20",
+      "id": "rr_MRR_29933__HO-PO_15448__NEW_MILLENNIUM_TRADING__2026-02-25__86",
       "rr_no": "MRR 29933",
       "report_date": "2026-02-25",
       "po_no": "HO-PO 15448",
@@ -9119,7 +9119,7 @@ export const receivingReportsMasterData = {
       "total_amount": 25740
     },
     {
-      "id": "rr_MRR_28463__HO-PO_15549__PAPERLINE_ENTERPRISES_INC_",
+      "id": "rr_MRR_28463__HO-PO_15549__PAPERLINE_ENTERPRISES_INC___2026-05-08__87",
       "rr_no": "MRR 28463",
       "report_date": "2026-05-08",
       "po_no": "HO-PO 15549",
@@ -9150,7 +9150,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1860
     },
     {
-      "id": "rr_MRR_29948__HO-PO_15453__VILLAFLORES_INDUSTRIAL_SUP",
+      "id": "rr_MRR_29948__HO-PO_15453__VILLAFLORES_INDUSTRIAL_SUPPLY__2026-03-03__88",
       "rr_no": "MRR 29948",
       "report_date": "2026-03-03",
       "po_no": "HO-PO 15453",
@@ -9181,7 +9181,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2500
     },
     {
-      "id": "rr_MRR_29945__HO-PO_15453__JUDRHOMAY_ENTERPRISES_COMP",
+      "id": "rr_MRR_29945__HO-PO_15453__JUDRHOMAY_ENTERPRISES_COMPANY__2026-03-02__89",
       "rr_no": "MRR 29945",
       "report_date": "2026-03-02",
       "po_no": "HO-PO 15453",
@@ -9277,7 +9277,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1507
     },
     {
-      "id": "rr_MRR_29945__HO-PO_15455__JUDRHOMAY_ENTERPRISES_COMP",
+      "id": "rr_MRR_29945__HO-PO_15455__JUDRHOMAY_ENTERPRISES_COMPANY__2026-03-02__90",
       "rr_no": "MRR 29945",
       "report_date": "2026-03-02",
       "po_no": "HO-PO 15455",
@@ -9308,7 +9308,7 @@ export const receivingReportsMasterData = {
       "total_amount": 14
     },
     {
-      "id": "rr_MRR_29944__HO-PO_15454__GLORY_LUMBER_CONSTRUCTION_",
+      "id": "rr_MRR_29944__HO-PO_15454__GLORY_LUMBER_CONSTRUCTION_SUPPLIES__INC___2026-03-02__91",
       "rr_no": "MRR 29944",
       "report_date": "2026-03-02",
       "po_no": "HO-PO 15454",
@@ -9417,7 +9417,7 @@ export const receivingReportsMasterData = {
       "total_amount": 18510.5
     },
     {
-      "id": "rr_MRR_29944__HO-PO_15458__GLORY_LUMBER_CONSTRUCTION_",
+      "id": "rr_MRR_29944__HO-PO_15458__GLORY_LUMBER_CONSTRUCTION_SUPPLIES__INC___2026-03-02__92",
       "rr_no": "MRR 29944",
       "report_date": "2026-03-02",
       "po_no": "HO-PO 15458",
@@ -9448,7 +9448,7 @@ export const receivingReportsMasterData = {
       "total_amount": 720
     },
     {
-      "id": "rr_MRR-DIR-601__HO-PO_15455__GODSWILL_GENERAL_BUILDIN",
+      "id": "rr_MRR-DIR-601__HO-PO_15455__GODSWILL_GENERAL_BUILDING_SUPPLY_COMPANY__2026-01-15__93",
       "rr_no": "MRR-DIR-601",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15455",
@@ -9479,7 +9479,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1010
     },
     {
-      "id": "rr_MRR_29935__HO-PO_15456__MEGACOM_CONSTRUCTION_SUPPL",
+      "id": "rr_MRR_29935__HO-PO_15456__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-02-26__94",
       "rr_no": "MRR 29935",
       "report_date": "2026-02-26",
       "po_no": "HO-PO 15456",
@@ -9588,7 +9588,7 @@ export const receivingReportsMasterData = {
       "total_amount": 24345
     },
     {
-      "id": "rr_MRR_29931__HO-PO_15441__FLOWMETRICS_INDUSTRIAL_SAL",
+      "id": "rr_MRR_29931__HO-PO_15441__FLOWMETRICS_INDUSTRIAL_SALES_INC__2026-02-23__95",
       "rr_no": "MRR 29931",
       "report_date": "2026-02-23",
       "po_no": "HO-PO 15441",
@@ -9619,7 +9619,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7668
     },
     {
-      "id": "rr_MRR_29949__HO-PO_15457__ARIOM_TECH_COMPUTER_SYSTEM",
+      "id": "rr_MRR_29949__HO-PO_15457__ARIOM_TECH_COMPUTER_SYSTEM__2026-03-06__96",
       "rr_no": "MRR 29949",
       "report_date": "2026-03-06",
       "po_no": "HO-PO 15457",
@@ -9650,7 +9650,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5200
     },
     {
-      "id": "rr_MRR_29938__HO-PO_15458__OBACH_SOLUTIONS_CORP__2026",
+      "id": "rr_MRR_29938__HO-PO_15458__OBACH_SOLUTIONS_CORP__2026-02-26__97",
       "rr_no": "MRR 29938",
       "report_date": "2026-02-26",
       "po_no": "HO-PO 15458",
@@ -9733,7 +9733,7 @@ export const receivingReportsMasterData = {
       "total_amount": 66964
     },
     {
-      "id": "rr_MRR_29938__HO-PO_15457__OBACH_SOLUTIONS_CORP__2026",
+      "id": "rr_MRR_29938__HO-PO_15457__OBACH_SOLUTIONS_CORP__2026-02-26__98",
       "rr_no": "MRR 29938",
       "report_date": "2026-02-26",
       "po_no": "HO-PO 15457",
@@ -9764,7 +9764,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8036
     },
     {
-      "id": "rr_MRR_28353__HO-PO_15457__JUDRHOMAY_ENTERPRISES_COMP",
+      "id": "rr_MRR_28353__HO-PO_15457__JUDRHOMAY_ENTERPRISES_COMPANY__2026-03-10__99",
       "rr_no": "MRR 28353",
       "report_date": "2026-03-10",
       "po_no": "HO-PO 15457",
@@ -9808,7 +9808,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10040
     },
     {
-      "id": "rr_MRR_28353__HO-PO_15460__JUDRHOMAY_ENTERPRISES_COMP",
+      "id": "rr_MRR_28353__HO-PO_15460__JUDRHOMAY_ENTERPRISES_COMPANY__2026-03-10__100",
       "rr_no": "MRR 28353",
       "report_date": "2026-03-10",
       "po_no": "HO-PO 15460",
@@ -9930,7 +9930,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7835
     },
     {
-      "id": "rr_MRR_28352__HO-PO_15461__MEGACOM_CONSTRUCTION_SUPPL",
+      "id": "rr_MRR_28352__HO-PO_15461__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-03-10__101",
       "rr_no": "MRR 28352",
       "report_date": "2026-03-10",
       "po_no": "HO-PO 15461",
@@ -9987,7 +9987,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6340
     },
     {
-      "id": "rr_MRR-DIR-629__HO-PO_15462__S_B_E_TRUCK_PARTS_TRADIN",
+      "id": "rr_MRR-DIR-629__HO-PO_15462__S_B_E_TRUCK_PARTS_TRADING__2026-01-15__102",
       "rr_no": "MRR-DIR-629",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15462",
@@ -10018,7 +10018,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2016
     },
     {
-      "id": "rr_MRR-DIR-630__HO-PO_15462__S_B_E_TRUCK_PARTS_TRADIN",
+      "id": "rr_MRR-DIR-630__HO-PO_15462__S_B_E_TRUCK_PARTS_TRADING__2026-01-15__103",
       "rr_no": "MRR-DIR-630",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15462",
@@ -10049,7 +10049,7 @@ export const receivingReportsMasterData = {
       "total_amount": 277
     },
     {
-      "id": "rr_MRR-DIR-631__HO-PO_15462__S_B_E_TRUCK_PARTS_TRADIN",
+      "id": "rr_MRR-DIR-631__HO-PO_15462__S_B_E_TRUCK_PARTS_TRADING__2026-01-15__104",
       "rr_no": "MRR-DIR-631",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15462",
@@ -10080,7 +10080,7 @@ export const receivingReportsMasterData = {
       "total_amount": 200
     },
     {
-      "id": "rr_MRR-DIR-632__HO-PO_15463__ALMACH_AUTO_SUPPLY_CORPO",
+      "id": "rr_MRR-DIR-632__HO-PO_15463__ALMACH_AUTO_SUPPLY_CORPORATION__2026-01-15__105",
       "rr_no": "MRR-DIR-632",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15463",
@@ -10111,7 +10111,7 @@ export const receivingReportsMasterData = {
       "total_amount": 690
     },
     {
-      "id": "rr_MRR-DIR-633__HO-PO_15463__ALMACH_AUTO_SUPPLY_CORPO",
+      "id": "rr_MRR-DIR-633__HO-PO_15463__ALMACH_AUTO_SUPPLY_CORPORATION__2026-01-15__106",
       "rr_no": "MRR-DIR-633",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15463",
@@ -10142,7 +10142,7 @@ export const receivingReportsMasterData = {
       "total_amount": 650
     },
     {
-      "id": "rr_MRR-DIR-634__HO-PO_15462__ALMACH_AUTO_SUPPLY_CORPO",
+      "id": "rr_MRR-DIR-634__HO-PO_15462__ALMACH_AUTO_SUPPLY_CORPORATION__2026-01-15__107",
       "rr_no": "MRR-DIR-634",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15462",
@@ -10173,7 +10173,7 @@ export const receivingReportsMasterData = {
       "total_amount": 650
     },
     {
-      "id": "rr_MRR-DIR-635__HO-PO_15463__ALMACH_AUTO_SUPPLY_CORPO",
+      "id": "rr_MRR-DIR-635__HO-PO_15463__ALMACH_AUTO_SUPPLY_CORPORATION__2026-01-15__108",
       "rr_no": "MRR-DIR-635",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15463",
@@ -10204,7 +10204,7 @@ export const receivingReportsMasterData = {
       "total_amount": 580
     },
     {
-      "id": "rr_MRR_28385__HO-PO_15464__JBL_AUTO_PARTS_TRADING_OPC",
+      "id": "rr_MRR_28385__HO-PO_15464__JBL_AUTO_PARTS_TRADING_OPC__2026-03-31__109",
       "rr_no": "MRR 28385",
       "report_date": "2026-03-31",
       "po_no": "HO-PO 15464",
@@ -10235,7 +10235,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1300
     },
     {
-      "id": "rr_MRR-DIR-637__HO-PO_15465__AUTOMATIC_CENTRE__SM_NOR",
+      "id": "rr_MRR-DIR-637__HO-PO_15465__AUTOMATIC_CENTRE__SM_NORTH___2026-01-15__110",
       "rr_no": "MRR-DIR-637",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15465",
@@ -10266,7 +10266,7 @@ export const receivingReportsMasterData = {
       "total_amount": 41400
     },
     {
-      "id": "rr_MRR_28366__HO-PO_15468__BESCOST_DIGITAL_MARKETING_",
+      "id": "rr_MRR_28366__HO-PO_15468__BESCOST_DIGITAL_MARKETING_SERVICES_INC__2026-03-17__111",
       "rr_no": "MRR 28366",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15468",
@@ -10323,7 +10323,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11200
     },
     {
-      "id": "rr_MRR-DIR-641__HO-PO_15472__PRISMATECH_INC__2026-01-",
+      "id": "rr_MRR-DIR-641__HO-PO_15472__PRISMATECH_INC__2026-01-15__112",
       "rr_no": "MRR-DIR-641",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15472",
@@ -10354,7 +10354,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9500
     },
     {
-      "id": "rr_MRR-DIR-642__HO-PO_15472__PRISMATECH_INC__2026-01-",
+      "id": "rr_MRR-DIR-642__HO-PO_15472__PRISMATECH_INC__2026-01-15__113",
       "rr_no": "MRR-DIR-642",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15472",
@@ -10385,7 +10385,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4300
     },
     {
-      "id": "rr_MRR_29950__HO-PO_15477__OBACH_SOLUTIONS_CORP___202",
+      "id": "rr_MRR_29950__HO-PO_15477__OBACH_SOLUTIONS_CORP___2026-03-10__114",
       "rr_no": "MRR 29950",
       "report_date": "2026-03-10",
       "po_no": "HO-PO 15477",
@@ -10429,7 +10429,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15000
     },
     {
-      "id": "rr_MRR_RR_28464__HO-PO_15478__C3_ENGINEERING_PILIPINA",
+      "id": "rr_MRR_RR_28464__HO-PO_15478__C3_ENGINEERING_PILIPINAS_CO___2026-05-12__115",
       "rr_no": "MRR RR 28464",
       "report_date": "2026-05-12",
       "po_no": "HO-PO 15478",
@@ -10499,7 +10499,7 @@ export const receivingReportsMasterData = {
       "total_amount": 33900
     },
     {
-      "id": "rr_MRR-DIR-649__HO-PO_15480__CONCEPT_SPECIALIST__INC_",
+      "id": "rr_MRR-DIR-649__HO-PO_15480__CONCEPT_SPECIALIST__INC__2026-01-15__116",
       "rr_no": "MRR-DIR-649",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15480",
@@ -10530,7 +10530,7 @@ export const receivingReportsMasterData = {
       "total_amount": 47280
     },
     {
-      "id": "rr_MRR_28367__HO-PO_15482__C3_ENGINEERING_PILIPINAS_C",
+      "id": "rr_MRR_28367__HO-PO_15482__C3_ENGINEERING_PILIPINAS_CO___2026-03-17__117",
       "rr_no": "MRR 28367",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15482",
@@ -10561,7 +10561,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10000
     },
     {
-      "id": "rr_MRR_RR_28469__HO-PO_15483__EMICOR_INC__2026-05-14",
+      "id": "rr_MRR_RR_28469__HO-PO_15483__EMICOR_INC__2026-05-14__118",
       "rr_no": "MRR RR 28469",
       "report_date": "2026-05-14",
       "po_no": "HO-PO 15483",
@@ -10735,7 +10735,7 @@ export const receivingReportsMasterData = {
       "total_amount": 20000
     },
     {
-      "id": "rr_MRR_28356__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28356__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-12__119",
       "rr_no": "MRR 28356",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -10870,7 +10870,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5272
     },
     {
-      "id": "rr_MRR_28357__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28357__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-12__120",
       "rr_no": "MRR 28357",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -10901,7 +10901,7 @@ export const receivingReportsMasterData = {
       "total_amount": 240
     },
     {
-      "id": "rr_MRR_28358__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28358__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-12__121",
       "rr_no": "MRR 28358",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -10932,7 +10932,7 @@ export const receivingReportsMasterData = {
       "total_amount": 494
     },
     {
-      "id": "rr_MRR_28359__THRU_RFP__WILCON_DEPOT_INC___2026-03-12",
+      "id": "rr_MRR_28359__THRU_RFP__WILCON_DEPOT_INC___2026-03-12__122",
       "rr_no": "MRR 28359",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -11015,7 +11015,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3289
     },
     {
-      "id": "rr_MRR_28360__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28360__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-12__123",
       "rr_no": "MRR 28360",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -11072,7 +11072,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1837
     },
     {
-      "id": "rr_MRR_28361__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28361__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-12__124",
       "rr_no": "MRR 28361",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -11181,7 +11181,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4280
     },
     {
-      "id": "rr_MRR_28362__THRU_RFP__WILCON_DEPOT_INC___2026-03-12",
+      "id": "rr_MRR_28362__THRU_RFP__WILCON_DEPOT_INC___2026-03-12__125",
       "rr_no": "MRR 28362",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -11238,7 +11238,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2489
     },
     {
-      "id": "rr_MRR_28363__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28363__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-12__126",
       "rr_no": "MRR 28363",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -11295,7 +11295,7 @@ export const receivingReportsMasterData = {
       "total_amount": 505
     },
     {
-      "id": "rr_MRR_28364__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28364__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-12__127",
       "rr_no": "MRR 28364",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -11365,7 +11365,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2412
     },
     {
-      "id": "rr_MRR_28365__THRU_RFP__CW_HOME_DEPOT__2026-03-12",
+      "id": "rr_MRR_28365__THRU_RFP__CW_HOME_DEPOT__2026-03-12__128",
       "rr_no": "MRR 28365",
       "report_date": "2026-03-12",
       "po_no": "THRU RFP",
@@ -11435,7 +11435,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1433
     },
     {
-      "id": "rr_MRR_28375__THRU_RFP__HERVIC_CONSTRUCTION_INDUSTRIA",
+      "id": "rr_MRR_28375__THRU_RFP__HERVIC_CONSTRUCTION_INDUSTRIAL_SUPPLY_INC___2026-03-27__129",
       "rr_no": "MRR 28375",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11518,7 +11518,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5054
     },
     {
-      "id": "rr_MRR_28376__THRU_RFP__HERVIC_CONSTRUCTION_INDUSTRIA",
+      "id": "rr_MRR_28376__THRU_RFP__HERVIC_CONSTRUCTION_INDUSTRIAL_SUPPLY_INC___2026-03-27__130",
       "rr_no": "MRR 28376",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11549,7 +11549,7 @@ export const receivingReportsMasterData = {
       "total_amount": 100
     },
     {
-      "id": "rr_MRR_28377__THRU_RFP__HERVIC_CONSTRUCTION_INDUSTRIA",
+      "id": "rr_MRR_28377__THRU_RFP__HERVIC_CONSTRUCTION_INDUSTRIAL_SUPPLY_INC___2026-03-27__131",
       "rr_no": "MRR 28377",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11580,7 +11580,7 @@ export const receivingReportsMasterData = {
       "total_amount": 195
     },
     {
-      "id": "rr_MRR_28378__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28378__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-27__132",
       "rr_no": "MRR 28378",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11637,7 +11637,7 @@ export const receivingReportsMasterData = {
       "total_amount": 289
     },
     {
-      "id": "rr_MRR_28379__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28379__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-27__133",
       "rr_no": "MRR 28379",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11720,7 +11720,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4057
     },
     {
-      "id": "rr_MRR_28381__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28381__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-27__134",
       "rr_no": "MRR 28381",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11751,7 +11751,7 @@ export const receivingReportsMasterData = {
       "total_amount": 239
     },
     {
-      "id": "rr_MRR_28380__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28380__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-27__135",
       "rr_no": "MRR 28380",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11808,7 +11808,7 @@ export const receivingReportsMasterData = {
       "total_amount": 300
     },
     {
-      "id": "rr_MRR_28382__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2",
+      "id": "rr_MRR_28382__THRU_RFP__R_E_R__CONSTRUCTION_SUPPLY__2026-03-27__136",
       "rr_no": "MRR 28382",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11839,7 +11839,7 @@ export const receivingReportsMasterData = {
       "total_amount": 215
     },
     {
-      "id": "rr_MRR_28383__THRU_RFP__3EJ_PAINT_CENTER__2026-03-27",
+      "id": "rr_MRR_28383__THRU_RFP__3EJ_PAINT_CENTER__2026-03-27__137",
       "rr_no": "MRR 28383",
       "report_date": "2026-03-27",
       "po_no": "THRU RFP",
@@ -11870,7 +11870,7 @@ export const receivingReportsMasterData = {
       "total_amount": 390
     },
     {
-      "id": "rr_MRR_28368__15486__C3_ENGINEERING_PILIPINAS_CO___20",
+      "id": "rr_MRR_28368__15486__C3_ENGINEERING_PILIPINAS_CO___2026-03-17__138",
       "rr_no": "MRR 28368",
       "report_date": "2026-03-17",
       "po_no": "15486",
@@ -11927,7 +11927,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9000
     },
     {
-      "id": "rr_MRR_29575__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29575__HO-PO_15487__TOYOTA_PASIG__2026-03-17__139",
       "rr_no": "MRR 29575",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -12101,7 +12101,7 @@ export const receivingReportsMasterData = {
       "total_amount": 64057.37
     },
     {
-      "id": "rr_MRR_29574__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29574__HO-PO_15487__TOYOTA_PASIG__2026-03-17__140",
       "rr_no": "MRR 29574",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -12262,7 +12262,7 @@ export const receivingReportsMasterData = {
       "total_amount": 62926.56
     },
     {
-      "id": "rr_MRR_29573__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29573__HO-PO_15487__TOYOTA_PASIG__2026-03-17__141",
       "rr_no": "MRR 29573",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -12540,7 +12540,7 @@ export const receivingReportsMasterData = {
       "total_amount": 16010.15
     },
     {
-      "id": "rr_MRR_29571__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29571__HO-PO_15487__TOYOTA_PASIG__2026-03-17__142",
       "rr_no": "MRR 29571",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -12701,7 +12701,7 @@ export const receivingReportsMasterData = {
       "total_amount": 16222.92
     },
     {
-      "id": "rr_MRR_29570__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29570__HO-PO_15487__TOYOTA_PASIG__2026-03-17__143",
       "rr_no": "MRR 29570",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -12797,7 +12797,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8775.94
     },
     {
-      "id": "rr_MRR_29569__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29569__HO-PO_15487__TOYOTA_PASIG__2026-03-17__144",
       "rr_no": "MRR 29569",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -12880,7 +12880,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7426.54
     },
     {
-      "id": "rr_MRR_29568__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29568__HO-PO_15487__TOYOTA_PASIG__2026-03-17__145",
       "rr_no": "MRR 29568",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -12937,7 +12937,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1247.24
     },
     {
-      "id": "rr_MRR_29576__HO-PO_15487__TOYOTA_PASIG__2026-03-17",
+      "id": "rr_MRR_29576__HO-PO_15487__TOYOTA_PASIG__2026-03-17__146",
       "rr_no": "MRR 29576",
       "report_date": "2026-03-17",
       "po_no": "HO-PO 15487",
@@ -13007,7 +13007,7 @@ export const receivingReportsMasterData = {
       "total_amount": 53017.52
     },
     {
-      "id": "rr_MRR-DIR-799__HO-PO_15487__JAMPOO_CORPORATION__2026",
+      "id": "rr_MRR-DIR-799__HO-PO_15487__JAMPOO_CORPORATION__2026-01-15__147",
       "rr_no": "MRR-DIR-799",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15487",
@@ -13038,7 +13038,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6087.3
     },
     {
-      "id": "rr_MRR_28369__HO-PO_15491__ARIOM_TECH_COMPUTER_SYSTEM",
+      "id": "rr_MRR_28369__HO-PO_15491__ARIOM_TECH_COMPUTER_SYSTEM__2025-03-24__148",
       "rr_no": "MRR 28369",
       "report_date": "2025-03-24",
       "po_no": "HO-PO 15491",
@@ -13069,7 +13069,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3920
     },
     {
-      "id": "rr_MRR_28370__HO-PO_15492__BATPARTS_SUPPLY_CO___INC__",
+      "id": "rr_MRR_28370__HO-PO_15492__BATPARTS_SUPPLY_CO___INC__2026-03-25__149",
       "rr_no": "MRR 28370",
       "report_date": "2026-03-25",
       "po_no": "HO-PO 15492",
@@ -13100,7 +13100,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6550
     },
     {
-      "id": "rr_MRR_RR_28475__HO-PO_15493__GREATEST_AMORE_ENTERPRI",
+      "id": "rr_MRR_RR_28475__HO-PO_15493__GREATEST_AMORE_ENTERPRISE__2026-05-21__150",
       "rr_no": "MRR RR 28475",
       "report_date": "2026-05-21",
       "po_no": "HO-PO 15493",
@@ -13131,7 +13131,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6500
     },
     {
-      "id": "rr_MRR_RR_28456__HO-PO_15494__BESCOST_DIGITAL_MARKETI",
+      "id": "rr_MRR_RR_28456__HO-PO_15494__BESCOST_DIGITAL_MARKETING_SERVICES_INC__2026-04-30__151",
       "rr_no": "MRR RR 28456",
       "report_date": "2026-04-30",
       "po_no": "HO-PO 15494",
@@ -13175,7 +13175,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2240
     },
     {
-      "id": "rr_MRR-DIR-805__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-805__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__152",
       "rr_no": "MRR-DIR-805",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13206,7 +13206,7 @@ export const receivingReportsMasterData = {
       "total_amount": 13000
     },
     {
-      "id": "rr_MRR-DIR-806__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-806__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__153",
       "rr_no": "MRR-DIR-806",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13237,7 +13237,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2920
     },
     {
-      "id": "rr_MRR-DIR-807__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-807__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__154",
       "rr_no": "MRR-DIR-807",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13268,7 +13268,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10800
     },
     {
-      "id": "rr_MRR-DIR-808__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-808__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__155",
       "rr_no": "MRR-DIR-808",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13299,7 +13299,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2100
     },
     {
-      "id": "rr_MRR-DIR-809__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-809__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__156",
       "rr_no": "MRR-DIR-809",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13330,7 +13330,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2500
     },
     {
-      "id": "rr_MRR-DIR-810__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-810__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__157",
       "rr_no": "MRR-DIR-810",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13361,7 +13361,7 @@ export const receivingReportsMasterData = {
       "total_amount": 17900
     },
     {
-      "id": "rr_MRR-DIR-811__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-811__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__158",
       "rr_no": "MRR-DIR-811",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13392,7 +13392,7 @@ export const receivingReportsMasterData = {
       "total_amount": 260
     },
     {
-      "id": "rr_MRR-DIR-812__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-812__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__159",
       "rr_no": "MRR-DIR-812",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13423,7 +13423,7 @@ export const receivingReportsMasterData = {
       "total_amount": 240
     },
     {
-      "id": "rr_MRR-DIR-813__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-813__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__160",
       "rr_no": "MRR-DIR-813",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13454,7 +13454,7 @@ export const receivingReportsMasterData = {
       "total_amount": 340
     },
     {
-      "id": "rr_MRR-DIR-814__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-814__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__161",
       "rr_no": "MRR-DIR-814",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13485,7 +13485,7 @@ export const receivingReportsMasterData = {
       "total_amount": 280
     },
     {
-      "id": "rr_MRR-DIR-815__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-815__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__162",
       "rr_no": "MRR-DIR-815",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13516,7 +13516,7 @@ export const receivingReportsMasterData = {
       "total_amount": 800
     },
     {
-      "id": "rr_MRR-DIR-816__HO-PO_15496__MEGACOM_CONSTRUCTION_SUP",
+      "id": "rr_MRR-DIR-816__HO-PO_15496__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-01-15__163",
       "rr_no": "MRR-DIR-816",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15496",
@@ -13547,7 +13547,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7680
     },
     {
-      "id": "rr_MRR_28371__HO-PO_15497__JUDRHOMAY_ENTERPRISES_COMP",
+      "id": "rr_MRR_28371__HO-PO_15497__JUDRHOMAY_ENTERPRISES_COMPANY__2026-03-25__164",
       "rr_no": "MRR 28371",
       "report_date": "2026-03-25",
       "po_no": "HO-PO 15497",
@@ -13617,7 +13617,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8104
     },
     {
-      "id": "rr_MRR-DIR-821__HO-PO_15499__TOYOTA_PASIG__2026-01-15",
+      "id": "rr_MRR-DIR-821__HO-PO_15499__TOYOTA_PASIG__2026-01-15__165",
       "rr_no": "MRR-DIR-821",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15499",
@@ -13648,7 +13648,7 @@ export const receivingReportsMasterData = {
       "total_amount": 847000
     },
     {
-      "id": "rr_MRR_RR_28467__HO-PO_15502__MAILOS_ENTERPRISE_INC__",
+      "id": "rr_MRR_RR_28467__HO-PO_15502__MAILOS_ENTERPRISE_INC__2026-05-13__166",
       "rr_no": "MRR RR 28467",
       "report_date": "2026-05-13",
       "po_no": "HO-PO 15502",
@@ -13679,7 +13679,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2360
     },
     {
-      "id": "rr_MRR_28462__HO-PO_15503-__PAPERLINE_ENTERPRISES_INC",
+      "id": "rr_MRR_28462__HO-PO_15503-__PAPERLINE_ENTERPRISES_INC___2026-05-08__167",
       "rr_no": "MRR 28462",
       "report_date": "2026-05-08",
       "po_no": "HO-PO 15503-",
@@ -13801,7 +13801,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2294.45
     },
     {
-      "id": "rr_MRR_28372__HO-PO_15504__PHILCOPY_CORPORATION__2026",
+      "id": "rr_MRR_28372__HO-PO_15504__PHILCOPY_CORPORATION__2026-03-26__168",
       "rr_no": "MRR 28372",
       "report_date": "2026-03-26",
       "po_no": "HO-PO 15504",
@@ -13871,7 +13871,7 @@ export const receivingReportsMasterData = {
       "total_amount": 57060
     },
     {
-      "id": "rr_MRR_28388__HO-PO_15505__GLORY_LUMBER_CONSTRUCTION_",
+      "id": "rr_MRR_28388__HO-PO_15505__GLORY_LUMBER_CONSTRUCTION_SUPPLIES_INC___2026-04-08__169",
       "rr_no": "MRR 28388",
       "report_date": "2026-04-08",
       "po_no": "HO-PO 15505",
@@ -13980,7 +13980,7 @@ export const receivingReportsMasterData = {
       "total_amount": 34083.55
     },
     {
-      "id": "rr_MRR_28394__HO-PO_15505__GLORY_LUMBER_CONSTRUCTION_",
+      "id": "rr_MRR_28394__HO-PO_15505__GLORY_LUMBER_CONSTRUCTION_SUPPLIES_INC___2026-04-14__170",
       "rr_no": "MRR 28394",
       "report_date": "2026-04-14",
       "po_no": "HO-PO 15505",
@@ -14011,7 +14011,7 @@ export const receivingReportsMasterData = {
       "total_amount": 0.55
     },
     {
-      "id": "rr_MRR_28386__HO-PO_15506__BARICA_ENTERPRISES__2026-0",
+      "id": "rr_MRR_28386__HO-PO_15506__BARICA_ENTERPRISES__2026-03-31__171",
       "rr_no": "MRR 28386",
       "report_date": "2026-03-31",
       "po_no": "HO-PO 15506",
@@ -14094,7 +14094,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2835
     },
     {
-      "id": "rr_MRR_28389__HO-PO_15508__MAILOS_ENTERPRISE_INC__202",
+      "id": "rr_MRR_28389__HO-PO_15508__MAILOS_ENTERPRISE_INC__2026-04-08__172",
       "rr_no": "MRR 28389",
       "report_date": "2026-04-08",
       "po_no": "HO-PO 15508",
@@ -14164,7 +14164,7 @@ export const receivingReportsMasterData = {
       "total_amount": 22750
     },
     {
-      "id": "rr_MRR_28387__HO-PO_15509__VINSEY_JULIP_CORPORATION__",
+      "id": "rr_MRR_28387__HO-PO_15509__VINSEY_JULIP_CORPORATION__2026-03-30__173",
       "rr_no": "MRR 28387",
       "report_date": "2026-03-30",
       "po_no": "HO-PO 15509",
@@ -14195,7 +14195,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1650
     },
     {
-      "id": "rr_MRR_28390__HO-PO_15516__TEBEEMINI_CORPORATION__202",
+      "id": "rr_MRR_28390__HO-PO_15516__TEBEEMINI_CORPORATION__2026-04-08__174",
       "rr_no": "MRR 28390",
       "report_date": "2026-04-08",
       "po_no": "HO-PO 15516",
@@ -14226,7 +14226,7 @@ export const receivingReportsMasterData = {
       "total_amount": 13950
     },
     {
-      "id": "rr_MRR_RR_28452__HO-PO_15532__PHIL__SAFE_INDUSTRIAL__",
+      "id": "rr_MRR_RR_28452__HO-PO_15532__PHIL__SAFE_INDUSTRIAL___SAFETY_SUPPLIES_INC___2026-04-23__175",
       "rr_no": "MRR RR 28452",
       "report_date": "2026-04-23",
       "po_no": "HO-PO 15532",
@@ -14283,7 +14283,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1480
     },
     {
-      "id": "rr_MRR_RR_28451__HO-PO_15543__PHIL__SAFE_INDUSTRIAL__",
+      "id": "rr_MRR_RR_28451__HO-PO_15543__PHIL__SAFE_INDUSTRIAL___SAFETY_SUPPLIES_INC___2026-04-23__176",
       "rr_no": "MRR RR 28451",
       "report_date": "2026-04-23",
       "po_no": "HO-PO 15543",
@@ -14340,7 +14340,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1480
     },
     {
-      "id": "rr_MRR_RR_28398__HO-PO_15542__ST__DOMINIC_INDUSTRIES_",
+      "id": "rr_MRR_RR_28398__HO-PO_15542__ST__DOMINIC_INDUSTRIES__INC___2026-04-23__177",
       "rr_no": "MRR RR 28398",
       "report_date": "2026-04-23",
       "po_no": "HO-PO 15542",
@@ -14371,7 +14371,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7200
     },
     {
-      "id": "rr_MRR_RR_28478__15579__ARIOM_TECH_COMPUTER_SYSTEM__2",
+      "id": "rr_MRR_RR_28478__15579__ARIOM_TECH_COMPUTER_SYSTEM__2026-05-21__178",
       "rr_no": "MRR RR 28478",
       "report_date": "2026-05-21",
       "po_no": "15579",
@@ -14428,7 +14428,7 @@ export const receivingReportsMasterData = {
       "total_amount": 17800
     },
     {
-      "id": "rr_MRR_RR_28481__15582__YRAMAR_TRADING__2026-05-25",
+      "id": "rr_MRR_RR_28481__15582__YRAMAR_TRADING__2026-05-25__179",
       "rr_no": "MRR RR 28481",
       "report_date": "2026-05-25",
       "po_no": "15582",
@@ -14459,7 +14459,7 @@ export const receivingReportsMasterData = {
       "total_amount": 21000
     },
     {
-      "id": "rr_MRR_RR_28479__HO-PO_15581__PAPERLINE_ENTERPRISES_I",
+      "id": "rr_MRR_RR_28479__HO-PO_15581__PAPERLINE_ENTERPRISES_INC___2026-05-25__180",
       "rr_no": "MRR RR 28479",
       "report_date": "2026-05-25",
       "po_no": "HO-PO 15581",
@@ -14620,7 +14620,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11193.75
     },
     {
-      "id": "rr_MRR_RR-28490__HO-PO_15581__PAPERLINE_ENTERPRISES_I",
+      "id": "rr_MRR_RR-28490__HO-PO_15581__PAPERLINE_ENTERPRISES_INC___2026-06-02__181",
       "rr_no": "MRR RR-28490",
       "report_date": "2026-06-02",
       "po_no": "HO-PO 15581",
@@ -14677,7 +14677,7 @@ export const receivingReportsMasterData = {
       "total_amount": 31725
     },
     {
-      "id": "rr_MRR-DIR-879__HO-PO_15594__RMJK_AUTO_PARTS_TRADING_",
+      "id": "rr_MRR-DIR-879__HO-PO_15594__RMJK_AUTO_PARTS_TRADING__2026-01-15__182",
       "rr_no": "MRR-DIR-879",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15594",
@@ -14708,7 +14708,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2310
     },
     {
-      "id": "rr_MRR-DIR-880__HO-PO_15594__RMJK_AUTO_PARTS_TRADING_",
+      "id": "rr_MRR-DIR-880__HO-PO_15594__RMJK_AUTO_PARTS_TRADING__2026-01-15__183",
       "rr_no": "MRR-DIR-880",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15594",
@@ -14739,7 +14739,7 @@ export const receivingReportsMasterData = {
       "total_amount": 600
     },
     {
-      "id": "rr_MRR-DIR-881__HO-PO_15594__RMJK_AUTO_PARTS_TRADING_",
+      "id": "rr_MRR-DIR-881__HO-PO_15594__RMJK_AUTO_PARTS_TRADING__2026-01-15__184",
       "rr_no": "MRR-DIR-881",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15594",
@@ -14770,7 +14770,7 @@ export const receivingReportsMasterData = {
       "total_amount": 270
     },
     {
-      "id": "rr_MRR-DIR-882__HO-PO_15602__WORX_IT_RETAIL_INC__2026",
+      "id": "rr_MRR-DIR-882__HO-PO_15602__WORX_IT_RETAIL_INC__2026-01-15__185",
       "rr_no": "MRR-DIR-882",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15602",
@@ -14801,7 +14801,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9200
     },
     {
-      "id": "rr_MRR_RR-28491__HO-PO_15595__PAPERLINE_ENTERPRISE_IN",
+      "id": "rr_MRR_RR-28491__HO-PO_15595__PAPERLINE_ENTERPRISE_INC___2026-06-02__186",
       "rr_no": "MRR RR-28491",
       "report_date": "2026-06-02",
       "po_no": "HO-PO 15595",
@@ -14858,7 +14858,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3483.5
     },
     {
-      "id": "rr_MRR_RR_28499__HO-PO_15600__MAILOS_ENTERPRISE_INC__",
+      "id": "rr_MRR_RR_28499__HO-PO_15600__MAILOS_ENTERPRISE_INC__2026-06-11__187",
       "rr_no": "MRR RR 28499",
       "report_date": "2026-06-11",
       "po_no": "HO-PO 15600",
@@ -14889,7 +14889,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8400
     },
     {
-      "id": "rr_MRR_RR_28571__HO-PO_15598__3-TECH_INNOVATION_MASTE",
+      "id": "rr_MRR_RR_28571__HO-PO_15598__3-TECH_INNOVATION_MASTER_CORP___2026-06-29__188",
       "rr_no": "MRR RR 28571",
       "report_date": "2026-06-29",
       "po_no": "HO-PO 15598",
@@ -14920,7 +14920,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5850
     },
     {
-      "id": "rr_MRR_RR_28497__HO-PO_15601__MICROPHASE_CORPORATION_",
+      "id": "rr_MRR_RR_28497__HO-PO_15601__MICROPHASE_CORPORATION__2026-06-08__189",
       "rr_no": "MRR RR 28497",
       "report_date": "2026-06-08",
       "po_no": "HO-PO 15601",
@@ -14951,7 +14951,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4820
     },
     {
-      "id": "rr_MRR_RR_28498__HO-PO_15603__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_28498__HO-PO_15603__F_B_LADAO_SALES__INC___2026-06-11__190",
       "rr_no": "MRR RR 28498",
       "report_date": "2026-06-11",
       "po_no": "HO-PO 15603",
@@ -14995,7 +14995,7 @@ export const receivingReportsMasterData = {
       "total_amount": 20540
     },
     {
-      "id": "rr_MRR_28590__HO-PO_15605__PHILCOPY_CORPORATION__2026",
+      "id": "rr_MRR_28590__HO-PO_15605__PHILCOPY_CORPORATION__2026-07-27__191",
       "rr_no": "MRR 28590",
       "report_date": "2026-07-27",
       "po_no": "HO-PO 15605",
@@ -15065,7 +15065,7 @@ export const receivingReportsMasterData = {
       "total_amount": 57060
     },
     {
-      "id": "rr_MRR_RR-28492__HO-PO_15517__3-TECH_INNOVATION_MASTE",
+      "id": "rr_MRR_RR-28492__HO-PO_15517__3-TECH_INNOVATION_MASTER_CORP___2026-06-03__192",
       "rr_no": "MRR RR-28492",
       "report_date": "2026-06-03",
       "po_no": "HO-PO 15517",
@@ -15096,7 +15096,7 @@ export const receivingReportsMasterData = {
       "total_amount": 13370
     },
     {
-      "id": "rr_MRR_RR-28493__15577__3-TECH_INNOVATION_MASTER_CORP",
+      "id": "rr_MRR_RR-28493__15577__3-TECH_INNOVATION_MASTER_CORP___2026-06-02__193",
       "rr_no": "MRR RR-28493",
       "report_date": "2026-06-02",
       "po_no": "15577",
@@ -15127,7 +15127,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6350
     },
     {
-      "id": "rr_MRR_RR-24886__HO-PO_15604__OBACH_SOLUTIONS_CORP___",
+      "id": "rr_MRR_RR-24886__HO-PO_15604__OBACH_SOLUTIONS_CORP___2026-06-01__194",
       "rr_no": "MRR RR-24886",
       "report_date": "2026-06-01",
       "po_no": "HO-PO 15604",
@@ -15171,7 +15171,7 @@ export const receivingReportsMasterData = {
       "total_amount": 60000
     },
     {
-      "id": "rr_MRR_RR-28484__15587__JJ_SUMMIT_STATIONERY_COMPANY_",
+      "id": "rr_MRR_RR-28484__15587__JJ_SUMMIT_STATIONERY_COMPANY__2026-06-01__195",
       "rr_no": "MRR RR-28484",
       "report_date": "2026-06-01",
       "po_no": "15587",
@@ -15241,7 +15241,7 @@ export const receivingReportsMasterData = {
       "total_amount": 626
     },
     {
-      "id": "rr_MRR_RR-28485__15578__3-TECH_INNOVATION_MASTER_CORP",
+      "id": "rr_MRR_RR-28485__15578__3-TECH_INNOVATION_MASTER_CORP___2026-06-01__196",
       "rr_no": "MRR RR-28485",
       "report_date": "2026-06-01",
       "po_no": "15578",
@@ -15272,7 +15272,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1750
     },
     {
-      "id": "rr_MRR_RR-28489__15575__MICROPHASE_CORPORATION__2026-",
+      "id": "rr_MRR_RR-28489__15575__MICROPHASE_CORPORATION__2026-06-02__197",
       "rr_no": "MRR RR-28489",
       "report_date": "2026-06-02",
       "po_no": "15575",
@@ -15329,7 +15329,7 @@ export const receivingReportsMasterData = {
       "total_amount": 19925
     },
     {
-      "id": "rr_MRR_RR_28483__HO-PO_15574__TWU_FURNITURE_CORPORATI",
+      "id": "rr_MRR_RR_28483__HO-PO_15574__TWU_FURNITURE_CORPORATION__2026-05-29__198",
       "rr_no": "MRR RR 28483",
       "report_date": "2026-05-29",
       "po_no": "HO-PO 15574",
@@ -15360,7 +15360,7 @@ export const receivingReportsMasterData = {
       "total_amount": 66000
     },
     {
-      "id": "rr_MRR_RR_28482__15591__NEW_MILLENIUM_TRADING__2026-0",
+      "id": "rr_MRR_RR_28482__15591__NEW_MILLENIUM_TRADING__2026-05-28__199",
       "rr_no": "MRR RR 28482",
       "report_date": "2026-05-28",
       "po_no": "15591",
@@ -15430,7 +15430,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2172
     },
     {
-      "id": "rr_MRR_RR_28473__HO-PO_15554__PHIL_SAFE_INDUSTRIAL_AN",
+      "id": "rr_MRR_RR_28473__HO-PO_15554__PHIL_SAFE_INDUSTRIAL_AND_SAFETY_SUPPLIES_INC___2026-05-20__200",
       "rr_no": "MRR RR 28473",
       "report_date": "2026-05-20",
       "po_no": "HO-PO 15554",
@@ -15487,7 +15487,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4130
     },
     {
-      "id": "rr_MRR_RR_28480__15570__PAPERLINE_ENTERPRISE_INC___20",
+      "id": "rr_MRR_RR_28480__15570__PAPERLINE_ENTERPRISE_INC___2026-05-25__201",
       "rr_no": "MRR RR 28480",
       "report_date": "2026-05-25",
       "po_no": "15570",
@@ -15518,7 +15518,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2700
     },
     {
-      "id": "rr_MRR_RR_28474__HO-PO_15571__F_B_LADAO_SALES_INC___2",
+      "id": "rr_MRR_RR_28474__HO-PO_15571__F_B_LADAO_SALES_INC___2026-05-21__202",
       "rr_no": "MRR RR 28474",
       "report_date": "2026-05-21",
       "po_no": "HO-PO 15571",
@@ -15549,7 +15549,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6750
     },
     {
-      "id": "rr_MRR_RR_28477__15563__JJ_SUMMIT_STATIONERY_COMPANY_",
+      "id": "rr_MRR_RR_28477__15563__JJ_SUMMIT_STATIONERY_COMPANY__2026-05-21__203",
       "rr_no": "MRR RR 28477",
       "report_date": "2026-05-21",
       "po_no": "15563",
@@ -15684,7 +15684,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5938
     },
     {
-      "id": "rr_MRR_RR_28477_28557__15563__JJ_SUMMIT_STATIONERY_CO",
+      "id": "rr_MRR_RR_28477_28557__15563__JJ_SUMMIT_STATIONERY_COMPANY__2026-05-21__204",
       "rr_no": "MRR RR 28477/28557",
       "report_date": "2026-05-21",
       "po_no": "15563",
@@ -15728,7 +15728,7 @@ export const receivingReportsMasterData = {
       "total_amount": 19300
     },
     {
-      "id": "rr_MRR_RR_28472__HO-PO_15540__PAPERLINE_ENTERPRISE_IN",
+      "id": "rr_MRR_RR_28472__HO-PO_15540__PAPERLINE_ENTERPRISE_INC___2026-05-20__205",
       "rr_no": "MRR RR 28472",
       "report_date": "2026-05-20",
       "po_no": "HO-PO 15540",
@@ -15772,7 +15772,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5488
     },
     {
-      "id": "rr_MRR_RR_28458__HO-PO_15519__MICROPHASE_CORPORATION_",
+      "id": "rr_MRR_RR_28458__HO-PO_15519__MICROPHASE_CORPORATION__2026-05-05__206",
       "rr_no": "MRR RR 28458",
       "report_date": "2026-05-05",
       "po_no": "HO-PO 15519",
@@ -15803,7 +15803,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2325
     },
     {
-      "id": "rr_MRR-DIR-931__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2",
+      "id": "rr_MRR-DIR-931__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2026-01-15__207",
       "rr_no": "MRR-DIR-931",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15512-",
@@ -15834,7 +15834,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4000
     },
     {
-      "id": "rr_MRR-DIR-932__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2",
+      "id": "rr_MRR-DIR-932__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2026-01-15__208",
       "rr_no": "MRR-DIR-932",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15512-",
@@ -15865,7 +15865,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1200
     },
     {
-      "id": "rr_MRR-DIR-933__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2",
+      "id": "rr_MRR-DIR-933__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2026-01-15__209",
       "rr_no": "MRR-DIR-933",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15512-",
@@ -15896,7 +15896,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1200
     },
     {
-      "id": "rr_MRR-DIR-934__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2",
+      "id": "rr_MRR-DIR-934__HO-PO_15512-__FREDWAY_MACHINE_SHOP__2026-01-15__210",
       "rr_no": "MRR-DIR-934",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15512-",
@@ -15927,7 +15927,7 @@ export const receivingReportsMasterData = {
       "total_amount": 768
     },
     {
-      "id": "rr_MRR_28400__HO-PO_15530__ALVERSTONE_VAULT_AND_OFFIC",
+      "id": "rr_MRR_28400__HO-PO_15530__ALVERSTONE_VAULT_AND_OFFICE_STEEL_EQUIPMENT__2026-04-23__211",
       "rr_no": "MRR 28400",
       "report_date": "2026-04-23",
       "po_no": "HO-PO 15530",
@@ -15958,7 +15958,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7585
     },
     {
-      "id": "rr_MRR_28395__HO-PO_15529__BON-EARNEST_FIRE_EXTHINGUI",
+      "id": "rr_MRR_28395__HO-PO_15529__BON-EARNEST_FIRE_EXTHINGUISHER_TRADING__2026-04-23__212",
       "rr_no": "MRR 28395",
       "report_date": "2026-04-23",
       "po_no": "HO-PO 15529",
@@ -16015,7 +16015,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3250
     },
     {
-      "id": "rr_MRR_28392_28393__HO-PO_15525__PITSTOP_MOTORS__PMS_",
+      "id": "rr_MRR_28392_28393__HO-PO_15525__PITSTOP_MOTORS__PMS_INC___2026-04-14__213",
       "rr_no": "MRR 28392&28393",
       "report_date": "2026-04-14",
       "po_no": "HO-PO 15525",
@@ -16228,7 +16228,7 @@ export const receivingReportsMasterData = {
       "total_amount": 47056
     },
     {
-      "id": "rr_MRR-DIR-954__HO-PO_15536__JBL_AUTO_PARTS_TRAIDING_",
+      "id": "rr_MRR-DIR-954__HO-PO_15536__JBL_AUTO_PARTS_TRAIDING_OPC__2026-01-15__214",
       "rr_no": "MRR-DIR-954",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15536",
@@ -16259,7 +16259,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5300
     },
     {
-      "id": "rr_MRR-DIR-955__HO-PO_15536__JBL_AUTO_PARTS_TRAIDING_",
+      "id": "rr_MRR-DIR-955__HO-PO_15536__JBL_AUTO_PARTS_TRAIDING_OPC__2026-01-15__215",
       "rr_no": "MRR-DIR-955",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15536",
@@ -16290,7 +16290,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1900
     },
     {
-      "id": "rr_MRR_28595__HO-PO_15539__3J2S_SCHOOL_AND_OFFICE_SUP",
+      "id": "rr_MRR_28595__HO-PO_15539__3J2S_SCHOOL_AND_OFFICE_SUPPLIES__2026-07-25__216",
       "rr_no": "MRR 28595",
       "report_date": "2026-07-25",
       "po_no": "HO-PO 15539",
@@ -16321,7 +16321,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9400
     },
     {
-      "id": "rr_MRR_28399__HO-PO_15531__ALVERSTONE_VAULT_AND_OFFIC",
+      "id": "rr_MRR_28399__HO-PO_15531__ALVERSTONE_VAULT_AND_OFFICE_STEEL_EQUIPMENT__2026-04-23__217",
       "rr_no": "MRR 28399",
       "report_date": "2026-04-23",
       "po_no": "HO-PO 15531",
@@ -16352,7 +16352,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6998
     },
     {
-      "id": "rr_MRR_28391__HO-PO_15518__TECHCONIK_COMPUTER_TRAIDIN",
+      "id": "rr_MRR_28391__HO-PO_15518__TECHCONIK_COMPUTER_TRAIDING__2026-04-10__218",
       "rr_no": "MRR 28391",
       "report_date": "2026-04-10",
       "po_no": "HO-PO 15518",
@@ -16383,7 +16383,7 @@ export const receivingReportsMasterData = {
       "total_amount": 64000
     },
     {
-      "id": "rr_MRR_28396_28397__HO-PO_15544__NEW_MILLENIUM_TRADIN",
+      "id": "rr_MRR_28396_28397__HO-PO_15544__NEW_MILLENIUM_TRADING__2026-04-23__219",
       "rr_no": "MRR 28396&28397",
       "report_date": "2026-04-23",
       "po_no": "HO-PO 15544",
@@ -16544,7 +16544,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3344.5
     },
     {
-      "id": "rr_MRR_RR_28496__HO-PO_15547__SAFETY_IMPERIUM_CONSULT",
+      "id": "rr_MRR_RR_28496__HO-PO_15547__SAFETY_IMPERIUM_CONSULTANCY_SERVICES_CORPORATION__2026-06-08__220",
       "rr_no": "MRR RR 28496",
       "report_date": "2026-06-08",
       "po_no": "HO-PO 15547",
@@ -16575,7 +16575,7 @@ export const receivingReportsMasterData = {
       "total_amount": 40000
     },
     {
-      "id": "rr_MRR-DIR-973__HO-PO_15551__C3_ENGINEERING_PILIPINAS",
+      "id": "rr_MRR-DIR-973__HO-PO_15551__C3_ENGINEERING_PILIPINAS_CO___2026-01-15__221",
       "rr_no": "MRR-DIR-973",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15551",
@@ -16606,7 +16606,7 @@ export const receivingReportsMasterData = {
       "total_amount": 76075
     },
     {
-      "id": "rr_MRR-DIR-974__HO-PO_15551__C3_ENGINEERING_PILIPINAS",
+      "id": "rr_MRR-DIR-974__HO-PO_15551__C3_ENGINEERING_PILIPINAS_CO___2026-01-15__222",
       "rr_no": "MRR-DIR-974",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15551",
@@ -16637,7 +16637,7 @@ export const receivingReportsMasterData = {
       "total_amount": 41330
     },
     {
-      "id": "rr_MRR_RR_29552__HO-PO_15549__JCA_SYSTEM__CORPORATION",
+      "id": "rr_MRR_RR_29552__HO-PO_15549__JCA_SYSTEM__CORPORATION__2026-10-06__223",
       "rr_no": "MRR RR 29552",
       "report_date": "2026-10-06",
       "po_no": "HO-PO 15549",
@@ -16668,7 +16668,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2325
     },
     {
-      "id": "rr_MRR-DIR-976__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-976__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-06-01__224",
       "rr_no": "MRR-DIR-976",
       "report_date": "2026-06-01",
       "po_no": "HO-PO 15555",
@@ -16699,7 +16699,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2671.2
     },
     {
-      "id": "rr_MRR-DIR-977__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-977__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__225",
       "rr_no": "MRR-DIR-977",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16730,7 +16730,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1400
     },
     {
-      "id": "rr_MRR-DIR-978__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-978__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__226",
       "rr_no": "MRR-DIR-978",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16761,7 +16761,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1650
     },
     {
-      "id": "rr_MRR-DIR-979__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-979__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__227",
       "rr_no": "MRR-DIR-979",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16792,7 +16792,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9800
     },
     {
-      "id": "rr_MRR-DIR-980__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-980__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__228",
       "rr_no": "MRR-DIR-980",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16823,7 +16823,7 @@ export const receivingReportsMasterData = {
       "total_amount": 810
     },
     {
-      "id": "rr_MRR-DIR-981__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-981__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__229",
       "rr_no": "MRR-DIR-981",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16854,7 +16854,7 @@ export const receivingReportsMasterData = {
       "total_amount": 841
     },
     {
-      "id": "rr_MRR-DIR-982__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-982__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__230",
       "rr_no": "MRR-DIR-982",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16885,7 +16885,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1800
     },
     {
-      "id": "rr_MRR-DIR-983__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-983__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__231",
       "rr_no": "MRR-DIR-983",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16916,7 +16916,7 @@ export const receivingReportsMasterData = {
       "total_amount": 845
     },
     {
-      "id": "rr_MRR-DIR-984__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-984__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__232",
       "rr_no": "MRR-DIR-984",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16947,7 +16947,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1800
     },
     {
-      "id": "rr_MRR-DIR-985__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-985__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__233",
       "rr_no": "MRR-DIR-985",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -16978,7 +16978,7 @@ export const receivingReportsMasterData = {
       "total_amount": 240
     },
     {
-      "id": "rr_MRR-DIR-986__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-986__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__234",
       "rr_no": "MRR-DIR-986",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -17009,7 +17009,7 @@ export const receivingReportsMasterData = {
       "total_amount": 175
     },
     {
-      "id": "rr_MRR-DIR-987__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-987__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__235",
       "rr_no": "MRR-DIR-987",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -17040,7 +17040,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3500
     },
     {
-      "id": "rr_MRR-DIR-988__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-988__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__236",
       "rr_no": "MRR-DIR-988",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -17071,7 +17071,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3300
     },
     {
-      "id": "rr_MRR-DIR-989__HO-PO_15555__TOYOTA_COMMONWEALTH_INC_",
+      "id": "rr_MRR-DIR-989__HO-PO_15555__TOYOTA_COMMONWEALTH_INC__2026-01-15__237",
       "rr_no": "MRR-DIR-989",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15555",
@@ -17102,7 +17102,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1450
     },
     {
-      "id": "rr_MRR-DIR-990__HO-PO_15550__F_B_LADAO_SALES__INC___2",
+      "id": "rr_MRR-DIR-990__HO-PO_15550__F_B_LADAO_SALES__INC___2026-01-15__238",
       "rr_no": "MRR-DIR-990",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15550",
@@ -17133,7 +17133,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9700
     },
     {
-      "id": "rr_MRR_RR_28495__HO-PO_15581__PAPERLINE_ENTERPRISE_IN",
+      "id": "rr_MRR_RR_28495__HO-PO_15581__PAPERLINE_ENTERPRISE_INC___2026-08-08__239",
       "rr_no": "MRR RR 28495",
       "report_date": "2026-08-08",
       "po_no": "HO-PO 15581",
@@ -17164,7 +17164,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3402
     },
     {
-      "id": "rr_MRR_28461__15565__M_P_T__BATTERY_MARKETING__2026-0",
+      "id": "rr_MRR_28461__15565__M_P_T__BATTERY_MARKETING__2026-05-08__240",
       "rr_no": "MRR 28461",
       "report_date": "2026-05-08",
       "po_no": "15565",
@@ -17208,7 +17208,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8715
     },
     {
-      "id": "rr_MRR_28453_28454__15535__F_B_LADAO_SALES_INC___2026",
+      "id": "rr_MRR_28453_28454__15535__F_B_LADAO_SALES_INC___2026-04-28__241",
       "rr_no": "MRR 28453&28454",
       "report_date": "2026-04-28",
       "po_no": "15535",
@@ -17382,7 +17382,7 @@ export const receivingReportsMasterData = {
       "total_amount": 23110
     },
     {
-      "id": "rr_MRR_28457__15546__GREATWORLD_APPLIANCES_CENTER_INC",
+      "id": "rr_MRR_28457__15546__GREATWORLD_APPLIANCES_CENTER_INC___2026-05-05__242",
       "rr_no": "MRR 28457",
       "report_date": "2026-05-05",
       "po_no": "15546",
@@ -17413,7 +17413,7 @@ export const receivingReportsMasterData = {
       "total_amount": 44000
     },
     {
-      "id": "rr_MRR_28374__HO-PO_15580__OFFICE_WAREHOUSE_INC___202",
+      "id": "rr_MRR_28374__HO-PO_15580__OFFICE_WAREHOUSE_INC___2026-03-26__243",
       "rr_no": "MRR 28374",
       "report_date": "2026-03-26",
       "po_no": "HO-PO 15580",
@@ -17444,7 +17444,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1500
     },
     {
-      "id": "rr_MRR_RR_28500__HO-PO_15580__MAILOS_ENTERPRISE_INC__",
+      "id": "rr_MRR_RR_28500__HO-PO_15580__MAILOS_ENTERPRISE_INC___2026-06-11__244",
       "rr_no": "MRR RR 28500",
       "report_date": "2026-06-11",
       "po_no": "HO-PO 15580",
@@ -17553,7 +17553,7 @@ export const receivingReportsMasterData = {
       "total_amount": 31775
     },
     {
-      "id": "rr_MRR_RR_28551__HO-PO_15615__MEGACOM_CONSTRUCTION_SU",
+      "id": "rr_MRR_RR_28551__HO-PO_15615__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-06-13__245",
       "rr_no": "MRR RR 28551",
       "report_date": "2026-06-13",
       "po_no": "HO-PO 15615",
@@ -17701,7 +17701,7 @@ export const receivingReportsMasterData = {
       "total_amount": 55130
     },
     {
-      "id": "rr_MRR_RR_28552__HO-PO_15615__MEGACOM_CONSTRUCTION_SU",
+      "id": "rr_MRR_RR_28552__HO-PO_15615__MEGACOM_CONSTRUCTION_SUPPLY_CO___2026-06-13__246",
       "rr_no": "MRR RR 28552",
       "report_date": "2026-06-13",
       "po_no": "HO-PO 15615",
@@ -17745,7 +17745,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9840
     },
     {
-      "id": "rr_MRR_RR_28856__HO-PO_15564__MAILOS_ENTERPRISE_INC__",
+      "id": "rr_MRR_RR_28856__HO-PO_15564__MAILOS_ENTERPRISE_INC___2026-06-17__247",
       "rr_no": "MRR RR 28856",
       "report_date": "2026-06-17",
       "po_no": "HO-PO 15564",
@@ -17776,7 +17776,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2950
     },
     {
-      "id": "rr_MRR_RR_28563__15560__RMJK_AUTO_PARTS_TRADING__2026",
+      "id": "rr_MRR_RR_28563__15560__RMJK_AUTO_PARTS_TRADING__2026-06-16__248",
       "rr_no": "MRR RR 28563",
       "report_date": "2026-06-16",
       "po_no": "15560",
@@ -17833,7 +17833,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15700
     },
     {
-      "id": "rr_MRR_RR_28564__15559__JBL_AUTO_PARTS_TRAIDING_OPC__",
+      "id": "rr_MRR_RR_28564__15559__JBL_AUTO_PARTS_TRAIDING_OPC__2026-05-14__249",
       "rr_no": "MRR RR 28564",
       "report_date": "2026-05-14",
       "po_no": "15559",
@@ -17877,7 +17877,7 @@ export const receivingReportsMasterData = {
       "total_amount": 47000
     },
     {
-      "id": "rr_MRR_RR_28560__15561__ROADSMART-AUTO_PARTS_SUPPLY__",
+      "id": "rr_MRR_RR_28560__15561__ROADSMART-AUTO_PARTS_SUPPLY__2026-06-24__250",
       "rr_no": "MRR RR 28560",
       "report_date": "2026-06-24",
       "po_no": "15561",
@@ -17999,7 +17999,7 @@ export const receivingReportsMasterData = {
       "total_amount": 16825
     },
     {
-      "id": "rr_MRR_28559__HO-PO_15558__ROADSMART-AUTO_PARTS_SUPPL",
+      "id": "rr_MRR_28559__HO-PO_15558__ROADSMART-AUTO_PARTS_SUPPLY__2026-06-24__251",
       "rr_no": "MRR 28559",
       "report_date": "2026-06-24",
       "po_no": "HO-PO 15558",
@@ -18134,7 +18134,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5600
     },
     {
-      "id": "rr_MRR-DIR-1050__HO-PO_15562__NISSAN_PARTS_CENTER__20",
+      "id": "rr_MRR-DIR-1050__HO-PO_15562__NISSAN_PARTS_CENTER__2026-01-15__252",
       "rr_no": "MRR-DIR-1050",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15562",
@@ -18165,7 +18165,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5000
     },
     {
-      "id": "rr_MRR-DIR-1051__HO-PO_15562__NISSAN_PARTS_CENTER__20",
+      "id": "rr_MRR-DIR-1051__HO-PO_15562__NISSAN_PARTS_CENTER__2026-01-15__253",
       "rr_no": "MRR-DIR-1051",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15562",
@@ -18196,7 +18196,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2000
     },
     {
-      "id": "rr_MRR_RR_29411__15569__GRLB_PRINTING_SERVICES__2026-",
+      "id": "rr_MRR_RR_29411__15569__GRLB_PRINTING_SERVICES__2026-08-17__254",
       "rr_no": "MRR RR 29411",
       "report_date": "2026-08-17",
       "po_no": "15569",
@@ -18227,7 +18227,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8800
     },
     {
-      "id": "rr_MRR_RR_284700-SV__15566__F_B_LADAO_SALES__INC___20",
+      "id": "rr_MRR_RR_284700-SV__15566__F_B_LADAO_SALES__INC___2026-05-15__255",
       "rr_no": "MRR RR 284700-SV",
       "report_date": "2026-05-15",
       "po_no": "15566",
@@ -18362,7 +18362,7 @@ export const receivingReportsMasterData = {
       "total_amount": 17720
     },
     {
-      "id": "rr_MRR_RR_28555__15576__CADD_SOLUTIONS_INCORPORATED__",
+      "id": "rr_MRR_RR_28555__15576__CADD_SOLUTIONS_INCORPORATED__2026-06-17__256",
       "rr_no": "MRR RR 28555",
       "report_date": "2026-06-17",
       "po_no": "15576",
@@ -18393,7 +18393,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2900
     },
     {
-      "id": "rr_MRR-DIR-1063__HO-PO_15576__CADD_SOLUTIONS_INCORPOR",
+      "id": "rr_MRR-DIR-1063__HO-PO_15576__CADD_SOLUTIONS_INCORPORATED__2026-01-15__257",
       "rr_no": "MRR-DIR-1063",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15576",
@@ -18424,7 +18424,7 @@ export const receivingReportsMasterData = {
       "total_amount": 600
     },
     {
-      "id": "rr_MRR-DIR-1064__HO-PO_15568__C3_ENGINEERING_PILIPINA",
+      "id": "rr_MRR-DIR-1064__HO-PO_15568__C3_ENGINEERING_PILIPINAS_CO___2026-01-15__258",
       "rr_no": "MRR-DIR-1064",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15568",
@@ -18455,7 +18455,7 @@ export const receivingReportsMasterData = {
       "total_amount": 19500
     },
     {
-      "id": "rr_MRR-DIR-1065__HO-PO_15567__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR-DIR-1065__HO-PO_15567__F_B_LADAO_SALES__INC___2026-01-15__259",
       "rr_no": "MRR-DIR-1065",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15567",
@@ -18486,7 +18486,7 @@ export const receivingReportsMasterData = {
       "total_amount": 20400
     },
     {
-      "id": "rr_MRR-DIR-1066__HO-PO_15567__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR-DIR-1066__HO-PO_15567__F_B_LADAO_SALES__INC___2026-01-15__260",
       "rr_no": "MRR-DIR-1066",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15567",
@@ -18517,7 +18517,7 @@ export const receivingReportsMasterData = {
       "total_amount": 120
     },
     {
-      "id": "rr_MRR-DIR-1067__HO-PO_15567__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR-DIR-1067__HO-PO_15567__F_B_LADAO_SALES__INC___2026-01-15__261",
       "rr_no": "MRR-DIR-1067",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15567",
@@ -18548,7 +18548,7 @@ export const receivingReportsMasterData = {
       "total_amount": 200
     },
     {
-      "id": "rr_MRR-DIR-1068__HO-PO_15567__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR-DIR-1068__HO-PO_15567__F_B_LADAO_SALES__INC___2026-01-15__262",
       "rr_no": "MRR-DIR-1068",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15567",
@@ -18579,7 +18579,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2500
     },
     {
-      "id": "rr_MRR_29556__15573__CITIMEX_INC__2026-10-08",
+      "id": "rr_MRR_29556__15573__CITIMEX_INC__2026-10-08__263",
       "rr_no": "MRR 29556",
       "report_date": "2026-10-08",
       "po_no": "15573",
@@ -18610,7 +18610,7 @@ export const receivingReportsMasterData = {
       "total_amount": 58000
     },
     {
-      "id": "rr_MRR_RR_29410__15583__EMICOR_INC__2026-08-17",
+      "id": "rr_MRR_RR_29410__15583__EMICOR_INC__2026-08-17__264",
       "rr_no": "MRR RR 29410",
       "report_date": "2026-08-17",
       "po_no": "15583",
@@ -18641,7 +18641,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2500
     },
     {
-      "id": "rr_MRR_RR_28574__HO_PRF-NO_1_17745__BREW_MASTER_INTER",
+      "id": "rr_MRR_RR_28574__HO_PRF-NO_1_17745__BREW_MASTER_INTERNATIONAL_INC__2026-07-01__265",
       "rr_no": "MRR RR 28574",
       "report_date": "2026-07-01",
       "po_no": "HO.PRF-NO.1.17745",
@@ -18672,7 +18672,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5677
     },
     {
-      "id": "rr_MRR_PETTY_CASH__HO-PO_15584__PEPPERNIMBUS_ONLINE_S",
+      "id": "rr_MRR_PETTY_CASH__HO-PO_15584__PEPPERNIMBUS_ONLINE_STORE__2026-07-29__266",
       "rr_no": "MRR PETTY CASH",
       "report_date": "2026-07-29",
       "po_no": "HO-PO 15584",
@@ -18716,7 +18716,7 @@ export const receivingReportsMasterData = {
       "total_amount": 760
     },
     {
-      "id": "rr_MRR_28558__15589__PUREGOLD_JR__KALAYAAN__2026-06-2",
+      "id": "rr_MRR_28558__15589__PUREGOLD_JR__KALAYAAN__2026-06-20__267",
       "rr_no": "MRR 28558",
       "report_date": "2026-06-20",
       "po_no": "15589",
@@ -18773,7 +18773,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8005
     },
     {
-      "id": "rr_MRR-DIR-1077__15589__PUREGOLD_JR__KALAYAAN__2026-0",
+      "id": "rr_MRR-DIR-1077__15589__PUREGOLD_JR__KALAYAAN__2026-01-15__268",
       "rr_no": "MRR-DIR-1077",
       "report_date": "2026-01-15",
       "po_no": "15589",
@@ -18804,7 +18804,7 @@ export const receivingReportsMasterData = {
       "total_amount": 653.75
     },
     {
-      "id": "rr_MRR_RR_29415__15590__CROWN_SUPPLY_CORPORATION__202",
+      "id": "rr_MRR_RR_29415__15590__CROWN_SUPPLY_CORPORATION__2026-08-20__269",
       "rr_no": "MRR RR 29415",
       "report_date": "2026-08-20",
       "po_no": "15590",
@@ -18848,7 +18848,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1042
     },
     {
-      "id": "rr_MRR_RR_29419__15588__OFFICE_WAREHOUSE_INC___2026-0",
+      "id": "rr_MRR_RR_29419__15588__OFFICE_WAREHOUSE_INC___2026-08-24__270",
       "rr_no": "MRR RR 29419",
       "report_date": "2026-08-24",
       "po_no": "15588",
@@ -18879,7 +18879,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1500
     },
     {
-      "id": "rr_MRR-DIR-1081__HO-PO_15601__MICROPHASE_CORPORATION_",
+      "id": "rr_MRR-DIR-1081__HO-PO_15601__MICROPHASE_CORPORATION__2026-01-15__271",
       "rr_no": "MRR-DIR-1081",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15601",
@@ -18910,7 +18910,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4820
     },
     {
-      "id": "rr_MRR-DIR-1082__HO-PO_15611__VILLAFLORES_INDUSTRIAL_",
+      "id": "rr_MRR-DIR-1082__HO-PO_15611__VILLAFLORES_INDUSTRIAL_SUPPLY__2026-01-15__272",
       "rr_no": "MRR-DIR-1082",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15611",
@@ -18941,7 +18941,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2300
     },
     {
-      "id": "rr_MRR_RR_29560__HO-PO_15637__3-TECH_INNOVATION_MASTE",
+      "id": "rr_MRR_RR_29560__HO-PO_15637__3-TECH_INNOVATION_MASTER_CORP___2026-10-13__273",
       "rr_no": "MRR RR 29560",
       "report_date": "2026-10-13",
       "po_no": "HO-PO 15637",
@@ -18972,7 +18972,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15600
     },
     {
-      "id": "rr_MRR_28573__HO-PO_15635__NEW_MILLENIUM_TRADING__202",
+      "id": "rr_MRR_28573__HO-PO_15635__NEW_MILLENIUM_TRADING__2026-06-30__274",
       "rr_no": "MRR 28573",
       "report_date": "2026-06-30",
       "po_no": "HO-PO 15635",
@@ -19055,7 +19055,7 @@ export const receivingReportsMasterData = {
       "total_amount": 921
     },
     {
-      "id": "rr_MRR_28573__HO-PO_15636__YRAMAR_TRAIDING__2026-06-2",
+      "id": "rr_MRR_28573__HO-PO_15636__YRAMAR_TRAIDING__2026-06-26__275",
       "rr_no": "MRR 28573",
       "report_date": "2026-06-26",
       "po_no": "HO-PO 15636",
@@ -19099,7 +19099,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10000
     },
     {
-      "id": "rr_MRR-DIR-1090__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1090__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__276",
       "rr_no": "MRR-DIR-1090",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19130,7 +19130,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8500
     },
     {
-      "id": "rr_MRR-DIR-1091__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1091__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__277",
       "rr_no": "MRR-DIR-1091",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19161,7 +19161,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1020
     },
     {
-      "id": "rr_MRR-DIR-1092__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1092__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__278",
       "rr_no": "MRR-DIR-1092",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19192,7 +19192,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4550
     },
     {
-      "id": "rr_MRR-DIR-1093__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1093__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__279",
       "rr_no": "MRR-DIR-1093",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19223,7 +19223,7 @@ export const receivingReportsMasterData = {
       "total_amount": 950
     },
     {
-      "id": "rr_MRR-DIR-1094__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1094__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__280",
       "rr_no": "MRR-DIR-1094",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19254,7 +19254,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1850
     },
     {
-      "id": "rr_MRR-DIR-1095__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1095__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__281",
       "rr_no": "MRR-DIR-1095",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19285,7 +19285,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1750
     },
     {
-      "id": "rr_MRR-DIR-1096__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1096__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__282",
       "rr_no": "MRR-DIR-1096",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19316,7 +19316,7 @@ export const receivingReportsMasterData = {
       "total_amount": 700
     },
     {
-      "id": "rr_MRR-DIR-1097__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1097__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__283",
       "rr_no": "MRR-DIR-1097",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19347,7 +19347,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5000
     },
     {
-      "id": "rr_MRR-DIR-1098__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1098__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__284",
       "rr_no": "MRR-DIR-1098",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19378,7 +19378,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1200
     },
     {
-      "id": "rr_MRR-DIR-1099__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1099__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__285",
       "rr_no": "MRR-DIR-1099",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19409,7 +19409,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2800
     },
     {
-      "id": "rr_MRR-DIR-1100__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1100__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__286",
       "rr_no": "MRR-DIR-1100",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19440,7 +19440,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4400
     },
     {
-      "id": "rr_MRR-DIR-1101__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1101__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__287",
       "rr_no": "MRR-DIR-1101",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19471,7 +19471,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2550
     },
     {
-      "id": "rr_MRR-DIR-1102__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1102__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__288",
       "rr_no": "MRR-DIR-1102",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19502,7 +19502,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6800
     },
     {
-      "id": "rr_MRR-DIR-1103__HO-PO_15634__PITSTOP_MOTORS__PMS_INC",
+      "id": "rr_MRR-DIR-1103__HO-PO_15634__PITSTOP_MOTORS__PMS_INC___2026-01-15__289",
       "rr_no": "MRR-DIR-1103",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15634",
@@ -19533,7 +19533,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4500
     },
     {
-      "id": "rr_MRR_RR_29417__HO-PO_15625__GOTESCO_MARKETING_INC__",
+      "id": "rr_MRR_RR_29417__HO-PO_15625__GOTESCO_MARKETING_INC___2026-08-24__290",
       "rr_no": "MRR RR 29417",
       "report_date": "2026-08-24",
       "po_no": "HO-PO 15625",
@@ -19577,7 +19577,7 @@ export const receivingReportsMasterData = {
       "total_amount": 130000
     },
     {
-      "id": "rr_MRR_RR_28565__HO-PO_15627__F_B___LADAO_SALES__INC_",
+      "id": "rr_MRR_RR_28565__HO-PO_15627__F_B___LADAO_SALES__INC___2026-06-26__291",
       "rr_no": "MRR RR 28565",
       "report_date": "2026-06-26",
       "po_no": "HO-PO 15627",
@@ -19621,7 +19621,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15250
     },
     {
-      "id": "rr_MRR_RR_28562__HO-PO_15626__F_B___LADAO_SALES__INC_",
+      "id": "rr_MRR_RR_28562__HO-PO_15626__F_B___LADAO_SALES__INC___2026-06-26__292",
       "rr_no": "MRR RR 28562",
       "report_date": "2026-06-26",
       "po_no": "HO-PO 15626",
@@ -19652,7 +19652,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9600
     },
     {
-      "id": "rr_MRR_RR_28555__HO-PO_15614__MAILOS_ENTERPRISE_INC__",
+      "id": "rr_MRR_RR_28555__HO-PO_15614__MAILOS_ENTERPRISE_INC___2026-06-14__293",
       "rr_no": "MRR RR 28555",
       "report_date": "2026-06-14",
       "po_no": "HO-PO 15614",
@@ -19683,7 +19683,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2000
     },
     {
-      "id": "rr_MRR_RR_28570__HO-PO_15618__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_28570__HO-PO_15618__F_B_LADAO_SALES__INC___2026-06-29__294",
       "rr_no": "MRR RR 28570",
       "report_date": "2026-06-29",
       "po_no": "HO-PO 15618",
@@ -19753,7 +19753,7 @@ export const receivingReportsMasterData = {
       "total_amount": 29240
     },
     {
-      "id": "rr_MRR_RR_28561__HO-PO_15623__ARIOM_TECH_COMPUTER_SYS",
+      "id": "rr_MRR_RR_28561__HO-PO_15623__ARIOM_TECH_COMPUTER_SYSTEM__2026-06-24__295",
       "rr_no": "MRR RR 28561",
       "report_date": "2026-06-24",
       "po_no": "HO-PO 15623",
@@ -19784,7 +19784,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5650
     },
     {
-      "id": "rr_MRR_28583__HO-PO_15619__JEROCAS_RESEARCH_LABORATOR",
+      "id": "rr_MRR_28583__HO-PO_15619__JEROCAS_RESEARCH_LABORATORY_SERVICES__2026-06-10__296",
       "rr_no": "MRR 28583",
       "report_date": "2026-06-10",
       "po_no": "HO-PO 15619",
@@ -19815,7 +19815,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5910
     },
     {
-      "id": "rr_MRR_28600__HO-PO_15617__JARDINE_SCHINDLER_ELEVATOR",
+      "id": "rr_MRR_28600__HO-PO_15617__JARDINE_SCHINDLER_ELEVATOR_CORPORATION__2026-08-11__297",
       "rr_no": "MRR 28600",
       "report_date": "2026-08-11",
       "po_no": "HO-PO 15617",
@@ -19846,7 +19846,7 @@ export const receivingReportsMasterData = {
       "total_amount": 34000
     },
     {
-      "id": "rr_MRR-DIR-1117__HO-PO_15612__MICROPHASE_CORPORATION_",
+      "id": "rr_MRR-DIR-1117__HO-PO_15612__MICROPHASE_CORPORATION__2026-01-15__298",
       "rr_no": "MRR-DIR-1117",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15612",
@@ -19877,7 +19877,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1780
     },
     {
-      "id": "rr_MRR_RR_28578__HO-PO_15640__JUDRHOMAY_ENTERPRISES_C",
+      "id": "rr_MRR_RR_28578__HO-PO_15640__JUDRHOMAY_ENTERPRISES_COMPANY__2026-07-04__299",
       "rr_no": "MRR RR 28578",
       "report_date": "2026-07-04",
       "po_no": "HO-PO 15640",
@@ -19921,7 +19921,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2332
     },
     {
-      "id": "rr_MRR_RR_28579__HO-PO_15641__PAPERLINE_ENTERPRISE_IN",
+      "id": "rr_MRR_RR_28579__HO-PO_15641__PAPERLINE_ENTERPRISE_INC___2026-07-06__300",
       "rr_no": "MRR RR 28579",
       "report_date": "2026-07-06",
       "po_no": "HO-PO 15641",
@@ -20004,7 +20004,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9499
     },
     {
-      "id": "rr_MRR_RR_28580__HO-PO_15641__PAPERLINE_ENTERPRISE_IN",
+      "id": "rr_MRR_RR_28580__HO-PO_15641__PAPERLINE_ENTERPRISE_INC___2026-07-06__301",
       "rr_no": "MRR RR 28580",
       "report_date": "2026-07-06",
       "po_no": "HO-PO 15641",
@@ -20035,7 +20035,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4300
     },
     {
-      "id": "rr_MRR_RR_29406__HO-PO_15641__PAPERLINE_ENTERPRISE_IN",
+      "id": "rr_MRR_RR_29406__HO-PO_15641__PAPERLINE_ENTERPRISE_INC___2026-08-12__302",
       "rr_no": "MRR RR 29406",
       "report_date": "2026-08-12",
       "po_no": "HO-PO 15641",
@@ -20066,7 +20066,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2700
     },
     {
-      "id": "rr_MRR-DIR-1127__THRU_PRF__BRICOLAGE_PHILIPPINES_INC_",
+      "id": "rr_MRR-DIR-1127__THRU_PRF__BRICOLAGE_PHILIPPINES_INC___2026-01-15__303",
       "rr_no": "MRR-DIR-1127",
       "report_date": "2026-01-15",
       "po_no": "THRU PRF",
@@ -20097,7 +20097,7 @@ export const receivingReportsMasterData = {
       "total_amount": 470
     },
     {
-      "id": "rr_MRR_RR_28597__15599__DYNADVANCE_TRADING_AND_DISTRI",
+      "id": "rr_MRR_RR_28597__15599__DYNADVANCE_TRADING_AND_DISTRIBUTION__2026-08-07__304",
       "rr_no": "MRR RR 28597",
       "report_date": "2026-08-07",
       "po_no": "15599",
@@ -20128,7 +20128,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5774
     },
     {
-      "id": "rr_MRR_RR_29408__HO-PO_15609__EMICOR_INC__2026-08-17",
+      "id": "rr_MRR_RR_29408__HO-PO_15609__EMICOR_INC__2026-08-17__305",
       "rr_no": "MRR RR 29408",
       "report_date": "2026-08-17",
       "po_no": "HO-PO 15609",
@@ -20302,7 +20302,7 @@ export const receivingReportsMasterData = {
       "total_amount": 20000
     },
     {
-      "id": "rr_MRR_RR_28577__HO-PO_15608__C3_ENGINEERING_PILIPINA",
+      "id": "rr_MRR_RR_28577__HO-PO_15608__C3_ENGINEERING_PILIPINAS_CO___2026-07-03__306",
       "rr_no": "MRR RR 28577",
       "report_date": "2026-07-03",
       "po_no": "HO-PO 15608",
@@ -20333,7 +20333,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10000
     },
     {
-      "id": "rr_MRR_RR_28576__HO-PO_15610__C3_ENGINEERING_PILIPINA",
+      "id": "rr_MRR_RR_28576__HO-PO_15610__C3_ENGINEERING_PILIPINAS_CO___2026-07-03__307",
       "rr_no": "MRR RR 28576",
       "report_date": "2026-07-03",
       "po_no": "HO-PO 15610",
@@ -20364,7 +20364,7 @@ export const receivingReportsMasterData = {
       "total_amount": 19500
     },
     {
-      "id": "rr_MRR-DIR-1143__HO-PO_15638__WORX_IT_RETAIL_INC__202",
+      "id": "rr_MRR-DIR-1143__HO-PO_15638__WORX_IT_RETAIL_INC__2026-01-15__308",
       "rr_no": "MRR-DIR-1143",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15638",
@@ -20395,7 +20395,7 @@ export const receivingReportsMasterData = {
       "total_amount": 45000
     },
     {
-      "id": "rr_MRR_RR_28584__HO-PO_15630__VILLAFLORES_INDUSTRIAL_",
+      "id": "rr_MRR_RR_28584__HO-PO_15630__VILLAFLORES_INDUSTRIAL_SUPPLY__2026-07-09__309",
       "rr_no": "MRR RR 28584",
       "report_date": "2026-07-09",
       "po_no": "HO-PO 15630",
@@ -20426,7 +20426,7 @@ export const receivingReportsMasterData = {
       "total_amount": 58500
     },
     {
-      "id": "rr_MRR_28567__HO-PO_15633__PITSTOP_MOTORS__PMS_INC___",
+      "id": "rr_MRR_28567__HO-PO_15633__PITSTOP_MOTORS__PMS_INC___2026-06-26__310",
       "rr_no": "MRR 28567",
       "report_date": "2026-06-26",
       "po_no": "HO-PO 15633",
@@ -20470,7 +20470,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5600
     },
     {
-      "id": "rr_MRR_RR_28588__HO-PO_15647__ASHER-CHESKA_S_PRINTING",
+      "id": "rr_MRR_RR_28588__HO-PO_15647__ASHER-CHESKA_S_PRINTING_CORP__2026-07-20__311",
       "rr_no": "MRR RR 28588",
       "report_date": "2026-07-20",
       "po_no": "HO-PO 15647",
@@ -20501,7 +20501,7 @@ export const receivingReportsMasterData = {
       "total_amount": 16500
     },
     {
-      "id": "rr_MRR_RR_28587__HO-PO_15647__ASHER-CHESKA_S_PRINTING",
+      "id": "rr_MRR_RR_28587__HO-PO_15647__ASHER-CHESKA_S_PRINTING_CORP__2026-07-20__312",
       "rr_no": "MRR RR 28587",
       "report_date": "2026-07-20",
       "po_no": "HO-PO 15647",
@@ -20532,7 +20532,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5700
     },
     {
-      "id": "rr_MRR_RR_28591__HO-PO_15655__ARIOM_TECH_COMPUTER_SYS",
+      "id": "rr_MRR_RR_28591__HO-PO_15655__ARIOM_TECH_COMPUTER_SYSTEM__2026-07-28__313",
       "rr_no": "MRR RR 28591",
       "report_date": "2026-07-28",
       "po_no": "HO-PO 15655",
@@ -20563,7 +20563,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2400
     },
     {
-      "id": "rr_MRR_RR_29404__HO-PO_15644__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_29404__HO-PO_15644__F_B_LADAO_SALES__INC___2026-07-29__314",
       "rr_no": "MRR RR 29404",
       "report_date": "2026-07-29",
       "po_no": "HO-PO 15644",
@@ -20672,7 +20672,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15110
     },
     {
-      "id": "rr_MRR_RR_28596__HO-PO_15645__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_28596__HO-PO_15645__F_B_LADAO_SALES__INC___2026-07-30__315",
       "rr_no": "MRR RR 28596",
       "report_date": "2026-07-30",
       "po_no": "HO-PO 15645",
@@ -20781,7 +20781,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15110
     },
     {
-      "id": "rr_MRR_RR_28593__HO-PO_15639__MERCURY_DRUG_CORPORATIO",
+      "id": "rr_MRR_RR_28593__HO-PO_15639__MERCURY_DRUG_CORPORATION__2026-07-30__316",
       "rr_no": "MRR RR 28593",
       "report_date": "2026-07-30",
       "po_no": "HO-PO 15639",
@@ -20942,7 +20942,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3043.5
     },
     {
-      "id": "rr_MRR_RR_28594__HO-PO_15639__MERCURY_DRUG_CORPORATIO",
+      "id": "rr_MRR_RR_28594__HO-PO_15639__MERCURY_DRUG_CORPORATION__2026-07-30__317",
       "rr_no": "MRR RR 28594",
       "report_date": "2026-07-30",
       "po_no": "HO-PO 15639",
@@ -20999,7 +20999,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2075
     },
     {
-      "id": "rr_MRR_RR_28592__HO-PO_15639__MERCURY_DRUG_CORPORATIO",
+      "id": "rr_MRR_RR_28592__HO-PO_15639__MERCURY_DRUG_CORPORATION__2026-07-30__318",
       "rr_no": "MRR RR 28592",
       "report_date": "2026-07-30",
       "po_no": "HO-PO 15639",
@@ -21134,7 +21134,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5217.5
     },
     {
-      "id": "rr_MRR_RR_28582__HO-PO_15643__TEBEEMINI_CORPORATION__",
+      "id": "rr_MRR_RR_28582__HO-PO_15643__TEBEEMINI_CORPORATION__2026-07-08__319",
       "rr_no": "MRR RR 28582",
       "report_date": "2026-07-08",
       "po_no": "HO-PO 15643",
@@ -21165,7 +21165,7 @@ export const receivingReportsMasterData = {
       "total_amount": 775
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15646__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_28581__HO-PO_15646__F_B_LADAO_SALES__INC___2026-07-07__320",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-07-07",
       "po_no": "HO-PO 15646",
@@ -21274,7 +21274,7 @@ export const receivingReportsMasterData = {
       "total_amount": 15110
     },
     {
-      "id": "rr_MRR_RR_29409__HO-PO_15648__EMICOR_INC__2026-08-17",
+      "id": "rr_MRR_RR_29409__HO-PO_15648__EMICOR_INC__2026-08-17__321",
       "rr_no": "MRR RR 29409",
       "report_date": "2026-08-17",
       "po_no": "HO-PO 15648",
@@ -21305,7 +21305,7 @@ export const receivingReportsMasterData = {
       "total_amount": 13200
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15669__NEW_MILLENIUM_TRADING__",
+      "id": "rr_MRR_RR_28581__HO-PO_15669__NEW_MILLENIUM_TRADING__2026-08-20__322",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-08-20",
       "po_no": "HO-PO 15669",
@@ -21466,7 +21466,7 @@ export const receivingReportsMasterData = {
       "total_amount": 30463
     },
     {
-      "id": "rr_MRR_RR_29416__HO-PO_15668__JUDRHOMAY_ENTERPRISES_C",
+      "id": "rr_MRR_RR_29416__HO-PO_15668__JUDRHOMAY_ENTERPRISES_COMPANY__2026-08-20__323",
       "rr_no": "MRR RR 29416",
       "report_date": "2026-08-20",
       "po_no": "HO-PO 15668",
@@ -21562,7 +21562,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5860
     },
     {
-      "id": "rr_MRR_RR_29420__HO-_PRF_NO_15659__GREATEST_AMORE_ENT",
+      "id": "rr_MRR_RR_29420__HO-_PRF_NO_15659__GREATEST_AMORE_ENTERPRISE__2026-08-27__324",
       "rr_no": "MRR RR 29420",
       "report_date": "2026-08-27",
       "po_no": "HO- PRF NO.15659",
@@ -21593,7 +21593,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11500
     },
     {
-      "id": "rr_MRR_RR_28581__15680__PITSTOP_MOTORS__PMS_INC___202",
+      "id": "rr_MRR_RR_28581__15680__PITSTOP_MOTORS__PMS_INC___2026-09-01__325",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-01",
       "po_no": "15680",
@@ -21793,7 +21793,7 @@ export const receivingReportsMasterData = {
       "total_amount": 48585
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15661__MAILOS_ENTERPRISE_INC__",
+      "id": "rr_MRR_RR_28581__HO-PO_15661__MAILOS_ENTERPRISE_INC___2026-09-09__326",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-09",
       "po_no": "HO-PO 15661",
@@ -21824,7 +21824,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1600
     },
     {
-      "id": "rr_MRR_RR_29438__HO-PO_15685__PHIL_DATA_BUSINESS_SYST",
+      "id": "rr_MRR_RR_29438__HO-PO_15685__PHIL_DATA_BUSINESS_SYSTEMS_INC__2026-09-09__327",
       "rr_no": "MRR RR 29438",
       "report_date": "2026-09-09",
       "po_no": "HO-PO 15685",
@@ -21855,7 +21855,7 @@ export const receivingReportsMasterData = {
       "total_amount": 68992.02
     },
     {
-      "id": "rr_MRR_RR_29423__HO-PO_15684__PHIL_DATA_BUSINESS_SYST",
+      "id": "rr_MRR_RR_29423__HO-PO_15684__PHIL_DATA_BUSINESS_SYSTEMS_INC__2026-09-09__328",
       "rr_no": "MRR RR 29423",
       "report_date": "2026-09-09",
       "po_no": "HO-PO 15684",
@@ -21886,7 +21886,7 @@ export const receivingReportsMasterData = {
       "total_amount": 70504.2
     },
     {
-      "id": "rr_MRR_RR_29424__15689__PHIL_DATA_BUSINESS_SYSTEMS_IN",
+      "id": "rr_MRR_RR_29424__15689__PHIL_DATA_BUSINESS_SYSTEMS_INC__2026-09-09__329",
       "rr_no": "MRR RR 29424",
       "report_date": "2026-09-09",
       "po_no": "15689",
@@ -21930,7 +21930,7 @@ export const receivingReportsMasterData = {
       "total_amount": 36000
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15651__MAILOS_ENTERPRISE_INC__",
+      "id": "rr_MRR_RR_28581__HO-PO_15651__MAILOS_ENTERPRISE_INC___2026-09-09__330",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-09",
       "po_no": "HO-PO 15651",
@@ -21961,7 +21961,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7500
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15576__CADD_SOLUTIONS_INCORPOR",
+      "id": "rr_MRR_RR_28581__HO-PO_15576__CADD_SOLUTIONS_INCORPORATED__2026-09-09__331",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-09",
       "po_no": "HO-PO 15576",
@@ -22005,7 +22005,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1760
     },
     {
-      "id": "rr_MRR_RR_29407__15658__PSI_SAFETY_SUPPLIES_TRADING_O",
+      "id": "rr_MRR_RR_29407__15658__PSI_SAFETY_SUPPLIES_TRADING_OPC__2026-08-12__332",
       "rr_no": "MRR RR 29407",
       "report_date": "2026-08-12",
       "po_no": "15658",
@@ -22036,7 +22036,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6050
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15676__NEW_MILLENIUM_TRADING__",
+      "id": "rr_MRR_RR_28581__HO-PO_15676__NEW_MILLENIUM_TRADING__2026-09-01__333",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-01",
       "po_no": "HO-PO 15676",
@@ -22093,7 +22093,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5950
     },
     {
-      "id": "rr_MRR_RR_29422__HO-PO_15677__ARIOM_TECH_COMPUTER_SYS",
+      "id": "rr_MRR_RR_29422__HO-PO_15677__ARIOM_TECH_COMPUTER_SYSTEM__2026-09-02__334",
       "rr_no": "MRR RR 29422",
       "report_date": "2026-09-02",
       "po_no": "HO-PO 15677",
@@ -22124,7 +22124,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1200
     },
     {
-      "id": "rr_MRR_RR_28581__15682__JN_TIRE_ZONE_CORP__2026-09-09",
+      "id": "rr_MRR_RR_28581__15682__JN_TIRE_ZONE_CORP__2026-09-09__335",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-09",
       "po_no": "15682",
@@ -22233,7 +22233,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10450
     },
     {
-      "id": "rr_MRR_RR_29421__18655__ARIOM_TECH_COMPUTER_SYSTEM__2",
+      "id": "rr_MRR_RR_29421__18655__ARIOM_TECH_COMPUTER_SYSTEM__2026-09-01__336",
       "rr_no": "MRR RR 29421",
       "report_date": "2026-09-01",
       "po_no": "18655",
@@ -22264,7 +22264,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2400
     },
     {
-      "id": "rr_MRR_RR_28581__LP-00687__F_B_LADAO_SALES__INC___202",
+      "id": "rr_MRR_RR_28581__LP-00687__F_B_LADAO_SALES__INC___2026-09-09__337",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-09",
       "po_no": "LP-00687",
@@ -22334,7 +22334,7 @@ export const receivingReportsMasterData = {
       "total_amount": 41040
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15672__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_28581__HO-PO_15672__F_B_LADAO_SALES__INC___2026-09-09__338",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-09",
       "po_no": "HO-PO 15672",
@@ -22404,7 +22404,7 @@ export const receivingReportsMasterData = {
       "total_amount": 79940
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15681__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_28581__HO-PO_15681__F_B_LADAO_SALES__INC___2026-09-10__339",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-10",
       "po_no": "HO-PO 15681",
@@ -22500,7 +22500,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10950
     },
     {
-      "id": "rr_MRR_RR_28581__15667__MAILOS_ENTERPRISE_INC___2026-",
+      "id": "rr_MRR_RR_28581__15667__MAILOS_ENTERPRISE_INC___2026-09-10__340",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-10",
       "po_no": "15667",
@@ -22531,7 +22531,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3200
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15665__GRANKAMS_PRESS__2026-09",
+      "id": "rr_MRR_RR_28581__HO-PO_15665__GRANKAMS_PRESS__2026-09-09__341",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-09",
       "po_no": "HO-PO 15665",
@@ -22562,7 +22562,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4500
     },
     {
-      "id": "rr_MRR_RR_28581__15694__RD_20_AUTO_PARTS_INC__2026-09",
+      "id": "rr_MRR_RR_28581__15694__RD_20_AUTO_PARTS_INC__2026-09-11__342",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-11",
       "po_no": "15694",
@@ -22593,7 +22593,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1020
     },
     {
-      "id": "rr_MRR_RR_28581__15693__SAN_LORENZO_TIRE_SUPPLY__2026",
+      "id": "rr_MRR_RR_28581__15693__SAN_LORENZO_TIRE_SUPPLY__2026-09-11__343",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-11",
       "po_no": "15693",
@@ -22676,7 +22676,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3500
     },
     {
-      "id": "rr_MRR_RR_29441__HO-PO_15678__GREATEST_AMORE_ENTERPRI",
+      "id": "rr_MRR_RR_29441__HO-PO_15678__GREATEST_AMORE_ENTERPRISE__2026-09-11__344",
       "rr_no": "MRR RR 29441",
       "report_date": "2026-09-11",
       "po_no": "HO-PO 15678",
@@ -22707,7 +22707,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11200
     },
     {
-      "id": "rr_MRR_RR_28581__LASPI_AS-PO_LP-00688__RMJK_AUTO_PART",
+      "id": "rr_MRR_RR_28581__LASPI_AS-PO_LP-00688__RMJK_AUTO_PARTS_TRADING__2026-09-14__345",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-14",
       "po_no": "LASPIÑAS-PO LP-00688",
@@ -22738,7 +22738,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11200
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15662__PHILCOPY_CORPORATION__2",
+      "id": "rr_MRR_RR_28581__HO-PO_15662__PHILCOPY_CORPORATION__2026-09-22__346",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-22",
       "po_no": "HO-PO 15662",
@@ -22808,7 +22808,7 @@ export const receivingReportsMasterData = {
       "total_amount": 57060
     },
     {
-      "id": "rr_MRR_RR_28581__HO-PO_15681__F_B_LADAO_SALES__INC___",
+      "id": "rr_MRR_RR_28581__HO-PO_15681__F_B_LADAO_SALES__INC___2026-09-22__347",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-22",
       "po_no": "HO-PO 15681",
@@ -22904,7 +22904,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10950
     },
     {
-      "id": "rr_MRR_RR_29551__HO-PO_15703__JBL_AUTO_PARTS_TRADING_",
+      "id": "rr_MRR_RR_29551__HO-PO_15703__JBL_AUTO_PARTS_TRADING_OPC__2026-09-23__348",
       "rr_no": "MRR RR 29551",
       "report_date": "2026-09-23",
       "po_no": "HO-PO 15703",
@@ -22974,7 +22974,7 @@ export const receivingReportsMasterData = {
       "total_amount": 11335
     },
     {
-      "id": "rr_MRR_RR_29553__HO-PO_15702__RMJK_AUTO_PARTS__2026-0",
+      "id": "rr_MRR_RR_29553__HO-PO_15702__RMJK_AUTO_PARTS__2026-09-23__349",
       "rr_no": "MRR RR 29553",
       "report_date": "2026-09-23",
       "po_no": "HO-PO 15702",
@@ -23031,7 +23031,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3675
     },
     {
-      "id": "rr_MRR-DIR-1290__HO-PO_15698__BESCOST_DIGITAL_MARKETI",
+      "id": "rr_MRR-DIR-1290__HO-PO_15698__BESCOST_DIGITAL_MARKETING_SERVICES_INC__2026-01-15__350",
       "rr_no": "MRR-DIR-1290",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15698",
@@ -23062,7 +23062,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1320.41
     },
     {
-      "id": "rr_MRR-DIR-1291__HO-PO_15698__BESCOST_DIGITAL_MARKETI",
+      "id": "rr_MRR-DIR-1291__HO-PO_15698__BESCOST_DIGITAL_MARKETING_SERVICES_INC__2026-01-15__351",
       "rr_no": "MRR-DIR-1291",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15698",
@@ -23093,7 +23093,7 @@ export const receivingReportsMasterData = {
       "total_amount": 655.65
     },
     {
-      "id": "rr_MRR-DIR-1292__HO-PO_15698__BESCOST_DIGITAL_MARKETI",
+      "id": "rr_MRR-DIR-1292__HO-PO_15698__BESCOST_DIGITAL_MARKETING_SERVICES_INC__2026-01-15__352",
       "rr_no": "MRR-DIR-1292",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15698",
@@ -23124,7 +23124,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2294.81
     },
     {
-      "id": "rr_MRR-DIR-1293__HO-PO_15698__BESCOST_DIGITAL_MARKETI",
+      "id": "rr_MRR-DIR-1293__HO-PO_15698__BESCOST_DIGITAL_MARKETING_SERVICES_INC__2026-01-15__353",
       "rr_no": "MRR-DIR-1293",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15698",
@@ -23155,7 +23155,7 @@ export const receivingReportsMasterData = {
       "total_amount": 874.2
     },
     {
-      "id": "rr_MRR-DIR-1294__HO-PO_15698__BESCOST_DIGITAL_MARKETI",
+      "id": "rr_MRR-DIR-1294__HO-PO_15698__BESCOST_DIGITAL_MARKETING_SERVICES_INC__2026-01-15__354",
       "rr_no": "MRR-DIR-1294",
       "report_date": "2026-01-15",
       "po_no": "HO-PO 15698",
@@ -23186,7 +23186,7 @@ export const receivingReportsMasterData = {
       "total_amount": 801.36
     },
     {
-      "id": "rr_MRR_RR_29449__15701__YRAMAR_TRADING__2026-09-30",
+      "id": "rr_MRR_RR_29449__15701__YRAMAR_TRADING__2026-09-30__355",
       "rr_no": "MRR RR 29449",
       "report_date": "2026-09-30",
       "po_no": "15701",
@@ -23256,7 +23256,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10111
     },
     {
-      "id": "rr_MRR_RR_29567__15726__SENTILLAS_MARKETING_OPC__2026",
+      "id": "rr_MRR_RR_29567__15726__SENTILLAS_MARKETING_OPC__2026-10-15__356",
       "rr_no": "MRR RR 29567",
       "report_date": "2026-10-15",
       "po_no": "15726",
@@ -23404,7 +23404,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9015
     },
     {
-      "id": "rr_MRR_RR_29405__15663__PACER_EQUIPMENT_RESOURCES__20",
+      "id": "rr_MRR_RR_29405__15663__PACER_EQUIPMENT_RESOURCES__2026-08-12__357",
       "rr_no": "MRR RR 29405",
       "report_date": "2026-08-12",
       "po_no": "15663",
@@ -23435,7 +23435,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2100
     },
     {
-      "id": "rr_MRR-DIR-1310__15657__OBACH_SOLUTIONS_CORP___2026-0",
+      "id": "rr_MRR-DIR-1310__15657__OBACH_SOLUTIONS_CORP___2026-01-15__358",
       "rr_no": "MRR-DIR-1310",
       "report_date": "2026-01-15",
       "po_no": "15657",
@@ -23466,7 +23466,7 @@ export const receivingReportsMasterData = {
       "total_amount": 53571.2
     },
     {
-      "id": "rr_MRR-DIR-1311__15657__OBACH_SOLUTIONS_CORP___2026-0",
+      "id": "rr_MRR-DIR-1311__15657__OBACH_SOLUTIONS_CORP___2026-01-15__359",
       "rr_no": "MRR-DIR-1311",
       "report_date": "2026-01-15",
       "po_no": "15657",
@@ -23497,7 +23497,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6428.8
     },
     {
-      "id": "rr_MRR_RR_28581__15649__PHIL_DATA_BUSINESS_SYSTEMS_IN",
+      "id": "rr_MRR_RR_28581__15649__PHIL_DATA_BUSINESS_SYSTEMS_INC__2026-08-08__360",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-08-08",
       "po_no": "15649",
@@ -23528,7 +23528,7 @@ export const receivingReportsMasterData = {
       "total_amount": 71427.06
     },
     {
-      "id": "rr_MRR_RR_28581__15664__3_TECH_INNOVATION_MASTER_CORP",
+      "id": "rr_MRR_RR_28581__15664__3_TECH_INNOVATION_MASTER_CORP__2026-10-13__361",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-10-13",
       "po_no": "15664",
@@ -23559,7 +23559,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7570
     },
     {
-      "id": "rr_MRR-DIR-1314__15673__CLEENECO_JANITORIAL_SERVICES_",
+      "id": "rr_MRR-DIR-1314__15673__CLEENECO_JANITORIAL_SERVICES_CORPORATION__2026-01-15__362",
       "rr_no": "MRR-DIR-1314",
       "report_date": "2026-01-15",
       "po_no": "15673",
@@ -23590,7 +23590,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5000
     },
     {
-      "id": "rr_MRR-DIR-1315__15708__ARIOM_TECH_COMPUTER_SYSYTEM__",
+      "id": "rr_MRR-DIR-1315__15708__ARIOM_TECH_COMPUTER_SYSYTEM__2026-01-15__363",
       "rr_no": "MRR-DIR-1315",
       "report_date": "2026-01-15",
       "po_no": "15708",
@@ -23621,7 +23621,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2400
     },
     {
-      "id": "rr_MRR-DIR-1316__15707__HEDREZZO_MERCHANDISING__2026-",
+      "id": "rr_MRR-DIR-1316__15707__HEDREZZO_MERCHANDISING__2026-01-15__364",
       "rr_no": "MRR-DIR-1316",
       "report_date": "2026-01-15",
       "po_no": "15707",
@@ -23652,7 +23652,7 @@ export const receivingReportsMasterData = {
       "total_amount": 174300
     },
     {
-      "id": "rr_MRR-DIR-1317__15706__BESCOST_DIGITAL_MARKETING_SER",
+      "id": "rr_MRR-DIR-1317__15706__BESCOST_DIGITAL_MARKETING_SERVICES__2026-01-15__365",
       "rr_no": "MRR-DIR-1317",
       "report_date": "2026-01-15",
       "po_no": "15706",
@@ -23683,7 +23683,7 @@ export const receivingReportsMasterData = {
       "total_amount": 18000
     },
     {
-      "id": "rr_MRR-DIR-1318__15706__BESCOST_DIGITAL_MARKETING_SER",
+      "id": "rr_MRR-DIR-1318__15706__BESCOST_DIGITAL_MARKETING_SERVICES__2026-01-15__366",
       "rr_no": "MRR-DIR-1318",
       "report_date": "2026-01-15",
       "po_no": "15706",
@@ -23714,7 +23714,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2000
     },
     {
-      "id": "rr_MRR-DIR-1319__15705__HEDREZZO_MERCHANDISING__2026-",
+      "id": "rr_MRR-DIR-1319__15705__HEDREZZO_MERCHANDISING__2026-01-15__367",
       "rr_no": "MRR-DIR-1319",
       "report_date": "2026-01-15",
       "po_no": "15705",
@@ -23745,7 +23745,7 @@ export const receivingReportsMasterData = {
       "total_amount": 110200
     },
     {
-      "id": "rr_MRR-DIR-1320__15700__C3_ENGINEERING_PILIPINAS_CO__",
+      "id": "rr_MRR-DIR-1320__15700__C3_ENGINEERING_PILIPINAS_CO__2026-01-15__368",
       "rr_no": "MRR-DIR-1320",
       "report_date": "2026-01-15",
       "po_no": "15700",
@@ -23776,7 +23776,7 @@ export const receivingReportsMasterData = {
       "total_amount": 10000
     },
     {
-      "id": "rr_MRR-DIR-1321__15699__PUREGOLD_JR__KALAYAAN__2026-0",
+      "id": "rr_MRR-DIR-1321__15699__PUREGOLD_JR__KALAYAAN__2026-01-15__369",
       "rr_no": "MRR-DIR-1321",
       "report_date": "2026-01-15",
       "po_no": "15699",
@@ -23807,7 +23807,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2165
     },
     {
-      "id": "rr_MRR-DIR-1322__15699__PUREGOLD_JR__KALAYAAN__2026-0",
+      "id": "rr_MRR-DIR-1322__15699__PUREGOLD_JR__KALAYAAN__2026-01-15__370",
       "rr_no": "MRR-DIR-1322",
       "report_date": "2026-01-15",
       "po_no": "15699",
@@ -23838,7 +23838,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4190
     },
     {
-      "id": "rr_MRR-DIR-1323__15699__PUREGOLD_JR__KALAYAAN__2026-0",
+      "id": "rr_MRR-DIR-1323__15699__PUREGOLD_JR__KALAYAAN__2026-01-15__371",
       "rr_no": "MRR-DIR-1323",
       "report_date": "2026-01-15",
       "po_no": "15699",
@@ -23869,7 +23869,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1460
     },
     {
-      "id": "rr_MRR-DIR-1324__15697__FRIGIDZONE_HOME_AIRCON_SERVIC",
+      "id": "rr_MRR-DIR-1324__15697__FRIGIDZONE_HOME_AIRCON_SERVICES_INC__2026-01-15__372",
       "rr_no": "MRR-DIR-1324",
       "report_date": "2026-01-15",
       "po_no": "15697",
@@ -23900,7 +23900,7 @@ export const receivingReportsMasterData = {
       "total_amount": 21000
     },
     {
-      "id": "rr_MRR-DIR-1325__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1325__15695__PITSTOP_MOTORS_INC__2026-01-15__373",
       "rr_no": "MRR-DIR-1325",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -23931,7 +23931,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6500
     },
     {
-      "id": "rr_MRR-DIR-1326__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1326__15695__PITSTOP_MOTORS_INC__2026-01-15__374",
       "rr_no": "MRR-DIR-1326",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -23962,7 +23962,7 @@ export const receivingReportsMasterData = {
       "total_amount": 780
     },
     {
-      "id": "rr_MRR-DIR-1327__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1327__15695__PITSTOP_MOTORS_INC__2026-01-15__375",
       "rr_no": "MRR-DIR-1327",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -23993,7 +23993,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3740
     },
     {
-      "id": "rr_MRR-DIR-1328__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1328__15695__PITSTOP_MOTORS_INC__2026-01-15__376",
       "rr_no": "MRR-DIR-1328",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -24024,7 +24024,7 @@ export const receivingReportsMasterData = {
       "total_amount": 716
     },
     {
-      "id": "rr_MRR-DIR-1329__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1329__15695__PITSTOP_MOTORS_INC__2026-01-15__377",
       "rr_no": "MRR-DIR-1329",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -24055,7 +24055,7 @@ export const receivingReportsMasterData = {
       "total_amount": 4950
     },
     {
-      "id": "rr_MRR-DIR-1330__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1330__15695__PITSTOP_MOTORS_INC__2026-01-15__378",
       "rr_no": "MRR-DIR-1330",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -24086,7 +24086,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5280
     },
     {
-      "id": "rr_MRR-DIR-1331__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1331__15695__PITSTOP_MOTORS_INC__2026-01-15__379",
       "rr_no": "MRR-DIR-1331",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -24117,7 +24117,7 @@ export const receivingReportsMasterData = {
       "total_amount": 9570
     },
     {
-      "id": "rr_MRR-DIR-1332__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1332__15695__PITSTOP_MOTORS_INC__2026-01-15__380",
       "rr_no": "MRR-DIR-1332",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -24148,7 +24148,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2200
     },
     {
-      "id": "rr_MRR-DIR-1333__15695__PITSTOP_MOTORS_INC__2026-01-1",
+      "id": "rr_MRR-DIR-1333__15695__PITSTOP_MOTORS_INC__2026-01-15__381",
       "rr_no": "MRR-DIR-1333",
       "report_date": "2026-01-15",
       "po_no": "15695",
@@ -24179,7 +24179,7 @@ export const receivingReportsMasterData = {
       "total_amount": 6545
     },
     {
-      "id": "rr_MRR_RR_28581__15692__PSI_SAFETY_SUPPLIES_TRADING_O",
+      "id": "rr_MRR_RR_28581__15692__PSI_SAFETY_SUPPLIES_TRADING_OPC__2026-10-14__382",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-10-14",
       "po_no": "15692",
@@ -24210,7 +24210,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1200
     },
     {
-      "id": "rr_MRR-DIR-1335__15691__MERCURY_DRUG_CORPORATION__202",
+      "id": "rr_MRR-DIR-1335__15691__MERCURY_DRUG_CORPORATION__2026-01-15__383",
       "rr_no": "MRR-DIR-1335",
       "report_date": "2026-01-15",
       "po_no": "15691",
@@ -24241,7 +24241,7 @@ export const receivingReportsMasterData = {
       "total_amount": 5550
     },
     {
-      "id": "rr_MRR-DIR-1336__15691__MERCURY_DRUG_CORPORATION__202",
+      "id": "rr_MRR-DIR-1336__15691__MERCURY_DRUG_CORPORATION__2026-01-15__384",
       "rr_no": "MRR-DIR-1336",
       "report_date": "2026-01-15",
       "po_no": "15691",
@@ -24272,7 +24272,7 @@ export const receivingReportsMasterData = {
       "total_amount": 775
     },
     {
-      "id": "rr_MRR-DIR-1337__15691__MERCURY_DRUG_CORPORATION__202",
+      "id": "rr_MRR-DIR-1337__15691__MERCURY_DRUG_CORPORATION__2026-01-15__385",
       "rr_no": "MRR-DIR-1337",
       "report_date": "2026-01-15",
       "po_no": "15691",
@@ -24303,7 +24303,7 @@ export const receivingReportsMasterData = {
       "total_amount": 368
     },
     {
-      "id": "rr_MRR-DIR-1338__15691__MERCURY_DRUG_CORPORATION__202",
+      "id": "rr_MRR-DIR-1338__15691__MERCURY_DRUG_CORPORATION__2026-01-15__386",
       "rr_no": "MRR-DIR-1338",
       "report_date": "2026-01-15",
       "po_no": "15691",
@@ -24334,7 +24334,7 @@ export const receivingReportsMasterData = {
       "total_amount": 157.5
     },
     {
-      "id": "rr_MRR-DIR-1339__15691__MERCURY_DRUG_CORPORATION__202",
+      "id": "rr_MRR-DIR-1339__15691__MERCURY_DRUG_CORPORATION__2026-01-15__387",
       "rr_no": "MRR-DIR-1339",
       "report_date": "2026-01-15",
       "po_no": "15691",
@@ -24365,7 +24365,7 @@ export const receivingReportsMasterData = {
       "total_amount": 650
     },
     {
-      "id": "rr_MRR-DIR-1340__15691__MERCURY_DRUG_CORPORATION__202",
+      "id": "rr_MRR-DIR-1340__15691__MERCURY_DRUG_CORPORATION__2026-01-15__388",
       "rr_no": "MRR-DIR-1340",
       "report_date": "2026-01-15",
       "po_no": "15691",
@@ -24396,7 +24396,7 @@ export const receivingReportsMasterData = {
       "total_amount": 525
     },
     {
-      "id": "rr_MRR-DIR-1341__15691__MERCURY_DRUG_CORPORATION__202",
+      "id": "rr_MRR-DIR-1341__15691__MERCURY_DRUG_CORPORATION__2026-01-15__389",
       "rr_no": "MRR-DIR-1341",
       "report_date": "2026-01-15",
       "po_no": "15691",
@@ -24427,7 +24427,7 @@ export const receivingReportsMasterData = {
       "total_amount": 925
     },
     {
-      "id": "rr_MRR_RR_29450__15715__ARIOM_TECH_COMPUTER_SYSTEM__2",
+      "id": "rr_MRR_RR_29450__15715__ARIOM_TECH_COMPUTER_SYSTEM__2026-10-05__390",
       "rr_no": "MRR RR 29450",
       "report_date": "2026-10-05",
       "po_no": "15715",
@@ -24458,7 +24458,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1100
     },
     {
-      "id": "rr_MRR_RR_29554__15723__SENTILLAS_MARKETING_OPC__2026",
+      "id": "rr_MRR_RR_29554__15723__SENTILLAS_MARKETING_OPC__2026-10-05__391",
       "rr_no": "MRR RR 29554",
       "report_date": "2026-10-05",
       "po_no": "15723",
@@ -24515,7 +24515,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2015
     },
     {
-      "id": "rr_MRR_RR_29557__15719__GLOBAL_CITY_AUTO_SALES__2026-",
+      "id": "rr_MRR_RR_29557__15719__GLOBAL_CITY_AUTO_SALES__2026-10-13__392",
       "rr_no": "MRR RR 29557",
       "report_date": "2026-10-13",
       "po_no": "15719",
@@ -24663,7 +24663,7 @@ export const receivingReportsMasterData = {
       "total_amount": 16890
     },
     {
-      "id": "rr_MRR_RR_29558__15719__GLOBAL_CITY_AUTO_SALES__2026-",
+      "id": "rr_MRR_RR_29558__15719__GLOBAL_CITY_AUTO_SALES__2026-10-13__393",
       "rr_no": "MRR RR 29558",
       "report_date": "2026-10-13",
       "po_no": "15719",
@@ -24746,7 +24746,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7178.8
     },
     {
-      "id": "rr_MRR_RR_29556__15573__CITIMEX_INC__2026-10-08",
+      "id": "rr_MRR_RR_29556__15573__CITIMEX_INC__2026-10-08__394",
       "rr_no": "MRR RR 29556",
       "report_date": "2026-10-08",
       "po_no": "15573",
@@ -24777,7 +24777,7 @@ export const receivingReportsMasterData = {
       "total_amount": 58000
     },
     {
-      "id": "rr_MRR_RR_29563__15733__ALVERSTONE_VAULT_AND_OFFICE_S",
+      "id": "rr_MRR_RR_29563__15733__ALVERSTONE_VAULT_AND_OFFICE_STEEL_EQUIPMENT__2026-10-14__395",
       "rr_no": "MRR RR 29563",
       "report_date": "2026-10-14",
       "po_no": "15733",
@@ -24808,7 +24808,7 @@ export const receivingReportsMasterData = {
       "total_amount": 8345
     },
     {
-      "id": "rr_MRR_RR_29566__15704__ASHER_CHESKA_S_PRINTING_CORP_",
+      "id": "rr_MRR_RR_29566__15704__ASHER_CHESKA_S_PRINTING_CORP__2026-10-15__396",
       "rr_no": "MRR RR 29566",
       "report_date": "2026-10-15",
       "po_no": "15704",
@@ -24839,7 +24839,7 @@ export const receivingReportsMasterData = {
       "total_amount": 285
     },
     {
-      "id": "rr_MRR-DIR-1364__PETTY_CASH__2RANP_TRADING_CORP__2026",
+      "id": "rr_MRR-DIR-1364__PETTY_CASH__2RANP_TRADING_CORP__2026-07-29__397",
       "rr_no": "MRR-DIR-1364",
       "report_date": "2026-07-29",
       "po_no": "PETTY CASH",
@@ -24870,7 +24870,7 @@ export const receivingReportsMasterData = {
       "total_amount": 590
     },
     {
-      "id": "rr_MRR_RR_29577__PETTY_CASH__OFFICE_WAREHOUSE_INC__20",
+      "id": "rr_MRR_RR_29577__PETTY_CASH__OFFICE_WAREHOUSE_INC__2026-10-26__398",
       "rr_no": "MRR RR 29577",
       "report_date": "2026-10-26",
       "po_no": "PETTY CASH",
@@ -24901,7 +24901,7 @@ export const receivingReportsMasterData = {
       "total_amount": 493
     },
     {
-      "id": "rr_MRR_RR_29518__15712__JUDRHOMAY_ENTERPRISES_COMPANY",
+      "id": "rr_MRR_RR_29518__15712__JUDRHOMAY_ENTERPRISES_COMPANY__2026-10-22__399",
       "rr_no": "MRR RR 29518",
       "report_date": "2026-10-22",
       "po_no": "15712",
@@ -24932,7 +24932,7 @@ export const receivingReportsMasterData = {
       "total_amount": 3948
     },
     {
-      "id": "rr_MRR_RR_29565__15730__ALVERSTONE_VAULT_AND_OFFICE_S",
+      "id": "rr_MRR_RR_29565__15730__ALVERSTONE_VAULT_AND_OFFICE_STEEL_EQUIPMENT__2026-10-14__400",
       "rr_no": "MRR RR 29565",
       "report_date": "2026-10-14",
       "po_no": "15730",
@@ -24963,7 +24963,7 @@ export const receivingReportsMasterData = {
       "total_amount": 25126
     },
     {
-      "id": "rr_MRR_RR_29562__15724__SENTILLAS_MARKETING_OPC__2026",
+      "id": "rr_MRR_RR_29562__15724__SENTILLAS_MARKETING_OPC__2026-10-14__401",
       "rr_no": "MRR RR 29562",
       "report_date": "2026-10-14",
       "po_no": "15724",
@@ -25046,7 +25046,7 @@ export const receivingReportsMasterData = {
       "total_amount": 1832
     },
     {
-      "id": "rr_MRR_RR_29561__15734__SUPER_SHOPPING_MARKET_INC__20",
+      "id": "rr_MRR_RR_29561__15734__SUPER_SHOPPING_MARKET_INC__2026-10-13__402",
       "rr_no": "MRR RR 29561",
       "report_date": "2026-10-13",
       "po_no": "15734",
@@ -25077,7 +25077,7 @@ export const receivingReportsMasterData = {
       "total_amount": 2879
     },
     {
-      "id": "rr_MRR_RR_28581__15716__PITSTOP_MOTORS_INC__2026-09-3",
+      "id": "rr_MRR_RR_28581__15716__PITSTOP_MOTORS_INC__2026-09-30__403",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-09-30",
       "po_no": "15716",
@@ -25121,7 +25121,7 @@ export const receivingReportsMasterData = {
       "total_amount": 7280
     },
     {
-      "id": "rr_MRR_RR_28581__LP-_00686__F_B__LADAO_SALES_INC__202",
+      "id": "rr_MRR_RR_28581__LP-_00686__F_B__LADAO_SALES_INC__2026-07-22__404",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-07-22",
       "po_no": "LP- 00686",
@@ -25256,7 +25256,7 @@ export const receivingReportsMasterData = {
       "total_amount": 18230
     },
     {
-      "id": "rr_MRR_RR_28581__17783__BRICOLAGE_PHIL__INC__2026-07-",
+      "id": "rr_MRR_RR_28581__17783__BRICOLAGE_PHIL__INC__2026-07-14__405",
       "rr_no": "MRR RR 28581",
       "report_date": "2026-07-14",
       "po_no": "17783",
@@ -25287,7 +25287,7 @@ export const receivingReportsMasterData = {
       "total_amount": 470
     },
     {
-      "id": "rr_MRR_RR_28589__17783__BRICOLAGE_PHIL__INC__2026-07-",
+      "id": "rr_MRR_RR_28589__17783__BRICOLAGE_PHIL__INC__2026-07-14__406",
       "rr_no": "MRR RR 28589",
       "report_date": "2026-07-14",
       "po_no": "17783",
