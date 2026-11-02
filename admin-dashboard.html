@@ -5917,6 +5917,21 @@
         name: 'Electricity Submeter Billing',
         pin: '017',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
+      },
+      'view-issuance': {
+        name: 'Material Issuance',
+        pin: null,
+        editors: []
+      },
+      'view-on-hand-inventory': {
+        name: 'On-Hand Inventory',
+        pin: null,
+        editors: []
+      },
+      'view-transmittal': {
+        name: 'Document Transmittal',
+        pin: null,
+        editors: []
       }
     };
 
@@ -8085,94 +8100,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
                 <div style="font-weight:700; color:#b45309;">${formatPHP(issuanceAmount)}</div>
                 <div style="font-size:0.72rem; font-weight:700; color:${budgetMinusIssuance < 0 ? '#b91c1c' : '#15803d'};" title="Budget minus Issuance (Actual Consumption)">Bal: ${formatPHP(budgetMinusIssuance)}</div>
               ` : '<span style="color:#cbd5e1;">-</span>'}
-            </td>
-            <td style="text-align:right; font-weight:700; color:${rem < 0 ? '#b91c1c' : '#15803d'};">
-              ${formatPHP(rem)}
-            </td>
-            <td>
-              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; margin-bottom:3px;">
-                <span>${util.toFixed(1)}%</span>
-                ${utilPill}
-              </div>
-              <div class="bgt-progress-bar" style="height:5px;">
-                <div class="bgt-progress-fill ${barClass}" style="width: ${Math.min(util, 100)}%;"></div>
-              </div>
-            </td>
-            <td style="text-align:center;">
-              <button type="button" class="btn-primary" onclick="openBudgetExpenseModal('${item.cost_code}')" title="Charge expense against this account" style="padding:5px 9px; font-size:0.72rem; background:#10b981; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
-                <i class="fa-solid fa-plus"></i> Expense
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-      const tbody = document.getElementById('budgetMasterTableBody');
-      const countLabel = document.getElementById('budgetResultCount');
-      if (countLabel) {
-        countLabel.textContent = `Showing ${items.length} of ${allBudgetItems.length} budget accounts`;
-      }
-
-      if (!tbody) return;
-
-      if (items.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="8" style="text-align:center; padding:35px; color:var(--text-muted);">
-              <i class="fa-solid fa-folder-open" style="font-size:2rem; margin-bottom:10px; display:block; color:#cbd5e1;"></i>
-              No budget accounts matched your current filter criteria.
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      tbody.innerHTML = items.map(item => {
-        const alloc = Number(item.allocated_budget) || 0;
-        const actual = Number(item.actual_expense) || 0;
-        const rem = item.remaining_budget !== undefined ? item.remaining_budget : (alloc - actual);
-        const util = alloc > 0 ? (actual / alloc) * 100 : 0;
-        const isSub = Boolean(item.is_sub_item);
-
-        let utilPill = '';
-        let barClass = '';
-        if (util > 100) {
-          utilPill = '<span class="rr-badge" style="background:#fee2e2; color:#b91c1c; font-size:0.7rem; padding:2px 6px;">Exceeded</span>';
-          barClass = 'danger';
-        } else if (util > 80) {
-          utilPill = '<span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem; padding:2px 6px;">High</span>';
-          barClass = 'warn';
-        } else {
-          utilPill = '<span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.7rem; padding:2px 6px;">Normal</span>';
-          barClass = '';
-        }
-
-        return `
-          <tr style="${isSub ? 'background:#fcfdfd;' : 'background:#ffffff; font-weight:500;'}">
-            <td style="text-align:center;">
-              <code style="background:${isSub ? '#f1f5f9' : '#e0f2fe'}; color:${isSub ? '#475569' : '#0369a1'}; padding:3px 7px; border-radius:4px; font-weight:700; font-size:0.75rem;">
-                ${escapeDispatchHtml(item.cost_code)}
-              </code>
-            </td>
-            <td>
-              <div style="${isSub ? 'padding-left:22px;' : ''}">
-                ${isSub ? `<span style="font-size:0.7rem; color:var(--accent); font-weight:700; margin-right:4px;"><i class="fa-solid fa-turn-up fa-rotate-90"></i></span>` : ''}
-                <span style="font-weight:${isSub ? '500' : '700'}; color:${isSub ? '#334155' : 'var(--primary)'}; font-size:0.85rem;">
-                  ${escapeDispatchHtml(item.account_title)}
-                </span>
-                ${item.department ? `<span style="margin-left:6px; font-size:0.7rem; background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:3px;">${escapeDispatchHtml(item.department)}</span>` : ''}
-              </div>
-            </td>
-            <td>
-              <span style="font-size:0.75rem; color:var(--text-muted); background:#f8fafc; border:1px solid #e2e8f0; padding:2px 8px; border-radius:4px;">
-                ${escapeDispatchHtml(item.expense_category)}
-              </span>
-            </td>
-            <td style="text-align:right; font-weight:700; color:var(--primary);">
-              ${formatPHP(alloc)}
-            </td>
-            <td style="text-align:right; font-weight:600; color:#0284c7;">
-              ${formatPHP(actual)}
             </td>
             <td style="text-align:right; font-weight:700; color:${rem < 0 ? '#b91c1c' : '#15803d'};">
               ${formatPHP(rem)}
