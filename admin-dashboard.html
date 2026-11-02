@@ -877,18 +877,141 @@
       line-height: 18px;
       text-align: center;
       font-weight: 700;
+      align-items: center;
+      justify-content: center;
     }
 
     .nav-count {
-      display: inline-block;
+      display: none;
       min-width: 18px;
-      margin-left: 5px;
-      padding: 1px 5px;
+      height: 18px;
+      line-height: 18px;
+      margin-left: auto;
+      padding: 0 6px;
       border-radius: 999px;
       background: #ef4444;
       color: white;
       font-size: .68rem;
+      font-weight: 700;
       text-align: center;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(239, 68, 68, 0.4);
+    }
+
+    .admin-notif-dropdown {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: -10px;
+      width: 320px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 3000;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .admin-notif-dropdown.active {
+      display: flex;
+    }
+
+    .admin-notif-header {
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1E355F;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+    }
+
+    .admin-notif-badge-pill {
+      background: #ef4444;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .admin-notif-body {
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .admin-notif-item {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      transition: background 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .admin-notif-item:hover {
+      background: #f8fafc;
+    }
+
+    .admin-notif-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1E355F;
+    }
+
+    .admin-notif-item-left i {
+      width: 18px;
+      text-align: center;
+      color: #64748b;
+    }
+
+    .admin-notif-count {
+      background: #fee2e2;
+      color: #dc2626;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    body.dark-mode .admin-notif-dropdown {
+      background: #1e293b;
+      border-color: #334155;
+      color: #f1f5f9;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    body.dark-mode .admin-notif-header {
+      background: #0f172a;
+      color: #f8fafc;
+      border-bottom-color: #334155;
+    }
+
+    body.dark-mode .admin-notif-item {
+      border-bottom-color: #334155;
+    }
+
+    body.dark-mode .admin-notif-item:hover {
+      background: #334155;
+    }
+
+    body.dark-mode .admin-notif-item-left {
+      color: #f8fafc;
+    }
+
+    body.dark-mode .admin-notif-item-left i {
+      color: #94a3b8;
     }
 
     .sidebar {
@@ -2772,6 +2895,431 @@
       font-size: 0.8rem;
     }
 
+    /* RECEIVING REPORT MODULE STYLES */
+    .rr-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .rr-stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .rr-stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .rr-stat-icon.blue { background: #eff6ff; color: #2563eb; }
+    .rr-stat-icon.green { background: #f0fdf4; color: #16a34a; }
+    .rr-stat-icon.amber { background: #fffbeb; color: #d97706; }
+    .rr-stat-icon.purple { background: #faf5ff; color: #9333ea; }
+    .rr-stat-val { font-size: 1.35rem; font-weight: 700; color: var(--primary); line-height: 1.2; }
+    .rr-stat-lbl { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-top: 2px; }
+
+    .rr-form-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .rr-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .rr-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rr-field-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .rr-field-group input,
+    .rr-field-group select {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .rr-field-group input:focus,
+    .rr-field-group select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(252, 174, 22, 0.2);
+    }
+    .rr-items-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .rr-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      min-width: 780px;
+    }
+    .rr-items-table th {
+      background: var(--primary);
+      color: white;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .rr-items-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      background: white;
+    }
+    .rr-items-table input,
+    .rr-items-table select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      box-sizing: border-box;
+    }
+    .rr-btn-del-row {
+      background: #fee2e2;
+      color: #ef4444;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .rr-btn-del-row:hover {
+      background: #ef4444;
+      color: white;
+    }
+    .rr-summary-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .rr-total-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .rr-total-box .lbl {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .rr-total-box .val {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #16a34a;
+    }
+    .rr-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+    .rr-slip-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 9998;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .rr-slip-modal-backdrop.open {
+      display: flex;
+    }
+    .rr-slip-paper {
+      background: white;
+      width: 100%;
+      max-width: 820px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      padding: 35px 40px;
+      position: relative;
+    }
+    body.dark-mode .rr-stat-card {
+      background: var(--bg-surface);
+      border-color: var(--border);
+    }
+    body.dark-mode .rr-stat-val {
+      color: #f8fafc;
+    }
+    body.dark-mode .rr-items-table td {
+      background: var(--bg-surface);
+      border-color: var(--border);
+      color: #f8fafc;
+    }
+    body.dark-mode .rr-total-box {
+      background: #0f172a;
+      border-color: var(--border);
+    }
+    body.dark-mode .rr-slip-paper {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+
+    /* BUILDING MAINTENANCE - ELECTRICITY SUBMETER MODULE STYLES */
+    .bm-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .bm-stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .bm-stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .bm-stat-icon.yellow { background: #fef9c3; color: #ca8a04; }
+    .bm-stat-icon.blue { background: #eff6ff; color: #2563eb; }
+    .bm-stat-icon.green { background: #f0fdf4; color: #16a34a; }
+    .bm-stat-icon.indigo { background: #e0e7ff; color: #4f46e5; }
+    .bm-stat-val { font-size: 1.35rem; font-weight: 700; color: var(--primary); line-height: 1.2; }
+    .bm-stat-lbl { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-top: 2px; }
+
+    .bm-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .bm-master-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .bm-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .bm-field-group label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .bm-field-group input, .bm-field-group select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      background: white;
+      color: var(--text);
+      font-family: inherit;
+    }
+    .bm-rate-callout {
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #92400e;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+    }
+    .bm-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 18px;
+    }
+    .bm-submeter-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+    }
+    .bm-submeter-table th {
+      background: #1E355F;
+      color: white;
+      padding: 10px 12px;
+      font-weight: 600;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .bm-submeter-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      background: white;
+    }
+    .bm-submeter-table input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-family: inherit;
+      background: #fff;
+    }
+    .bm-submeter-table input:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+    .bm-summary-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .bm-summary-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .bm-summary-box .lbl {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .bm-summary-box .val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #16a34a;
+    }
+    .bm-slip-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 9998;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .bm-slip-paper {
+      background: white;
+      width: 100%;
+      max-width: 780px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      padding: 35px 40px;
+      position: relative;
+    }
+    body.dark-mode .bm-stat-card {
+      background: var(--bg-surface);
+      border-color: var(--border);
+    }
+    body.dark-mode .bm-stat-val {
+      color: #f8fafc;
+    }
+    body.dark-mode .bm-master-grid {
+      background: #0f172a;
+      border-color: var(--border);
+    }
+    body.dark-mode .bm-master-grid input, body.dark-mode .bm-master-grid select {
+      background: #1e293b;
+      color: #f8fafc;
+      border-color: var(--border);
+    }
+    body.dark-mode .bm-submeter-table td {
+      background: var(--bg-surface);
+      border-color: var(--border);
+      color: #f8fafc;
+    }
+    body.dark-mode .bm-submeter-table input {
+      background: #1e293b;
+      color: #f8fafc;
+      border-color: var(--border);
+    }
+    body.dark-mode .bm-summary-box {
+      background: #0f172a;
+      border-color: var(--border);
+    }
+    body.dark-mode .bm-slip-paper {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+
     /* System Theme Pop-Up Modal (Custom Alert) */
     .system-alert-backdrop {
       display: none;
@@ -2901,10 +3449,21 @@
     </div>
     <div class="header-right">
       <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-      <button class="icon-btn" title="Admin Notifications" aria-label="Admin Notifications"
-        onclick="switchView('view-account-approvals', document.querySelector('[data-account-approvals]'))">
-        <i class="fa-regular fa-bell"></i></button>
-      <span class="notification-badge" id="pendingAccountBadge" aria-live="polite"></span>
+      <div class="notification-container" style="position: relative; display: flex; align-items: center;">
+        <button class="icon-btn" id="adminNotifBtn" type="button" title="Admin Notifications" aria-label="Admin Notifications"
+          onclick="toggleAdminNotifDropdown(event)">
+          <i class="fa-regular fa-bell"></i>
+        </button>
+        <span class="notification-badge" id="pendingAccountBadge" aria-live="polite"></span>
+
+        <div class="admin-notif-dropdown" id="adminNotifDropdown">
+          <div class="admin-notif-header">
+            <span><i class="fa-regular fa-bell" style="margin-right: 6px; color: var(--accent);"></i> Pending Requests &amp; Approvals</span>
+            <span class="admin-notif-badge-pill" id="adminNotifTotalPill">0</span>
+          </div>
+          <div class="admin-notif-body" id="adminNotifBody"></div>
+        </div>
+      </div>
       <div class="user-badge" onclick="this.classList.toggle('active')">
         <span>Admin User</span>
         <div class="avatar">AU</div>
@@ -2935,11 +3494,11 @@
       <a href="#" class="nav-link" data-account-approvals onclick="return switchView('view-account-approvals', this)"><i
           class="fa-solid fa-user-check"></i>
         Account Approvals <span class="nav-count" id="pendingAccountNavCount"></span></a>
-      <a href="#" class="nav-link" onclick="return switchView('view-calendar', this)"><i
+      <a href="#" class="nav-link" data-facility-requests onclick="return switchView('view-calendar', this)"><i
           class="fa-solid fa-calendar-days"></i>
-        Facility Reservation</a>
-      <a href="#" class="nav-link" onclick="return switchView('view-liaison', this)"><i
-          class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker</a>
+        Facility Reservation <span class="nav-count" id="pendingFacilityNavCount"></span></a>
+      <a href="#" class="nav-link" data-liaison-requests onclick="return switchView('view-liaison', this)"><i
+          class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker <span class="nav-count" id="pendingLiaisonNavCount"></span></a>
     </nav>
 
     <div class="nav-label">FINANCE</div>
@@ -2953,17 +3512,28 @@
 
     <div class="nav-label">INVENTORY</div>
     <nav>
-      <a href="#" class="nav-link" onclick="return switchView('view-supplies', this)"><i
+      <a href="#" class="nav-link" data-supplies-requests onclick="return switchView('view-supplies', this)"><i
           class="fa-solid fa-boxes-stacked"></i>
-        Supplies Inventory</a>
+        Supplies Request <span class="nav-count" id="pendingSuppliesNavCount"></span></a>
+      <a href="#" class="nav-link" data-receiving-report onclick="return switchView('view-receiving-report', this)"><i
+          class="fa-solid fa-file-invoice"></i>
+        Receiving Report</a>
     </nav>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
-      <a href="#" class="nav-link" onclick="return switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i>
-        Vehicle Dispatch Board</a>
+      <a href="#" class="nav-link" data-vehicle-requests onclick="return switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i>
+        Vehicle Dispatch Board <span class="nav-count" id="pendingVehicleNavCount"></span></a>
       <a href="#" class="nav-link" onclick="return switchView('view-driver-kra', this)"><i class="fa-solid fa-chart-line"></i>
         Driver KRA &amp; KPI Evaluation</a>
+      <a href="#" class="nav-link" data-company-vehicles onclick="return switchView('view-company-vehicles', this)"><i class="fa-solid fa-truck-pickup"></i>
+        List of Company Vehicles <span style="font-size:0.65rem; background:#fef3c7; color:#b45309; padding:2px 6px; border-radius:4px; font-weight:600; margin-left:auto; display:inline-block;">Under Dev</span></a>
+    </nav>
+
+    <div class="nav-label">BUILDING MAINTENANCE</div>
+    <nav>
+      <a href="#" class="nav-link" data-building-maintenance onclick="return switchView('view-building-maintenance', this)"><i class="fa-solid fa-bolt"></i>
+        Submeter Electricity Billing</a>
     </nav>
   </aside>
 
@@ -3244,10 +3814,10 @@
         </div>
       </div>
 
-      <!-- SUPPLIES INVENTORY VIEW -->
+      <!-- SUPPLIES REQUEST VIEW -->
       <div id="view-supplies" class="view-section">
         <div class="page-header">
-          <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory &amp; Warehouse Issuance</h1>
+          <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Request &amp; Warehouse Issuance</h1>
           <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
             Approve requests, record warehouse issuances, and automatically update department budgets.
           </p>
@@ -3277,6 +3847,238 @@
               <tbody id="suppliesRequestsTableBody">
                 <tr>
                   <td colspan="6" style="text-align:center;">Loading supply requests...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECEIVING REPORT VIEW -->
+      <div id="view-receiving-report" class="view-section">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <h1><i class="fa-solid fa-file-invoice"></i> Receiving Report (RR)</h1>
+            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
+              Official Material Receiving &amp; Inspection Entry Form for Inventory Staff warehouse intake.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn-primary" onclick="document.getElementById('rrFormCard').scrollIntoView({ behavior: 'smooth' }); document.getElementById('rrPrfNo').focus();" style="font-size:0.8rem; padding:7px 15px;">
+              <i class="fa-solid fa-plus"></i> New Receiving Report
+            </button>
+            <button type="button" class="btn-primary" onclick="exportReceivingReportsCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
+              <i class="fa-solid fa-file-excel"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="rr-stats-grid">
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon blue"><i class="fa-solid fa-file-invoice"></i></div>
+            <div>
+              <div class="rr-stat-val" id="rrStatCount">0</div>
+              <div class="rr-stat-lbl">Reports Recorded</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon green"><i class="fa-solid fa-peso-sign"></i></div>
+            <div>
+              <div class="rr-stat-val" id="rrStatValue">₱ 0.00</div>
+              <div class="rr-stat-lbl">Total Value Received</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon amber"><i class="fa-solid fa-boxes-packing"></i></div>
+            <div>
+              <div class="rr-stat-val" id="rrStatItems">0</div>
+              <div class="rr-stat-lbl">Total Items Received</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon purple"><i class="fa-solid fa-truck-ramp-box"></i></div>
+            <div>
+              <div class="rr-stat-val" id="rrStatSuppliers" style="font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">-</div>
+              <div class="rr-stat-lbl">Active Suppliers</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENTRY FORM CARD -->
+        <div class="data-card" id="rrFormCard" style="margin-bottom: 24px; padding: 24px;">
+          <div class="rr-form-header-bar">
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-clipboard-check" style="color:var(--accent);"></i> Inventory Receiving &amp; Inspection Form
+              </h3>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Fill in all purchase and shipment details as verified by Inventory Staff upon arrival.</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="rr-badge"><i class="fa-solid fa-shield-halved"></i> Warehouse Inspection</span>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--primary);" id="rrGeneratedRefBadge">RR-2026-0001</span>
+            </div>
+          </div>
+
+          <form id="receivingReportForm" onsubmit="submitReceivingReport(event)">
+            <!-- Top Document Reference Fields -->
+            <div class="rr-meta-grid">
+              <div class="rr-field-group">
+                <label for="rrDate"><i class="fa-regular fa-calendar" style="color:var(--accent);"></i> Date <span style="color:#ef4444;">*</span></label>
+                <input type="date" id="rrDate" name="rrDate" required>
+              </div>
+
+              <div class="rr-field-group">
+                <label for="rrPrfNo"><i class="fa-solid fa-hashtag" style="color:var(--accent);"></i> PRF No. <span style="color:#ef4444;">*</span></label>
+                <input type="text" id="rrPrfNo" name="rrPrfNo" placeholder="e.g. PRF-2026-089" required>
+              </div>
+
+              <div class="rr-field-group">
+                <label for="rrPoNo"><i class="fa-solid fa-file-contract" style="color:var(--accent);"></i> PO No. <span style="color:#ef4444;">*</span></label>
+                <input type="text" id="rrPoNo" name="rrPoNo" placeholder="e.g. PO-2026-042" required>
+              </div>
+
+              <div class="rr-field-group">
+                <label for="rrSupplier"><i class="fa-solid fa-building" style="color:var(--accent);"></i> Supplier Name <span style="color:#ef4444;">*</span></label>
+                <input type="text" id="rrSupplier" name="rrSupplier" placeholder="e.g. Golden State Office Supplies Trading" required>
+              </div>
+            </div>
+
+            <!-- Line Items Table -->
+            <div style="margin-top: 14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+                <label style="font-size:0.85rem; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:6px;">
+                  <i class="fa-solid fa-list-check" style="color:var(--accent);"></i> Received Items Detail (Description, Qty, UOM, Unit Cost, Total Amount)
+                </label>
+                <button type="button" class="btn-primary" onclick="addRrLineItem()" style="font-size:0.75rem; padding:5px 12px; background:#10b981;">
+                  <i class="fa-solid fa-plus"></i> Add Item Line
+                </button>
+              </div>
+
+              <div class="rr-items-table-wrap">
+                <table class="rr-items-table" id="rrItemsTable">
+                  <thead>
+                    <tr>
+                      <th style="width: 40px; text-align: center;">#</th>
+                      <th style="min-width: 250px;">Description <span style="color:#ef4444;">*</span></th>
+                      <th style="width: 110px;">Qty <span style="color:#ef4444;">*</span></th>
+                      <th style="width: 150px;">Unit of Measure <span style="color:#ef4444;">*</span></th>
+                      <th style="width: 140px;">Unit Cost (₱) <span style="color:#ef4444;">*</span></th>
+                      <th style="width: 150px;">Total Amount (₱)</th>
+                      <th style="width: 50px; text-align: center;"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="rrItemsTbody">
+                    <!-- Default initial row -->
+                    <tr class="rr-item-row">
+                      <td style="text-align: center; font-weight: 700; color: var(--text-muted);" class="row-num">1</td>
+                      <td>
+                        <input type="text" class="rr-item-desc" placeholder="e.g. A4 Copy Paper 80gsm (Hard Copy)" required>
+                      </td>
+                      <td>
+                        <input type="number" class="rr-item-qty" min="0.01" step="any" value="1" oninput="calcRrTotals()" required>
+                      </td>
+                      <td>
+                        <select class="rr-item-uom" required>
+                          <option value="Reams">Reams</option>
+                          <option value="Boxes">Boxes</option>
+                          <option value="Pcs">Pcs</option>
+                          <option value="Rolls">Rolls</option>
+                          <option value="Packs">Packs</option>
+                          <option value="Sets">Sets</option>
+                          <option value="Units">Units</option>
+                          <option value="Cartons">Cartons</option>
+                          <option value="Bundles">Bundles</option>
+                          <option value="Meters">Meters</option>
+                          <option value="Kg">Kg</option>
+                          <option value="Liters">Liters</option>
+                          <option value="Gallons">Gallons</option>
+                          <option value="Tubes">Tubes</option>
+                          <option value="Bags">Bags</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" class="rr-item-cost" min="0" step="0.01" placeholder="0.00" oninput="calcRrTotals()" required>
+                      </td>
+                      <td>
+                        <input type="text" class="rr-item-total" readonly placeholder="₱ 0.00" style="background:#f8fafc; font-weight:700; color:#16a34a;">
+                      </td>
+                      <td style="text-align: center;">
+                        <button type="button" class="rr-btn-del-row" onclick="removeRrLineItem(this)" title="Remove item"><i class="fa-solid fa-trash-can"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Summary & Submissions -->
+            <div class="rr-summary-bar">
+              <div style="display:flex; flex-direction:column; gap:8px; flex:1; max-width:480px;">
+                <input type="text" id="rrRemarks" placeholder="Remarks / Delivery Receipt (DR) No. / Invoice No. (Optional)" style="padding:9px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem;">
+                <div style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
+                  <i class="fa-solid fa-user-check" style="color:var(--accent);"></i>
+                  <span>Inspected &amp; Received by: <strong id="rrReceiverLabel">Inventory Staff</strong></span>
+                </div>
+              </div>
+
+              <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+                <div class="rr-total-box">
+                  <span class="lbl">Total Amount:</span>
+                  <span class="val" id="rrGrandTotalDisplay">₱ 0.00</span>
+                </div>
+                <div style="display:flex; gap:10px;">
+                  <button type="button" class="btn-primary" onclick="resetRrForm()" style="background:#64748b; padding:10px 18px; font-size:0.85rem;">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                  </button>
+                  <button type="submit" class="btn-primary" id="btnSubmitRr" style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a;">
+                    <i class="fa-solid fa-circle-check"></i> Submit Receiving Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- RECEIVING REPORTS REGISTRY / LOG TABLE -->
+        <div class="data-card" style="padding: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-clock-rotate-left" style="color:var(--accent);"></i> Receiving Reports Registry &amp; History
+              </h3>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Audit log of all accepted supplier shipments and warehouse intake reports.</span>
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <div class="search-box" style="margin:0;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="rrSearchInput" placeholder="Search PRF, PO, Supplier..." oninput="filterReceivingReports()" style="width:220px;">
+              </div>
+              <input type="date" id="rrDateFilter" onchange="filterReceivingReports()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem;">
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="dispatch-table" style="min-width: 950px;">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>RR No.</th>
+                  <th>PRF No.</th>
+                  <th>PO No.</th>
+                  <th>Supplier Name</th>
+                  <th>Items Description</th>
+                  <th style="text-align:right;">Total Amount</th>
+                  <th>Received By</th>
+                  <th style="text-align:center;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="receivingReportsTableBody">
+                <tr>
+                  <td colspan="9" style="text-align:center; padding:30px; color:#64748b;">
+                    <i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i> Loading receiving reports...
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -3450,6 +4252,401 @@
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLEET MANAGEMENT - LIST OF COMPANY VEHICLES (UNDER DEVELOPMENT) VIEW -->
+      <div id="view-company-vehicles" class="view-section">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <h1><i class="fa-solid fa-truck-pickup" style="color:var(--accent);"></i> List of Company Vehicles</h1>
+              <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-person-digging"></i> Under Development
+              </span>
+            </div>
+            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
+              Official master registry of company-owned fleet vehicles, maintenance logs, insurance coverage, and vehicle assignments.
+            </p>
+          </div>
+          <div>
+            <button type="button" class="btn-primary" onclick="window.showSystemAlert ? window.showSystemAlert('Module In Progress', 'The Company Vehicles Registry is currently under development. Detailed vehicle profiling and management forms will be organized here soon.', 'info') : alert('Module in progress')" style="font-size:0.8rem; padding:7px 15px; background:#64748b;">
+              <i class="fa-solid fa-wrench"></i> Under Development
+            </button>
+          </div>
+        </div>
+
+        <!-- Under Development Notice Banner -->
+        <div style="background: linear-gradient(135deg, #eff6ff 0%, #fef3c7 100%); border: 1px solid #fed7aa; border-radius: 12px; padding: 22px 26px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px;">
+          <div style="width: 52px; height: 52px; border-radius: 12px; background: #f59e0b; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0 0 5px; font-size: 1.1rem; color: #1E355F; font-weight: 700;">
+              Company Vehicles Registry &mdash; Module Under Development
+            </h3>
+            <p style="margin: 0; color: #475569; font-size: 0.85rem; line-height: 1.5;">
+              This panel is reserved for the complete Company Vehicle Fleet inventory. Full data fields, registration monitoring, PMS maintenance scheduling, and vehicle assignment controls will be activated once organized by the department.
+            </p>
+          </div>
+        </div>
+
+        <!-- Metric Summary Cards Preview -->
+        <div class="rr-stats-grid" style="margin-bottom: 24px;">
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon blue"><i class="fa-solid fa-car-side"></i></div>
+            <div>
+              <div class="rr-stat-val">14 Units</div>
+              <div class="rr-stat-lbl">Total Registered Vehicles</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+              <div class="rr-stat-val">11 Active</div>
+              <div class="rr-stat-lbl">Operational &amp; Roadworthy</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon amber"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <div>
+              <div class="rr-stat-val">2 Units</div>
+              <div class="rr-stat-lbl">In Periodic Maintenance</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon purple"><i class="fa-solid fa-id-card"></i></div>
+            <div>
+              <div class="rr-stat-val">1 Pending</div>
+              <div class="rr-stat-lbl">LTO / Insurance Renewal</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Draft Registry Table Card -->
+        <div class="data-card" style="padding: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-list-check" style="color:var(--accent);"></i> Fleet Inventory Draft Registry Preview
+              </h3>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Preliminary listing of R-II Builders company vehicle assets (Layout to be organized).</span>
+            </div>
+            <span class="user-badge" style="background:#fef3c7; color:#b45309; padding:4px 10px; font-weight:700;">
+              <i class="fa-solid fa-lock"></i> Under Development
+            </span>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="dispatch-table" style="min-width: 900px;">
+              <thead>
+                <tr>
+                  <th>Vehicle ID</th>
+                  <th>Plate No.</th>
+                  <th>Make / Model / Year</th>
+                  <th>Vehicle Type</th>
+                  <th>Assigned Driver / Dept</th>
+                  <th>Fuel Type</th>
+                  <th>Odometer (km)</th>
+                  <th style="text-align:center;">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-family:monospace; font-weight:700; color:var(--primary);">VEH-001</td>
+                  <td><span style="font-family:monospace; font-weight:800; background:#f1f5f9; padding:2px 8px; border-radius:4px; border:1px solid #cbd5e1;">NAA-1021</span></td>
+                  <td style="font-weight:600;">Toyota Hiace Commuter Deluxe (2023)</td>
+                  <td>15-Seater Van</td>
+                  <td>Reynaldo Santos &bull; Executive / Admin</td>
+                  <td>Diesel</td>
+                  <td style="font-family:monospace;">32,450 km</td>
+                  <td style="text-align:center;"><span class="user-badge" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-circle-check"></i> Active</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:monospace; font-weight:700; color:var(--primary);">VEH-002</td>
+                  <td><span style="font-family:monospace; font-weight:800; background:#f1f5f9; padding:2px 8px; border-radius:4px; border:1px solid #cbd5e1;">NDB-3842</span></td>
+                  <td style="font-weight:600;">Toyota Fortuner 2.8L 4x4 (2022)</td>
+                  <td>Midsize SUV</td>
+                  <td>Danilo Cruz &bull; Executive Board</td>
+                  <td>Diesel</td>
+                  <td style="font-family:monospace;">48,120 km</td>
+                  <td style="text-align:center;"><span class="user-badge" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-circle-check"></i> Active</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:monospace; font-weight:700; color:var(--primary);">VEH-003</td>
+                  <td><span style="font-family:monospace; font-weight:800; background:#f1f5f9; padding:2px 8px; border-radius:4px; border:1px solid #cbd5e1;">CBA-7491</span></td>
+                  <td style="font-weight:600;">Mitsubishi L300 FB Exceed (2021)</td>
+                  <td>Utility Van / Logistics</td>
+                  <td>Arnel Bautista &bull; Warehouse &amp; Supplies</td>
+                  <td>Diesel</td>
+                  <td style="font-family:monospace;">67,890 km</td>
+                  <td style="text-align:center;"><span class="user-badge" style="background:#fef3c7; color:#b45309;"><i class="fa-solid fa-wrench"></i> Maintenance</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:monospace; font-weight:700; color:var(--primary);">VEH-004</td>
+                  <td><span style="font-family:monospace; font-weight:800; background:#f1f5f9; padding:2px 8px; border-radius:4px; border:1px solid #cbd5e1;">NFG-2910</span></td>
+                  <td style="font-weight:600;">Toyota Innova 2.8 E A/T (2023)</td>
+                  <td>Multi-Purpose MPV</td>
+                  <td>Eduardo Mendoza &bull; Project Engineering</td>
+                  <td>Diesel</td>
+                  <td style="font-family:monospace;">24,300 km</td>
+                  <td style="text-align:center;"><span class="user-badge" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-circle-check"></i> Active</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:monospace; font-weight:700; color:var(--primary);">VEH-005</td>
+                  <td><span style="font-family:monospace; font-weight:800; background:#f1f5f9; padding:2px 8px; border-radius:4px; border:1px solid #cbd5e1;">NBT-8840</span></td>
+                  <td style="font-weight:600;">Isuzu D-MAX 3.0L 4x4 Pickup (2020)</td>
+                  <td>Site Utility Pickup</td>
+                  <td>Ramil Gomez &bull; Construction Field Ops</td>
+                  <td>Diesel</td>
+                  <td style="font-family:monospace;">91,450 km</td>
+                  <td style="text-align:center;"><span class="user-badge" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-circle-check"></i> Active</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUILDING MAINTENANCE - SUBMETER ELECTRICITY BILLING VIEW -->
+      <div id="view-building-maintenance" class="view-section">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h1><i class="fa-solid fa-bolt" style="color:var(--accent);"></i> Building Maintenance - Electricity Submeter Billing</h1>
+            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
+              Tenant submeter reading logger, Meralco master bill computation, and official electricity billing statement generator.
+            </p>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn-primary" onclick="document.getElementById('bmReadingCard').scrollIntoView({ behavior: 'smooth' });" style="font-size:0.8rem; padding:7px 15px;">
+              <i class="fa-solid fa-plus"></i> New Reading Batch
+            </button>
+            <button type="button" class="btn-primary" onclick="loadDefaultTenantSubmeters()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
+              <i class="fa-solid fa-building-user"></i> Populate Tenants
+            </button>
+            <button type="button" class="btn-primary" onclick="exportSubmeterBillingCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
+              <i class="fa-solid fa-file-excel"></i> Export Ledger CSV
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="bm-stats-grid">
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon yellow"><i class="fa-solid fa-gauge-high"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatTenantCount">0</div>
+              <div class="bm-stat-lbl">Submeters Monitored</div>
+            </div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon blue"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatEffectiveRate">₱ 0.00 / kWh</div>
+              <div class="bm-stat-lbl">Meralco Master Rate</div>
+            </div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon indigo"><i class="fa-solid fa-chart-area"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatTotalKwh">0.00 kWh</div>
+              <div class="bm-stat-lbl">Total Period Consumption</div>
+            </div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon green"><i class="fa-solid fa-peso-sign"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatTotalBilled">₱ 0.00</div>
+              <div class="bm-stat-lbl">Total Tenant Billed</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 1: MERALCO MASTER BILL & BATCH ENTRY CARD -->
+        <div class="data-card" id="bmReadingCard" style="margin-bottom: 24px; padding: 24px;">
+          <div class="bm-card-header">
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent);"></i> Step 1: Meralco Master Bill &amp; Billing Period
+              </h3>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Enter the official Meralco invoice details for the building to establish the effective rate per kWh.</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="rr-badge" style="background:#fef3c7; color:#b45309;"><i class="fa-solid fa-building-circle-check"></i> Building Maintenance Module</span>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--primary);" id="bmBatchRefBadge">BATCH-2026-10</span>
+            </div>
+          </div>
+
+          <div class="bm-master-grid">
+            <div class="bm-field-group">
+              <label for="bmBillingMonth"><i class="fa-regular fa-calendar-days" style="color:var(--accent);"></i> Billing Period (Month) <span style="color:#ef4444;">*</span></label>
+              <input type="month" id="bmBillingMonth" onchange="onBmPeriodChange()" required>
+            </div>
+
+            <div class="bm-field-group">
+              <label for="bmReadingDate"><i class="fa-regular fa-calendar-check" style="color:var(--accent);"></i> Reading Date <span style="color:#ef4444;">*</span></label>
+              <input type="date" id="bmReadingDate" required>
+            </div>
+
+            <div class="bm-field-group">
+              <label for="bmDueDate"><i class="fa-solid fa-clock" style="color:var(--accent);"></i> Payment Due Date</label>
+              <input type="date" id="bmDueDate">
+            </div>
+
+            <div class="bm-field-group">
+              <label for="bmMeralcoInvoiceNo"><i class="fa-solid fa-receipt" style="color:var(--accent);"></i> Meralco Bill / SIN No. <span style="color:#ef4444;">*</span></label>
+              <input type="text" id="bmMeralcoInvoiceNo" placeholder="e.g. SIN-9028471920" required>
+            </div>
+
+            <div class="bm-field-group">
+              <label for="bmMeralcoTotalBill"><i class="fa-solid fa-money-bill-wave" style="color:var(--accent);"></i> Total Meralco Bill (₱) <span style="color:#ef4444;">*</span></label>
+              <input type="number" id="bmMeralcoTotalBill" min="0" step="0.01" placeholder="0.00" oninput="calcBmEffectiveRate()" required>
+            </div>
+
+            <div class="bm-field-group">
+              <label for="bmMeralcoTotalKwh"><i class="fa-solid fa-gauge" style="color:var(--accent);"></i> Master Meter Total (kWh) <span style="color:#ef4444;">*</span></label>
+              <input type="number" id="bmMeralcoTotalKwh" min="0" step="0.01" placeholder="0.00" oninput="calcBmEffectiveRate()" required>
+            </div>
+
+            <div class="bm-field-group">
+              <label for="bmCommonAreaFactor"><i class="fa-solid fa-share-nodes" style="color:var(--accent);"></i> Common Area Share (%)</label>
+              <input type="number" id="bmCommonAreaFactor" min="0" max="100" step="0.1" value="0" placeholder="0" oninput="calcBmSubmeterTotals()">
+            </div>
+
+            <div class="bm-field-group">
+              <label for="bmReaderStaff"><i class="fa-solid fa-user-gear" style="color:var(--accent);"></i> Maintenance Staff</label>
+              <input type="text" id="bmReaderStaff" placeholder="Maintenance Custodian">
+            </div>
+          </div>
+
+          <!-- Rate Computed Banner -->
+          <div class="bm-rate-callout" id="bmRateCalloutBox">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <i class="fa-solid fa-calculator" style="font-size:1.2rem;"></i>
+              <span>Computed Meralco Effective Rate: <strong id="bmComputedRateDisplay" style="font-size:1.15rem; color:#b45309;">₱ 0.0000</strong> per kWh</span>
+            </div>
+            <div style="font-size:0.78rem; font-weight:normal; color:#78350f;">
+              Formula: Total Meralco Amount ÷ Master Meter Total kWh
+            </div>
+          </div>
+
+          <!-- STEP 2: TENANT SUBMETER READINGS TABLE -->
+          <div style="margin-top: 10px;">
+            <div class="bm-card-header" style="border-bottom:none; margin-bottom:10px; padding-bottom:0;">
+              <div>
+                <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-users" style="color:var(--accent);"></i> Step 2: Tenant Submeter Readings &amp; Electricity Computation
+                </h3>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Enter present readings for each tenant. Consumption and charges are computed automatically.</span>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button type="button" class="btn-primary" onclick="addBmTenantRow()" style="font-size:0.75rem; padding:6px 14px; background:#10b981;">
+                  <i class="fa-solid fa-plus"></i> Add Tenant
+                </button>
+                <button type="button" class="btn-secondary" onclick="loadDefaultTenantSubmeters()" style="font-size:0.75rem; padding:6px 14px;">
+                  <i class="fa-solid fa-rotate"></i> Reset to Building Tenants
+                </button>
+              </div>
+            </div>
+
+            <div class="bm-table-wrap">
+              <table class="bm-submeter-table" id="bmSubmeterTable">
+                <thead>
+                  <tr>
+                    <th style="width: 35px; text-align: center;">#</th>
+                    <th style="min-width: 170px;">Tenant / Lessee Name <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 110px;">Unit / Floor <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 120px;">Meter Serial No. <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 115px;">Previous (kWh) <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 115px;">Present (kWh) <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 70px;">Mult.</th>
+                    <th style="width: 110px; text-align: right;">Total kWh</th>
+                    <th style="width: 120px; text-align: right;">Energy Charge</th>
+                    <th style="width: 105px; text-align: right;">Common Area</th>
+                    <th style="width: 125px; text-align: right;">Total Due (₱)</th>
+                    <th style="width: 45px; text-align: center;"></th>
+                  </tr>
+                </thead>
+                <tbody id="bmSubmeterTbody">
+                  <!-- Populated dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer Summary & Submission -->
+            <div class="bm-summary-footer">
+              <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+                <div class="bm-summary-box">
+                  <span class="lbl">Submeter Consumption:</span>
+                  <span class="val" id="bmBatchTotalKwhDisplay" style="color:var(--primary); font-size:1.2rem;">0.00 kWh</span>
+                </div>
+                <div class="bm-summary-box">
+                  <span class="lbl">Total Lessee Billing:</span>
+                  <span class="val" id="bmBatchGrandTotalDisplay">₱ 0.00</span>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-primary" onclick="resetBmForm()" style="background:#64748b; padding:10px 18px; font-size:0.85rem;">
+                  <i class="fa-solid fa-rotate-left"></i> Reset Form
+                </button>
+                <button type="button" class="btn-primary" onclick="saveBmBatchAndReadings()" style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a;">
+                  <i class="fa-solid fa-circle-check"></i> Save Batch &amp; Generate Statements
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: TENANT SUBMETER BILLING LEDGER / HISTORY TABLE -->
+        <div class="data-card" style="padding: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-book-open" style="color:var(--accent);"></i> Tenant Electricity Billing Statements Ledger
+              </h3>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Historical record of all issued electricity bills to lessees with individual statement printing.</span>
+            </div>
+
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <div class="search-box" style="margin:0;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="bmLedgerSearch" placeholder="Search Tenant, Unit, Meter..." oninput="filterBmStatementsLedger()" style="width:200px;">
+              </div>
+              <input type="month" id="bmLedgerMonthFilter" onchange="filterBmStatementsLedger()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem;">
+              <select id="bmLedgerStatusFilter" onchange="filterBmStatementsLedger()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; background:white; color:var(--text);">
+                <option value="All">All Statuses</option>
+                <option value="Billed">Billed / Unpaid</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="dispatch-table" style="min-width: 1000px;">
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>Unit / Floor</th>
+                  <th>Tenant / Lessee Name</th>
+                  <th>Meter Serial</th>
+                  <th>Prev &rarr; Pres (kWh)</th>
+                  <th style="text-align:right;">Consumption</th>
+                  <th style="text-align:right;">Rate / kWh</th>
+                  <th style="text-align:right;">Total Due</th>
+                  <th style="text-align:center;">Status</th>
+                  <th style="text-align:center;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="bmStatementsTableBody">
+                <tr>
+                  <td colspan="10" style="text-align:center; padding:30px; color:#64748b;">
+                    <i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i> Loading submeter billing records...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -3672,7 +4869,12 @@
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Michael N. Antiquin']
       },
       'view-supplies': {
-        name: 'Supplies Inventory',
+        name: 'Supplies Request',
+        pin: '015',
+        editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Niño F. Dela Cruz']
+      },
+      'view-receiving-report': {
+        name: 'Receiving Report',
         pin: '015',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Niño F. Dela Cruz']
       },
@@ -3685,6 +4887,16 @@
         name: 'Driver KRA & KPI Evaluation',
         pin: '016',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
+      },
+      'view-company-vehicles': {
+        name: 'List of Company Vehicles',
+        pin: '016',
+        editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
+      },
+      'view-building-maintenance': {
+        name: 'Electricity Submeter Billing',
+        pin: '017',
+        editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
       }
     };
 
@@ -3793,10 +5005,14 @@
         loadLiaisonTasks();
       } else if (viewId === 'view-supplies' && typeof loadSupplyRequests === 'function') {
         loadSupplyRequests();
+      } else if (viewId === 'view-receiving-report' && typeof loadReceivingReports === 'function') {
+        loadReceivingReports();
       } else if (viewId === 'view-budget' && typeof loadBudgetMonitoringBoard === 'function') {
         loadBudgetMonitoringBoard();
       } else if (viewId === 'view-account-approvals' && typeof loadAccountApprovals === 'function') {
         loadAccountApprovals();
+      } else if (viewId === 'view-building-maintenance' && typeof loadBuildingMaintenanceModule === 'function') {
+        loadBuildingMaintenanceModule();
       }
 
       return false;
@@ -3849,6 +5065,10 @@
 
         // Sort by created_at descending
         allRequests.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        const pendingFacilityCount = allRequests.filter(req => String(req.status || '').toLowerCase() === 'pending').length;
+        pendingCounts.facility = pendingFacilityCount;
+        updatePendingIndicators();
 
         window._currentFacilityFilter = window._currentFacilityFilter || 'Pending';
         window.renderFacilityTable();
@@ -3924,13 +5144,128 @@
       return new Date(value).toLocaleString();
     }
 
+    const pendingCounts = {
+      account: 0,
+      facility: 0,
+      vehicle: 0,
+      liaison: 0,
+      supplies: 0
+    };
+
+    function renderAdminNotifDropdown(totalPending) {
+      const pill = document.getElementById('adminNotifTotalPill');
+      if (pill) pill.textContent = totalPending;
+
+      const body = document.getElementById('adminNotifBody');
+      if (!body) return;
+
+      const categories = [
+        {
+          name: 'Account Approvals',
+          icon: 'fa-user-check',
+          count: pendingCounts.account,
+          view: 'view-account-approvals',
+          selector: '[data-account-approvals]'
+        },
+        {
+          name: 'Facility Reservations',
+          icon: 'fa-calendar-days',
+          count: pendingCounts.facility,
+          view: 'view-calendar',
+          selector: '[data-facility-requests]'
+        },
+        {
+          name: 'Vehicle Dispatch',
+          icon: 'fa-car',
+          count: pendingCounts.vehicle,
+          view: 'view-vehicle',
+          selector: '[data-vehicle-requests]'
+        },
+        {
+          name: 'Liaison Tasks',
+          icon: 'fa-person-walking-arrow-right',
+          count: pendingCounts.liaison,
+          view: 'view-liaison',
+          selector: '[data-liaison-requests]'
+        },
+        {
+          name: 'Supplies Request',
+          icon: 'fa-boxes-stacked',
+          count: pendingCounts.supplies,
+          view: 'view-supplies',
+          selector: '[data-supplies-requests]'
+        }
+      ];
+
+      if (totalPending === 0) {
+        body.innerHTML = `
+          <div style="padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+            <i class="fa-regular fa-circle-check" style="font-size: 1.8rem; color: #10b981; display: block; margin-bottom: 8px;"></i>
+            All caught up! No pending requests.
+          </div>
+        `;
+        return;
+      }
+
+      body.innerHTML = categories.map(cat => `
+        <div class="admin-notif-item" onclick="switchView('${cat.view}', document.querySelector('${cat.selector}')); document.getElementById('adminNotifDropdown')?.classList.remove('active');">
+          <div class="admin-notif-item-left">
+            <i class="fa-solid ${cat.icon}"></i>
+            <span>${cat.name}</span>
+          </div>
+          <span class="admin-notif-count" style="${cat.count > 0 ? '' : 'background: #f1f5f9; color: #94a3b8;'}">
+            ${cat.count} pending
+          </span>
+        </div>
+      `).join('');
+    }
+
+    window.toggleAdminNotifDropdown = function (e) {
+      if (e) e.stopPropagation();
+      const dd = document.getElementById('adminNotifDropdown');
+      if (dd) dd.classList.toggle('active');
+    };
+
+    document.addEventListener('click', (e) => {
+      const dd = document.getElementById('adminNotifDropdown');
+      const btn = document.getElementById('adminNotifBtn');
+      if (dd && btn && !dd.contains(e.target) && !btn.contains(e.target)) {
+        dd.classList.remove('active');
+      }
+    });
+
+    function updatePendingIndicators() {
+      const updateBadge = (id, count) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = count;
+        el.style.display = count > 0 ? 'inline-flex' : 'none';
+      };
+
+      updateBadge('pendingAccountNavCount', pendingCounts.account);
+      updateBadge('pendingFacilityNavCount', pendingCounts.facility);
+      updateBadge('pendingVehicleNavCount', pendingCounts.vehicle);
+      updateBadge('pendingLiaisonNavCount', pendingCounts.liaison);
+      updateBadge('pendingSuppliesNavCount', pendingCounts.supplies);
+
+      const accountStat = document.getElementById('pendingAccountCount');
+      if (accountStat) {
+        accountStat.textContent = String(pendingCounts.account);
+      }
+
+      const totalPending = pendingCounts.account + pendingCounts.facility + pendingCounts.vehicle + pendingCounts.liaison + pendingCounts.supplies;
+      const bellBadge = document.getElementById('pendingAccountBadge');
+      if (bellBadge) {
+        bellBadge.textContent = totalPending;
+        bellBadge.style.display = totalPending > 0 ? 'inline-flex' : 'none';
+      }
+
+      renderAdminNotifDropdown(totalPending);
+    }
+
     function updatePendingAccountIndicators(count) {
-      ['pendingAccountCount', 'pendingAccountNavCount', 'pendingAccountBadge'].forEach(id => {
-        const element = document.getElementById(id);
-        if (!element) return;
-        element.textContent = count;
-        element.style.display = count > 0 ? 'inline-block' : (id === 'pendingAccountCount' ? 'block' : 'none');
-      });
+      pendingCounts.account = count;
+      updatePendingIndicators();
     }
 
     let accountApprovalFilter = 'pending';
@@ -4066,6 +5401,27 @@
       }
     }
 
+    // Vehicle Dispatch Status & Assignment Overrides (Prevents bouncing back on polling/refresh)
+    function getVehicleDispatchOverrides() {
+      try {
+        return JSON.parse(localStorage.getItem('vehicle_dispatch_overrides') || '{}');
+      } catch(e) {
+        return {};
+      }
+    }
+
+    function setVehicleDispatchOverride(requestId, overrideData) {
+      try {
+        const overrides = getVehicleDispatchOverrides();
+        const reqKey = String(requestId);
+        overrides[reqKey] = {
+          ...(overrides[reqKey] || {}),
+          ...overrideData
+        };
+        localStorage.setItem('vehicle_dispatch_overrides', JSON.stringify(overrides));
+      } catch(e) {}
+    }
+
     // Switch between Live Dispatch and KPI Evaluation (routes to dedicated views)
     window.switchVehicleViewTab = function (tab) {
       if (tab === 'kpi' || tab === 'view-driver-kra') {
@@ -4121,6 +5477,12 @@
       const tableHead = document.getElementById('dispatchTableHead');
       const tableBody = document.getElementById('dispatchTableBody');
       if (!tableBody) return;
+
+      const pendingVehicleCount = (vehicleRequests || []).filter(req => String(req.status || '').toLowerCase() === 'pending').length;
+      if (pendingCounts.vehicle !== pendingVehicleCount) {
+        pendingCounts.vehicle = pendingVehicleCount;
+        updatePendingIndicators();
+      }
 
       // Update table headers based on panel view
       if (tableHead) {
@@ -4427,7 +5789,14 @@
         return;
       }
 
-      vehicleRequests = data || [];
+      const overrides = getVehicleDispatchOverrides();
+      vehicleRequests = (data || []).map(request => {
+        const reqOverride = overrides[String(request.id)];
+        if (reqOverride) {
+          return { ...request, ...reqOverride };
+        }
+        return request;
+      });
       renderVehicleDispatchTable();
 
       const dateInput = document.getElementById('dispatchScheduleDate');
@@ -4481,6 +5850,12 @@
     function renderLiaisonTasks() {
       const tableBody = document.getElementById('liaisonTasksTableBody');
       if (!tableBody) return;
+
+      const pendingLiaisonCount = (liaisonTasks || []).filter(task => String(task.status || '').toLowerCase() === 'pending').length;
+      if (pendingCounts.liaison !== pendingLiaisonCount) {
+        pendingCounts.liaison = pendingLiaisonCount;
+        updatePendingIndicators();
+      }
 
       const filteredTasks = liaisonTasks.filter(task => {
         const matchesStatus = liaisonTaskFilter === 'All'
@@ -4707,6 +6082,12 @@
       const tableBody = document.getElementById('suppliesRequestsTableBody');
       if (!tableBody) return;
 
+      const pendingSuppliesCount = (supplyRequests || []).filter(req => String(req.status || '').toLowerCase() === 'pending').length;
+      if (pendingCounts.supplies !== pendingSuppliesCount) {
+        pendingCounts.supplies = pendingSuppliesCount;
+        updatePendingIndicators();
+      }
+
       const filtered = supplyRequestFilter === 'All'
         ? supplyRequests
         : supplyRequests.filter(request => {
@@ -4796,58 +6177,105 @@
       const tableBody = document.getElementById('suppliesRequestsTableBody');
       if (!tableBody) return;
 
-      const { data: requests, error: requestError } = await supabase
-        .from('supplies_requests')
-        .select('*')
-        .order('created_at', { ascending: false });
+      let requests = [];
+      try {
+        const { data, error: requestError } = await supabase
+          .from('supplies_requests')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-      if (requestError) {
-        console.error('Error fetching supply requests', requestError);
-        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#b91c1c;">Error loading supply requests.</td></tr>';
-        return;
+        if (requestError) {
+          console.warn('Supabase supply requests notice:', requestError);
+        } else if (Array.isArray(data)) {
+          requests = data;
+        }
+      } catch (e) {
+        console.warn('Network notice fetching supply requests:', e);
       }
 
-      const requestIds = (requests || []).map(request => request.id);
+      // Merge locally cached supply requests
+      let localSupplies = [];
+      try {
+        localSupplies = JSON.parse(localStorage.getItem('user_supplies_requests') || '[]');
+      } catch(e) {}
+
+      const requestMap = new Map();
+      localSupplies.forEach(r => {
+        const key = r.reference_number || String(r.id);
+        requestMap.set(key, r);
+      });
+      requests.forEach(r => {
+        const key = r.reference_number || String(r.id);
+        const existingLocal = requestMap.get(key);
+        requestMap.set(key, { ...existingLocal, ...r });
+      });
+
+      const combinedRequests = Array.from(requestMap.values());
+      const requestIds = combinedRequests.map(r => r.id).filter(Boolean);
       let items = [];
       if (requestIds.length > 0) {
-        const { data, error: itemError } = await supabase
-          .from('supplies_items')
-          .select('*')
-          .in('request_id', requestIds);
-        if (itemError) {
-          console.error('Error fetching supply request items', itemError);
-          tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#b91c1c;">Error loading supply request items.</td></tr>';
-          return;
+        try {
+          const { data, error: itemError } = await supabase
+            .from('supplies_items')
+            .select('*')
+            .in('request_id', requestIds);
+          if (!itemError && Array.isArray(data)) {
+            items = data;
+          }
+        } catch (e) {
+          console.warn('Supplies items fetch note:', e);
         }
-        items = data || [];
       }
 
       const requestOverrides = getSupplyStatusOverrides();
       const issuances = getSuppliesIssuances();
 
-      supplyRequests = (requests || []).map(request => {
+      supplyRequests = combinedRequests.map(request => {
         const reqIdStr = String(request.id);
-        const isIssued = Boolean(issuances[reqIdStr]);
-        const localStatus = isIssued ? 'Issued' : requestOverrides[reqIdStr];
+        const refStr = String(request.reference_number || '');
+        const isIssued = Boolean(issuances[reqIdStr]) || Boolean(issuances[refStr]);
+        const localStatus = isIssued ? 'Issued' : (requestOverrides[reqIdStr] || requestOverrides[refStr]);
         const effectiveStatus = localStatus || request.status || 'Pending';
+
+        const reqItems = items.filter(item => item.request_id === request.id);
+        const finalItems = reqItems.length > 0 ? reqItems : (Array.isArray(request.supplies_items) ? request.supplies_items : []);
+
         return {
           ...request,
           status: String(effectiveStatus).replace(/^./, character => character.toUpperCase()),
-          items: items.filter(item => item.request_id === request.id)
+          items: finalItems
         };
       });
       renderSupplyRequests();
     }
 
     window.adminUpdateSupplyStatus = async function (requestId, nextStatus) {
-      const request = supplyRequests.find(item => String(item.id) === String(requestId));
+      const request = supplyRequests.find(item => String(item.id) === String(requestId) || (item.reference_number && item.reference_number === requestId));
       if (!request) return;
 
       const previousStatus = request.status;
 
       // Persist status in local override cache immediately so it never reverts on polling or refresh
       setSupplyStatusOverride(requestId, nextStatus);
+      if (request.reference_number) {
+        setSupplyStatusOverride(request.reference_number, nextStatus);
+      }
       request.status = nextStatus;
+
+      // Also update user_supplies_requests in localStorage
+      try {
+        const localList = JSON.parse(localStorage.getItem('user_supplies_requests') || '[]');
+        let updated = false;
+        localList.forEach(item => {
+          if (String(item.id) === String(requestId) || (request.reference_number && item.reference_number === request.reference_number)) {
+            item.status = nextStatus;
+            updated = true;
+          }
+        });
+        if (updated) {
+          localStorage.setItem('user_supplies_requests', JSON.stringify(localList));
+        }
+      } catch(e) {}
 
       // Attempt Supabase update
       try {
@@ -5595,17 +7023,33 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           updated_at: new Date().toISOString()
         };
 
-        const { error } = await supabase
-          .from('vehicle_requests')
-          .update(updates)
-          .eq('id', requestId);
-
-        if (error) {
-          console.warn('Supabase update warning (using fallback update)', error);
-        }
-
-        // Update in-memory cache
+        // Persist override immediately
+        setVehicleDispatchOverride(requestId, updates);
         Object.assign(request, updates);
+
+        // Resilient Supabase update
+        try {
+          const { error } = await supabase
+            .from('vehicle_requests')
+            .update(updates)
+            .eq('id', requestId);
+
+          if (error) {
+            console.warn('Supabase update warning, trying fallback', error);
+            const { error: fbErr } = await supabase
+              .from('vehicle_requests')
+              .update({ driver, car, status: 'Approved', updated_at: new Date().toISOString() })
+              .eq('id', requestId);
+            if (fbErr) {
+              await supabase
+                .from('vehicle_requests')
+                .update({ status: 'Approved' })
+                .eq('id', requestId);
+            }
+          }
+        } catch(e) {
+          console.warn('Supabase notice', e);
+        }
 
         // Dispatch Airline-Style Passenger Notification
         if (request.user_id) {
@@ -5713,8 +7157,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           updated_at: new Date().toISOString()
         };
 
-        await supabase.from('vehicle_requests').update(updates).eq('id', requestId);
+        setVehicleDispatchOverride(requestId, updates);
         Object.assign(request, updates);
+
+        try {
+          const { error } = await supabase.from('vehicle_requests').update(updates).eq('id', requestId);
+          if (error) {
+            await supabase.from('vehicle_requests').update({ status: 'Rejected' }).eq('id', requestId);
+          }
+        } catch(e) {}
 
         if (request.user_id) {
           try {
@@ -5812,20 +7263,46 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         updated_at: new Date().toISOString()
       };
 
-      const { error } = await supabase
-        .from('vehicle_requests')
-        .update(updates)
-        .eq('id', requestId);
-
-      if (error) {
-        console.warn('Supabase update warning', error);
-      }
-
+      // 1. Immediately persist local override so polling or reload never bounces back to Pending
+      setVehicleDispatchOverride(requestId, updates);
       Object.assign(request, updates);
 
+      // 2. Resilient Supabase update with progressive fallbacks
+      try {
+        const { error } = await supabase
+          .from('vehicle_requests')
+          .update(updates)
+          .eq('id', requestId);
+
+        if (error) {
+          console.warn('Vehicle update error, attempting fallback update:', error);
+          const fallbackUpdates = {
+            status: 'Approved',
+            driver,
+            car,
+            updated_at: new Date().toISOString()
+          };
+          const { error: fbErr } = await supabase
+            .from('vehicle_requests')
+            .update(fallbackUpdates)
+            .eq('id', requestId);
+
+          if (fbErr) {
+            await supabase
+              .from('vehicle_requests')
+              .update({ status: 'Approved' })
+              .eq('id', requestId);
+          }
+        }
+      } catch (err) {
+        console.warn('Supabase update notice:', err);
+      }
+
+      const driverName = dispatchDrivers.find(d => d.id === driver)?.name || 'Driver Assigned';
+      const carName = dispatchCars.find(c => c.id === car)?.name || 'Vehicle Assigned';
+
+      // 3. Notify passenger
       if (request.user_id) {
-        const driverName = dispatchDrivers.find(d => d.id === driver)?.name || 'Driver Assigned';
-        const carName = dispatchCars.find(c => c.id === car)?.name || 'Vehicle Assigned';
         try {
           await supabase.from('notifications').insert([{
             user_id: request.user_id,
@@ -5837,8 +7314,20 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         } catch (e) {}
       }
 
-      renderVehicleDispatchTable();
+      // 4. Automatically switch view filter to 'Approved' tab so the trip stays visible on the Confirmed schedule
+      const approvedPill = document.querySelector('#vehicleDispatchFilterPills .pill:nth-child(2)');
+      if (approvedPill) {
+        filterVehicleDispatch('Approved', approvedPill);
+      } else {
+        renderVehicleDispatchTable();
+      }
       renderVehicleSchedule(document.getElementById('dispatchScheduleDate')?.value);
+
+      window.showSystemAlert(
+        'Vehicle Trip Approved & Scheduled',
+        `Trip ${dispatchRequestId(request)} has been APPROVED.\n• Assigned Driver: ${driverName}\n• Vehicle: ${carName}\n• Schedule: ${formatDispatchDate(request.request_date)} (${formatDispatchTime(request.start_time, request.end_time)})\n\nThe trip is confirmed on the live calendar and notification has been sent to the passenger.`,
+        'success'
+      );
     }
 
     // 5. Cancel Trip Modal
@@ -5866,8 +7355,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         updated_at: new Date().toISOString()
       };
 
-      await supabase.from('vehicle_requests').update(updates).eq('id', requestId);
+      setVehicleDispatchOverride(requestId, updates);
       Object.assign(request, updates);
+
+      try {
+        const { error } = await supabase.from('vehicle_requests').update(updates).eq('id', requestId);
+        if (error) {
+          await supabase.from('vehicle_requests').update({ status: 'Cancelled' }).eq('id', requestId);
+        }
+      } catch(e) {}
 
       if (request.user_id) {
         try {
@@ -6411,6 +7907,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const tableBody = document.getElementById('facilityRequestsTableBody');
       if (!tableBody || !window._allRequests) return;
 
+      const pendingFacilityCount = window._allRequests.filter(req => String(req.status || '').toLowerCase() === 'pending').length;
+      if (pendingCounts.facility !== pendingFacilityCount) {
+        pendingCounts.facility = pendingFacilityCount;
+        updatePendingIndicators();
+      }
+
       let filtered = window._allRequests;
       const searchTerm = (document.getElementById('facilityRequestorSearch')?.value || '').trim().toLowerCase();
       const selectedDate = document.getElementById('facilityRequestDateFilter')?.value || '';
@@ -6575,11 +8077,1116 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         document.body.appendChild(popup);
       }
 
-      const overlay = document.getElementById('dayDetailsOverlay');
       popup.innerHTML = html + `<button onclick="document.getElementById('dayDetailsPopup').style.display='none'; document.getElementById('dayDetailsOverlay').style.display='none';" style="margin-top:20px; width:100%; padding:10px 16px; background:var(--primary); color:white; font-weight:600; font-family:'Poppins',sans-serif; border:none; border-radius:6px; cursor:pointer; transition: opacity 0.2s;">Close</button>`;
 
       popup.style.display = 'block';
       overlay.style.display = 'block';
+    };
+
+    // ==========================================
+    // RECEIVING REPORT (RR) MANAGEMENT ENGINE
+    // ==========================================
+    let receivingReportsData = [];
+
+    function escapeRrHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatRrCurrency(amount) {
+      const num = parseFloat(amount) || 0;
+      return '₱ ' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    window.addRrLineItem = function () {
+      const tbody = document.getElementById('rrItemsTbody');
+      if (!tbody) return;
+      const rowCount = tbody.querySelectorAll('.rr-item-row').length + 1;
+      const tr = document.createElement('tr');
+      tr.className = 'rr-item-row';
+      tr.innerHTML = `
+        <td style="text-align: center; font-weight: 700; color: var(--text-muted);" class="row-num">${rowCount}</td>
+        <td>
+          <input type="text" class="rr-item-desc" placeholder="e.g. Item description / brand / model" required>
+        </td>
+        <td>
+          <input type="number" class="rr-item-qty" min="0.01" step="any" value="1" oninput="calcRrTotals()" required>
+        </td>
+        <td>
+          <select class="rr-item-uom" required>
+            <option value="Reams">Reams</option>
+            <option value="Boxes">Boxes</option>
+            <option value="Pcs">Pcs</option>
+            <option value="Rolls">Rolls</option>
+            <option value="Packs">Packs</option>
+            <option value="Sets">Sets</option>
+            <option value="Units">Units</option>
+            <option value="Cartons">Cartons</option>
+            <option value="Bundles">Bundles</option>
+            <option value="Meters">Meters</option>
+            <option value="Kg">Kg</option>
+            <option value="Liters">Liters</option>
+            <option value="Gallons">Gallons</option>
+            <option value="Tubes">Tubes</option>
+            <option value="Bags">Bags</option>
+          </select>
+        </td>
+        <td>
+          <input type="number" class="rr-item-cost" min="0" step="0.01" placeholder="0.00" oninput="calcRrTotals()" required>
+        </td>
+        <td>
+          <input type="text" class="rr-item-total" readonly placeholder="₱ 0.00" style="background:#f8fafc; font-weight:700; color:#16a34a;">
+        </td>
+        <td style="text-align: center;">
+          <button type="button" class="rr-btn-del-row" onclick="removeRrLineItem(this)" title="Remove item"><i class="fa-solid fa-trash-can"></i></button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      calcRrTotals();
+    };
+
+    window.removeRrLineItem = function (btn) {
+      const tbody = document.getElementById('rrItemsTbody');
+      if (!tbody) return;
+      const rows = tbody.querySelectorAll('.rr-item-row');
+      if (rows.length <= 1) {
+        const row = rows[0];
+        row.querySelector('.rr-item-desc').value = '';
+        row.querySelector('.rr-item-qty').value = '1';
+        row.querySelector('.rr-item-cost').value = '';
+        row.querySelector('.rr-item-total').value = '₱ 0.00';
+        calcRrTotals();
+        return;
+      }
+      const tr = btn.closest('.rr-item-row');
+      if (tr) tr.remove();
+      tbody.querySelectorAll('.rr-item-row').forEach((row, idx) => {
+        const numEl = row.querySelector('.row-num');
+        if (numEl) numEl.textContent = idx + 1;
+      });
+      calcRrTotals();
+    };
+
+    window.calcRrTotals = function () {
+      const tbody = document.getElementById('rrItemsTbody');
+      if (!tbody) return;
+      let grandTotal = 0;
+      const rows = tbody.querySelectorAll('.rr-item-row');
+      rows.forEach(row => {
+        const qty = parseFloat(row.querySelector('.rr-item-qty')?.value) || 0;
+        const cost = parseFloat(row.querySelector('.rr-item-cost')?.value) || 0;
+        const rowTotal = qty * cost;
+        grandTotal += rowTotal;
+        const totalInput = row.querySelector('.rr-item-total');
+        if (totalInput) {
+          totalInput.value = formatRrCurrency(rowTotal);
+        }
+      });
+      const grandTotalDisplay = document.getElementById('rrGrandTotalDisplay');
+      if (grandTotalDisplay) {
+        grandTotalDisplay.textContent = formatRrCurrency(grandTotal);
+      }
+      return grandTotal;
+    };
+
+    window.resetRrForm = function () {
+      const form = document.getElementById('receivingReportForm');
+      if (form) form.reset();
+      const dateInput = document.getElementById('rrDate');
+      if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+      const receiverLbl = document.getElementById('rrReceiverLabel');
+      if (receiverLbl) receiverLbl.textContent = sessionStorage.getItem('userFullName') || 'Inventory Staff';
+      const tbody = document.getElementById('rrItemsTbody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr class="rr-item-row">
+            <td style="text-align: center; font-weight: 700; color: var(--text-muted);" class="row-num">1</td>
+            <td>
+              <input type="text" class="rr-item-desc" placeholder="e.g. A4 Copy Paper 80gsm (Hard Copy)" required>
+            </td>
+            <td>
+              <input type="number" class="rr-item-qty" min="0.01" step="any" value="1" oninput="calcRrTotals()" required>
+            </td>
+            <td>
+              <select class="rr-item-uom" required>
+                <option value="Reams">Reams</option>
+                <option value="Boxes">Boxes</option>
+                <option value="Pcs">Pcs</option>
+                <option value="Rolls">Rolls</option>
+                <option value="Packs">Packs</option>
+                <option value="Sets">Sets</option>
+                <option value="Units">Units</option>
+                <option value="Cartons">Cartons</option>
+                <option value="Bundles">Bundles</option>
+                <option value="Meters">Meters</option>
+                <option value="Kg">Kg</option>
+                <option value="Liters">Liters</option>
+                <option value="Gallons">Gallons</option>
+                <option value="Tubes">Tubes</option>
+                <option value="Bags">Bags</option>
+              </select>
+            </td>
+            <td>
+              <input type="number" class="rr-item-cost" min="0" step="0.01" placeholder="0.00" oninput="calcRrTotals()" required>
+            </td>
+            <td>
+              <input type="text" class="rr-item-total" readonly placeholder="₱ 0.00" style="background:#f8fafc; font-weight:700; color:#16a34a;">
+            </td>
+            <td style="text-align: center;">
+              <button type="button" class="rr-btn-del-row" onclick="removeRrLineItem(this)" title="Remove item"><i class="fa-solid fa-trash-can"></i></button>
+            </td>
+          </tr>
+        `;
+      }
+      calcRrTotals();
+      updateRrNextNumberBadge();
+    };
+
+    function updateRrNextNumberBadge() {
+      const year = new Date().getFullYear();
+      const count = (receivingReportsData || []).length + 1;
+      const refNo = `RR-${year}-${String(count).padStart(4, '0')}`;
+      const badge = document.getElementById('rrGeneratedRefBadge');
+      if (badge) badge.textContent = refNo;
+      return refNo;
+    }
+
+    window.loadReceivingReports = async function () {
+      let remoteReports = [];
+      try {
+        const { data, error } = await supabase
+          .from('receiving_reports')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (!error && Array.isArray(data)) {
+          remoteReports = data;
+        }
+      } catch (err) {
+        console.warn('Receiving reports Supabase fetch notice:', err);
+      }
+
+      let localCache = [];
+      try {
+        localCache = JSON.parse(localStorage.getItem('receiving_reports_cache') || '[]');
+      } catch (e) {
+        localCache = [];
+      }
+
+      const map = new Map();
+      localCache.forEach(item => {
+        if (item.id || item.rr_no) map.set(item.id || item.rr_no, item);
+      });
+      remoteReports.forEach(item => {
+        if (item.id || item.rr_no) map.set(item.id || item.rr_no, item);
+      });
+
+      receivingReportsData = Array.from(map.values()).sort((a, b) => {
+        const dateA = new Date(b.created_at || b.report_date || 0);
+        const dateB = new Date(a.created_at || a.report_date || 0);
+        return dateA - dateB;
+      });
+
+      updateRrStats();
+      renderReceivingReportsTable();
+      updateRrNextNumberBadge();
+    };
+
+    function updateRrStats() {
+      const totalCount = receivingReportsData.length;
+      let totalValue = 0;
+      let totalItems = 0;
+      const suppliers = new Set();
+
+      receivingReportsData.forEach(r => {
+        totalValue += parseFloat(r.total_amount) || 0;
+        if (r.supplier_name) suppliers.add(r.supplier_name.trim());
+        const items = Array.isArray(r.items) ? r.items : [];
+        items.forEach(it => {
+          totalItems += parseFloat(it.qty) || 0;
+        });
+      });
+
+      const countEl = document.getElementById('rrStatCount');
+      if (countEl) countEl.textContent = totalCount;
+      const valEl = document.getElementById('rrStatValue');
+      if (valEl) valEl.textContent = formatRrCurrency(totalValue);
+      const itemsEl = document.getElementById('rrStatItems');
+      if (itemsEl) itemsEl.textContent = Math.round(totalItems).toLocaleString();
+      const supEl = document.getElementById('rrStatSuppliers');
+      if (supEl) supEl.textContent = suppliers.size > 0 ? `${suppliers.size} Partners` : '0';
+    }
+
+    window.filterReceivingReports = function () {
+      renderReceivingReportsTable();
+    };
+
+    window.renderReceivingReportsTable = function () {
+      const tbody = document.getElementById('receivingReportsTableBody');
+      if (!tbody) return;
+
+      const searchTerm = (document.getElementById('rrSearchInput')?.value || '').trim().toLowerCase();
+      const dateFilter = document.getElementById('rrDateFilter')?.value || '';
+
+      const filtered = receivingReportsData.filter(r => {
+        const matchesDate = !dateFilter || r.report_date === dateFilter;
+        let matchesSearch = true;
+        if (searchTerm) {
+          const itemsDesc = Array.isArray(r.items) ? r.items.map(i => i.description || '').join(' ') : '';
+          const str = `${r.rr_no || ''} ${r.prf_no || ''} ${r.po_no || ''} ${r.supplier_name || ''} ${r.received_by || ''} ${itemsDesc}`.toLowerCase();
+          matchesSearch = str.includes(searchTerm);
+        }
+        return matchesDate && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align:center; padding:35px 20px; color:#64748b;">
+              <i class="fa-solid fa-clipboard-question" style="font-size:2rem; color:#cbd5e1; display:block; margin-bottom:10px;"></i>
+              No Receiving Reports match the selected criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r => {
+        const itemsList = Array.isArray(r.items) ? r.items : [];
+        const itemsPreview = itemsList.map(it => `
+          <div style="font-size:0.8rem; margin-bottom:2px;">
+            <strong style="color:var(--primary);">${escapeRrHtml(it.qty)} ${escapeRrHtml(it.uom)}</strong> - ${escapeRrHtml(it.description)}
+            <span style="color:var(--text-muted); font-size:0.75rem;">(@ ${formatRrCurrency(it.unit_cost)})</span>
+          </div>
+        `).join('');
+
+        return `
+          <tr>
+            <td style="font-weight:600; font-size:0.83rem; white-space:nowrap;">
+              <i class="fa-regular fa-calendar-days" style="color:var(--accent); margin-right:4px;"></i>${escapeRrHtml(r.report_date || '-')}
+            </td>
+            <td>
+              <span style="display:inline-block; font-family:monospace; font-weight:700; color:#ef4444; background:#fef2f2; border:1px solid #fecaca; border-radius:4px; padding:2px 8px; font-size:0.8rem;">
+                ${escapeRrHtml(r.rr_no || 'RR-REC')}
+              </span>
+            </td>
+            <td style="font-weight:600; font-family:monospace; font-size:0.83rem;">${escapeRrHtml(r.prf_no || '-')}</td>
+            <td style="font-weight:600; font-family:monospace; font-size:0.83rem; color:var(--primary);">${escapeRrHtml(r.po_no || '-')}</td>
+            <td>
+              <div style="font-weight:600; color:var(--text);">${escapeRrHtml(r.supplier_name || '-')}</div>
+              ${r.remarks ? `<div style="font-size:0.75rem; color:var(--text-muted); font-style:italic;">${escapeRrHtml(r.remarks)}</div>` : ''}
+            </td>
+            <td style="min-width:240px; max-width:320px;">
+              ${itemsPreview || '<span style="color:#94a3b8; font-size:0.75rem;">No items listed</span>'}
+            </td>
+            <td style="text-align:right; font-weight:700; color:#16a34a; font-size:0.9rem; white-space:nowrap;">
+              ${formatRrCurrency(r.total_amount)}
+            </td>
+            <td style="font-size:0.82rem; white-space:nowrap;">
+              <span class="user-badge" style="padding:2px 8px; font-size:0.75rem;"><i class="fa-solid fa-user-check"></i> ${escapeRrHtml(r.received_by || 'Inventory Staff')}</span>
+            </td>
+            <td style="text-align:center; white-space:nowrap;">
+              <button type="button" class="btn-primary" onclick="viewReceivingSlip('${escapeRrHtml(r.id || r.rr_no)}')" style="padding:4px 10px; font-size:0.75rem; background:#1E355F; border-radius:4px; margin-right:4px;" title="View / Print Official Material Receiving Slip">
+                <i class="fa-solid fa-receipt"></i> Slip
+              </button>
+              <button type="button" class="btn-secondary" onclick="deleteReceivingReport('${escapeRrHtml(r.id || r.rr_no)}')" style="padding:4px 8px; font-size:0.75rem; color:#ef4444; border:1px solid #fecaca; background:white; border-radius:4px;" title="Delete Record">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    };
+
+    window.submitReceivingReport = async function (e) {
+      if (e) e.preventDefault();
+
+      const dateVal = document.getElementById('rrDate')?.value;
+      const prfVal = (document.getElementById('rrPrfNo')?.value || '').trim();
+      const poVal = (document.getElementById('rrPoNo')?.value || '').trim();
+      const supplierVal = (document.getElementById('rrSupplier')?.value || '').trim();
+      const remarksVal = (document.getElementById('rrRemarks')?.value || '').trim();
+      const receiverVal = sessionStorage.getItem('userFullName') || 'Inventory Staff';
+
+      if (!dateVal || !prfVal || !poVal || !supplierVal) {
+        window.showSystemAlert('Missing Information', 'Please complete all required fields: Date, PRF No., PO No., and Supplier Name.', 'warning');
+        return;
+      }
+
+      const rows = document.querySelectorAll('#rrItemsTbody .rr-item-row');
+      const items = [];
+      let grandTotal = 0;
+
+      rows.forEach(row => {
+        const desc = (row.querySelector('.rr-item-desc')?.value || '').trim();
+        const qty = parseFloat(row.querySelector('.rr-item-qty')?.value) || 0;
+        const uom = row.querySelector('.rr-item-uom')?.value || 'Units';
+        const cost = parseFloat(row.querySelector('.rr-item-cost')?.value) || 0;
+        if (desc && qty > 0) {
+          const rowTotal = qty * cost;
+          grandTotal += rowTotal;
+          items.push({
+            description: desc,
+            qty: qty,
+            uom: uom,
+            unit_cost: cost,
+            total_amount: rowTotal
+          });
+        }
+      });
+
+      if (items.length === 0) {
+        window.showSystemAlert('Items Required', 'Please enter at least one valid item with Description, Qty, UOM, and Unit Cost.', 'warning');
+        return;
+      }
+
+      const nextRrNo = updateRrNextNumberBadge();
+      const recordId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'rr_' + Date.now();
+      const newRecord = {
+        id: recordId,
+        rr_no: nextRrNo,
+        report_date: dateVal,
+        prf_no: prfVal,
+        po_no: poVal,
+        supplier_name: supplierVal,
+        items: items,
+        total_amount: grandTotal,
+        received_by: receiverVal,
+        remarks: remarksVal,
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        const { error } = await supabase.from('receiving_reports').insert([newRecord]);
+        if (error) {
+          console.warn('Supabase receiving_reports insert notice:', error);
+        }
+      } catch (err) {
+        console.warn('Supabase receiving_reports insert error:', err);
+      }
+
+      try {
+        const localCache = JSON.parse(localStorage.getItem('receiving_reports_cache') || '[]');
+        localCache.unshift(newRecord);
+        localStorage.setItem('receiving_reports_cache', JSON.stringify(localCache));
+      } catch (err) {
+        console.error('Local cache save error:', err);
+      }
+
+      resetRrForm();
+      await loadReceivingReports();
+
+      window.showSystemAlert(
+        'Receiving Report Recorded',
+        `Material Receiving Report ${nextRrNo} for ${supplierVal} has been recorded successfully.\nPRF: ${prfVal} | PO: ${poVal} | Total: ${formatRrCurrency(grandTotal)}`,
+        'success'
+      );
+    };
+
+    window.viewReceivingSlip = function (idOrNo) {
+      const record = receivingReportsData.find(r => (r.id && r.id === idOrNo) || (r.rr_no && r.rr_no === idOrNo));
+      if (!record) {
+        window.alert('Receiving report record not found.');
+        return;
+      }
+
+      const modalNo = document.getElementById('modalRrNo');
+      if (modalNo) modalNo.textContent = record.rr_no || 'RR-OFFICIAL';
+      const modalDate = document.getElementById('modalRrDate');
+      if (modalDate) modalDate.textContent = record.report_date || '-';
+      const modalSup = document.getElementById('modalRrSupplier');
+      if (modalSup) modalSup.textContent = record.supplier_name || '-';
+      const modalPrf = document.getElementById('modalRrPrf');
+      if (modalPrf) modalPrf.textContent = record.prf_no || '-';
+      const modalPo = document.getElementById('modalRrPo');
+      if (modalPo) modalPo.textContent = record.po_no || '-';
+      const modalRem = document.getElementById('modalRrRemarks');
+      if (modalRem) modalRem.textContent = record.remarks || 'None / Standard Warehouse Inspection';
+      const modalRec = document.getElementById('modalRrReceiver');
+      if (modalRec) modalRec.textContent = record.received_by || 'Inventory Staff';
+      const modalSign = document.getElementById('modalRrSignReceiver');
+      if (modalSign) modalSign.textContent = record.received_by || 'Inventory Staff';
+
+      const tbody = document.getElementById('modalRrItemsTbody');
+      if (tbody) {
+        const items = Array.isArray(record.items) ? record.items : [];
+        tbody.innerHTML = items.map((it, idx) => `
+          <tr>
+            <td style="padding:7px 10px; text-align:center;">${idx + 1}</td>
+            <td style="padding:7px 10px; font-weight:600;">${escapeRrHtml(it.description)}</td>
+            <td style="padding:7px 10px; text-align:center; font-weight:700;">${escapeRrHtml(it.qty)}</td>
+            <td style="padding:7px 10px; text-align:center; color:var(--text-muted);">${escapeRrHtml(it.uom)}</td>
+            <td style="padding:7px 10px; text-align:right;">${formatRrCurrency(it.unit_cost)}</td>
+            <td style="padding:7px 10px; text-align:right; font-weight:700; color:#16a34a;">${formatRrCurrency(it.total_amount || (it.qty * it.unit_cost))}</td>
+          </tr>
+        `).join('');
+      }
+
+      const grandTotalEl = document.getElementById('modalRrGrandTotal');
+      if (grandTotalEl) grandTotalEl.textContent = formatRrCurrency(record.total_amount);
+
+      const modal = document.getElementById('rrSlipModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeRrSlipModal = function () {
+      const modal = document.getElementById('rrSlipModal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.deleteReceivingReport = async function (idOrNo) {
+      if (!confirm('Are you sure you want to delete this receiving report? This action cannot be undone.')) {
+        return;
+      }
+      try {
+        await supabase.from('receiving_reports').delete().eq('id', idOrNo);
+      } catch (err) {}
+
+      try {
+        let localCache = JSON.parse(localStorage.getItem('receiving_reports_cache') || '[]');
+        localCache = localCache.filter(r => r.id !== idOrNo && r.rr_no !== idOrNo);
+        localStorage.setItem('receiving_reports_cache', JSON.stringify(localCache));
+      } catch (err) {}
+
+      await loadReceivingReports();
+    };
+
+    window.exportReceivingReportsCSV = function () {
+      if (receivingReportsData.length === 0) {
+        alert('No receiving reports to export.');
+        return;
+      }
+
+      let csv = 'RR No,Date,PRF No,PO No,Supplier Name,Item Description,Qty,UOM,Unit Cost,Total Amount,Received By,Remarks\n';
+
+      receivingReportsData.forEach(r => {
+        const items = Array.isArray(r.items) ? r.items : [];
+        if (items.length === 0) {
+          csv += `"${r.rr_no || ''}","${r.report_date || ''}","${r.prf_no || ''}","${r.po_no || ''}","${(r.supplier_name || '').replace(/"/g, '""')}","","","","","${r.total_amount || 0}","${(r.received_by || '').replace(/"/g, '""')}","${(r.remarks || '').replace(/"/g, '""')}"\n`;
+        } else {
+          items.forEach(it => {
+            csv += `"${r.rr_no || ''}","${r.report_date || ''}","${r.prf_no || ''}","${r.po_no || ''}","${(r.supplier_name || '').replace(/"/g, '""')}","${(it.description || '').replace(/"/g, '""')}","${it.qty || 0}","${it.uom || ''}","${it.unit_cost || 0}","${it.total_amount || 0}","${(r.received_by || '').replace(/"/g, '""')}","${(r.remarks || '').replace(/"/g, '""')}"\n`;
+          });
+        }
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Receiving_Reports_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // ========================================================
+    // BUILDING MAINTENANCE & ELECTRICITY SUBMETER ENGINE
+    // ========================================================
+    let bmSubmeterLedger = [];
+
+    const DEFAULT_BUILDING_TENANTS = [
+      { tenant_name: 'R-II Builders Admin & Reception', unit_floor: 'Ground Floor, Suite 101', meter_serial: 'MTR-00101', prev_reading: 14250.0, pres_reading: 15480.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'Canteen & Food Services Concessionaire', unit_floor: 'Ground Floor, Suite 102', meter_serial: 'MTR-00102', prev_reading: 28410.0, pres_reading: 30120.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'Megatech Engineering Solutions', unit_floor: '2nd Floor, Suite 201', meter_serial: 'MTR-00201', prev_reading: 41800.0, pres_reading: 43950.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'Prime Horizon Logistics Inc.', unit_floor: '2nd Floor, Suite 202', meter_serial: 'MTR-00202', prev_reading: 36220.0, pres_reading: 38100.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'Apex Global Consulting Services', unit_floor: '3rd Floor, Suite 301', meter_serial: 'MTR-00301', prev_reading: 19850.0, pres_reading: 21320.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'Vanguard Legal & Accounting Firm', unit_floor: '3rd Floor, Suite 302', meter_serial: 'MTR-00302', prev_reading: 22100.0, pres_reading: 23640.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'Skyline Design & Architecture Studio', unit_floor: '4th Floor, Suite 401', meter_serial: 'MTR-00401', prev_reading: 17400.0, pres_reading: 18950.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'Bluefin Maritime & Crewing Agency', unit_floor: '4th Floor, Suite 402', meter_serial: 'MTR-00402', prev_reading: 25300.0, pres_reading: 27150.0, multiplier: 1.0, common_share: 0.0 },
+      { tenant_name: 'R-II Executive Penthouse & Boardroom', unit_floor: '5th Floor, Suite 501', meter_serial: 'MTR-00501', prev_reading: 52140.0, pres_reading: 55420.0, multiplier: 1.0, common_share: 0.0 }
+    ];
+
+    function escapeBmHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatBmCurrency(amount) {
+      const num = parseFloat(amount) || 0;
+      return '₱ ' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function formatBmNumber(val, decimals = 2) {
+      const num = parseFloat(val) || 0;
+      return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    }
+
+    window.calcBmEffectiveRate = function () {
+      const totalBill = parseFloat(document.getElementById('bmMeralcoTotalBill')?.value) || 0;
+      const totalKwh = parseFloat(document.getElementById('bmMeralcoTotalKwh')?.value) || 0;
+      let effectiveRate = 0;
+      if (totalBill > 0 && totalKwh > 0) {
+        effectiveRate = totalBill / totalKwh;
+      }
+      const rateDisplay = document.getElementById('bmComputedRateDisplay');
+      if (rateDisplay) {
+        rateDisplay.textContent = '₱ ' + effectiveRate.toFixed(4);
+      }
+      const statRate = document.getElementById('bmStatEffectiveRate');
+      if (statRate) {
+        statRate.textContent = '₱ ' + effectiveRate.toFixed(4) + ' / kWh';
+      }
+      calcBmSubmeterTotals();
+      return effectiveRate;
+    };
+
+    window.addBmTenantRow = function (preset = null) {
+      const tbody = document.getElementById('bmSubmeterTbody');
+      if (!tbody) return;
+      const count = tbody.querySelectorAll('.bm-submeter-row').length + 1;
+      const tr = document.createElement('tr');
+      tr.className = 'bm-submeter-row';
+
+      const tenantName = preset?.tenant_name || '';
+      const unitFloor = preset?.unit_floor || '';
+      const meterSerial = preset?.meter_serial || `MTR-${String(count).padStart(5, '0')}`;
+      const prevReading = preset?.prev_reading !== undefined ? preset.prev_reading : '';
+      const presReading = preset?.pres_reading !== undefined ? preset.pres_reading : '';
+      const multiplier = preset?.multiplier !== undefined ? preset.multiplier : 1.0;
+      const commonShare = preset?.common_share !== undefined ? preset.common_share : 0;
+
+      tr.innerHTML = `
+        <td style="text-align:center; font-weight:700; color:var(--text-muted);" class="bm-row-num">${count}</td>
+        <td>
+          <input type="text" class="bm-tenant-name" value="${escapeBmHtml(tenantName)}" placeholder="Tenant / Company Name" required>
+        </td>
+        <td>
+          <input type="text" class="bm-unit-floor" value="${escapeBmHtml(unitFloor)}" placeholder="Unit / Suite" required>
+        </td>
+        <td>
+          <input type="text" class="bm-meter-serial" value="${escapeBmHtml(meterSerial)}" placeholder="Serial No." required style="font-family:monospace;">
+        </td>
+        <td>
+          <input type="number" class="bm-prev-reading" step="any" min="0" value="${prevReading}" placeholder="0.00" oninput="calcBmSubmeterTotals()" required>
+        </td>
+        <td>
+          <input type="number" class="bm-pres-reading" step="any" min="0" value="${presReading}" placeholder="0.00" oninput="calcBmSubmeterTotals()" required>
+        </td>
+        <td>
+          <input type="number" class="bm-multiplier" step="any" min="0.01" value="${multiplier}" oninput="calcBmSubmeterTotals()" style="text-align:center;" required>
+        </td>
+        <td style="text-align:right;">
+          <input type="text" class="bm-kwh-consumed" readonly value="0.00" style="background:#f8fafc; font-weight:700; color:#2563eb; text-align:right;">
+        </td>
+        <td style="text-align:right;">
+          <input type="text" class="bm-energy-charge" readonly value="₱ 0.00" style="background:#f8fafc; text-align:right;">
+        </td>
+        <td>
+          <input type="number" class="bm-common-share" step="0.01" min="0" value="${commonShare}" placeholder="0.00" oninput="calcBmSubmeterTotals()" style="text-align:right;">
+        </td>
+        <td style="text-align:right;">
+          <input type="text" class="bm-total-due" readonly value="₱ 0.00" style="background:#f8fafc; font-weight:800; color:#16a34a; text-align:right;">
+        </td>
+        <td style="text-align:center;">
+          <button type="button" class="rr-btn-del-row" onclick="removeBmTenantRow(this)" title="Remove Tenant"><i class="fa-solid fa-trash-can"></i></button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+      calcBmSubmeterTotals();
+    };
+
+    window.removeBmTenantRow = function (btn) {
+      const tbody = document.getElementById('bmSubmeterTbody');
+      if (!tbody) return;
+      const rows = tbody.querySelectorAll('.bm-submeter-row');
+      if (rows.length <= 1) {
+        const row = rows[0];
+        row.querySelector('.bm-tenant-name').value = '';
+        row.querySelector('.bm-unit-floor').value = '';
+        row.querySelector('.bm-meter-serial').value = '';
+        row.querySelector('.bm-prev-reading').value = '';
+        row.querySelector('.bm-pres-reading').value = '';
+        calcBmSubmeterTotals();
+        return;
+      }
+      btn.closest('.bm-submeter-row')?.remove();
+      tbody.querySelectorAll('.bm-submeter-row').forEach((row, idx) => {
+        const numEl = row.querySelector('.bm-row-num');
+        if (numEl) numEl.textContent = idx + 1;
+      });
+      calcBmSubmeterTotals();
+    };
+
+    window.calcBmSubmeterTotals = function () {
+      const totalBill = parseFloat(document.getElementById('bmMeralcoTotalBill')?.value) || 0;
+      const totalMasterKwh = parseFloat(document.getElementById('bmMeralcoTotalKwh')?.value) || 0;
+      const commonAreaPct = parseFloat(document.getElementById('bmCommonAreaFactor')?.value) || 0;
+
+      let effectiveRate = 0;
+      if (totalBill > 0 && totalMasterKwh > 0) {
+        effectiveRate = totalBill / totalMasterKwh;
+      }
+
+      const rows = document.querySelectorAll('#bmSubmeterTbody .bm-submeter-row');
+      let batchTotalKwh = 0;
+      let batchGrandTotal = 0;
+      let tenantCount = 0;
+
+      rows.forEach(row => {
+        const prev = parseFloat(row.querySelector('.bm-prev-reading')?.value) || 0;
+        const pres = parseFloat(row.querySelector('.bm-pres-reading')?.value) || 0;
+        const mult = parseFloat(row.querySelector('.bm-multiplier')?.value) || 1.0;
+        const commonShareInput = row.querySelector('.bm-common-share');
+
+        let consumption = 0;
+        if (pres >= prev && (row.querySelector('.bm-pres-reading')?.value !== '')) {
+          consumption = (pres - prev) * mult;
+        }
+
+        const energyCharge = consumption * effectiveRate;
+
+        let commonShare = parseFloat(commonShareInput?.value) || 0;
+        if (commonAreaPct > 0 && (!commonShareInput.dataset.manual || commonShareInput.dataset.manual === 'false')) {
+          commonShare = energyCharge * (commonAreaPct / 100);
+          if (commonShareInput) commonShareInput.value = commonShare.toFixed(2);
+        }
+
+        const totalDue = energyCharge + commonShare;
+
+        batchTotalKwh += consumption;
+        batchGrandTotal += totalDue;
+        tenantCount++;
+
+        const kwhField = row.querySelector('.bm-kwh-consumed');
+        if (kwhField) kwhField.value = formatBmNumber(consumption, 2) + ' kWh';
+
+        const energyField = row.querySelector('.bm-energy-charge');
+        if (energyField) energyField.value = formatBmCurrency(energyCharge);
+
+        const totalDueField = row.querySelector('.bm-total-due');
+        if (totalDueField) totalDueField.value = formatBmCurrency(totalDue);
+      });
+
+      const statCount = document.getElementById('bmStatTenantCount');
+      if (statCount) statCount.textContent = tenantCount;
+
+      const statKwh = document.getElementById('bmStatTotalKwh');
+      if (statKwh) statKwh.textContent = formatBmNumber(batchTotalKwh, 2) + ' kWh';
+
+      const statBilled = document.getElementById('bmStatTotalBilled');
+      if (statBilled) statBilled.textContent = formatBmCurrency(batchGrandTotal);
+
+      const batchKwhDisplay = document.getElementById('bmBatchTotalKwhDisplay');
+      if (batchKwhDisplay) batchKwhDisplay.textContent = formatBmNumber(batchTotalKwh, 2) + ' kWh';
+
+      const batchTotalDisplay = document.getElementById('bmBatchGrandTotalDisplay');
+      if (batchTotalDisplay) batchTotalDisplay.textContent = formatBmCurrency(batchGrandTotal);
+    };
+
+    window.loadDefaultTenantSubmeters = function () {
+      const tbody = document.getElementById('bmSubmeterTbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      DEFAULT_BUILDING_TENANTS.forEach(preset => {
+        addBmTenantRow(preset);
+      });
+      calcBmSubmeterTotals();
+    };
+
+    window.onBmPeriodChange = function () {
+      const periodVal = document.getElementById('bmBillingMonth')?.value || '';
+      const badge = document.getElementById('bmBatchRefBadge');
+      if (badge) {
+        badge.textContent = periodVal ? `BATCH-${periodVal}` : 'BATCH-NEW';
+      }
+    };
+
+    window.resetBmForm = function () {
+      const now = new Date();
+      const curYear = now.getFullYear();
+      const curMonth = String(now.getMonth() + 1).padStart(2, '0');
+      const periodInput = document.getElementById('bmBillingMonth');
+      if (periodInput) periodInput.value = `${curYear}-${curMonth}`;
+
+      const readingDate = document.getElementById('bmReadingDate');
+      if (readingDate) readingDate.value = now.toISOString().slice(0, 10);
+
+      const dueDate = document.getElementById('bmDueDate');
+      if (dueDate) {
+        const nextDue = new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000);
+        dueDate.value = nextDue.toISOString().slice(0, 10);
+      }
+
+      const invNo = document.getElementById('bmMeralcoInvoiceNo');
+      if (invNo) invNo.value = `SIN-${curYear}${curMonth}-0189`;
+
+      const meralcoBill = document.getElementById('bmMeralcoTotalBill');
+      if (meralcoBill) meralcoBill.value = '245000.00';
+
+      const meralcoKwh = document.getElementById('bmMeralcoTotalKwh');
+      if (meralcoKwh) meralcoKwh.value = '20500.00';
+
+      const staff = document.getElementById('bmReaderStaff');
+      if (staff) staff.value = sessionStorage.getItem('userFullName') || 'Building Maintenance Custodian';
+
+      onBmPeriodChange();
+      loadDefaultTenantSubmeters();
+      calcBmEffectiveRate();
+    };
+
+    window.saveBmBatchAndReadings = async function () {
+      const period = document.getElementById('bmBillingMonth')?.value;
+      const readingDate = document.getElementById('bmReadingDate')?.value;
+      const dueDate = document.getElementById('bmDueDate')?.value;
+      const meralcoInvoice = (document.getElementById('bmMeralcoInvoiceNo')?.value || '').trim();
+      const totalBill = parseFloat(document.getElementById('bmMeralcoTotalBill')?.value) || 0;
+      const totalKwh = parseFloat(document.getElementById('bmMeralcoTotalKwh')?.value) || 0;
+      const readerStaff = (document.getElementById('bmReaderStaff')?.value || '').trim() || 'Building Maintenance Staff';
+
+      if (!period || !readingDate || !meralcoInvoice || totalBill <= 0 || totalKwh <= 0) {
+        window.showSystemAlert(
+          'Missing Master Bill Data',
+          'Please fill in Billing Month, Reading Date, Meralco Bill / SIN No., Total Meralco Amount, and Master Meter Total kWh.',
+          'warning'
+        );
+        return;
+      }
+
+      const effectiveRate = totalBill / totalKwh;
+      const rows = document.querySelectorAll('#bmSubmeterTbody .bm-submeter-row');
+      const readings = [];
+      let batchTotalSubmeterKwh = 0;
+      let batchTotalAmount = 0;
+
+      rows.forEach((row, idx) => {
+        const name = (row.querySelector('.bm-tenant-name')?.value || '').trim();
+        const unit = (row.querySelector('.bm-unit-floor')?.value || '').trim();
+        const serial = (row.querySelector('.bm-meter-serial')?.value || '').trim();
+        const prev = parseFloat(row.querySelector('.bm-prev-reading')?.value) || 0;
+        const pres = parseFloat(row.querySelector('.bm-pres-reading')?.value) || 0;
+        const mult = parseFloat(row.querySelector('.bm-multiplier')?.value) || 1.0;
+        const commonShare = parseFloat(row.querySelector('.bm-common-share')?.value) || 0;
+
+        if (name && serial && pres >= prev) {
+          const consumption = (pres - prev) * mult;
+          const energyCharge = consumption * effectiveRate;
+          const totalDue = energyCharge + commonShare;
+          batchTotalSubmeterKwh += consumption;
+          batchTotalAmount += totalDue;
+
+          const stmtNo = `ELEC-${period.replace('-', '')}-${String(idx + 1).padStart(3, '0')}`;
+          const readingId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'bm_' + Date.now() + '_' + idx;
+
+          readings.push({
+            id: readingId,
+            statement_no: stmtNo,
+            billing_period: period,
+            reading_date: readingDate,
+            due_date: dueDate,
+            meralco_invoice_no: meralcoInvoice,
+            meralco_rate_kwh: effectiveRate,
+            tenant_name: name,
+            unit_floor: unit,
+            meter_serial: serial,
+            prev_reading: prev,
+            pres_reading: pres,
+            multiplier: mult,
+            consumption_kwh: consumption,
+            energy_charge: energyCharge,
+            common_area_share: commonShare,
+            total_amount_due: totalDue,
+            status: 'Billed',
+            read_by: readerStaff,
+            created_at: new Date().toISOString()
+          });
+        }
+      });
+
+      if (readings.length === 0) {
+        window.showSystemAlert('No Valid Tenant Readings', 'Please ensure at least one tenant has valid previous and present meter readings.', 'warning');
+        return;
+      }
+
+      const batchId = `BATCH-${period}`;
+      const batchRecord = {
+        id: batchId,
+        billing_period: period,
+        reading_date: readingDate,
+        meralco_invoice_no: meralcoInvoice,
+        meralco_total_bill: totalBill,
+        meralco_total_kwh: totalKwh,
+        effective_rate: effectiveRate,
+        total_submeter_kwh: batchTotalSubmeterKwh,
+        total_billed_amount: batchTotalAmount,
+        readings_count: readings.length,
+        created_by: readerStaff,
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        await supabase.from('building_submeter_batches').upsert([batchRecord]);
+        await supabase.from('building_submeter_readings').upsert(readings);
+      } catch (e) {
+        console.warn('Supabase submeter save notice:', e);
+      }
+
+      try {
+        let localLedger = JSON.parse(localStorage.getItem('building_submeter_cache') || '[]');
+        localLedger = localLedger.filter(r => r.billing_period !== period);
+        localLedger = [...readings, ...localLedger];
+        localStorage.setItem('building_submeter_cache', JSON.stringify(localLedger));
+      } catch (e) {
+        console.error('Local cache save error:', e);
+      }
+
+      window.showSystemAlert(
+        'Submeter Electricity Batch Saved',
+        `Successfully generated ${readings.length} electricity billing statements for ${period}.\nTotal Master Rate: ₱ ${effectiveRate.toFixed(4)}/kWh\nTotal Tenant Billing: ${formatBmCurrency(batchTotalAmount)}`,
+        'success'
+      );
+
+      await loadBuildingMaintenanceModule();
+    };
+
+    window.loadBuildingMaintenanceModule = async function () {
+      let remoteRecords = [];
+      try {
+        const { data, error } = await supabase
+          .from('building_submeter_readings')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (!error && Array.isArray(data)) {
+          remoteRecords = data;
+        }
+      } catch (err) {
+        console.warn('Supabase fetch submeter readings notice:', err);
+      }
+
+      let localCache = [];
+      try {
+        localCache = JSON.parse(localStorage.getItem('building_submeter_cache') || '[]');
+      } catch (e) {}
+
+      const map = new Map();
+      localCache.forEach(r => {
+        if (r.id || r.statement_no) map.set(r.id || r.statement_no, r);
+      });
+      remoteRecords.forEach(r => {
+        if (r.id || r.statement_no) map.set(r.id || r.statement_no, r);
+      });
+
+      bmSubmeterLedger = Array.from(map.values()).sort((a, b) => {
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      });
+
+      const monthInput = document.getElementById('bmBillingMonth');
+      if (monthInput && !monthInput.value) {
+        resetBmForm();
+      }
+
+      renderBmStatementsLedger();
+    };
+
+    window.filterBmStatementsLedger = function () {
+      renderBmStatementsLedger();
+    };
+
+    window.renderBmStatementsLedger = function () {
+      const tbody = document.getElementById('bmStatementsTableBody');
+      if (!tbody) return;
+
+      const searchTerm = (document.getElementById('bmLedgerSearch')?.value || '').trim().toLowerCase();
+      const monthFilter = document.getElementById('bmLedgerMonthFilter')?.value || '';
+      const statusFilter = document.getElementById('bmLedgerStatusFilter')?.value || 'All';
+
+      const filtered = bmSubmeterLedger.filter(r => {
+        const matchesMonth = !monthFilter || r.billing_period === monthFilter;
+        const matchesStatus = statusFilter === 'All' || r.status === statusFilter;
+        let matchesSearch = true;
+        if (searchTerm) {
+          const str = `${r.statement_no || ''} ${r.tenant_name || ''} ${r.unit_floor || ''} ${r.meter_serial || ''}`.toLowerCase();
+          matchesSearch = str.includes(searchTerm);
+        }
+        return matchesMonth && matchesStatus && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" style="text-align:center; padding:35px 20px; color:#64748b;">
+              <i class="fa-solid fa-bolt" style="font-size:2rem; color:#fde68a; display:block; margin-bottom:10px;"></i>
+              No electricity submeter billing statements match the filter.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r => {
+        const isPaid = (r.status === 'Paid');
+        return `
+          <tr>
+            <td style="font-weight:600; font-size:0.83rem; white-space:nowrap;">
+              <span class="rr-badge" style="background:#eff6ff; color:#2563eb;">${escapeBmHtml(r.billing_period || '-')}</span>
+            </td>
+            <td style="font-size:0.83rem; font-weight:600; color:var(--primary);">${escapeBmHtml(r.unit_floor || '-')}</td>
+            <td>
+              <div style="font-weight:700; color:var(--text);">${escapeBmHtml(r.tenant_name || '-')}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); font-family:monospace;">${escapeBmHtml(r.statement_no || '-')}</div>
+            </td>
+            <td style="font-family:monospace; font-size:0.82rem;">${escapeBmHtml(r.meter_serial || '-')}</td>
+            <td style="font-size:0.82rem; font-family:monospace; white-space:nowrap;">
+              ${formatBmNumber(r.prev_reading)} &rarr; <strong>${formatBmNumber(r.pres_reading)}</strong>
+            </td>
+            <td style="text-align:right; font-weight:700; color:#2563eb; font-family:monospace;">
+              ${formatBmNumber(r.consumption_kwh)} kWh
+            </td>
+            <td style="text-align:right; font-size:0.82rem; color:var(--text-muted);">
+              ₱ ${(parseFloat(r.meralco_rate_kwh) || 0).toFixed(4)}
+            </td>
+            <td style="text-align:right; font-weight:800; color:#16a34a; font-size:0.92rem; white-space:nowrap;">
+              ${formatBmCurrency(r.total_amount_due)}
+            </td>
+            <td style="text-align:center;">
+              <span class="user-badge" style="cursor:pointer; background:${isPaid ? '#dcfce7; color:#15803d;' : '#fef2f2; color:#b91c1c;'}" onclick="toggleBmPaymentStatus('${escapeBmHtml(r.id || r.statement_no)}')">
+                <i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-clock'}"></i> ${isPaid ? 'Paid' : 'Unpaid'}
+              </span>
+            </td>
+            <td style="text-align:center; white-space:nowrap;">
+              <button type="button" class="btn-primary" onclick="viewBmBillingSlip('${escapeBmHtml(r.id || r.statement_no)}')" style="padding:4px 10px; font-size:0.75rem; background:#1E355F; border-radius:4px; margin-right:4px;" title="Print Electricity Billing Statement">
+                <i class="fa-solid fa-file-invoice"></i> Slip
+              </button>
+              <button type="button" class="btn-secondary" onclick="deleteBmStatement('${escapeBmHtml(r.id || r.statement_no)}')" style="padding:4px 8px; font-size:0.75rem; color:#ef4444; border:1px solid #fecaca; background:white; border-radius:4px;" title="Delete Record">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    };
+
+    window.toggleBmPaymentStatus = async function (idOrNo) {
+      const record = bmSubmeterLedger.find(r => r.id === idOrNo || r.statement_no === idOrNo);
+      if (!record) return;
+      const newStatus = record.status === 'Paid' ? 'Billed' : 'Paid';
+      record.status = newStatus;
+
+      try {
+        await supabase.from('building_submeter_readings').update({ status: newStatus }).eq('id', record.id || idOrNo);
+      } catch (e) {}
+
+      try {
+        localStorage.setItem('building_submeter_cache', JSON.stringify(bmSubmeterLedger));
+      } catch (e) {}
+
+      renderBmStatementsLedger();
+    };
+
+    window.viewBmBillingSlip = function (idOrNo) {
+      const record = bmSubmeterLedger.find(r => r.id === idOrNo || r.statement_no === idOrNo);
+      if (!record) {
+        alert('Statement record not found.');
+        return;
+      }
+
+      const stmtNo = document.getElementById('modalBmStatementNo');
+      if (stmtNo) stmtNo.textContent = record.statement_no || 'ELEC-STMT';
+      const name = document.getElementById('modalBmTenantName');
+      if (name) name.textContent = record.tenant_name || '-';
+      const period = document.getElementById('modalBmPeriod');
+      if (period) period.textContent = record.billing_period || '-';
+      const unit = document.getElementById('modalBmUnit');
+      if (unit) unit.textContent = record.unit_floor || '-';
+      const readDate = document.getElementById('modalBmReadingDate');
+      if (readDate) readDate.textContent = record.reading_date || '-';
+      const meterSerial = document.getElementById('modalBmMeterSerial');
+      if (meterSerial) meterSerial.textContent = record.meter_serial || '-';
+      const dueDate = document.getElementById('modalBmDueDate');
+      if (dueDate) dueDate.textContent = record.due_date || 'Within 15 days upon receipt';
+      const meralcoInv = document.getElementById('modalBmMeralcoInvoice');
+      if (meralcoInv) meralcoInv.textContent = record.meralco_invoice_no || '-';
+
+      const rateNum = parseFloat(record.meralco_rate_kwh) || 0;
+      const rateKwh = document.getElementById('modalBmRateKwh');
+      if (rateKwh) rateKwh.textContent = `₱ ${rateNum.toFixed(4)} / kWh`;
+
+      const prevKwh = document.getElementById('modalBmPrevKwh');
+      if (prevKwh) prevKwh.textContent = formatBmNumber(record.prev_reading) + ' kWh';
+
+      const presKwh = document.getElementById('modalBmPresKwh');
+      if (presKwh) presKwh.textContent = formatBmNumber(record.pres_reading) + ' kWh';
+
+      const totalKwh = document.getElementById('modalBmTotalKwh');
+      if (totalKwh) totalKwh.textContent = formatBmNumber(record.consumption_kwh) + ' kWh';
+
+      const multNote = document.getElementById('modalBmMultiplierNote');
+      if (multNote) multNote.textContent = `× ${(parseFloat(record.multiplier) || 1).toFixed(1)} Mult`;
+
+      const rateFormula = document.getElementById('modalBmRateFormula');
+      if (rateFormula) rateFormula.textContent = `@ ₱ ${rateNum.toFixed(4)} / kWh`;
+
+      const energyCharge = document.getElementById('modalBmEnergyCharge');
+      if (energyCharge) energyCharge.textContent = formatBmCurrency(record.energy_charge);
+
+      const commonAreaRate = document.getElementById('modalBmCommonAreaRate');
+      if (commonAreaRate) commonAreaRate.textContent = (parseFloat(record.common_area_share) > 0) ? 'Allocated Common Share' : 'None / Included';
+
+      const commonAreaCharge = document.getElementById('modalBmCommonAreaCharge');
+      if (commonAreaCharge) commonAreaCharge.textContent = formatBmCurrency(record.common_area_share || 0);
+
+      const grandTotal = document.getElementById('modalBmGrandTotal');
+      if (grandTotal) grandTotal.textContent = formatBmCurrency(record.total_amount_due);
+
+      const signReader = document.getElementById('modalBmSignReader');
+      if (signReader) signReader.textContent = record.read_by || 'Building Maintenance Staff';
+
+      const modal = document.getElementById('bmSlipModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeBmSlipModal = function () {
+      const modal = document.getElementById('bmSlipModal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.deleteBmStatement = async function (idOrNo) {
+      if (!confirm('Are you sure you want to delete this tenant electricity billing statement?')) {
+        return;
+      }
+      try {
+        await supabase.from('building_submeter_readings').delete().eq('id', idOrNo);
+      } catch (e) {}
+
+      try {
+        bmSubmeterLedger = bmSubmeterLedger.filter(r => r.id !== idOrNo && r.statement_no !== idOrNo);
+        localStorage.setItem('building_submeter_cache', JSON.stringify(bmSubmeterLedger));
+      } catch (e) {}
+
+      renderBmStatementsLedger();
+    };
+
+    window.exportSubmeterBillingCSV = function () {
+      if (bmSubmeterLedger.length === 0) {
+        alert('No submeter billing records to export.');
+        return;
+      }
+
+      let csv = 'Statement No,Billing Period,Reading Date,Due Date,Tenant Name,Unit Floor,Meter Serial,Prev Reading (kWh),Pres Reading (kWh),Multiplier,Consumption (kWh),Rate per kWh,Energy Charge,Common Area Share,Total Due (PHP),Status,Read By\n';
+
+      bmSubmeterLedger.forEach(r => {
+        csv += `"${r.statement_no || ''}","${r.billing_period || ''}","${r.reading_date || ''}","${r.due_date || ''}","${(r.tenant_name || '').replace(/"/g, '""')}","${(r.unit_floor || '').replace(/"/g, '""')}","${r.meter_serial || ''}","${r.prev_reading || 0}","${r.pres_reading || 0}","${r.multiplier || 1}","${r.consumption_kwh || 0}","${r.meralco_rate_kwh || 0}","${r.energy_charge || 0}","${r.common_area_share || 0}","${r.total_amount_due || 0}","${r.status || 'Billed'}","${(r.read_by || '').replace(/"/g, '""')}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Electricity_Submeter_Billing_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     };
 
     // Initialize
@@ -6602,7 +9209,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           loadFacilityRequests(),
           loadVehicleDispatchBoard(),
           loadLiaisonTasks(),
-          loadSupplyRequests()
+          loadSupplyRequests(),
+          loadReceivingReports(),
+          loadBuildingMaintenanceModule()
         ]);
       } finally {
         dashboardRefreshInProgress = false;
@@ -6629,6 +9238,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         'liaison_requests',
         'supplies_requests',
         'supplies_items',
+        'receiving_reports',
+        'building_submeter_batches',
+        'building_submeter_readings',
         'profiles'
       ];
 
@@ -6651,6 +9263,20 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     }
 
     function initDashboard() {
+      const rrDateInput = document.getElementById('rrDate');
+      if (rrDateInput && !rrDateInput.value) {
+        rrDateInput.value = new Date().toISOString().slice(0, 10);
+      }
+      const rrRecLbl = document.getElementById('rrReceiverLabel');
+      if (rrRecLbl) {
+        rrRecLbl.textContent = sessionStorage.getItem('userFullName') || 'Inventory Staff';
+      }
+
+      const bmStaff = document.getElementById('bmReaderStaff');
+      if (bmStaff && !bmStaff.value) {
+        bmStaff.value = sessionStorage.getItem('userFullName') || 'Building Maintenance Custodian';
+      }
+
       refreshDashboardData();
       subscribeToDashboardChanges();
       dashboardPollingTimer = setInterval(() => {
@@ -7240,6 +9866,181 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         <button type="button" class="btn-primary" style="background: #64748b;" onclick="closeSuppliesReceiptModal()">
           Close
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8.5. Receiving Report Printable Slip Modal -->
+  <div class="rr-slip-modal-backdrop" id="rrSlipModal">
+    <div class="rr-slip-paper" id="rrSlipContent">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:15px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:15px;">
+          <img src="RII_Logo.png" alt="RII Logo" style="height:55px;">
+          <div>
+            <h2 style="margin:0; font-size:1.3rem; color:var(--primary); font-weight:800; letter-spacing:0.5px;">R-II BUILDERS, INC.</h2>
+            <p style="margin:2px 0 0; font-size:0.82rem; color:var(--text-muted);">Administrative Services &amp; Property Warehouse Division</p>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="display:inline-block; background:var(--primary); color:white; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:4px; letter-spacing:0.5px;">OFFICIAL RECEIPT SLIP</span>
+          <h3 style="margin:6px 0 0; color:#ef4444; font-size:1.15rem; font-family:monospace;" id="modalRrNo">RR-2026-0001</h3>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-bottom:20px;">
+        <h3 style="margin:0; font-size:1.2rem; color:var(--primary); text-transform:uppercase; letter-spacing:1px; font-weight:800;">MATERIAL RECEIVING REPORT (MRR)</h3>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-bottom:20px; font-size:0.85rem; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid var(--border);" id="modalRrMetaBox">
+        <div><strong>Date Received:</strong> <span id="modalRrDate">-</span></div>
+        <div><strong>Supplier Name:</strong> <span id="modalRrSupplier">-</span></div>
+        <div><strong>PRF No.:</strong> <span id="modalRrPrf">-</span></div>
+        <div><strong>PO No.:</strong> <span id="modalRrPo">-</span></div>
+        <div><strong>Remarks / DR No.:</strong> <span id="modalRrRemarks">-</span></div>
+        <div><strong>Received By:</strong> <span id="modalRrReceiver">-</span></div>
+      </div>
+
+      <div style="margin-bottom:20px; overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.85rem;" border="1" bordercolor="#cbd5e1">
+          <thead>
+            <tr style="background:#1E355F; color:white;">
+              <th style="padding:8px 10px; width:40px; text-align:center;">#</th>
+              <th style="padding:8px 10px; text-align:left;">Item Description</th>
+              <th style="padding:8px 10px; width:90px; text-align:center;">Qty</th>
+              <th style="padding:8px 10px; width:100px; text-align:center;">UOM</th>
+              <th style="padding:8px 10px; width:120px; text-align:right;">Unit Cost</th>
+              <th style="padding:8px 10px; width:130px; text-align:right;">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody id="modalRrItemsTbody"></tbody>
+          <tfoot>
+            <tr style="background:#f1f5f9; font-weight:bold;">
+              <td colspan="5" style="padding:10px; text-align:right; font-size:0.9rem;">GRAND TOTAL AMOUNT:</td>
+              <td style="padding:10px; text-align:right; color:#16a34a; font-size:1rem;" id="modalRrGrandTotal">₱ 0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:40px; margin-top:35px; padding-top:20px; border-top:1px dashed #cbd5e1; font-size:0.82rem;">
+        <div>
+          <p style="margin:0 0 40px; color:var(--text-muted);">Inspected &amp; Received by:</p>
+          <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;" id="modalRrSignReceiver">Inventory Staff</div>
+          <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">Property &amp; Inventory Custodian</p>
+        </div>
+        <div>
+          <p style="margin:0 0 40px; color:var(--text-muted);">Verified &amp; Acknowledged by:</p>
+          <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;">Warehouse Head / Admin Supervisor</div>
+          <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">Administrative Services Department</p>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:25px;" class="no-print">
+        <button type="button" class="btn-primary" onclick="window.print()" style="padding:8px 18px; font-size:0.85rem;"><i class="fa-solid fa-print"></i> Print Slip</button>
+        <button type="button" class="btn-secondary" onclick="closeRrSlipModal()" style="padding:8px 16px; font-size:0.85rem;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8.6. Building Maintenance - Tenant Electricity Billing Statement Slip Modal -->
+  <div class="bm-slip-modal-backdrop" id="bmSlipModal">
+    <div class="bm-slip-paper" id="bmSlipContent">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:15px; margin-bottom:20px;">
+        <div style="display:flex; align-items:center; gap:15px;">
+          <img src="RII_Logo.png" alt="RII Logo" style="height:55px;">
+          <div>
+            <h2 style="margin:0; font-size:1.3rem; color:var(--primary); font-weight:800; letter-spacing:0.5px;">R-II BUILDERS, INC.</h2>
+            <p style="margin:2px 0 0; font-size:0.82rem; color:var(--text-muted);">Administrative Services &amp; Property Maintenance Division</p>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span style="display:inline-block; background:var(--accent); color:#1E355F; font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:4px; letter-spacing:0.5px;">ELECTRICITY SUBMETER BILL</span>
+          <h3 style="margin:6px 0 0; color:#1E355F; font-size:1.15rem; font-family:monospace;" id="modalBmStatementNo">ELEC-2026-10-001</h3>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-bottom:20px;">
+        <h3 style="margin:0; font-size:1.2rem; color:var(--primary); text-transform:uppercase; letter-spacing:1px; font-weight:800;">STATEMENT OF ELECTRICITY CONSUMPTION</h3>
+        <p style="margin:3px 0 0; font-size:0.82rem; color:var(--text-muted);">Tenant Submeter Reading &amp; Meralco Power Cost Allocation</p>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-bottom:20px; font-size:0.85rem; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid var(--border);" id="modalBmTenantMetaBox">
+        <div><strong>Tenant / Lessee:</strong> <span id="modalBmTenantName" style="color:var(--primary); font-weight:700;">-</span></div>
+        <div><strong>Billing Period:</strong> <span id="modalBmPeriod">-</span></div>
+        <div><strong>Unit / Floor No.:</strong> <span id="modalBmUnit">-</span></div>
+        <div><strong>Reading Date:</strong> <span id="modalBmReadingDate">-</span></div>
+        <div><strong>Submeter Serial No.:</strong> <span id="modalBmMeterSerial" style="font-family:monospace; font-weight:700;">-</span></div>
+        <div><strong>Payment Due Date:</strong> <span id="modalBmDueDate" style="color:#ef4444; font-weight:700;">-</span></div>
+        <div><strong>Meralco Master Invoice:</strong> <span id="modalBmMeralcoInvoice">-</span></div>
+        <div><strong>Meralco Effective Rate:</strong> <span id="modalBmRateKwh" style="font-weight:700; color:var(--primary);">-</span></div>
+      </div>
+
+      <div style="margin-bottom:20px; overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.85rem;" border="1" bordercolor="#cbd5e1">
+          <thead>
+            <tr style="background:#1E355F; color:white;">
+              <th style="padding:8px 10px; text-align:left;">Computation Parameter</th>
+              <th style="padding:8px 10px; width:160px; text-align:center;">Meter Reading</th>
+              <th style="padding:8px 10px; width:140px; text-align:right;">Subtotal / Breakdown</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:8px 10px;">Previous Meter Reading</td>
+              <td style="padding:8px 10px; text-align:center; font-family:monospace;" id="modalBmPrevKwh">0.00 kWh</td>
+              <td style="padding:8px 10px; text-align:right; color:var(--text-muted);">-</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 10px;">Present Meter Reading</td>
+              <td style="padding:8px 10px; text-align:center; font-family:monospace; font-weight:700;" id="modalBmPresKwh">0.00 kWh</td>
+              <td style="padding:8px 10px; text-align:right; color:var(--text-muted);">-</td>
+            </tr>
+            <tr style="background:#f8fafc; font-weight:600;">
+              <td style="padding:8px 10px;">Actual Net Consumption (kWh)</td>
+              <td style="padding:8px 10px; text-align:center; font-family:monospace; font-weight:800; color:#2563eb;" id="modalBmTotalKwh">0.00 kWh</td>
+              <td style="padding:8px 10px; text-align:right; font-family:monospace;" id="modalBmMultiplierNote">&times; 1.0 Mult</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 10px;">Energy Consumption Charge (kWh &times; Rate)</td>
+              <td style="padding:8px 10px; text-align:center; color:var(--text-muted);" id="modalBmRateFormula">@ ₱ 0.0000 / kWh</td>
+              <td style="padding:8px 10px; text-align:right; font-weight:600;" id="modalBmEnergyCharge">₱ 0.00</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 10px;">Common Area / Generator Facility Share</td>
+              <td style="padding:8px 10px; text-align:center; color:var(--text-muted);" id="modalBmCommonAreaRate">-</td>
+              <td style="padding:8px 10px; text-align:right; font-weight:600;" id="modalBmCommonAreaCharge">₱ 0.00</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr style="background:#f1f5f9; font-weight:bold;">
+              <td colspan="2" style="padding:10px; text-align:right; font-size:0.95rem; color:var(--primary);">TOTAL ELECTRICITY AMOUNT PAYABLE:</td>
+              <td style="padding:10px; text-align:right; color:#16a34a; font-size:1.15rem;" id="modalBmGrandTotal">₱ 0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div style="background:#fffbeb; border:1px solid #fef3c7; border-radius:6px; padding:10px 14px; font-size:0.78rem; color:#92400e; margin-bottom:20px;">
+        <i class="fa-solid fa-circle-info" style="margin-right:5px;"></i>
+        <strong>Payment Instructions:</strong> Please settle this electricity billing on or before the due date at the Administrative Services Cashier Office or via bank transfer to R-II Builders, Inc. Indicate Statement No. on the deposit reference.
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:40px; margin-top:25px; padding-top:20px; border-top:1px dashed #cbd5e1; font-size:0.82rem;">
+        <div>
+          <p style="margin:0 0 35px; color:var(--text-muted);">Meter Read &amp; Computed by:</p>
+          <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;" id="modalBmSignReader">Building Maintenance Staff</div>
+          <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">Building Maintenance &amp; Utilities Division</p>
+        </div>
+        <div>
+          <p style="margin:0 0 35px; color:var(--text-muted);">Verified &amp; Approved by:</p>
+          <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;">Building Administrator / Property Manager</div>
+          <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">Administrative Services Department</p>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:25px;" class="no-print">
+        <button type="button" class="btn-primary" onclick="window.print()" style="padding:8px 18px; font-size:0.85rem;"><i class="fa-solid fa-print"></i> Print Statement</button>
+        <button type="button" class="btn-secondary" onclick="closeBmSlipModal()" style="padding:8px 16px; font-size:0.85rem;">Close</button>
       </div>
     </div>
   </div>
