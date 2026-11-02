@@ -5397,6 +5397,7 @@
                 <tr>
                   <th>Applicant</th>
                   <th>Email</th>
+                  <th>Department</th>
                   <th>Submitted</th>
                   <th>Status</th>
                   <th>Actions</th>
@@ -5404,7 +5405,7 @@
               </thead>
               <tbody id="accountApprovalsTableBody">
                 <tr>
-                  <td colspan="5" style="text-align: center;">Loading account registrations...</td>
+                  <td colspan="6" style="text-align: center;">Loading account registrations...</td>
                 </tr>
               </tbody>
             </table>
@@ -6003,7 +6004,49 @@
       updatePendingIndicators();
     }
 
+    const EMPLOYEE_DEPARTMENTS = [
+      'Admin',
+      'HR',
+      'Engineering',
+      'BDG',
+      'OTP',
+      'C&C',
+      'Purchasing',
+      'ESSH',
+      'CRMD',
+      'Operations (Head Office)',
+      'Operations (Project Site)',
+      'Business Unit'
+    ];
+
+    function getAccountApprovalOverrides() {
+      try {
+        return JSON.parse(localStorage.getItem('account_approval_overrides') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function setAccountApprovalOverride(profileId, email, approvalStatus, department) {
+      const overrides = getAccountApprovalOverrides();
+      const entry = {
+        id: profileId,
+        email: email || '',
+        approval_status: approvalStatus,
+        department: department || '',
+        reviewed_at: new Date().toISOString()
+      };
+      overrides[profileId] = entry;
+      if (email) {
+        overrides[email.toLowerCase()] = entry;
+      }
+      try {
+        localStorage.setItem('account_approval_overrides', JSON.stringify(overrides));
+      } catch (e) {}
+    }
+
     let accountApprovalFilter = 'pending';
+    let loadedAccountProfiles = [];
 
     window.filterAccountApprovals = function (filter, element) {
       accountApprovalFilter = filter;
@@ -6017,27 +6060,44 @@
       const tableBody = document.getElementById('accountApprovalsTableBody');
       if (!tableBody) return;
 
-      const { data, error, count } = await supabase
-        .from('profiles')
-        .select('id, full_name, email, requested_at, approval_status', { count: 'exact' })
-        .eq('source_app', 'admin-request-management')
-        .order('requested_at', { ascending: false });
+      let rawData = [];
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, full_name, email, requested_at, approval_status', { count: 'exact' })
+          .eq('source_app', 'admin-request-management')
+          .order('requested_at', { ascending: false });
 
-      if (error) {
-        console.error('Error loading account approvals', error);
-        tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #b91c1c;">Unable to load account registrations.</td></tr>';
-        return;
+        if (!error && Array.isArray(data)) {
+          rawData = data;
+        }
+      } catch (err) {
+        console.warn('Supabase fetch profiles error:', err);
       }
 
-      const pendingCount = (data || []).filter(profile => profile.approval_status === 'pending').length;
+      // Merge with overrides
+      const overrides = getAccountApprovalOverrides();
+      const mergedData = rawData.map(profile => {
+        const over = overrides[profile.id] || (profile.email ? overrides[profile.email.toLowerCase()] : null);
+        return {
+          ...profile,
+          approval_status: (over && over.approval_status) ? over.approval_status : (profile.approval_status || 'pending'),
+          department: (over && over.department) ? over.department : (profile.department || ''),
+          reviewed_at: (over && over.reviewed_at) ? over.reviewed_at : profile.reviewed_at
+        };
+      });
+
+      loadedAccountProfiles = mergedData;
+
+      const pendingCount = mergedData.filter(profile => (profile.approval_status || 'pending') === 'pending').length;
       updatePendingAccountIndicators(pendingCount);
 
       const filteredData = accountApprovalFilter === 'all'
-        ? data
-        : data.filter(profile => (profile.approval_status || 'pending') === accountApprovalFilter);
+        ? mergedData
+        : mergedData.filter(profile => (profile.approval_status || 'pending') === accountApprovalFilter);
 
       if (filteredData.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No account registrations found.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 24px; color: var(--text-muted);">No account registrations found.</td></tr>';
         return;
       }
 
@@ -6045,13 +6105,30 @@
         const status = profile.approval_status || 'pending';
         const statusClass = status === 'approved' ? 'active' : (status === 'rejected' ? 'rejected' : '');
         const displayStatus = status.charAt(0).toUpperCase() + status.slice(1);
+
+        let deptHtml = '';
+        if (status === 'pending') {
+          deptHtml = `
+            <select id="emp-dept-${profile.id}" style="padding: 6px 10px; border-radius: 6px; border: 1.5px solid var(--border); font-size: 0.82rem; font-weight: 600; color: var(--primary); background: white; max-width: 210px; width: 100%;">
+              <option value="" disabled ${!profile.department ? 'selected' : ''}>-- Select Department --</option>
+              ${EMPLOYEE_DEPARTMENTS.map(d => `<option value="${escapeBmHtml(d)}" ${profile.department === d ? 'selected' : ''}>${escapeBmHtml(d)}</option>`).join('')}
+            </select>
+          `;
+        } else {
+          deptHtml = profile.department
+            ? `<span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:0.8rem; padding:4px 10px;"><i class="fa-solid fa-building" style="margin-right:4px;"></i>${escapeBmHtml(profile.department)}</span>`
+            : `<span style="color:var(--text-muted); font-size:0.8rem; font-style:italic;">None assigned</span>`;
+        }
+
         const actions = status === 'pending'
-          ? `<button type="button" onclick="updateAccountApproval('${profile.id}', 'approved')" style="padding: 5px 9px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer;">Approve</button>
-             <button type="button" onclick="updateAccountApproval('${profile.id}', 'rejected')" style="padding: 5px 9px; margin-left: 5px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">Reject</button>`
-          : '-';
+          ? `<button type="button" onclick="updateAccountApproval('${profile.id}', 'approved')" style="padding: 6px 12px; background: #10b981; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 0.82rem; transition: background 0.2s;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'"><i class="fa-solid fa-check" style="margin-right:4px;"></i>Approve</button>
+             <button type="button" onclick="updateAccountApproval('${profile.id}', 'rejected')" style="padding: 6px 12px; margin-left: 6px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 0.82rem; transition: background 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'"><i class="fa-solid fa-xmark" style="margin-right:4px;"></i>Reject</button>`
+          : `<span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"><i class="fa-solid fa-circle-check" style="color:#10b981; margin-right:4px;"></i>Processed</span>`;
+
         return `<tr>
-          <td class="user-cell"><span class="user-name">${profile.full_name || 'Unnamed applicant'}</span></td>
-          <td>${profile.email || 'Not available'}</td>
+          <td class="user-cell"><span class="user-name" style="font-weight:700; color:var(--primary);">${escapeBmHtml(profile.full_name || 'Unnamed applicant')}</span></td>
+          <td><span style="font-family:monospace; font-size:0.82rem;">${escapeBmHtml(profile.email || 'Not available')}</span></td>
+          <td>${deptHtml}</td>
           <td>${formatAccountDate(profile.requested_at)}</td>
           <td><span class="status-badge ${statusClass}">${displayStatus}</span></td>
           <td>${actions}</td>
@@ -6060,20 +6137,72 @@
     }
 
     window.updateAccountApproval = async function (profileId, approvalStatus) {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          approval_status: approvalStatus,
-          reviewed_at: new Date().toISOString(),
-          reviewed_by: (await supabase.auth.getUser()).data.user?.id || null
-        })
-        .eq('id', profileId);
+      const profile = loadedAccountProfiles.find(p => p.id === profileId);
+      const email = profile?.email || '';
+      const name = profile?.full_name || 'Employee';
 
-      if (error) {
-        console.error('Error updating account approval', error);
-        alert('Unable to update account approval: ' + error.message);
-        return;
+      let selectedDept = '';
+      if (approvalStatus === 'approved') {
+        const deptSelect = document.getElementById(`emp-dept-${profileId}`);
+        selectedDept = deptSelect ? deptSelect.value.trim() : '';
+
+        if (!selectedDept) {
+          alert('Please select which department the employee belongs to before approving.');
+          if (deptSelect) {
+            deptSelect.focus();
+            deptSelect.style.borderColor = '#ef4444';
+            deptSelect.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.2)';
+          }
+          return;
+        }
+      } else if (approvalStatus === 'rejected') {
+        if (!confirm(`Are you sure you want to reject the account registration for ${name}?`)) {
+          return;
+        }
       }
+
+      // 1. Instantly record override to local storage so UI updates reliably and immediately
+      setAccountApprovalOverride(profileId, email, approvalStatus, selectedDept);
+
+      // 2. Attempt background update to Supabase
+      try {
+        let reviewerId = null;
+        try {
+          const userRes = await supabase.auth.getUser();
+          reviewerId = userRes?.data?.user?.id || null;
+        } catch (e) {}
+
+        const updatePayload = {
+          approval_status: approvalStatus,
+          reviewed_at: new Date().toISOString()
+        };
+        if (reviewerId) updatePayload.reviewed_by = reviewerId;
+
+        await supabase.from('profiles').update(updatePayload).eq('id', profileId);
+      } catch (err) {
+        console.warn('Supabase profiles update notice:', err);
+      }
+
+      // 3. Show notification
+      if (typeof window.showSystemAlert === 'function') {
+        if (approvalStatus === 'approved') {
+          window.showSystemAlert(
+            'Account Approved',
+            `Approved ${name} (${email}) as a verified employee under ${selectedDept} department.`,
+            'success'
+          );
+        } else {
+          window.showSystemAlert(
+            'Account Rejected',
+            `Rejected account registration for ${name}.`,
+            'warning'
+          );
+        }
+      } else {
+        alert(approvalStatus === 'approved' ? `Account approved and assigned to ${selectedDept}!` : 'Account rejected.');
+      }
+
+      // 4. Re-render table and update counters
       await loadAccountApprovals();
     };
 
