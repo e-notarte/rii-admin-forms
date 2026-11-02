@@ -3961,28 +3961,6 @@
 
       <!-- BUDGET MONITORING VIEW - FY 2026 APPROVED BUDGET -->
       <div id="view-budget" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
-          <div>
-            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-              <h1><i class="fa-solid fa-chart-line" style="color:var(--accent);"></i> FY 2026 Admin Approved Budget Monitoring</h1>
-            </div>
-            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-              Official master operating budget ledger for R-II Builders Admin Department. Real-time disbursement tracking across 14 expense categories &amp; 200 account lines.
-            </p>
-          </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-primary" onclick="openBudgetExpenseModal()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
-              <i class="fa-solid fa-plus"></i> Record Expense
-            </button>
-            <button type="button" class="btn-primary" onclick="exportAdminBudgetCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
-              <i class="fa-solid fa-file-excel"></i> Export Budget CSV
-            </button>
-            <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
-              <i class="fa-solid fa-print"></i> Print Budget
-            </button>
-          </div>
-        </div>
-
         <!-- Master Budget Ledger Table Card -->
         <div class="data-card" style="margin-bottom: 24px; padding: 22px;">
           <!-- Search & Filter Bar -->
@@ -3994,11 +3972,17 @@
                 </h3>
                 <span style="font-size:0.75rem; color:var(--text-muted);" id="budgetResultCount">Showing 200 budget accounts</span>
               </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
                 <!-- Category Select Dropdown -->
                 <select id="budgetCategorySelect" onchange="filterBudgetAccounts()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
                   <option value="ALL">All Categories</option>
                 </select>
+                <button type="button" class="btn-primary" onclick="openBudgetExpenseModal()" style="font-size:0.78rem; padding:6px 12px; background:#10b981;">
+                  <i class="fa-solid fa-plus"></i> Record Expense
+                </button>
+                <button type="button" class="btn-primary" onclick="exportAdminBudgetCSV()" style="font-size:0.78rem; padding:6px 12px; background:#0284c7;">
+                  <i class="fa-solid fa-file-excel"></i> Export CSV
+                </button>
               </div>
             </div>
 
@@ -4011,7 +3995,6 @@
                 <button type="button" class="veh-filter-btn active" onclick="filterBudgetScope('ALL', this)">All Items (200)</button>
                 <button type="button" class="veh-filter-btn" onclick="filterBudgetScope('MAIN', this)">Main Accounts (106)</button>
                 <button type="button" class="veh-filter-btn" onclick="filterBudgetScope('SUBS', this)">Dept Breakdowns (88)</button>
-                <button type="button" class="veh-filter-btn" onclick="filterBudgetScope('MOVEMENT', this)" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd; font-weight:700;"><i class="fa-solid fa-arrows-split-up-and-left"></i> RR &amp; Issuance Movement</button>
               </div>
             </div>
           </div>
@@ -4023,17 +4006,14 @@
                 <tr>
                   <th style="width:70px; text-align:center;">Code</th>
                   <th>Account Title &amp; Sub-Account Movements</th>
-                  <th>Expense Category</th>
-                  <th style="text-align: right; width: 130px;">Approved Budget</th>
-                  <th style="text-align: right; width: 135px; color:#0284c7;">RR Inflow (Bgt - RR)</th>
-                  <th style="text-align: right; width: 145px; color:#b45309; background:#fffbeb;">Actual Issuance (Bgt - MIS)</th>
-                  <th style="text-align: right; width: 125px;">Cash Disbursed</th>
-                  <th style="width: 120px; text-align: center;">Utilization</th>
+                  <th style="text-align: right; width: 140px;">Approved Budget</th>
+                  <th style="text-align: right; width: 140px;">Cash Disbursed</th>
+                  <th style="width: 130px; text-align: center;">Utilization</th>
                   <th style="text-align: center; width: 220px;">Actions</th>
                 </tr>
               </thead>
               <tbody id="budgetMasterTableBody">
-                <tr><td colspan="9" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading approved budget accounts...</td></tr>
+                <tr><td colspan="6" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading approved budget accounts...</td></tr>
               </tbody>
             </table>
           </div>
@@ -7772,7 +7752,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       if (items.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="9" style="text-align:center; padding:35px; color:var(--text-muted);">
+            <td colspan="6" style="text-align:center; padding:35px; color:var(--text-muted);">
               <i class="fa-solid fa-folder-open" style="font-size:2rem; margin-bottom:10px; display:block; color:#cbd5e1;"></i>
               No budget accounts matched your current filter criteria.
             </td>
@@ -7781,35 +7761,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return;
       }
 
-      // Check if any item in filtered items has active RR or Issuance activity
-      const hasMovementActivity = items.some(it => {
-        const recon = window.budgetReconciliationData?.accounts?.find(r => r.cost_code === it.cost_code);
-        return recon && (recon.rr_received_amount > 0 || recon.issuance_actual_amount > 0);
-      });
-
       tbody.innerHTML = items.map(item => {
         const alloc = Number(item.allocated_budget) || 0;
         const actual = Number(item.actual_expense) || 0;
         const rem = item.remaining_budget !== undefined ? item.remaining_budget : (alloc - actual);
         const util = alloc > 0 ? (actual / alloc) * 100 : 0;
         const isSub = Boolean(item.is_sub_item);
-
-        // Reconciled figures from Receiving Report & Issuance
-        const recon = window.budgetReconciliationData?.accounts?.find(r => r.cost_code === item.cost_code);
-        const rrAmount = recon ? recon.rr_received_amount : 0;
-        const budgetMinusRR = recon ? recon.budget_minus_rr : (alloc - rrAmount);
-        const issuanceAmount = recon ? recon.issuance_actual_amount : 0;
-        const budgetMinusIssuance = recon ? recon.budget_minus_issuance : (alloc - issuanceAmount);
-        const subDepts = recon && recon.department_sub_accounts ? recon.department_sub_accounts : {};
-
-        let deptChips = '';
-        if (Object.keys(subDepts).length > 0) {
-          deptChips = Object.entries(subDepts).map(([d, val]) => `
-            <span style="display:inline-block; font-size:0.7rem; background:#fef3c7; color:#92400e; padding:1px 6px; border-radius:4px; margin:2px 2px 0 0; font-family:monospace;">
-              <strong>${escapeDispatchHtml(d)}:</strong> ${formatPHP(val)}
-            </span>
-          `).join('');
-        }
 
         let utilPill = '';
         let barClass = '';
@@ -7838,30 +7795,10 @@ This serves as your official electronic copy of the posted Requisition & Issue S
                   ${escapeDispatchHtml(item.account_title)}
                 </span>
                 ${item.department ? `<span style="margin-left:6px; font-size:0.7rem; background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:3px;">${escapeDispatchHtml(item.department)}</span>` : ''}
-                ${deptChips ? `<div style="margin-top:4px;">${deptChips}</div>` : ''}
               </div>
-            </td>
-            <td>
-              <span style="font-size:0.75rem; color:var(--text-muted); background:#f8fafc; border:1px solid #e2e8f0; padding:2px 8px; border-radius:4px;">
-                ${escapeDispatchHtml(item.expense_category)}
-              </span>
             </td>
             <td style="text-align:right; font-weight:700; color:var(--primary);">
               ${formatPHP(alloc)}
-            </td>
-            <!-- RR Received (Inflow) -->
-            <td style="text-align:right; font-size:0.83rem;">
-              ${rrAmount > 0 ? `
-                <div style="font-weight:700; color:#0284c7;">${formatPHP(rrAmount)}</div>
-                <div style="font-size:0.72rem; color:${budgetMinusRR < 0 ? '#b91c1c' : '#0369a1'};" title="Budget minus RR">Rem: ${formatPHP(budgetMinusRR)}</div>
-              ` : '<span style="color:#cbd5e1;">-</span>'}
-            </td>
-            <!-- Actual Issuance (Movement) -->
-            <td style="text-align:right; font-size:0.83rem; background:#fcfdfd;">
-              ${issuanceAmount > 0 ? `
-                <div style="font-weight:700; color:#b45309;">${formatPHP(issuanceAmount)}</div>
-                <div style="font-size:0.72rem; font-weight:700; color:${budgetMinusIssuance < 0 ? '#b91c1c' : '#15803d'};" title="Budget minus Issuance (Actual Consumption)">Bal: ${formatPHP(budgetMinusIssuance)}</div>
-              ` : '<span style="color:#cbd5e1;">-</span>'}
             </td>
             <td style="text-align:right; font-weight:700; color:${rem < 0 ? '#b91c1c' : '#15803d'};">
               ${formatPHP(rem)}
