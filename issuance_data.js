@@ -16824,7 +16824,7 @@ export const issuanceMasterData = {
     {
       "id": "mis_MIS_18332__HR__NO_DATE",
       "mis_no": "MIS 18332",
-      "date": "NO DATE",
+      "date": "2026-01-15",
       "department": "HR",
       "issued_to": "DEFECTS",
       "purpose": "ADM",
@@ -46462,7 +46462,7 @@ export const issuanceMasterData = {
     },
     {
       "row_no": 1049,
-      "date": "NO DATE",
+      "date": "2026-01-15",
       "mis_no": "MIS 18332",
       "item_code": "ITM-OS-0071",
       "item_classification": "OFFICE SUPPLIES",
@@ -46475,7 +46475,7 @@ export const issuanceMasterData = {
       "issued_to": "DEFECTS",
       "expense_account": "062 • General & Office Supplies",
       "reference": "",
-      "month": "NO DATE",
+      "month": "2026-01-15",
       "remarks": "",
       "department": "HR",
       "status": "ISSUED",
