@@ -3951,16 +3951,10 @@
 
       <!-- BUDGET MONITORING VIEW - FY 2026 APPROVED BUDGET -->
       <div id="view-budget" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
           <div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <h1><i class="fa-solid fa-chart-line" style="color:var(--accent);"></i> FY 2026 Admin Approved Budget Monitoring</h1>
-              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-stamp"></i> Approved: ₱ 147,643,884.24
-              </span>
-              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-user-check"></i> Prepared by: Emmanuel Notarte | Noted: Clarisa P. Lasam
-              </span>
             </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
               Official master operating budget ledger for R-II Builders Admin Department. Real-time disbursement tracking across 14 expense categories &amp; 200 account lines.
@@ -3976,58 +3970,6 @@
             <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
               <i class="fa-solid fa-print"></i> Print Budget
             </button>
-          </div>
-        </div>
-
-        <!-- Top Executive KPI Metric Cards -->
-        <div class="rr-stats-grid" style="margin-bottom: 24px;">
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon blue"><i class="fa-solid fa-coins"></i></div>
-            <div>
-              <div class="rr-stat-val" id="bgtStatTotal" style="font-size:1.25rem;">₱ 147,643,884.24</div>
-              <div class="rr-stat-lbl">Total Approved FY 2026 Budget</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon amber"><i class="fa-solid fa-receipt"></i></div>
-            <div>
-              <div class="rr-stat-val" id="bgtStatDisbursed" style="font-size:1.25rem;">₱ 0.00</div>
-              <div class="rr-stat-lbl">Actual Disbursed Expenses</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon green"><i class="fa-solid fa-piggy-bank"></i></div>
-            <div>
-              <div class="rr-stat-val" id="bgtStatRemaining" style="font-size:1.25rem;">₱ 147,643,884.24</div>
-              <div class="rr-stat-lbl">Available Remaining Balance</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon purple"><i class="fa-solid fa-fire-flame-curved"></i></div>
-            <div>
-              <div class="rr-stat-val" id="bgtStatBurnRate" style="font-size:1.25rem;">0.00%</div>
-              <div class="rr-stat-lbl">Overall Budget Utilization</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon red"><i class="fa-solid fa-list-ol"></i></div>
-            <div>
-              <div class="rr-stat-val" id="bgtStatLineItems" style="font-size:1.25rem;">200 Accounts</div>
-              <div class="rr-stat-lbl">14 Categories &bull; 106 Main</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Expense Category Breakdown Grid -->
-        <div style="margin-bottom: 24px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-              <i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> FY 2026 Budget by Expense Category
-            </h3>
-            <span style="font-size:0.75rem; color:var(--text-muted);">Click any category card to filter ledger below</span>
-          </div>
-          <div class="bgt-cat-grid" id="budgetCategoryCards">
-            <!-- Dynamically populated -->
           </div>
         </div>
 
@@ -4183,7 +4125,7 @@
 
       <!-- RECEIVING REPORT VIEW -->
       <div id="view-receiving-report" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
           <div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <h1><i class="fa-solid fa-file-invoice" style="color:var(--accent);"></i> Receiving Report (RR)</h1>
@@ -4211,38 +4153,6 @@
             <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
               <i class="fa-solid fa-print"></i> Print Ledger
             </button>
-          </div>
-        </div>
-
-        <!-- Metric Cards -->
-        <div class="rr-stats-grid">
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon blue"><i class="fa-solid fa-file-invoice"></i></div>
-            <div>
-              <div class="rr-stat-val" id="rrStatCount">0</div>
-              <div class="rr-stat-lbl">Reports Recorded</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon green"><i class="fa-solid fa-peso-sign"></i></div>
-            <div>
-              <div class="rr-stat-val" id="rrStatValue">₱ 0.00</div>
-              <div class="rr-stat-lbl">Total Value Received</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon amber"><i class="fa-solid fa-boxes-packing"></i></div>
-            <div>
-              <div class="rr-stat-val" id="rrStatItems">0</div>
-              <div class="rr-stat-lbl">Total Items Received</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon purple"><i class="fa-solid fa-truck-ramp-box"></i></div>
-            <div>
-              <div class="rr-stat-val" id="rrStatSuppliers" style="font-size: 1.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px;">-</div>
-              <div class="rr-stat-lbl">Active Suppliers</div>
-            </div>
           </div>
         </div>
 
@@ -4538,19 +4448,10 @@
 
       <!-- MATERIAL ISSUANCE VIEW (MIS) -->
       <div id="view-issuance" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
           <div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <h1><i class="fa-solid fa-hand-holding-hand" style="color:var(--accent);"></i> Material Issuance Slips (MIS)</h1>
-              <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-boxes-packing"></i> 7,982 Units Issued
-              </span>
-              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-peso-sign"></i> ₱ 837,484.44 Actual Movement
-              </span>
-              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-building-user"></i> 31 Departments / Projects Served
-              </span>
             </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
               Official warehouse supplies requisitions and departmental issuance ledger. Tracks physical stock withdrawals deducted from warehouse inventory.
@@ -4563,38 +4464,6 @@
             <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
               <i class="fa-solid fa-print"></i> Print Ledger
             </button>
-          </div>
-        </div>
-
-        <!-- Metric Cards -->
-        <div class="rr-stats-grid" style="margin-bottom: 22px;">
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon blue"><i class="fa-solid fa-receipt"></i></div>
-            <div>
-              <div class="rr-stat-val" id="misStatVouchers">807</div>
-              <div class="rr-stat-lbl">MIS Vouchers Issued</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon amber"><i class="fa-solid fa-boxes-packing"></i></div>
-            <div>
-              <div class="rr-stat-val" id="misStatQty">7,982</div>
-              <div class="rr-stat-lbl">Total Physical Units Out</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon green"><i class="fa-solid fa-chart-line"></i></div>
-            <div>
-              <div class="rr-stat-val" id="misStatValue">₱ 837,484.44</div>
-              <div class="rr-stat-lbl">Actual Departmental Consumption</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon purple"><i class="fa-solid fa-users-gear"></i></div>
-            <div>
-              <div class="rr-stat-val" id="misStatDepts">31 Depts</div>
-              <div class="rr-stat-lbl">Active Cost Centers</div>
-            </div>
           </div>
         </div>
 
