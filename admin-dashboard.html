@@ -2149,18 +2149,23 @@
   <style id="admin-facility-layout-css">
     .admin-facility-layout {
       display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(270px, 1fr);
-      gap: 18px;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 20px;
       align-items: start;
       width: 100%;
+      box-sizing: border-box;
     }
 
     .calendar-card {
       background: #fff;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 16px 14px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
       border: 1px solid var(--border, #e2e8f0);
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     body.dark-mode .calendar-card {
@@ -2170,24 +2175,28 @@
 
     .calendar-container {
       width: 100%;
+      box-sizing: border-box;
     }
 
     .calendar-title-bar {
       background: var(--primary);
-      padding: 10px 12px;
+      padding: 8px 12px;
       border-radius: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 8px;
+      box-sizing: border-box;
     }
 
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 5px;
+      gap: 4px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .calendar-day-header {
@@ -2198,58 +2207,68 @@
       font-weight: 700;
       border-radius: 4px;
       font-size: 0.72rem;
+      text-transform: uppercase;
+      box-sizing: border-box;
     }
 
     .calendar-day {
       aspect-ratio: 1;
+      width: 100%;
       background: #f8fafc;
-      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      padding: 4px 2px;
-      font-size: 0.78rem;
+      justify-content: center;
+      padding: 2px;
+      font-size: 0.8rem;
       color: #334155;
       font-weight: 600;
-      min-height: 36px;
       box-sizing: border-box;
-      transition: transform 0.15s ease;
+      transition: all 0.15s ease;
+      overflow: hidden;
+      user-select: none;
     }
 
     .calendar-day.empty {
       background: transparent;
-      min-height: 0;
+      border: none;
     }
 
     .calendar-day.reserved {
       background: var(--primary);
       color: white;
       border: 1.5px solid var(--accent);
+      cursor: pointer;
     }
 
     .calendar-day.reserved:hover {
-      transform: scale(1.04);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(30, 53, 95, 0.25);
     }
 
     body.dark-mode .calendar-day {
       background: #334155;
+      border-color: #475569;
       color: #f1f5f9;
     }
 
     body.dark-mode .calendar-day.empty {
       background: transparent;
+      border: none;
     }
 
     body.dark-mode .calendar-day.reserved {
       background: var(--primary);
       border-color: var(--accent);
+      color: white;
     }
 
     .calendar-legend {
       display: flex;
       justify-content: center;
-      gap: 14px;
+      gap: 16px;
       margin-top: 14px;
       padding-top: 10px;
       border-top: 1px solid var(--border, #e2e8f0);
@@ -2282,6 +2301,10 @@
     @media (max-width: 1100px) {
       .admin-facility-layout {
         grid-template-columns: 1fr;
+      }
+      .calendar-card {
+        max-width: 420px;
+        margin: 0 auto;
       }
     }
 
@@ -5501,7 +5524,7 @@
                 </h2>
                 <div class="calendar-controls"
                   style="display: flex; gap: 6px; align-items: center; color: white; font-size: 0.78rem;">
-                  <select id="calMonth" style="padding: 4px 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: 600; background: white; color: var(--primary);">
+                  <select id="calMonth" onchange="updateAdminCal()" style="padding: 4px 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: 600; background: white; color: var(--primary); cursor: pointer;">
                     <option value="0">Jan</option>
                     <option value="1">Feb</option>
                     <option value="2">Mar</option>
@@ -5515,7 +5538,7 @@
                     <option value="10">Nov</option>
                     <option value="11">Dec</option>
                   </select>
-                  <select id="calYear" style="padding: 4px 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: 600; background: white; color: var(--primary);">
+                  <select id="calYear" onchange="updateAdminCal()" style="padding: 4px 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: 600; background: white; color: var(--primary); cursor: pointer;">
                     <option value="2026">2026</option>
                     <option value="2027">2027</option>
                   </select>
@@ -9380,16 +9403,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const dayEvents = approvedEvents.filter(e => e.request_date === dateString);
         const hasEvent = dayEvents.length > 0;
 
-        let classStr = hasEvent ? "calendar-day reserved" : "calendar-day";
-        let labelStr = hasEvent ? '<span style="font-size:0.58rem; color:white; margin-top:auto; font-weight:700; letter-spacing:-0.2px; text-transform:uppercase;">Occupied</span>' : "";
-
+        let classStr = hasEvent ? "calendar-day reserved clickable" : "calendar-day";
+        let labelStr = hasEvent ? '<span style="width:5px; height:5px; border-radius:50%; background:var(--accent); display:block; margin-top:3px;"></span>' : "";
         let clickHandler = hasEvent ? `onclick="showAdminDayDetails('${dateString}')"` : "";
-        if (hasEvent) {
-          classStr += " clickable";
-          calendarGrid.innerHTML += `<div class="${classStr}" style="cursor: pointer;" title="Reserved - click to view details" ${clickHandler}><span style="line-height:1;">${i}</span>${labelStr}</div>`;
-        } else {
-          calendarGrid.innerHTML += `<div class="${classStr}"><span style="line-height:1;">${i}</span>${labelStr}</div>`;
-        }
+        let titleStr = hasEvent ? `title="${dayEvents.length} Occupied Reservation(s) on ${dateString}. Click to view details"` : `title="${dateString} - Available"`;
+
+        calendarGrid.innerHTML += `<div class="${classStr}" ${clickHandler} ${titleStr}><span style="line-height:1; font-size:0.8rem; font-weight:${hasEvent ? '700' : '600'};">${i}</span>${labelStr}</div>`;
       }
     };
 
