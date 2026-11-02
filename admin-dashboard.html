@@ -5136,28 +5136,6 @@
 
       <!-- DOCUMENT TRANSMITTAL MANAGEMENT VIEW -->
       <div id="view-transmittal" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
-          <div>
-            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-              <h1><i class="fa-solid fa-file-signature" style="color:var(--accent);"></i> Executive Document Transmittals</h1>
-            </div>
-            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-              Official R-II Builders Document Transmittal &amp; Summary of for Signature per Department. Standardized executive routing for RFPs, PRFs, Liquidations, Memos, and Contracts.
-            </p>
-          </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-primary" onclick="document.getElementById('trnFormCard').scrollIntoView({ behavior: 'smooth' }); document.getElementById('trnDocNo').focus();" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
-              <i class="fa-solid fa-plus"></i> New Transmittal Entry
-            </button>
-            <button type="button" class="btn-primary" onclick="exportTransmittalsCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
-              <i class="fa-solid fa-file-excel"></i> Export Transmittals CSV
-            </button>
-            <button type="button" class="btn-primary" onclick="printCurrentTransmittalForm()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
-              <i class="fa-solid fa-print"></i> Print Transmittal Sheet
-            </button>
-          </div>
-        </div>
-
         <!-- INTERACTIVE TRANSMITTAL TEMPLATE ENTRY FORM -->
         <div class="data-card" id="trnFormCard" style="margin-bottom: 24px; padding: 24px; border:2px solid #e2e8f0;">
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:14px; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
@@ -5354,6 +5332,9 @@
                 <input type="text" id="trnSearchInput" placeholder="Search doc #, payee, particulars..." oninput="filterDocumentTransmittals()" style="width:230px;">
               </div>
               <input type="date" id="trnDateFilter" onchange="filterDocumentTransmittals()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; background:white;">
+              <button type="button" class="btn-primary" onclick="exportTransmittalsCSV()" style="font-size:0.8rem; padding:7px 14px; background:#0284c7; border-radius:6px; font-weight:700;">
+                <i class="fa-solid fa-file-excel"></i> Export CSV
+              </button>
             </div>
           </div>
 
