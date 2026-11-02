@@ -4,20 +4,286 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Account Dashboard - R-II Builders</title>
+  <title>Admin Account Profile - R-II Builders</title>
+  <link rel="icon" type="image/png" href="RII_Logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- React 18, ReactDOM & Babel Standalone (Runs natively online in browser on Vercel without build tools) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Clean, Consolidated CSS (Removed ~2,000 lines of redundant duplicate code) -->
   <style>
+    :root {
+      --primary: #1E355F;
+      --primary-hover: #152748;
+      --accent: #FCAE16;
+      --bg-main: #f8fafc;
+      --bg-surface: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --sidebar-width: 250px;
+      --header-height: 60px;
+      --radius: 8px;
+    }
+
+    body.dark-mode {
+      --bg-main: #0f172a;
+      --bg-surface: #1e293b;
+      --border: #334155;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    /* HEADER */
+    .header {
+      height: var(--header-height);
+      background-color: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .brand img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 12px 4px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      position: relative;
+      user-select: none;
+    }
+
+    .user-badge span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      min-width: 175px;
+      z-index: 1050;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .profile-dropdown a,
+    .profile-dropdown button {
+      padding: 12px 16px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: background 0.15s;
+    }
+
+    .profile-dropdown a:hover,
+    .profile-dropdown button:hover {
+      background: var(--bg-main);
+    }
+
+    .profile-dropdown .logout-link {
+      color: #ef4444;
+      border-top: 1px solid var(--border);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: var(--header-height);
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      z-index: 900;
+      padding: 20px 0;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-brand-mobile {
+      display: none;
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px;
+    }
+
+    .nav-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.75px;
+      padding: 16px 22px 6px;
+    }
+
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 9px 22px;
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .nav-link i {
+      width: 22px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-right: 10px;
+    }
+
+    .nav-link:hover {
+      background-color: var(--bg-main);
+      color: var(--primary);
+    }
+
+    body.dark-mode .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .nav-link.active {
+      background-color: rgba(30, 53, 95, 0.08);
+      color: var(--primary);
+      font-weight: 600;
+      border-left-color: var(--accent);
+    }
+
+    .nav-count {
+      margin-left: auto;
+      background: var(--accent);
+      color: var(--primary);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      min-width: 18px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* MAIN WRAPPER */
     .main-wrapper {
-      flex: 1;
       margin-left: var(--sidebar-width);
       margin-top: var(--header-height);
+      flex: 1;
       display: flex;
       flex-direction: column;
       min-height: calc(100vh - var(--header-height));
     }
-
 
     .content {
       padding: 30px;
@@ -29,537 +295,117 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .page-header h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
+      font-size: 1.45rem;
+      font-weight: 700;
       color: var(--primary);
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    body.dark-mode .page-header h1 {
+      color: #f1f5f9;
     }
 
     .btn-primary {
       background-color: var(--primary);
-      color: white;
+      color: #fff;
       border: none;
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-size: 0.85rem;
+      font-weight: 600;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 2px 4px rgba(30, 53, 95, 0.2);
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(30, 53, 95, 0.2);
       transition: all 0.2s;
     }
 
     .btn-primary:hover {
-      background-color: #152748;
+      background-color: var(--primary-hover);
       transform: translateY(-1px);
     }
 
-    /* TABLE CONTAINER */
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 9px 18px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     .data-card {
       background-color: var(--bg-surface);
-      border-radius: 10px;
       border: 1px solid var(--border);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      overflow: hidden;
-    }
-
-    .toolbar {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .search-box {
-      position: relative;
-      max-width: 400px;
-    }
-
-    .search-box i {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 10px 10px 10px 40px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .search-box input:focus {
-      border-color: var(--primary);
-    }
-
-    .filter-pills {
-      display: flex;
-      gap: 10px;
-    }
-
-    .pill {
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--text-muted);
-      transition: all 0.2s;
-    }
-
-    .pill.active {
-      background-color: rgba(252, 174, 22, 0.15);
-      color: #d97706;
-      border-color: transparent;
-    }
-
-    .pill:hover:not(.active) {
-      background-color: #f8fafc;
-    }
-
-    /* TABLE */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    th {
-      background-color: #f8fafc;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      text-align: left;
-      padding: 15px 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    td {
-      padding: 15px 20px;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--text-main);
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    tr:hover td {
-      background-color: #f8fafc;
-    }
-
-    .user-cell {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .user-name {
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .user-email {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .status-badge {
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      background-color: #e2e8f0;
-      color: #475569;
-    }
-
-    .status-badge.rejected {
-      background-color: #fee2e2;
-      color: #991b1b;
-    }
-
-    .status-badge.active {
-      background-color: #dcfce7;
-      color: #166534;
-    }
-
-    /* PAGINATION */
-    .pagination-bar {
-      padding: 15px 20px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .page-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .page-btn {
-      border: 1px solid var(--border);
-      background: white;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      color: var(--text-muted);
-    }
-
-    .page-btn:hover {
-      background: #f8fafc;
-    }
-
-    /* --- CALENDAR CSS --- */
-    .calendar-container {
-      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-      width: 100%;
+      max-width: 650px;
     }
 
-    .calendar-title-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #1E355F;
-      padding: 15px 20px;
-      border-radius: 8px;
+    .form-group {
       margin-bottom: 20px;
     }
 
-    .calendar-title-bar h2 {
-      margin: 0;
-      color: #FCAE16;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
-    .calendar-controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      color: white;
-    }
-
-    .calendar-controls select {
-      padding: 5px 10px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      font-family: inherit;
-    }
-
-    .calendar-controls button {
-      background: #FCAE16;
-      color: #1E355F;
-      border: none;
-      padding: 5px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-    }
-
-    .calendar-day-header {
-      background: #FCAE16;
-      color: #1E355F;
-      text-align: center;
-      padding: 10px 0;
-      font-weight: 600;
-      border-radius: 4px;
-    }
-
-    .calendar-day {
-      background: #f1f5f9;
-      min-height: 100px;
-      border-radius: 4px;
-      padding: 10px;
-      font-weight: 600;
-      color: #1E355F;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .calendar-day.empty {
-      background: transparent;
-    }
-
-    .calendar-day.reserved {
-      background: #1E355F;
-      color: white;
-    }
-
-    .calendar-legend {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      border-top: 1px solid #eee;
-      padding-top: 15px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
-      color: #666;
-      font-weight: bold;
-    }
-
-    .legend-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    .legend-reserved {
-      background: #1E355F;
-    }
-
-    .legend-available {
-      background: #f1f5f9;
-    }
-
-    /* VIEWS */
-    .view-section {
-      display: none;
-    }
-
-    .view-section.active {
+    .form-group label {
       display: block;
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-bottom: 6px;
     }
 
-    .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin-left: 260px;
-      padding: 10px 24px;
-      color: var(--text-muted, #718096);
-      background: var(--bg-surface, #ffffff);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-size: .78rem;
-      z-index: 999;
-    }
-
-    @media(max-width:900px) {
-      .footer {
-        margin-left: 0;
-      }
-    }
-
-    main.main-wrapper {
-      padding-bottom: 50px;
-    }
-  </style>
-  <style id="mobile-shell-overrides">
-    @media (max-width:900px) {
-
-      .header,
-      .header-bar {
-        padding-left: 56px;
-        padding-right: 56px;
-      }
-
-      .header-right {
-        display: flex;
-        gap: 10px;
-      }
-
-      .header-right .switch-admin,
-      .header-right .switch-btn,
-      .header-right .user-badge,
-      .header-right .user-profile {
-        display: none;
-      }
-
-      .header-right .icon-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 34px;
-        height: 34px;
-        padding: 0;
-      }
-
-      .mobile-account-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        top: 14px;
-        right: 12px;
-        z-index: 1300;
-        width: 36px;
-        height: 36px;
-        padding: 0;
-        border: 0;
-        border-radius: 50%;
-        background: #d1fae5;
-        color: #047857;
-        font-size: 0;
-        cursor: pointer;
-      }
-
-      .mobile-account-button i {
-        font-size: .9rem;
-      }
-
-      .mobile-menu-toggle {
-        z-index: 1300;
-      }
-
-      .mobile-account-menu {
-        top: 58px;
-        right: 12px;
-      }
-
-      body:not(.nav-open) .sidebar,
-      body:not(.nav-open) .requestor-sidebar {
-        display: none;
-      }
-
-      body.nav-open::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: 1100;
-        background: rgba(15, 23, 42, .48);
-      }
-
-      body.nav-open .sidebar,
-      body.nav-open .requestor-sidebar {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: min(78vw, 280px);
-        height: 100vh;
-        margin: 0;
-        padding: 76px 0 20px;
-        overflow-y: auto;
-        z-index: 1200;
-        background: #fff;
-        box-shadow: 4px 0 18px rgba(0, 0, 0, .16);
-      }
-
-      body.nav-open .sidebar nav,
-      body.nav-open .requestor-sidebar nav {
-        display: block;
-      }
-
-      body.nav-open .sidebar .sub-links,
-      body.nav-open .requestor-sidebar .requestor-nav-sublinks {
-        display: block;
-        padding: 0;
-      }
-
-      body.nav-open .sidebar .sub-link,
-      body.nav-open .requestor-sidebar .requestor-nav-sublink {
-        display: block;
-        padding: 10px 24px 10px 33px;
-      }
-
-      body.nav-open .mobile-menu-toggle {
-        left: auto;
-        right: calc(100% - min(78vw, 280px) + 10px);
-        color: #1E355F;
-        background: #fff;
-        border-color: #e2e8f0;
-        font-size: 0;
-      }
-
-      body.nav-open .mobile-menu-toggle::after {
-        content: "Ã—";
-        font-size: 1.5rem;
-        line-height: 1;
-      }
-    }
-  </style>
-  <style>
-    .user-profile,
-    .user-badge {
-      position: relative;
-      cursor: pointer;
-    }
-
-    .profile-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      right: 0;
-      background: #ffffff;
-      border: 1px solid var(--border, #e2e8f0);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      min-width: 160px;
-      z-index: 1000;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .user-profile.active .profile-dropdown,
-    .user-badge.active .profile-dropdown {
-      display: flex;
-    }
-
-    .profile-dropdown a {
-      padding: 12px 16px;
-      color: #4a5568;
-      text-decoration: none;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: background 0.2s;
+    .form-value-box {
+      padding: 12px 15px;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: var(--text-main);
       font-weight: 500;
     }
 
-    .profile-dropdown a:hover {
-      background: #f7fafc;
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      font-size: 0.9rem;
+      outline: none;
+      font-family: inherit;
     }
 
-    .profile-dropdown a.logout-link {
-      color: #ef4444;
-      border-top: 1px solid var(--border, #e2e8f0);
+    .form-input:focus {
+      border-color: var(--primary);
     }
 
-    .profile-dropdown a i {
-      width: 16px;
-      text-align: center;
+    .footer {
+      padding: 16px 30px;
+      border-top: 1px solid var(--border);
+      background-color: var(--bg-surface);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-  </style>
 
-  <style>
+    /* AI BOT */
     .ai-bot-wrapper {
       position: fixed;
       right: 0;
@@ -573,10 +419,6 @@
 
     .ai-bot-wrapper.active {
       transform: translateX(-10px);
-    }
-
-    .ai-bot-toggle {
-      display: none;
     }
 
     .ai-bot-container {
@@ -596,53 +438,7 @@
       font-size: 0.9rem;
       font-weight: 600;
       color: #1E355F;
-      position: relative;
       animation: bounce 2s infinite;
-      border: 1px solid #e2e8f0;
-      transform: translateX(-90px);
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .ai-bot-wrapper.active .ai-bot-cloud {
-      transform: translateX(0);
-    }
-
-    .ai-bot-cloud::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      right: 35px;
-      border-width: 6px 6px 0;
-      border-style: solid;
-      border-color: white transparent transparent transparent;
-    }
-
-    .ai-bot-cloud::before {
-      content: '';
-      position: absolute;
-      bottom: -7px;
-      right: 34px;
-      border-width: 7px 7px 0;
-      border-style: solid;
-      border-color: #e2e8f0 transparent transparent transparent;
-      z-index: -1;
-    }
-
-    @keyframes bounce {
-
-      0%,
-      100% {
-        transform: translateY(0) translateX(var(--tx, -90px));
-      }
-
-      50% {
-        transform: translateY(-5px) translateX(var(--tx, -90px));
-      }
-    }
-
-    .ai-bot-wrapper.active .ai-bot-cloud {
-      --tx: 0px;
-      transform: translateX(0);
     }
 
     .ai-bot-btn {
@@ -672,1721 +468,767 @@
       left: 50%;
       transform: translateX(-50%);
     }
-  </style>
 
-
-  <style>
-    .mobile-menu-toggle,
-    .mobile-account-button {
-      display: none;
-    }
-
-    .mobile-account-menu {
-      display: none;
-    }
-
-    @media (max-width:900px) {
-      .header {
-        padding-left: 56px;
-      }
-
-      .mobile-menu-toggle,
-      .mobile-account-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        top: 14px;
-        z-index: 1100;
-        width: 36px;
-        height: 36px;
-        border: 1px solid rgba(255, 255, 255, .25);
-        border-radius: 6px;
-        background: rgba(255, 255, 255, .1);
-        color: #fff;
-        cursor: pointer;
-      }
-
-      .mobile-menu-toggle {
-        left: 12px;
-        font-size: 1.1rem;
-      }
-
-      .mobile-account-button {
-        right: 12px;
-        width: auto;
-        padding: 0 10px;
-        gap: 6px;
-        font-size: .75rem;
-        font-weight: 600;
-      }
-
-      .header-right {
-        display: none;
-      }
-
-      .mobile-account-menu {
-        display: none;
-        position: fixed;
-        top: 58px;
-        right: 12px;
-        z-index: 1200;
-        min-width: 190px;
-        padding: 8px;
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
-      }
-
-      body.account-open .mobile-account-menu {
-        display: grid;
-        gap: 4px;
-      }
-
-      .mobile-account-menu a,
-      .mobile-account-menu button {
-        width: 100%;
-        padding: 9px 10px;
-        border: 0;
-        border-radius: 5px;
-        background: transparent;
-        color: var(--primary);
-        font: inherit;
-        font-size: .8rem;
-        text-align: left;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .mobile-account-menu a:hover,
-      .mobile-account-menu button:hover {
-        background: #f1f5f9;
-      }
-
-      body:not(.nav-open) .sidebar {
-        display: none;
-      }
-
-      body.nav-open .sidebar {
-        display: block;
-        position: fixed;
-        top: 64px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 64px);
-        margin: 0;
-        padding: 12px 0;
-        overflow-y: auto;
-        z-index: 900;
-      }
-
-      body.nav-open .sidebar nav {
-        display: block;
-      }
-    }
-
-    main {
-      padding-bottom: 60px !important;
-    }
-  </style>
-  <style>
-    .header {
-      height: 64px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100
-    }
-
-    .header:after {
-      content: "VEHICLE REQUEST";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: .05em;
-      text-transform: uppercase
-    }
-
-    .switch-admin {
-      background: #fcae1626;
-      border: 1px solid #fcae164d;
-      border-radius: 6px;
-      padding: 6px 14px
-    }
-
-    .icon-btn {
-      background: none;
-      border: 0;
-      color: #fff;
-      cursor: pointer;
-      font-size: 1.1rem
-    }
-
-    .icon-btn:hover {
-      color: var(--accent)
-    }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent);
-      font-size: .85rem;
-      font-weight: 600;
-    }
-
-    .nav-count {
-      display: none;
-      min-width: 18px;
-      height: 18px;
-      line-height: 18px;
-      margin-left: auto;
-      padding: 0 6px;
-      border-radius: 999px;
-      background: #ef4444;
-      color: white;
-      font-size: .68rem;
-      font-weight: 700;
-      text-align: center;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 1px 3px rgba(239, 68, 68, 0.4);
-    }
-
-    .sidebar {
-      top: 64px;
-      height: calc(100vh - 64px)
-    }
-
-    main {
-      padding-top: 98px
-    }
-
-    .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin-left: 260px;
-      padding: 10px 24px;
-      background: var(--bg, #f7f9fc);
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-size: .78rem;
-      z-index: 999;
-    }
-
-    @media(max-width:900px) {
-      .header:after {
-        display: none
-      }
-
-      .sidebar {
-        margin-top: 64px
-      }
-
-      .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin-left: 260px;
-        padding: 10px 24px;
-        background: var(--bg, #f7f9fc);
-        color: var(--muted);
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        font-size: .78rem;
-        z-index: 999;
-      }
-
-      main {
-        padding-top: 34px
-      }
-    }
-  </style>
-  <style>
-    html,
-    body {
-      overflow-x: hidden;
-    }
-
-    .header {
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      height: 64px !important;
-      z-index: 1000 !important;
-    }
-
-    .sidebar {
-      position: fixed !important;
-      top: 64px !important;
-      left: 0 !important;
-      height: calc(100vh - 64px) !important;
-      z-index: 900 !important;
-      overflow-y: auto;
-    }
-
-    main {
-      padding-top: 98px !important;
-      min-width: 0;
-    }
-
-    .form-card {
-      width: 100%;
-    }
-
-    @media (max-width: 900px) {
-      .sidebar {
-        position: static !important;
-        top: auto !important;
-        height: auto !important;
-        margin-top: 64px;
-        overflow-y: visible;
-      }
-
-      main {
-        width: 100%;
-        padding: 34px 16px 70px !important;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .form-card {
-        padding: 20px;
-      }
-    }
-  </style>
-  <style>
-    :root {
-      --primary: #1E355F;
-      --accent: #FCAE16;
-      --bg: #f7f9fc;
-      --border: #e2e8f0;
-      --muted: #718096
-    }
-
-    * {
-      box-sizing: border-box
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: #2d3748;
-      font-family: Poppins, sans-serif;
-      min-height: 100vh
-    }
-
-    .header {
-      height: 70px;
-      background: var(--primary);
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700
-    }
-
-    .brand img {
-      width: 44px
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 16px
-    }
-
-    .switch-admin {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: .85rem;
-      font-weight: 600
-    }
-
-    .avatar {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #ffffff26;
-      display: grid;
-      place-items: center;
-      font-size: .75rem;
-      font-weight: 700
-    }
-
-    .sidebar {
-      position: fixed;
-      top: 70px;
-      left: 0;
-      width: 260px;
-      height: calc(100vh - 70px);
-      background: #fff;
-      border-right: 1px solid var(--border);
-      padding: 20px 0
-    }
-
-    .sidebar-brand-mobile {
-      display: none;
-    }
-
-    .nav-label {
-      color: var(--muted);
-      font-size: .75rem;
-      font-weight: 600;
-      letter-spacing: .05em;
-      padding: 10px 24px 5px;
-      text-transform: uppercase
-    }
-
-    .nav-link,
-    .nav-group-title {
-      cursor: pointer;
-      user-select: none;
-
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 12px 24px;
-      color: #2d3748;
-      text-decoration: none;
-      font-size: .9rem;
-      border-left: 3px solid transparent
-    }
-
-    .nav-link i,
-    .nav-group-title i {
-      width: 20px;
-      text-align: center;
-      color: var(--muted)
-    }
-
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--primary);
-      background: #1e355f0d
-    }
-
-    .nav-link.active {
-      border-left-color: var(--accent)
-    }
-
-    .nav-group-title {
-      color: var(--primary)
-    }
-
-    .sub-links {
-      padding-left: 26px;
-      display: none;
-    }
-
-    .sub-links.open {
-      display: block;
-    }
-
-    .sub-link {
-      display: block;
-      padding: 7px 24px 7px 33px;
-      color: var(--muted);
-      text-decoration: none;
-      font-size: .82rem
-    }
-
-    .sub-link:hover,
-    .sub-link.active {
-      color: var(--primary);
-      background: #f8fafc
-    }
-
-    main {
-      margin-left: 260px;
-      padding: 34px 24px 70px
-    }
-
-    .form-card {
-      max-width: 680px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 18px #00000014;
-      padding: 28px
-    }
-
-    h1 {
-      margin: 0 0 8px;
-      color: var(--primary);
-      font-size: 1.45rem
-    }
-
-    .intro {
-      margin: 0 0 24px;
-      color: var(--muted);
-      font-size: .85rem
-    }
-
-    form {
-      display: grid;
-      gap: 14px
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px
-    }
-
-    label {
-      display: grid;
-      gap: 6px;
-      color: var(--primary);
-      font-size: .8rem;
-      font-weight: 600
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 10px 11px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font: inherit;
-      font-size: .85rem
-    }
-
-    button {
-      border: 0;
-      border-radius: 7px;
-      padding: 12px;
-      background: var(--primary);
-      color: #fff;
-      font: inherit;
-      font-weight: 600;
-      cursor: pointer
-    }
-
-    button:hover {
-      background: #152748
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #00000073;
-      place-items: center
-    }
-
-    .modal.open {
-      display: grid
-    }
-
-    .modal-box {
-      width: min(90%, 360px);
-      background: #fff;
-      border-radius: 12px;
-      padding: 28px;
-      text-align: center
-    }
-
-    .modal-box h2 {
-      color: var(--primary)
-    }
-
-    @media(max-width:900px) {
-      .sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        padding: 8px 0;
-        overflow-x: auto;
-        white-space: nowrap;
-        border-right: 0;
-        border-bottom: 1px solid var(--border)
-      }
-
-      .nav-label {
-        display: none
-      }
-
-      .sidebar nav {
-        display: flex;
-        min-width: max-content
-      }
-
-      .nav-link,
-      .nav-group-title {
-        border-left: 0;
-        border-bottom: 3px solid transparent;
-        padding: 10px 16px
-      }
-
-      .nav-link.active {
-        border-bottom-color: var(--accent)
-      }
-
-      .nav-group {
-        display: flex;
-        align-items: center
-      }
-
-      .sub-links {
-        display: flex;
-        padding: 0
-      }
-
-      .sub-link {
-        padding: 10px 12px
-      }
-
-      main {
-        margin-left: 0
-      }
-    }
-
-    @media(max-width:600px) {
-      .header-right span {
-        display: none
-      }
-
-      .grid {
-        grid-template-columns: 1fr
-      }
-
-      .form-card {
-        padding: 20px
-      }
-    }
-  </style>
-  <style>
-    .header {
-      height: 64px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100
-    }
-
-    .header:after {
-      content: "ADMIN DASHBOARD";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: .05em;
-      text-transform: uppercase
-    }
-
-    .switch-admin {
-      background: #fcae1626;
-      border: 1px solid #fcae164d;
-      border-radius: 6px;
-      padding: 6px 14px
-    }
-
-    .icon-btn {
-      background: none;
-      border: 0;
-      color: #fff;
-      cursor: pointer;
-      font-size: 1.1rem
-    }
-
-    .icon-btn:hover {
-      color: var(--accent)
-    }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent);
-      font-size: .85rem;
-      font-weight: 600
-    }
-
-    .sidebar {
-      top: 64px;
-      height: calc(100vh - 64px)
-    }
-
-    main {
-      padding-top: 98px
-    }
-
-    .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      margin-left: 260px;
-      padding: 10px 24px;
-      background: var(--bg, #f7f9fc);
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-size: .78rem;
-      z-index: 999;
-    }
-
-    @media(max-width:900px) {
-      .header:after {
-        display: none
-      }
-
-      .sidebar {
-        margin-top: 64px
-      }
-
-      .footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin-left: 260px;
-        padding: 10px 24px;
-        background: var(--bg, #f7f9fc);
-        color: var(--muted);
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        font-size: .78rem;
-        z-index: 999;
-      }
-
-      main {
-        padding-top: 34px
-      }
-    }
-  </style>
-  <style id="mobile-shell-overrides">
-    @media (max-width:900px) {
-
-      .header,
-      .header-bar {
-        padding-left: 56px;
-        padding-right: 56px;
-      }
-
-      .header-right {
-        display: flex;
-        gap: 10px;
-      }
-
-      .header-right .switch-admin,
-      .header-right .switch-btn,
-      .header-right .user-badge,
-      .header-right .user-profile {
-        display: none;
-      }
-
-      .header-right .icon-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 34px;
-        height: 34px;
-        padding: 0;
-      }
-
-      .mobile-account-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        top: 14px;
-        right: 12px;
-        z-index: 1300;
-        width: 36px;
-        height: 36px;
-        padding: 0;
-        border: 0;
-        border-radius: 50%;
-        background: #d1fae5;
-        color: #047857;
-        font-size: 0;
-        cursor: pointer;
-      }
-
-      .mobile-account-button i {
-        font-size: .9rem;
-      }
-
-      .mobile-menu-toggle {
-        z-index: 1300;
-      }
-
-      .mobile-account-menu {
-        top: 58px;
-        right: 12px;
-      }
-
-      body:not(.nav-open) .sidebar,
-      body:not(.nav-open) .requestor-sidebar {
-        display: none;
-      }
-
-      body.nav-open::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: 1100;
-        background: rgba(15, 23, 42, .48);
-      }
-
-      /* Make sidebar like mydtr mobile */
-      body.nav-open .sidebar,
-      body.nav-open .requestor-sidebar {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: min(85vw, 320px);
-        height: 100vh;
-        margin: 0;
-        padding: 0 0 20px 0;
-        overflow-y: auto;
-        z-index: 1200;
-        background: #fff;
-        box-shadow: 4px 0 18px rgba(0, 0, 0, .16);
-      }
-
-      /* Hide the hamburger toggle when sidebar is open */
-      body.nav-open .mobile-menu-toggle {
-        display: none;
-      }
-
-      /* Sidebar mobile header */
-      .sidebar-brand-mobile {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 24px;
-        border-bottom: 1px solid var(--border);
-        margin-bottom: 10px;
-      }
-
-      .sidebar-brand-mobile .brand {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        color: var(--primary);
-        font-weight: 700;
-        font-size: 1.1rem;
-      }
-
-      .sidebar-brand-mobile .brand img {
-        width: 38px;
-      }
-
-      .close-sidebar {
-        background: none;
-        border: none;
-        font-size: 1.4rem;
-        color: var(--muted);
-        cursor: pointer;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .close-sidebar:hover {
-        color: #ef4444;
-      }
-
-      /* Nav items styling */
-      .nav-label {
-        display: block;
-        color: #9ca3af;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        padding: 15px 24px 5px;
-        text-transform: uppercase;
-        margin: 0;
-      }
-
-      body.nav-open .sidebar nav,
-      body.nav-open .requestor-sidebar nav {
-        display: block;
-        min-width: auto;
-      }
-
-      .nav-link,
-      .nav-group-title {
-        border: none;
-        border-left: 4px solid transparent;
-        padding: 12px 24px 12px 20px;
-        color: #4b5563;
-        font-size: 0.95rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      .nav-link i,
-      .nav-group-title i {
-        font-size: 1.1rem;
-        width: 24px;
-        text-align: center;
-        color: #9ca3af;
-      }
-
-
-
-      .nav-link.active i {
-        color: var(--accent);
-      }
-
-      .nav-link.active {
-        background: rgba(252, 174, 22, 0.05);
-        border-left-color: var(--accent);
-      }
-
-      body.nav-open .sidebar .sub-links,
-      body.nav-open .requestor-sidebar .requestor-nav-sublinks {
-        display: block;
-        padding: 0;
-      }
-
-      body.nav-open .sidebar .sub-link,
-      body.nav-open .requestor-sidebar .requestor-nav-sublink {
-        display: block;
-        padding: 10px 24px 10px 58px;
-        color: #6b7280;
-        font-size: 0.85rem;
-        border: none;
-      }
-    }
-  </style>
-  <style>
-    @media (min-width: 901px) {
-      .sidebar-brand-mobile {
-        display: none !important;
-      }
-    }
-  </style>
-  <style>
-    .user-profile,
-    .user-badge {
-      position: relative;
-      cursor: pointer;
-    }
-
-    .profile-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      right: 0;
-      background: #ffffff;
-      border: 1px solid var(--border, #e2e8f0);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      min-width: 160px;
-      z-index: 1000;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .user-profile.active .profile-dropdown,
-    .user-badge.active .profile-dropdown {
-      display: flex;
-    }
-
-    .profile-dropdown a {
-      padding: 12px 16px;
-      color: #4a5568;
-      text-decoration: none;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: background 0.2s;
-      font-weight: 500;
-    }
-
-    .profile-dropdown a:hover {
-      background: #f7fafc;
-    }
-
-    .profile-dropdown a.logout-link {
-      color: #ef4444;
-      border-top: 1px solid var(--border, #e2e8f0);
-    }
-
-    .profile-dropdown a i {
-      width: 16px;
-      text-align: center;
-    }
-  </style>
-
-
-  <script>
-    if (sessionStorage.getItem('isAuthenticated') !== 'true') {
-      window.location.href = 'index.html';
-    } else if ((sessionStorage.getItem('userRole') || '').toLowerCase() !== 'admin') {
-      window.location.href = 'welcome.html';
-    }
-  </script>
-  <style>
-    body.dark-mode {
-      --bg: #0f172a;
-      --bg-surface: #1e293b;
-      --border: #334155;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      color: var(--text-main);
-    }
-
-    body.dark-mode .data-card,
-    body.dark-mode .stat-card,
-    body.dark-mode .welcome-card,
-    body.dark-mode .dashboard-banner,
-    body.dark-mode .sidebar,
-    body.dark-mode .footer,
-    body.dark-mode .profile-dropdown,
-    body.dark-mode .ai-bot-container {
-      background-color: var(--bg-surface);
-      border-color: var(--border);
-      color: var(--text-main);
-    }
-
-    body.dark-mode .header {
-      background-color: #0f172a;
-      border-bottom: 1px solid var(--border);
-    }
-
-    body.dark-mode input,
-    body.dark-mode select,
-    body.dark-mode textarea {
-      background-color: #0f172a;
-      color: var(--text-main);
-      border-color: var(--border);
-    }
-
-    body.dark-mode th {
-      background-color: #0f172a;
-      color: var(--text-muted);
-    }
-
-    body.dark-mode tr:hover td {
-      background-color: #334155;
-    }
-
-    body.dark-mode .nav-link,
-    body.dark-mode .sub-link {
-      color: var(--text-muted);
-    }
-
-    body.dark-mode .nav-link:hover,
-    body.dark-mode .sub-link:hover {
-      background-color: #334155;
-      color: var(--text-main);
-    }
-
-    body.dark-mode .nav-link.active {
-      background-color: #1e355f;
-      color: white;
-    }
-
-    body.dark-mode h1,
-    body.dark-mode h2,
-    body.dark-mode h3,
-    body.dark-mode .stat-value {
-      color: var(--text-main);
-    }
-
-    body.dark-mode .icon-btn {
-      color: var(--text-main);
-    }
-  </style>
-  <style>
     .ai-chat-window {
-      position: absolute;
-      bottom: 80px;
-      right: 10px;
-      width: 320px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transform: scale(0);
-      transform-origin: bottom right;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 10000;
-    }
-
-    .ai-chat-window.open {
-      transform: scale(1);
-    }
-
-    .ai-chat-header {
-      background: #1E355F;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .ai-chat-header img {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: contain;
-      border: 2px solid #FCAE16;
+      width: 340px;
+      height: 440px;
       background: white;
-    }
-
-    .ai-chat-header span {
-      color: white;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    .ai-chat-body {
-      height: 300px;
-      padding: 16px;
-      background: #f8fafc;
-      overflow-y: auto;
-    }
-
-    .ai-chat-body p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #334155;
-      background: white;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      display: inline-block;
-      max-width: 90%;
-    }
-
-    .ai-chat-body p strong {
-      color: #1E355F;
-    }
-
-    .ai-chat-footer {
-      display: flex;
-      border-top: 1px solid #e2e8f0;
-      background: white;
-    }
-
-    .ai-chat-footer input {
-      flex: 1;
-      border: none;
-      padding: 12px 16px;
-      outline: none;
-      font-size: 0.9rem;
-      min-width: 0;
-    }
-
-    .ai-chat-footer button {
-      background: #FCAE16;
-      border: none;
-      padding: 0 20px;
-      color: #1E355F;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .ai-chat-footer button:hover {
-      background: #eab308;
-    }
-
-    body.dark-mode .ai-chat-window {
-      background: var(--bg-surface);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-    }
-
-    body.dark-mode .ai-chat-body {
-      background: #0f172a;
-    }
-
-    body.dark-mode .ai-chat-body p {
-      background: #1e293b;
-      border-color: #334155;
-      color: var(--text-main);
-    }
-
-    body.dark-mode .ai-chat-body p strong {
-      color: #cbd5e1;
-    }
-
-    body.dark-mode .ai-chat-footer {
-      border-color: #334155;
-      background: var(--bg-surface);
-    }
-
-    body.dark-mode .ai-chat-footer input {
-      background: transparent;
-      color: var(--text-main);
-    }
-  </style>
-  <style id="pretty-active-design">
-    .nav-link.active,
-    .sub-link.active {
-      color: var(--accent) !important;
-      font-weight: 600 !important;
-      background: rgba(252, 174, 22, 0.05) !important;
-      border-left: 3px solid var(--accent) !important;
-    }
-
-    .nav-link.active i,
-    .sub-link.active i {
-      color: var(--accent) !important;
-    }
-
-    .sub-link.active {
-      padding-left: 30px !important;
-    }
-  </style>
-  <style id="ai-bot-fix">
-    .ai-chat-window {
-      display: none;
-      flex-direction: column;
-      width: 320px;
-      height: 400px;
-      background: #fff;
       border-radius: 12px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
       overflow: hidden;
-      margin-right: 15px;
-      margin-bottom: 20px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--border);
     }
 
     .ai-chat-window.open {
       display: flex;
-      animation: chatSlideIn 0.3s ease forwards;
-    }
-
-    @keyframes chatSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .ai-chat-header {
-      background: #1E355F;
+      background: var(--primary);
       color: white;
-      padding: 12px 15px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 10px;
       font-weight: 600;
-      font-size: 0.95rem;
     }
 
     .ai-chat-header img {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      object-fit: cover;
-      background: white;
-      padding: 2px;
     }
 
     .ai-chat-body {
       flex: 1;
-      padding: 15px;
-      background: #f8fafc;
+      padding: 16px;
       overflow-y: auto;
       font-size: 0.85rem;
-      color: #2d3748;
-    }
-
-    .ai-chat-body p {
-      background: white;
-      padding: 10px 15px;
-      border-radius: 15px;
-      border-bottom-left-radius: 4px;
-      display: inline-block;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      margin: 0;
-      max-width: 85%;
-      line-height: 1.4;
-    }
-
-    .ai-chat-body strong {
-      color: #1E355F;
-      display: block;
-      margin-bottom: 3px;
+      background: #f8fafc;
     }
 
     .ai-chat-footer {
-      padding: 12px 15px;
-      background: white;
-      border-top: 1px solid #e2e8f0;
+      padding: 12px;
+      border-top: 1px solid var(--border);
       display: flex;
       gap: 8px;
+      background: white;
     }
 
     .ai-chat-footer input {
       flex: 1;
       padding: 8px 12px;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.82rem;
       outline: none;
-      font-size: 0.85rem;
-    }
-
-    .ai-chat-footer input:focus {
-      border-color: #FCAE16;
     }
 
     .ai-chat-footer button {
-      background: #FCAE16;
-      color: #1E355F;
+      background: var(--primary);
+      color: white;
       border: none;
-      border-radius: 20px;
-      padding: 0 16px;
-      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background 0.2s;
-      font-size: 0.85rem;
+      font-weight: 600;
     }
 
-    .ai-chat-footer button:hover {
-      background: #e59c11;
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
+    }
+
+    /* RESPONSIVE */
+    .mobile-menu-btn {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-menu-btn {
+        display: flex;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.25rem;
+        cursor: pointer;
+        margin-right: 12px;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar-brand-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .main-wrapper {
+        margin-left: 0;
+      }
     }
   </style>
 </head>
 
 <body>
-  <!-- HEADER -->
-  <header class="header">
-    <div class="brand">
-      <img src="RII_Logo.png"
-        alt="RII Logo">
-      <span>R-II BUILDERS, INC.</span>
-    </div>
-    <div class="header-right">
-      <button class="icon-btn" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
-      <button class="icon-btn" title="Admin Notifications" aria-label="Admin Notifications"><i
-      class="fa-regular fa-bell"></i></button>
-      <div class="user-badge" onclick="this.classList.toggle('active')">
-        <span>Admin User</span>
-        <div class="avatar">AU</div>
+  <!-- React App Root Container -->
+  <div id="root"></div>
 
-        <div class="profile-dropdown">
-          <a href="admin-profile.html"><i class="fa-regular fa-user"></i> Profile</a>
-          <a href="#" class="logout-link" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
-              class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</a>
-        </div>
-      </div>
-    </div>
-  </header>
+  <!-- React Components (JSX parsed natively in-browser via Babel) -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
 
+    // Supabase Client Initialization
+    const supabaseUrl = 'https://toumsirfqtvdzdrnhncw.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvdW1zaXJmcXR2ZHpkcm5obmN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2NDQyMjksImV4cCI6MjEwNTIyMDIyOX0.7lcrL4AOVR4MeWJjybb-5wmzGoey3qHHfvc1_or9pG4';
+    const supabaseClient = window.supabase ? window.supabase.createClient(supabaseUrl, supabaseAnonKey) : null;
 
+    // ==========================================
+    // 1. NAVBAR COMPONENT
+    // ==========================================
+    function Navbar({ userProfile, onToggleSidebar, isDarkMode, onToggleDarkMode }) {
+      const [dropdownOpen, setDropdownOpen] = useState(false);
+      const dropdownRef = useRef(null);
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" aria-label="Admin navigation">
-    <div class="sidebar-brand-mobile">
-      <div class="brand"><img
-          src="RII_Logo.png"
-          alt="RII Logo"><span>R-II BUILDERS</span></div>
-      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
-          class="fa-solid fa-xmark"></i></button>
-    </div>
-
-    <div class="nav-label">MAIN</div>
-    <nav>
-      <a href="admin-dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
-      <a href="admin-dashboard.html?view=view-account-approvals" class="nav-link"><i class="fa-solid fa-user-check"></i> Account Approvals <span class="nav-count" id="pendingAccountNavCount"></span></a>
-      <a href="admin-dashboard.html?view=view-calendar" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Facility Reservation <span class="nav-count" id="pendingFacilityNavCount"></span></a>
-      <a href="admin-dashboard.html?view=view-liaison" class="nav-link"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker <span class="nav-count" id="pendingLiaisonNavCount"></span></a>
-    </nav>
-
-    <div class="nav-label">FINANCE</div>
-    <nav>
-      <a href="admin-dashboard.html?view=view-statement" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
-      <a href="admin-dashboard.html?view=view-budget" class="nav-link"><i class="fa-solid fa-chart-line"></i> Budget Monitoring <span class="nav-count" style="display:inline-flex; background:#0284c7;">2026</span></a>
-    </nav>
-
-    <div class="nav-label">INVENTORY</div>
-    <nav>
-      <a href="admin-dashboard.html?view=view-supplies" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Supplies Request <span class="nav-count" id="pendingSuppliesNavCount"></span></a>
-      <a href="admin-dashboard.html?view=view-receiving-report" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Receiving Report</a>
-    </nav>
-
-    <div class="nav-label">FLEET MANAGEMENT</div>
-    <nav>
-      <a href="admin-dashboard.html?view=view-vehicle" class="nav-link"><i class="fa-solid fa-car"></i> Vehicle Dispatch Board <span class="nav-count" id="pendingVehicleNavCount"></span></a>
-      <a href="admin-dashboard.html?view=view-driver-kra" class="nav-link"><i class="fa-solid fa-chart-line"></i> Driver KRA &amp; KPI Evaluation</a>
-      <a href="admin-dashboard.html?view=view-company-vehicles" class="nav-link"><i class="fa-solid fa-truck-pickup"></i> List of Company Vehicles <span class="nav-count" style="display:inline-flex; background:#10b981;">135</span></a>
-    </nav>
-
-    <div class="nav-label">BUILDING MAINTENANCE</div>
-    <nav>
-      <a href="admin-dashboard.html?view=view-building-maintenance" class="nav-link"><i class="fa-solid fa-bolt"></i> Submeter Utilities Billing <span class="nav-count" style="display:inline-flex; background:#0284c7;">220</span></a>
-    </nav>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main>
-
-    <!-- HEADER -->
-
-
-    <!-- CONTENT -->
-    <div class="content">
-      <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <h1><i class="fa-solid fa-user-circle"></i> User Profile</h1>
-        <a href="admin-dashboard.html" class="btn-primary" style="text-decoration: none; color: white;"><i
-            class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
-      </div>
-
-      <div class="data-card" style="max-width: 600px; padding: 30px; margin-top: 20px;">
-        <div
-          style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
-          <div class="avatar"
-            style="width: 80px; height: 80px; font-size: 2rem; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;"
-            id="profileAvatar">U</div>
-          <div>
-            <h2 id="profileNameDisplay" style="margin: 0; color: var(--primary); font-size: 1.5rem;">User Name</h2>
-            <p id="profileRoleDisplay"
-              style="margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; font-weight: 600;">
-              Role</p>
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 20px;">
-          <label
-            style="display: block; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Full
-            Name</label>
-          <div
-            style="padding: 12px 15px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; color: var(--text-main);"
-            id="profileFullName">Loading...</div>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 20px;">
-          <label
-            style="display: block; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Email
-            Address</label>
-          <div
-            style="padding: 12px 15px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; color: var(--text-main);"
-            id="profileEmail">Loading...</div>
-        </div>
-
-        <div class="form-group" style="margin-bottom: 30px;">
-          <label
-            style="display: block; font-weight: 600; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 8px;">Password</label>
-          <div
-            style="padding: 12px 15px; background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;">
-            <span>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</span>
-            <button class="btn-primary" style="padding: 6px 12px; font-size: 0.8rem;"
-              onclick="alert('Password reset functionality will be implemented here.')"><i class="fa-solid fa-key"></i>
-              Update</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-
-
-  <script type="module">
-    import { supabase } from './supabase-client.js';
-
-    async function loadProfile() {
-      try {
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        if (userError) throw userError;
-
-        if (user) {
-          const email = user.email;
-          document.getElementById('profileEmail').textContent = email;
-
-          const storedName = sessionStorage.getItem('userFullName') || user.user_metadata?.full_name || 'Admin User';
-          document.getElementById('profileFullName').textContent = storedName;
-          document.getElementById('profileNameDisplay').textContent = storedName;
-
-          const storedRole = sessionStorage.getItem('userRole') || 'Admin';
-          document.getElementById('profileRoleDisplay').textContent = storedRole;
-
-          const parts = storedName.trim().split(/\s+/);
-          let initials = '';
-          if (parts.length > 1) {
-            initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-          } else if (parts.length === 1 && parts[0].length > 0) {
-            initials = parts[0].substring(0, 2).toUpperCase();
-          }
-          if (initials) {
-            document.getElementById('profileAvatar').textContent = initials;
+      useEffect(() => {
+        function handleClickOutside(event) {
+          if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setDropdownOpen(false);
           }
         }
-      } catch (error) {
-        console.error('Error loading profile:', error);
-        document.getElementById('profileEmail').textContent = 'Error loading email';
-      }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+      }, []);
+
+      const handleLogout = () => {
+        sessionStorage.clear();
+        window.location.href = 'index.html';
+      };
+
+      const displayName = userProfile?.fullName || 'Admin User';
+      const initials = userProfile?.initials || 'AU';
+
+      return (
+        <header className="header">
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <button
+              type="button"
+              className="mobile-menu-btn"
+              onClick={onToggleSidebar}
+              aria-label="Toggle navigation menu"
+            >
+              <i className="fa-solid fa-bars"></i>
+            </button>
+            <a href="admin-dashboard.html" className="brand">
+              <img src="RII_Logo.png" alt="R-II Logo" />
+              <span>R-II BUILDERS, INC.</span>
+            </a>
+          </div>
+
+          <div className="header-right">
+            <button
+              type="button"
+              className="icon-btn"
+              onClick={onToggleDarkMode}
+              title={isDarkMode ? 'Switch to light mode' : 'Toggle dark mode'}
+              aria-label="Toggle dark mode"
+            >
+              <i className={`fa-regular ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+            </button>
+
+            <button
+              type="button"
+              className="icon-btn"
+              title="Admin Notifications"
+              aria-label="Admin Notifications"
+            >
+              <i className="fa-regular fa-bell"></i>
+            </button>
+
+            <div
+              className="user-badge"
+              ref={dropdownRef}
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <span>{displayName}</span>
+              <div className="avatar">{initials}</div>
+
+              {dropdownOpen && (
+                <div className="profile-dropdown" onClick={(e) => e.stopPropagation()}>
+                  <a href="admin-profile.html">
+                    <i className="fa-regular fa-user"></i> Profile
+                  </a>
+                  <button type="button" className="logout-link" onClick={handleLogout}>
+                    <i className="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+      );
     }
 
-    async function loadPendingNavCounts() {
-      try {
-        const updateBadge = (id, count) => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          el.textContent = count;
-          el.style.display = count > 0 ? 'inline-flex' : 'none';
-        };
+    // ==========================================
+    // 2. SIDEBAR COMPONENT
+    // ==========================================
+    function Sidebar({ isOpen, onClose }) {
+      const [counts, setCounts] = useState({
+        accounts: 0,
+        facility: 0,
+        vehicle: 0,
+        liaison: 0,
+        supplies: 0
+      });
 
-        const [accRes, vRes, lRes, supRes, cfRes, fnRes, pkRes, zmRes, tmRes] = await Promise.all([
-          supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('source_app', 'admin-request-management').eq('approval_status', 'pending'),
-          supabase.from('vehicle_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
-          supabase.from('liaison_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
-          supabase.from('supplies_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
-          supabase.from('conference_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
-          supabase.from('function_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
-          supabase.from('parking_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
-          supabase.from('zoom_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
-          supabase.from('teams_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending')
-        ]);
+      useEffect(() => {
+        async function loadPendingNavCounts() {
+          if (!supabaseClient) return;
+          try {
+            const [accRes, vRes, lRes, supRes, cfRes, fnRes, pkRes, zmRes, tmRes] = await Promise.all([
+              supabaseClient.from('profiles').select('id', { count: 'exact', head: true }).eq('source_app', 'admin-request-management').eq('approval_status', 'pending'),
+              supabaseClient.from('vehicle_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+              supabaseClient.from('liaison_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+              supabaseClient.from('supplies_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+              supabaseClient.from('conference_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+              supabaseClient.from('function_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+              supabaseClient.from('parking_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+              supabaseClient.from('zoom_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+              supabaseClient.from('teams_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending')
+            ]);
 
-        const accCount = accRes.count || 0;
-        const vCount = vRes.count || 0;
-        const lCount = lRes.count || 0;
-        const supCount = supRes.count || 0;
-        const facCount = (cfRes.count || 0) + (fnRes.count || 0) + (pkRes.count || 0) + (zmRes.count || 0) + (tmRes.count || 0);
+            const facCount = (cfRes.count || 0) + (fnRes.count || 0) + (pkRes.count || 0) + (zmRes.count || 0) + (tmRes.count || 0);
 
-        updateBadge('pendingAccountNavCount', accCount);
-        updateBadge('pendingFacilityNavCount', facCount);
-        updateBadge('pendingVehicleNavCount', vCount);
-        updateBadge('pendingLiaisonNavCount', lCount);
-        updateBadge('pendingSuppliesNavCount', supCount);
-      } catch (e) {
-        console.warn('Error loading pending nav counts', e);
-      }
-    }
+            setCounts({
+              accounts: accRes.count || 0,
+              vehicle: vRes.count || 0,
+              liaison: lRes.count || 0,
+              supplies: supRes.count || 0,
+              facility: facCount
+            });
+          } catch (err) {
+            console.warn('Error loading pending nav counts:', err);
+          }
+        }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        loadProfile();
         loadPendingNavCounts();
-      });
-    } else {
-      loadProfile();
-      loadPendingNavCounts();
+      }, []);
+
+      return (
+        <aside className={`sidebar ${isOpen ? 'open' : ''}`} aria-label="Admin navigation">
+          <div className="sidebar-brand-mobile">
+            <div className="brand">
+              <img src="RII_Logo.png" alt="RII Logo" />
+              <span>R-II BUILDERS</span>
+            </div>
+            <button type="button" className="icon-btn" onClick={onClose} aria-label="Close sidebar">
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div className="nav-label">MAIN</div>
+          <nav>
+            <a href="admin-dashboard.html" className="nav-link">
+              <i className="fa-solid fa-chart-pie"></i>
+              <span>Admin Dashboard</span>
+            </a>
+            <a href="admin-dashboard.html?view=view-account-approvals" className="nav-link">
+              <i className="fa-solid fa-user-check"></i>
+              <span>Account Approvals</span>
+              {counts.accounts > 0 && <span className="nav-count">{counts.accounts}</span>}
+            </a>
+            <a href="admin-dashboard.html?view=view-calendar" className="nav-link">
+              <i className="fa-solid fa-calendar-days"></i>
+              <span>Facility Reservation</span>
+              {counts.facility > 0 && <span className="nav-count">{counts.facility}</span>}
+            </a>
+            <a href="admin-dashboard.html?view=view-liaison" className="nav-link">
+              <i className="fa-solid fa-person-walking-arrow-right"></i>
+              <span>Liaison Task Tracker</span>
+              {counts.liaison > 0 && <span className="nav-count">{counts.liaison}</span>}
+            </a>
+          </nav>
+
+          <div className="nav-label">FINANCE</div>
+          <nav>
+            <a href="admin-dashboard.html?view=view-statement" className="nav-link">
+              <i className="fa-solid fa-file-invoice-dollar"></i>
+              <span>Statement of Accounts</span>
+            </a>
+            <a href="admin-dashboard.html?view=view-budget" className="nav-link">
+              <i className="fa-solid fa-chart-line"></i>
+              <span>Budget Monitoring</span>
+              <span className="nav-count" style={{ background: '#0284c7', color: 'white' }}>2026</span>
+            </a>
+          </nav>
+
+          <div className="nav-label">INVENTORY</div>
+          <nav>
+            <a href="admin-dashboard.html?view=view-supplies" className="nav-link">
+              <i className="fa-solid fa-boxes-stacked"></i>
+              <span>Supplies Request</span>
+              {counts.supplies > 0 && <span className="nav-count">{counts.supplies}</span>}
+            </a>
+            <a href="admin-dashboard.html?view=view-receiving-report" className="nav-link">
+              <i className="fa-solid fa-file-invoice"></i>
+              <span>Receiving Report</span>
+            </a>
+          </nav>
+
+          <div className="nav-label">FLEET MANAGEMENT</div>
+          <nav>
+            <a href="admin-dashboard.html?view=view-vehicle" className="nav-link">
+              <i className="fa-solid fa-car"></i>
+              <span>Vehicle Dispatch Board</span>
+              {counts.vehicle > 0 && <span className="nav-count">{counts.vehicle}</span>}
+            </a>
+            <a href="admin-dashboard.html?view=view-driver-kra" className="nav-link">
+              <i className="fa-solid fa-chart-line"></i>
+              <span>Driver KRA &amp; KPI</span>
+            </a>
+            <a href="admin-dashboard.html?view=view-company-vehicles" className="nav-link">
+              <i className="fa-solid fa-truck-pickup"></i>
+              <span>Company Vehicles</span>
+              <span className="nav-count" style={{ background: '#10b981', color: 'white' }}>135</span>
+            </a>
+          </nav>
+
+          <div className="nav-label">BUILDING MAINTENANCE</div>
+          <nav>
+            <a href="admin-dashboard.html?view=view-building-maintenance" className="nav-link">
+              <i className="fa-solid fa-bolt"></i>
+              <span>Submeter Utilities</span>
+              <span className="nav-count" style={{ background: '#0284c7', color: 'white' }}>220</span>
+            </a>
+          </nav>
+        </aside>
+      );
     }
-  </script>
 
-  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by leo worksuite</span>
-  </footer>
+    // ==========================================
+    // 3. ADMIN PROFILE CONTENT COMPONENT
+    // ==========================================
+    function AdminProfileContent({ profile, loading }) {
+      const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+      const [newPassword, setNewPassword] = useState('');
+      const [confirmPassword, setConfirmPassword] = useState('');
+      const [showPassword, setShowPassword] = useState(false);
+      const [passwordStatus, setPasswordStatus] = useState({ message: '', type: '' });
+      const [updatingPassword, setUpdatingPassword] = useState(false);
 
-  <!-- AI Bot Wrapper -->
-  <div class="ai-bot-wrapper" id="aiBotWrapper">
-    <div class="ai-chat-window" id="aiChatWindow">
-      <div class="ai-chat-header">
-        <img src="AI_Bot.png" alt="Mae">
-        <span>Mae</span>
-      </div>
-      <div class="ai-chat-body">
-        <p><strong>Mae:</strong> Hello! How can I help you today?</p>
-      </div>
-      <div class="ai-chat-footer">
-        <input type="text" placeholder="Type message...">
-        <button>Send</button>
-      </div>
-    </div>
-    <div class="ai-bot-container" id="aiBotToggle" title="Chat">
-      <div class="ai-bot-cloud">Chat</div>
-      <div class="ai-bot-btn">
-        <img src="AI_Bot.png" alt="AI Bot">
-      </div>
-    </div>
-  </div>
+      const handlePasswordSubmit = async (e) => {
+        e.preventDefault();
+        setPasswordStatus({ message: '', type: '' });
 
-  <script>
-    const aiBotToggle = document.getElementById('aiBotToggle');
-    const aiBotWrapper = document.getElementById('aiBotWrapper');
-    const aiChatWindow = document.getElementById('aiChatWindow');
+        if (!newPassword || newPassword.length < 6) {
+          setPasswordStatus({ message: 'Password must be at least 6 characters long.', type: 'error' });
+          return;
+        }
 
-    if (aiBotToggle && aiBotWrapper) {
-      aiBotToggle.addEventListener('click', function (e) {
-        if (!aiBotWrapper.classList.contains('active')) {
-          aiBotWrapper.classList.add('active');
+        if (newPassword !== confirmPassword) {
+          setPasswordStatus({ message: 'Passwords do not match. Please verify.', type: 'error' });
+          return;
+        }
+
+        try {
+          setUpdatingPassword(true);
+          if (supabaseClient) {
+            const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+            if (error) throw error;
+          }
+
+          setPasswordStatus({ message: 'Password successfully updated!', type: 'success' });
+          setNewPassword('');
+          setConfirmPassword('');
+          setTimeout(() => {
+            setPasswordModalOpen(false);
+            setPasswordStatus({ message: '', type: '' });
+          }, 1500);
+        } catch (err) {
+          setPasswordStatus({ message: err.message || 'Failed to update password.', type: 'error' });
+        } finally {
+          setUpdatingPassword(false);
+        }
+      };
+
+      return (
+        <div className="content">
+          <div className="page-header">
+            <h1>
+              <i className="fa-solid fa-user-circle" style={{ color: 'var(--accent)' }}></i>
+              <span>User Profile</span>
+            </h1>
+            <a href="admin-dashboard.html" className="btn-primary">
+              <i className="fa-solid fa-arrow-left"></i>
+              <span>Back to Dashboard</span>
+            </a>
+          </div>
+
+          <div className="data-card">
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '20px',
+              marginBottom: '26px',
+              paddingBottom: '20px',
+              borderBottom: '1px solid var(--border)'
+            }}>
+              <div
+                className="avatar"
+                style={{
+                  width: '76px',
+                  height: '76px',
+                  fontSize: '1.9rem',
+                  backgroundColor: 'var(--primary)',
+                  color: 'white',
+                  boxShadow: '0 4px 10px rgba(30, 53, 95, 0.2)'
+                }}
+              >
+                {profile.initials}
+              </div>
+              <div>
+                <h2 style={{ margin: 0, color: 'var(--primary)', fontSize: '1.4rem', fontWeight: 700 }}>
+                  {loading ? 'Loading...' : profile.fullName}
+                </h2>
+                <div style={{
+                  display: 'inline-block',
+                  marginTop: '6px',
+                  background: '#fef3c7',
+                  color: '#92400e',
+                  padding: '2px 10px',
+                  borderRadius: '12px',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  {profile.role}
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Full Name</label>
+              <div className="form-value-box">
+                {loading ? 'Loading full name...' : profile.fullName}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Email Address</label>
+              <div className="form-value-box">
+                {loading ? 'Loading email address...' : profile.email}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Assigned Department</label>
+              <div className="form-value-box">
+                {profile.department}
+              </div>
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '10px' }}>
+              <label>Password &amp; Security</label>
+              <div style={{
+                padding: '12px 15px',
+                background: 'var(--bg-main)',
+                border: '1px solid var(--border)',
+                borderRadius: '6px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <span style={{ letterSpacing: '3px', color: 'var(--text-muted)' }}>••••••••••••</span>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  style={{ padding: '6px 14px', fontSize: '0.78rem' }}
+                  onClick={() => setPasswordModalOpen(true)}
+                >
+                  <i className="fa-solid fa-key"></i>
+                  <span>Change Password</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Password Change Modal */}
+          {passwordModalOpen && (
+            <div
+              style={{
+                position: 'fixed',
+                inset: 0,
+                background: 'rgba(15, 23, 42, 0.65)',
+                backdropFilter: 'blur(4px)',
+                zIndex: 11000,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '20px'
+              }}
+            >
+              <div
+                style={{
+                  background: 'var(--bg-surface)',
+                  borderRadius: '12px',
+                  maxWidth: '460px',
+                  width: '100%',
+                  padding: '28px',
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.25)',
+                  border: '1px solid var(--border)'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <i className="fa-solid fa-shield-halved" style={{ color: 'var(--accent)' }}></i>
+                    <span>Update Password</span>
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setPasswordModalOpen(false)}
+                    style={{ background: 'none', border: 'none', fontSize: '1.2rem', color: 'var(--text-muted)', cursor: 'pointer' }}
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                {passwordStatus.message && (
+                  <div
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: '6px',
+                      fontSize: '0.82rem',
+                      marginBottom: '16px',
+                      fontWeight: 500,
+                      background: passwordStatus.type === 'success' ? '#dcfce7' : '#fee2e2',
+                      color: passwordStatus.type === 'success' ? '#15803d' : '#b91c1c',
+                      border: `1px solid ${passwordStatus.type === 'success' ? '#86efac' : '#fca5a5'}`
+                    }}
+                  >
+                    {passwordStatus.message}
+                  </div>
+                )}
+
+                <form onSubmit={handlePasswordSubmit}>
+                  <div style={{ marginBottom: '16px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+                      New Password
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        className="form-input"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="Enter new password (min. 6 characters)"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                      >
+                        <i className={`fa-regular ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: '22px' }}>
+                    <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '6px' }}>
+                      Confirm New Password
+                    </label>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      className="form-input"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Re-type new password"
+                      required
+                    />
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={() => setPasswordModalOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn-primary"
+                      disabled={updatingPassword}
+                    >
+                      {updatingPassword ? (
+                        <>
+                          <i className="fa-solid fa-spinner fa-spin"></i>
+                          <span>Updating...</span>
+                        </>
+                      ) : (
+                        <>
+                          <i className="fa-solid fa-floppy-disk"></i>
+                          <span>Save Password</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 4. AI BOT COMPONENT
+    // ==========================================
+    function AIBot() {
+      const [isOpen, setIsOpen] = useState(false);
+      const [isActive, setIsActive] = useState(false);
+
+      const toggleBot = () => {
+        if (!isActive) {
+          setIsActive(true);
         } else {
-          if (aiChatWindow) {
-            aiChatWindow.classList.toggle('open');
-          }
+          setIsOpen(!isOpen);
         }
-      });
+      };
+
+      return (
+        <div className={`ai-bot-wrapper ${isActive ? 'active' : ''}`}>
+          <div className={`ai-chat-window ${isOpen ? 'open' : ''}`}>
+            <div className="ai-chat-header">
+              <img src="AI_Bot.png" alt="Mae" />
+              <span>Mae</span>
+            </div>
+            <div className="ai-chat-body">
+              <p><strong>Mae:</strong> Hello! How can I help you today?</p>
+            </div>
+            <div className="ai-chat-footer">
+              <input type="text" placeholder="Type message..." />
+              <button type="button">Send</button>
+            </div>
+          </div>
+          <div className="ai-bot-container" onClick={toggleBot} title="Chat">
+            <div className="ai-bot-cloud">Chat</div>
+            <div className="ai-bot-btn">
+              <img src="AI_Bot.png" alt="AI Bot" />
+            </div>
+          </div>
+        </div>
+      );
     }
-  </script>
 
+    // ==========================================
+    // 5. ROOT APP COMPONENT
+    // ==========================================
+    function App() {
+      const [sidebarOpen, setSidebarOpen] = useState(false);
+      const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('darkMode') === 'true');
+      const [loading, setLoading] = useState(true);
+      const [profile, setProfile] = useState({
+        fullName: sessionStorage.getItem('userFullName') || 'Admin User',
+        email: 'admin@riibuilders.com',
+        role: sessionStorage.getItem('userRole') || 'Admin',
+        department: sessionStorage.getItem('userDepartment') || 'Administration Department',
+        initials: 'AU'
+      });
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const storedName = sessionStorage.getItem('userFullName');
-      if (storedName) {
-        const badge = document.querySelector('.user-badge');
-        if (badge) {
-          const span = badge.querySelector('span');
-          if (span) span.textContent = storedName;
-
-          const avatar = badge.querySelector('.avatar');
-          if (avatar) {
-            const parts = storedName.trim().split(/\s+/);
-            let initials = '';
-            if (parts.length > 1) {
-              initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-            } else if (parts.length === 1 && parts[0].length > 0) {
-              initials = parts[0].substring(0, 2).toUpperCase();
-            }
-            if (initials) avatar.textContent = initials;
-          }
+      useEffect(() => {
+        if (isDarkMode) {
+          document.body.classList.add('dark-mode');
+        } else {
+          document.body.classList.remove('dark-mode');
         }
-      }
-    });
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggleBtns = document.querySelectorAll('button[title="Toggle dark mode"]');
+        localStorage.setItem('darkMode', isDarkMode);
+      }, [isDarkMode]);
 
-      // Initialize
-      if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        toggleBtns.forEach(btn => {
-          const icon = btn.querySelector('i');
-          if (icon) {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
+      useEffect(() => {
+        async function fetchUserProfile() {
+          if (!supabaseClient) {
+            setLoading(false);
+            return;
           }
-        });
-      }
+          try {
+            setLoading(true);
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+              const email = user.email || '';
+              const storedName = sessionStorage.getItem('userFullName') || user.user_metadata?.full_name || 'Admin User';
+              const storedRole = sessionStorage.getItem('userRole') || 'Admin';
+              const storedDept = sessionStorage.getItem('userDepartment') || 'Administration Department';
 
-      // Toggle
-      toggleBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const isDark = document.body.classList.toggle('dark-mode');
-          localStorage.setItem('darkMode', isDark);
-
-          toggleBtns.forEach(b => {
-            const icon = b.querySelector('i');
-            if (icon) {
-              if (isDark) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-              } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+              const parts = storedName.trim().split(/\s+/);
+              let inits = 'AU';
+              if (parts.length > 1) {
+                inits = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+              } else if (parts.length === 1 && parts[0].length > 0) {
+                inits = parts[0].substring(0, 2).toUpperCase();
               }
+
+              setProfile({
+                fullName: storedName,
+                email: email,
+                role: storedRole,
+                department: storedDept,
+                initials: inits
+              });
             }
-          });
-        });
-      });
-    });
-  </script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const activeSubLink = document.querySelector('.sub-link.active');
-      if (activeSubLink) {
-        const parentSubLinks = activeSubLink.closest('.sub-links');
-        if (parentSubLinks) {
-          parentSubLinks.classList.add('open');
+          } catch (err) {
+            console.warn('Error fetching profile:', err);
+          } finally {
+            setLoading(false);
+          }
         }
-      }
-    });
+
+        fetchUserProfile();
+      }, []);
+
+      return (
+        <>
+          <Navbar
+            userProfile={profile}
+            onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+            isDarkMode={isDarkMode}
+            onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+          />
+
+          <Sidebar
+            isOpen={sidebarOpen}
+            onClose={() => setSidebarOpen(false)}
+          />
+
+          <main className="main-wrapper">
+            <AdminProfileContent profile={profile} loading={loading} />
+
+            <footer className="footer">
+              <span>&copy; 2026 RII Builders, Inc. All Rights Reserved.</span>
+              <span>developed by leo worksuite</span>
+            </footer>
+          </main>
+
+          <AIBot />
+        </>
+      );
+    }
+
+    // Mount React App
+    const rootEl = document.getElementById('root');
+    ReactDOM.createRoot(rootEl).render(<App />);
   </script>
-  <!-- AI Bot Logic and Styles -->
-  <style id="ai-bot-logic-style">
-    .ai-chat-body {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .ai-msg-bot {
-      align-self: flex-start;
-      background: white;
-      padding: 10px 15px;
-      border-radius: 15px;
-      border-bottom-left-radius: 4px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      max-width: 85%;
-      font-size: 0.85rem;
-      color: #2d3748;
-      line-height: 1.4;
-    }
-
-    .ai-msg-bot strong {
-      color: #1E355F;
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    .ai-msg-user {
-      align-self: flex-end;
-      background: #1E355F;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 15px;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      max-width: 85%;
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-
-    .typing-indicator {
-      align-self: flex-start;
-      font-size: 0.8rem;
-      color: #94a3b8;
-      font-style: italic;
-      padding: 5px 15px;
-    }
-
-    body.dark-mode .ai-msg-bot {
-      background: #334155;
-      color: #f8fafc;
-    }
-
-    body.dark-mode .ai-msg-bot strong {
-      color: #FCAE16;
-    }
-  </style>
-  <script type="module" src="ai-bot.js" id="ai-bot-logic-script"></script>
 </body>
 
 </html>
