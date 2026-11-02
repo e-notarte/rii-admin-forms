@@ -4029,11 +4029,11 @@
                   <th style="text-align: right; width: 145px; color:#b45309; background:#fffbeb;">Actual Issuance (Bgt - MIS)</th>
                   <th style="text-align: right; width: 125px;">Cash Disbursed</th>
                   <th style="width: 120px; text-align: center;">Utilization</th>
-                  <th style="text-align: center; width: 80px;">Action</th>
+                  <th style="text-align: center; width: 220px;">Actions</th>
                 </tr>
               </thead>
               <tbody id="budgetMasterTableBody">
-                <tr><td colspan="8" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading approved budget accounts...</td></tr>
+                <tr><td colspan="9" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading approved budget accounts...</td></tr>
               </tbody>
             </table>
           </div>
@@ -7516,11 +7516,20 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     // Total Approved: ₱ 147,643,884.24 (200 Accounts)
     // Prepared: Emmanuel Notarte | Noted: Clarisa P. Lasam | Furnished: Regina Therese R. Lava
     // ==========================================
-    let allBudgetItems = [...(approvedBudget2026 && approvedBudget2026.items ? approvedBudget2026.items : [])];
+    let storedBudgetItems = null;
+    try {
+      storedBudgetItems = JSON.parse(localStorage.getItem('admin_budget_items_custom') || 'null');
+    } catch (e) {}
+
+    let allBudgetItems = (storedBudgetItems && Array.isArray(storedBudgetItems) && storedBudgetItems.length > 0)
+      ? storedBudgetItems
+      : [...(approvedBudget2026 && approvedBudget2026.items ? approvedBudget2026.items : [])];
+
     let allBudgetExpenses = [];
     let budgetScopeFilter = 'ALL';
     let budgetCategoryFilter = 'ALL';
     let budgetSearchQuery = '';
+    let pendingBudgetAction = null;
 
     window.loadBudgetMonitoringBoard = async function () {
       // 1. Fetch live expenses from Supabase (or fallback to local storage)
@@ -7867,9 +7876,17 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               </div>
             </td>
             <td style="text-align:center;">
-              <button type="button" class="btn-primary" onclick="openBudgetExpenseModal('${item.cost_code}')" title="Charge expense against this account" style="padding:5px 9px; font-size:0.72rem; background:#10b981; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
-                <i class="fa-solid fa-plus"></i> Expense
-              </button>
+              <div style="display:inline-flex; align-items:center; gap:4px; justify-content:center; flex-wrap:nowrap;">
+                <button type="button" class="btn-primary" onclick="openEditBudgetModal('${escapeDispatchHtml(item.cost_code)}')" title="Update this budget account record" style="padding:4px 8px; font-size:0.72rem; background:#0284c7; border:none; border-radius:4px; display:inline-flex; align-items:center; gap:3px; cursor:pointer; font-weight:600; color:white;">
+                  <i class="fa-solid fa-pen-to-square"></i> Update
+                </button>
+                <button type="button" class="btn-primary" onclick="deleteBudgetAccount('${escapeDispatchHtml(item.cost_code)}')" title="Delete this budget account record" style="padding:4px 8px; font-size:0.72rem; background:#ef4444; border:none; border-radius:4px; display:inline-flex; align-items:center; gap:3px; cursor:pointer; font-weight:600; color:white;">
+                  <i class="fa-solid fa-trash-can"></i> Delete
+                </button>
+                <button type="button" class="btn-primary" onclick="openBudgetExpenseModal('${escapeDispatchHtml(item.cost_code)}')" title="Charge expense against this account" style="padding:4px 8px; font-size:0.72rem; background:#10b981; border:none; border-radius:4px; display:inline-flex; align-items:center; gap:3px; cursor:pointer; font-weight:600; color:white;">
+                  <i class="fa-solid fa-plus"></i> Expense
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -7927,6 +7944,236 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         `;
       }).join('');
     }
+
+    // ==========================================
+    // BUDGET ACCOUNT EDIT, DELETE & PIN VERIFICATION
+    // ==========================================
+    function getBudgetCategoriesList() {
+      if (Array.isArray(approvedBudget2026.categories)) {
+        return approvedBudget2026.categories.map(c => typeof c === 'string' ? c : c.name);
+      } else if (approvedBudget2026.categories && typeof approvedBudget2026.categories === 'object') {
+        return Object.keys(approvedBudget2026.categories);
+      }
+      return [
+        'Utilities (Power & Water)',
+        'Communication & Postage',
+        'Printing & Office Supplies',
+        'Gas, Fuel & Lubricants',
+        'Travel & Transportation',
+        'Office Equipment, IT & Furniture',
+        'Rentals & Leases',
+        'Taxes, Licenses & Insurances',
+        'Security Services',
+        'Professional & Legal Fees',
+        'Repairs & Maintenance',
+        'Preventive Maintenance (PMS)',
+        'Building Renovation & CapEx',
+        'Management & Other Expenses'
+      ];
+    }
+
+    window.openEditBudgetModal = function (costCode) {
+      const item = allBudgetItems.find(i => String(i.cost_code).trim() === String(costCode).trim());
+      if (!item) {
+        showSystemAlert('Not Found', `Budget account [${costCode}] could not be found.`, 'warning');
+        return;
+      }
+
+      const origInput = document.getElementById('editBudgetOriginalCostCode');
+      const codeInput = document.getElementById('editBudgetCostCode');
+      const titleInput = document.getElementById('editBudgetAccountTitle');
+      const catSelect = document.getElementById('editBudgetCategory');
+      const allocInput = document.getElementById('editBudgetAllocated');
+      const deptInput = document.getElementById('editBudgetDepartment');
+      const subCheck = document.getElementById('editBudgetIsSubItem');
+
+      if (origInput) origInput.value = item.cost_code;
+      if (codeInput) codeInput.value = item.cost_code;
+      if (titleInput) titleInput.value = item.account_title || '';
+      if (allocInput) allocInput.value = Number(item.allocated_budget || 0);
+      if (deptInput) deptInput.value = item.department || '';
+      if (subCheck) subCheck.checked = Boolean(item.is_sub_item);
+
+      if (catSelect) {
+        catSelect.innerHTML = '';
+        const cats = getBudgetCategoriesList();
+        cats.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c;
+          opt.textContent = c;
+          if (c === (item.expense_category || item.category)) opt.selected = true;
+          catSelect.appendChild(opt);
+        });
+      }
+
+      const modal = document.getElementById('editBudgetAccountModal');
+      if (modal) modal.classList.add('open');
+    };
+
+    window.closeEditBudgetModal = function () {
+      const modal = document.getElementById('editBudgetAccountModal');
+      if (modal) modal.classList.remove('open');
+    };
+
+    window.submitEditBudgetAccount = function (e) {
+      if (e) e.preventDefault();
+      const origCode = document.getElementById('editBudgetOriginalCostCode')?.value;
+      const newCode = document.getElementById('editBudgetCostCode')?.value?.trim();
+      const title = document.getElementById('editBudgetAccountTitle')?.value?.trim();
+      const category = document.getElementById('editBudgetCategory')?.value;
+      const allocated = parseFloat(document.getElementById('editBudgetAllocated')?.value) || 0;
+      const dept = document.getElementById('editBudgetDepartment')?.value?.trim();
+      const isSub = Boolean(document.getElementById('editBudgetIsSubItem')?.checked);
+
+      if (!newCode || !title) {
+        showSystemAlert('Required Fields', 'Please complete all required fields.', 'warning');
+        return;
+      }
+
+      pendingBudgetAction = {
+        type: 'update',
+        originalCostCode: origCode,
+        data: {
+          cost_code: newCode,
+          account_title: title,
+          expense_category: category,
+          category: category,
+          allocated_budget: allocated,
+          department: dept,
+          is_sub_item: isSub
+        }
+      };
+
+      openBudgetPinConfirmModal(
+        'Sure you want to update this record?',
+        `Updating budget account [${newCode}] "${title}". Enter editor PIN to confirm.`
+      );
+    };
+
+    window.deleteBudgetAccount = function (costCode) {
+      const item = allBudgetItems.find(i => String(i.cost_code).trim() === String(costCode).trim());
+      if (!item) return;
+
+      pendingBudgetAction = {
+        type: 'delete',
+        costCode: costCode,
+        accountTitle: item.account_title
+      };
+
+      openBudgetPinConfirmModal(
+        'Sure you want to delete this record?',
+        `Deleting budget account [${costCode}] "${item.account_title}". This action requires the editor PIN.`
+      );
+    };
+
+    window.openBudgetPinConfirmModal = function (title, message) {
+      const modal = document.getElementById('budgetPinConfirmModal');
+      const titleEl = document.getElementById('budgetPinModalTitle');
+      const msgEl = document.getElementById('budgetPinModalMessage');
+      const pinInput = document.getElementById('budgetEditorPinInput');
+      const errorMsg = document.getElementById('budgetPinErrorMsg');
+
+      if (titleEl) titleEl.textContent = title || 'Sure you want to update this record?';
+      if (msgEl) msgEl.textContent = message || 'Please enter editor security PIN to authorize this change.';
+      if (pinInput) {
+        pinInput.value = '';
+        pinInput.style.borderColor = 'var(--border)';
+      }
+      if (errorMsg) errorMsg.style.display = 'none';
+
+      if (modal) {
+        modal.classList.add('open');
+        setTimeout(() => {
+          if (pinInput) pinInput.focus();
+        }, 150);
+      }
+    };
+
+    window.closeBudgetPinConfirmModal = function () {
+      const modal = document.getElementById('budgetPinConfirmModal');
+      if (modal) modal.classList.remove('open');
+      const pinInput = document.getElementById('budgetEditorPinInput');
+      if (pinInput) pinInput.value = '';
+      const errorMsg = document.getElementById('budgetPinErrorMsg');
+      if (errorMsg) errorMsg.style.display = 'none';
+      pendingBudgetAction = null;
+    };
+
+    window.executeBudgetPinVerification = async function () {
+      if (!pendingBudgetAction) {
+        closeBudgetPinConfirmModal();
+        return;
+      }
+
+      const pinInput = document.getElementById('budgetEditorPinInput');
+      const enteredPin = (pinInput ? pinInput.value : '').trim();
+      const requiredPin = panelAccessPolicy['view-budget']?.pin || '014';
+      const errorMsg = document.getElementById('budgetPinErrorMsg');
+
+      if (enteredPin !== requiredPin) {
+        if (errorMsg) {
+          errorMsg.style.display = 'block';
+          errorMsg.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Incorrect PIN. Please try again.';
+        }
+        if (pinInput) {
+          pinInput.style.borderColor = '#ef4444';
+          pinInput.focus();
+          pinInput.select();
+        }
+        return;
+      }
+
+      // PIN is verified!
+      const action = pendingBudgetAction;
+      pendingBudgetAction = null;
+
+      if (action.type === 'update') {
+        const { originalCostCode, data } = action;
+        const idx = allBudgetItems.findIndex(i => String(i.cost_code).trim() === String(originalCostCode).trim());
+        if (idx !== -1) {
+          allBudgetItems[idx] = {
+            ...allBudgetItems[idx],
+            ...data
+          };
+        } else {
+          allBudgetItems.push(data);
+        }
+
+        try {
+          localStorage.setItem('admin_budget_items_custom', JSON.stringify(allBudgetItems));
+        } catch (e) {
+          console.warn('Could not cache budget items:', e);
+        }
+
+        closeBudgetPinConfirmModal();
+        closeEditBudgetModal();
+        await loadBudgetMonitoringBoard();
+
+        showSystemAlert(
+          'Record Updated',
+          `Budget account [${data.cost_code}] "${data.account_title}" was updated successfully.`,
+          'success'
+        );
+      } else if (action.type === 'delete') {
+        const { costCode, accountTitle } = action;
+        allBudgetItems = allBudgetItems.filter(i => String(i.cost_code).trim() !== String(costCode).trim());
+
+        try {
+          localStorage.setItem('admin_budget_items_custom', JSON.stringify(allBudgetItems));
+        } catch (e) {
+          console.warn('Could not cache budget items:', e);
+        }
+
+        closeBudgetPinConfirmModal();
+        await loadBudgetMonitoringBoard();
+
+        showSystemAlert(
+          'Record Deleted',
+          `Budget account [${costCode}] "${accountTitle || ''}" was deleted successfully.`,
+          'success'
+        );
+      }
+    };
 
     // Modal Operations
     window.openBudgetExpenseModal = function (costCode) {
@@ -13578,6 +13825,104 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Edit Budget Account Modal -->
+  <div class="veh-passport-modal-backdrop" id="editBudgetAccountModal">
+    <div class="veh-passport-paper" style="max-width: 620px;" id="editBudgetAccountPaper">
+      <form id="editBudgetAccountForm" onsubmit="submitEditBudgetAccount(event)">
+        <!-- Modal Header -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:14px; margin-bottom:18px;">
+          <div>
+            <h2 style="margin:0; font-size:1.2rem; color:var(--primary); font-weight:800; display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-pen-to-square" style="color:#0284c7;"></i> Update Budget Account
+            </h2>
+            <p style="margin:4px 0 0; font-size:0.8rem; color:var(--text-muted);">
+              Modify account details, title, category, or approved budget allocation.
+            </p>
+          </div>
+          <button type="button" onclick="closeEditBudgetModal()" style="background:none; border:none; font-size:1.3rem; color:var(--text-muted); cursor:pointer; padding:4px 8px;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Hidden original cost code for keying -->
+        <input type="hidden" id="editBudgetOriginalCostCode">
+
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; background:#f8fafc; padding:18px; border-radius:8px; border:1px solid var(--border); margin-bottom:20px;">
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Cost Code *</label>
+            <input type="text" id="editBudgetCostCode" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-family:monospace; font-weight:700;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Expense Category *</label>
+            <select id="editBudgetCategory" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-weight:600;">
+            </select>
+          </div>
+
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Account Title *</label>
+            <input type="text" id="editBudgetAccountTitle" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:600;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Approved Budget (₱) *</label>
+            <input type="number" id="editBudgetAllocated" step="0.01" min="0" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary);">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Department / Scope</label>
+            <input type="text" id="editBudgetDepartment" placeholder="e.g. All Departments / Head Office" style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+          </div>
+
+          <div style="grid-column: span 2; display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="editBudgetIsSubItem" style="width:16px; height:16px; cursor:pointer;">
+            <label for="editBudgetIsSubItem" style="font-size:0.8rem; font-weight:600; color:#334155; cursor:pointer;">Is Sub-Account / Department Breakdown (child item)</label>
+          </div>
+        </div>
+
+        <!-- Form Action Buttons -->
+        <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px dashed #cbd5e1; padding-top:16px;">
+          <button type="button" class="btn-secondary" onclick="closeEditBudgetModal()" style="padding:9px 18px; font-size:0.85rem;">Cancel</button>
+          <button type="submit" class="btn-primary" style="padding:9px 24px; font-size:0.85rem; background:#0284c7; font-weight:700;">
+            <i class="fa-solid fa-check"></i> Continue to Update
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Budget PIN Confirmation Modal -->
+  <div class="veh-passport-modal-backdrop" id="budgetPinConfirmModal" style="z-index: 10050;">
+    <div class="veh-passport-paper" style="max-width: 440px; text-align: center; padding: 26px;" id="budgetPinConfirmPaper">
+      <div style="width: 58px; height: 58px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.8rem;">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h3 style="margin: 0 0 8px; font-size: 1.2rem; color: var(--primary); font-weight: 700;" id="budgetPinModalTitle">
+        Sure you want to update this record?
+      </h3>
+      <p style="margin: 0 0 16px; font-size: 0.85rem; color: #64748b; line-height: 1.4;" id="budgetPinModalMessage">
+        Please enter the Editor Security PIN to authorize this change.
+      </p>
+      
+      <div style="margin-bottom: 20px; text-align: left;">
+        <label style="display: block; font-size: 0.78rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Editor PIN *</label>
+        <div style="position: relative;">
+          <input type="password" id="budgetEditorPinInput" maxlength="10" placeholder="Enter PIN (e.g. 014)" style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 2px solid var(--border); font-size: 1rem; text-align: center; letter-spacing: 4px; font-weight: 700; outline: none; box-sizing: border-box;" onkeydown="if(event.key==='Enter') executeBudgetPinVerification()">
+        </div>
+        <div id="budgetPinErrorMsg" style="color: #ef4444; font-size: 0.78rem; font-weight: 600; margin-top: 6px; display: none;">
+          <i class="fa-solid fa-triangle-exclamation"></i> Incorrect PIN. Please try again.
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 10px;">
+        <button type="button" class="btn-secondary" onclick="closeBudgetPinConfirmModal()" style="padding: 9px 20px; font-size: 0.85rem;">Cancel</button>
+        <button type="button" class="btn-primary" id="btnConfirmBudgetAction" onclick="executeBudgetPinVerification()" style="padding: 9px 24px; font-size: 0.85rem; background: var(--primary); font-weight: 700;">
+          Verify PIN &amp; Proceed
+        </button>
+      </div>
     </div>
   </div>
 
