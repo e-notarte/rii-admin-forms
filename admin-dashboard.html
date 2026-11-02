@@ -5280,7 +5280,7 @@
                     <i class="fa-solid fa-rotate-left"></i> Reset
                   </button>
                   <button type="button" class="btn-primary" id="btnPrintTransmittal" onclick="printCurrentTransmittalForm()" style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a;">
-                    <i class="fa-solid fa-print"></i> Print
+                    <i class="fa-solid fa-print"></i> Record and Print
                   </button>
                 </div>
               </div>
@@ -10695,9 +10695,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       });
 
       window.allDocumentTransmittals = Array.from(map.values()).sort((a, b) => {
-        const dateA = new Date(b.transmittal_date || b.created_at || 0);
-        const dateB = new Date(a.transmittal_date || a.created_at || 0);
-        return dateA - dateB;
+        const dateA = new Date(b.transmittal_date || 0).getTime();
+        const dateB = new Date(a.transmittal_date || 0).getTime();
+        if (dateA !== dateB) return dateA - dateB;
+        const createA = new Date(b.created_at || 0).getTime();
+        const createB = new Date(a.created_at || 0).getTime();
+        return createA - createB;
       });
 
       try {
@@ -10722,9 +10725,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               if (it && it.id) map.set(it.id, it);
             });
             window.allDocumentTransmittals = Array.from(map.values()).sort((a, b) => {
-              const dateA = new Date(b.transmittal_date || b.created_at || 0);
-              const dateB = new Date(a.transmittal_date || a.created_at || 0);
-              return dateA - dateB;
+              const dateA = new Date(b.transmittal_date || 0).getTime();
+              const dateB = new Date(a.transmittal_date || 0).getTime();
+              if (dateA !== dateB) return dateA - dateB;
+              const createA = new Date(b.created_at || 0).getTime();
+              const createB = new Date(a.created_at || 0).getTime();
+              return createA - createB;
             });
             updateTransmittalStats();
             filterDocumentTransmittals();
@@ -10774,6 +10780,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
       const navBadge = document.getElementById('transmittalNavCount');
       if (navBadge) navBadge.textContent = records.length.toLocaleString();
+
+      const subTitle = document.getElementById('trnRegistrySubtitle');
+      if (subTitle) {
+        subTitle.textContent = `Complete fiscal records of all ${records.length.toLocaleString()} transmitted documents submitted for executive signature.`;
+      }
     }
 
     window.filterDocumentTransmittals = function () {
@@ -11158,7 +11169,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       });
 
       if (items.length === 0) {
-        window.showSystemAlert('Documents Required', 'Please enter at least one document line item before printing.', 'warning');
+        window.showSystemAlert('Documents Required', 'Please enter at least one document line item before recording and printing.', 'warning');
         return;
       }
 
@@ -11171,17 +11182,48 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         if (supabase) {
           supabase.from('document_transmittals').insert(dbItems).catch(err => console.warn('Supabase insert notice:', err));
         }
-        loadDocumentTransmittals();
       } catch (err) {
         console.warn('Transmittal registry save notice:', err);
       }
 
-      // 2. Open printable transmittal sheet matching Photo 2
+      // 2. Prepend newly recorded items immediately to in-memory registry table
+      if (Array.isArray(window.allDocumentTransmittals)) {
+        dbItems.forEach(it => window.allDocumentTransmittals.unshift(it));
+      } else {
+        window.allDocumentTransmittals = [...dbItems];
+      }
+
+      // Reset any active filter so user immediately sees their newly recorded entry
+      const searchInput = document.getElementById('trnSearchInput');
+      if (searchInput) searchInput.value = '';
+      const docTypeSelect = document.getElementById('trnDocTypeFilter');
+      if (docTypeSelect) docTypeSelect.value = 'ALL';
+      const deptSelect = document.getElementById('trnDeptFilter');
+      if (deptSelect) deptSelect.value = 'ALL';
+      const dateFilter = document.getElementById('trnDateFilter');
+      if (dateFilter) dateFilter.value = '';
+
+      trnCurrentPage = 1;
+      updateTransmittalStats();
+      filterDocumentTransmittals();
+
+      if (typeof window.showSystemAlert === 'function') {
+        window.showSystemAlert(
+          'Transmittal Recorded',
+          `Successfully recorded ${items.length} document(s) to the Transmittal Master Registry & Audit Trail.`,
+          'success'
+        );
+      }
+
+      // 3. Open printable transmittal sheet
       openTransmittalPrintSheet({
         to: toVal,
         from: fromVal,
         items: items
       });
+
+      // 4. Reset entry form for subsequent transmittals
+      resetTransmittalForm();
     };
 
     window.submitDocumentTransmittal = window.printCurrentTransmittalForm;
