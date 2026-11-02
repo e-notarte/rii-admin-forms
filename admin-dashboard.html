@@ -3792,6 +3792,8 @@
     <nav>
       <a href="#" class="nav-link" data-building-maintenance onclick="return switchView('view-building-maintenance', this)"><i class="fa-solid fa-bolt"></i>
         Submeter Utilities Billing <span class="nav-count" id="buildingNavCount" style="display:inline-flex; background:#0284c7;">220</span></a>
+      <a href="#" class="nav-link" data-lessees onclick="return switchView('view-lessees', this)"><i class="fa-solid fa-users-rectangle"></i>
+        Lessee's <span class="nav-count" id="lesseesNavCount" style="display:inline-flex; background:#6366f1;">5</span></a>
     </nav>
 
     <div class="nav-label">TRANSMITTAL MANAGEMENT</div>
@@ -5144,9 +5146,6 @@
 
               <!-- Top Action Buttons -->
               <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                <button type="button" class="btn-primary" onclick="openBmAddLesseeModal()" style="font-size:0.8rem; padding:7px 14px; background:#16a34a; border-radius:6px; font-weight:700;">
-                  <i class="fa-solid fa-user-plus"></i> Add Lessee
-                </button>
                 <button type="button" class="btn-primary" onclick="openBmMonthlyReadingModal()" style="font-size:0.8rem; padding:7px 14px; background:#0284c7; border-radius:6px; font-weight:700;">
                   <i class="fa-solid fa-calendar-plus"></i> Add Monthly Reading
                 </button>
@@ -5168,11 +5167,12 @@
               <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
                 <!-- Company / Lessee Filter -->
                 <select id="bmLedgerCompanyFilter" onchange="bmCompanyFilter = this.value; filterBmStatementsLedger();" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
-                  <option value="ALL">All Lessees (4 Companies)</option>
-                  <option value="PESC">PESC &bull; Primex Energy</option>
-                  <option value="RLDI">RLDI &bull; R-II Land</option>
-                  <option value="RMRCI">RMRCI &bull; RMR Coal</option>
-                  <option value="RBI">RBI &bull; R-II Builders</option>
+                  <option value="ALL">All Lessees (5 Companies)</option>
+                  <option value="RMRCI">RMRCI &bull; RMR Capital, Inc.</option>
+                  <option value="PESC">PESC &bull; Phil Ecology Systems Corp.</option>
+                  <option value="RBI">RBI &bull; R-II Builders, Inc.</option>
+                  <option value="RLDI">RLDI &bull; RLand Development, Inc.</option>
+                  <option value="PESC Vitas">PESC Vitas &bull; Phileco</option>
                 </select>
 
                 <!-- Month Filter -->
@@ -5371,6 +5371,94 @@
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUILDING MAINTENANCE - LESSEES MANAGEMENT VIEW -->
+      <div id="view-lessees" class="view-section">
+        <!-- Top Action Card -->
+        <div class="data-card" style="margin-bottom: 24px; padding: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+            <div>
+              <h2 style="margin:0; font-size:1.35rem; color:var(--primary); display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-users-rectangle" style="color:var(--accent);"></i> Lessee's Directory &amp; Records
+              </h2>
+              <span style="font-size:0.82rem; color:var(--text-muted);">
+                Tenant corporate profiles, assigned facility spaces, and allocated utility submeter accounts.
+              </span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button type="button" class="btn-primary" onclick="openBmAddLesseeModal()" style="font-size:0.82rem; padding:8px 16px; background:#16a34a; border-radius:6px; font-weight:700;">
+                <i class="fa-solid fa-user-plus"></i> Add Lessee
+              </button>
+              <button type="button" class="btn-primary" onclick="exportLesseesCSV()" style="font-size:0.82rem; padding:8px 16px; background:#0284c7; border-radius:6px; font-weight:700;">
+                <i class="fa-solid fa-file-excel"></i> Export CSV
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Summary Cards -->
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:16px; margin-bottom:24px;">
+          <div class="data-card" style="padding:18px 20px; border-left:4px solid #6366f1;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Total Registered Lessees</div>
+            <div style="font-size:1.6rem; font-weight:800; color:var(--primary);" id="statLesseesCount">5 Companies</div>
+            <div style="font-size:0.75rem; color:#16a34a; margin-top:4px;"><i class="fa-solid fa-circle-check"></i> 100% Verified Tenants</div>
+          </div>
+
+          <div class="data-card" style="padding:18px 20px; border-left:4px solid #16a34a;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Active Lease Contracts</div>
+            <div style="font-size:1.6rem; font-weight:800; color:#16a34a;" id="statActiveLeases">5 Active</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><i class="fa-solid fa-file-signature"></i> Updated Commercial Terms</div>
+          </div>
+
+          <div class="data-card" style="padding:18px 20px; border-left:4px solid #0284c7;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Assigned Submeters</div>
+            <div style="font-size:1.6rem; font-weight:800; color:#0284c7;" id="statTotalSubmeters">24 Units</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><i class="fa-solid fa-bolt"></i> Power &amp; <i class="fa-solid fa-droplet"></i> Water Monitored</div>
+          </div>
+
+          <div class="data-card" style="padding:18px 20px; border-left:4px solid #f59e0b;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Facility Properties</div>
+            <div style="font-size:1.3rem; font-weight:800; color:var(--primary);">R-II HQ &amp; Vitas</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><i class="fa-solid fa-building"></i> Commercial &amp; Industrial Yard</div>
+          </div>
+        </div>
+
+        <!-- Master Lessees Table Card -->
+        <div class="data-card" style="padding: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+            <div class="search-box" style="margin:0; width:100%; max-width:380px;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="lesseeSearchInput" placeholder="Search company code, name, occupied space..." oninput="filterLessees()">
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <select id="lesseeStatusFilter" onchange="filterLessees()" style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
+                <option value="ALL">All Statuses (5)</option>
+                <option value="ACTIVE">Active (5)</option>
+                <option value="INACTIVE">Inactive (0)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="dispatch-table" style="min-width: 1050px;">
+              <thead>
+                <tr>
+                  <th style="width:120px;">Lessee Code</th>
+                  <th style="min-width:240px;">Company / Tenant Full Name</th>
+                  <th style="min-width:220px;">Occupied Floor / Spaces</th>
+                  <th style="width:160px; text-align:center;">Assigned Submeters</th>
+                  <th style="min-width:200px;">Contact Person / Email</th>
+                  <th style="width:100px; text-align:center;">Status</th>
+                  <th style="text-align:center; width:170px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="lesseesTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -5816,6 +5904,11 @@
         pin: '017',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
       },
+      'view-lessees': {
+        name: "Lessee's Records & Directory",
+        pin: '017',
+        editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
+      },
       'view-issuance': {
         name: 'Material Issuance',
         pin: null,
@@ -5952,6 +6045,8 @@
         loadAccountApprovals();
       } else if (viewId === 'view-building-maintenance' && typeof loadBuildingMaintenanceModule === 'function') {
         loadBuildingMaintenanceModule();
+      } else if (viewId === 'view-lessees' && typeof loadLesseesModule === 'function') {
+        loadLesseesModule();
       } else if (viewId === 'view-transmittal' && typeof loadDocumentTransmittals === 'function') {
         loadDocumentTransmittals();
       } else if (viewId === 'view-company-vehicles' && typeof loadCompanyVehicles === 'function') {
@@ -12206,7 +12301,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '6th Floor (6F-RBI-SM03)', meter_serial: '6F-RBI-SM03', category: 'Power', prev_reading: 1836, pres_reading: '', multiplier: 1.0, common_share: 0 },
       { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '6th Floor (6F-RBI-SM04)', meter_serial: '6F-RBI-SM04', category: 'Power', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 },
       { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '6th Floor (6F-RBI-SM05)', meter_serial: '6F-RBI-SM05', category: 'Water', prev_reading: 54.423, pres_reading: '', multiplier: 1.0, common_share: 0 },
-      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '3rd Floor (3F-RBI-SM06)', meter_serial: '3F-RBI-SM06', category: 'Water', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 }
+      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '3rd Floor (3F-RBI-SM06)', meter_serial: '3F-RBI-SM06', category: 'Water', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'Phileco (PESC Vitas)', company: 'PESC Vitas', unit_floor: 'Vitas Transfer Yard (VITAS-SM01)', meter_serial: 'VITAS-SM01', category: 'Power', prev_reading: 14250, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'Phileco (PESC Vitas)', company: 'PESC Vitas', unit_floor: 'Vitas Transfer Yard (VITAS-SM02)', meter_serial: 'VITAS-SM02', category: 'Water', prev_reading: 78.410, pres_reading: '', multiplier: 1.0, common_share: 0 }
     ];
 
     function escapeBmHtml(str) {
@@ -12946,17 +13043,18 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       DEFAULT_BUILDING_TENANTS.forEach(t => {
         if (t.company) companies.add(t.company);
       });
-      ['PESC', 'RLDI', 'RMRCI', 'RBI'].forEach(c => companies.add(c));
+      ['RMRCI', 'PESC', 'RBI', 'RLDI', 'PESC Vitas'].forEach(c => companies.add(c));
 
       const currentVal = select.value;
       const count = companies.size;
 
       let html = `<option value="ALL">All Lessees (${count} Companies)</option>`;
       const companyLabels = {
-        'PESC': 'PESC • Primex Energy',
-        'RLDI': 'RLDI • R-II Land',
-        'RMRCI': 'RMRCI • RMR Coal',
-        'RBI': 'RBI • R-II Builders'
+        'RMRCI': 'RMRCI • RMR Capital, Inc.',
+        'PESC': 'PESC • Phil Ecology Systems Corp.',
+        'RBI': 'RBI • R-II Builders, Inc.',
+        'RLDI': 'RLDI • RLand Development, Inc.',
+        'PESC Vitas': 'PESC Vitas • Phileco'
       };
 
       companies.forEach(code => {
@@ -13030,6 +13128,31 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         localStorage.setItem('building_custom_tenants', JSON.stringify(stored));
       } catch (e) {
         console.warn('Failed to save custom tenant to localStorage:', e);
+      }
+
+      // Sync to allBuildingLessees if not yet present
+      if (typeof allBuildingLessees !== 'undefined') {
+        const foundLessee = allBuildingLessees.find(l => l.code.toUpperCase() === company.toUpperCase());
+        if (!foundLessee) {
+          const newLesseeRecord = {
+            code: company,
+            name: name,
+            spaces: unitFloor,
+            contactPerson: 'Corporate Representative',
+            email: '-',
+            phone: '-',
+            status: 'ACTIVE',
+            contractNo: `${company}-2026-REG`,
+            badgeBg: '#f1f5f9',
+            badgeColor: '#475569'
+          };
+          allBuildingLessees.push(newLesseeRecord);
+          try {
+            localStorage.setItem('building_lessees_records', JSON.stringify(allBuildingLessees));
+          } catch (e) {}
+        }
+        if (typeof updateLesseesStats === 'function') updateLesseesStats();
+        if (typeof renderLesseesTable === 'function') renderLesseesTable();
       }
 
       // If batch table exists, append row
@@ -13331,6 +13454,332 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       } else {
         alert(`Reading logged successfully! Statement ${stmtNo} generated.`);
       }
+    };
+
+    // ==========================================
+    // BUILDING MAINTENANCE - LESSEE'S MANAGEMENT ENGINE
+    // ==========================================
+    const DEFAULT_BUILDING_LESSEES = [
+      {
+        code: 'RMRCI',
+        name: 'RMR Capital, Inc.',
+        spaces: 'Ground Floor, 4th Floor & 5th Floor',
+        contactPerson: 'Roberto M. Reyes',
+        email: 'accounting@rmrcapital.com',
+        phone: '(02) 8527-3101',
+        status: 'ACTIVE',
+        contractNo: 'RMR-2024-LC09',
+        badgeBg: '#f3e8ff',
+        badgeColor: '#7e22ce'
+      },
+      {
+        code: 'PESC',
+        name: 'Phil Ecology Systems Corp.',
+        spaces: '2nd Floor Wing A & B',
+        contactPerson: 'Engr. Carlos Mendoza',
+        email: 'operations@philecology.com.ph',
+        phone: '(02) 8527-3102',
+        status: 'ACTIVE',
+        contractNo: 'PESC-2023-LC04',
+        badgeBg: '#dcfce7',
+        badgeColor: '#15803d'
+      },
+      {
+        code: 'RBI',
+        name: 'R-II Builders, Inc.',
+        spaces: 'Ground Floor, 3rd Floor & 6th Floor Penthouse',
+        contactPerson: 'Clarisa P. Lasam',
+        email: 'admin@riibuilders.com',
+        phone: '(02) 8527-3100',
+        status: 'ACTIVE',
+        contractNo: 'RBI-HQ-OWNER',
+        badgeBg: '#e0f2fe',
+        badgeColor: '#0369a1'
+      },
+      {
+        code: 'RLDI',
+        name: 'RLand Development, Inc.',
+        spaces: '5th Floor Suite 501-504',
+        contactPerson: 'Atty. Maria Santos',
+        email: 'leasing@rland.com.ph',
+        phone: '(02) 8527-3105',
+        status: 'ACTIVE',
+        contractNo: 'RLDI-2024-LC11',
+        badgeBg: '#fef3c7',
+        badgeColor: '#b45309'
+      },
+      {
+        code: 'PESC Vitas',
+        name: 'Phileco',
+        spaces: 'Vitas Transfer Facility & Operations Yard',
+        contactPerson: 'Joel D. Bautista',
+        email: 'vitas.yard@phileco.com.ph',
+        phone: '(02) 8527-3108',
+        status: 'ACTIVE',
+        contractNo: 'VITAS-2025-LC01',
+        badgeBg: '#ccfbf1',
+        badgeColor: '#0f766e'
+      }
+    ];
+
+    let allBuildingLessees = [];
+
+    function initBuildingLessees() {
+      try {
+        const stored = localStorage.getItem('building_lessees_records');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            allBuildingLessees = parsed;
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Error reading stored lessees:', e);
+      }
+      allBuildingLessees = JSON.parse(JSON.stringify(DEFAULT_BUILDING_LESSEES));
+      try {
+        localStorage.setItem('building_lessees_records', JSON.stringify(allBuildingLessees));
+      } catch (e) {}
+    }
+
+    initBuildingLessees();
+
+    window.loadLesseesModule = function () {
+      initBuildingLessees();
+      renderLesseesTable();
+      updateLesseesStats();
+    };
+
+    function updateLesseesStats() {
+      const activeCount = allBuildingLessees.filter(l => l.status === 'ACTIVE').length;
+      const countEl = document.getElementById('statLesseesCount');
+      if (countEl) countEl.textContent = `${allBuildingLessees.length} Companies`;
+      const leasesEl = document.getElementById('statActiveLeases');
+      if (leasesEl) leasesEl.textContent = `${activeCount} Active`;
+
+      // Count all submeters
+      const submetersCount = DEFAULT_BUILDING_TENANTS.length;
+      const submetersEl = document.getElementById('statTotalSubmeters');
+      if (submetersEl) submetersEl.textContent = `${submetersCount} Units`;
+
+      const navCount = document.getElementById('lesseesNavCount');
+      if (navCount) navCount.textContent = allBuildingLessees.length;
+    }
+
+    window.filterLessees = function () {
+      renderLesseesTable();
+    };
+
+    window.renderLesseesTable = function () {
+      const tbody = document.getElementById('lesseesTableBody');
+      if (!tbody) return;
+
+      const searchTerm = (document.getElementById('lesseeSearchInput')?.value || '').trim().toLowerCase();
+      const statusFilter = document.getElementById('lesseeStatusFilter')?.value || 'ALL';
+
+      const filtered = allBuildingLessees.filter(l => {
+        const matchesStatus = (statusFilter === 'ALL') || (l.status === statusFilter);
+        let matchesSearch = true;
+        if (searchTerm) {
+          const str = `${l.code} ${l.name} ${l.spaces} ${l.contactPerson} ${l.email} ${l.phone} ${l.contractNo}`.toLowerCase();
+          matchesSearch = str.includes(searchTerm);
+        }
+        return matchesStatus && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center; padding:35px 20px; color:#64748b;">
+              <i class="fa-solid fa-users-slash" style="font-size:2rem; color:#cbd5e1; display:block; margin-bottom:10px;"></i>
+              No lessee records match your filter criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(l => {
+        // Calculate submeter counts for this lessee
+        const submeters = DEFAULT_BUILDING_TENANTS.filter(t => t.company && t.company.toUpperCase() === l.code.toUpperCase());
+        const powerCount = submeters.filter(t => t.category === 'Power').length;
+        const waterCount = submeters.filter(t => t.category === 'Water').length;
+        const totalMeters = submeters.length;
+
+        const badgeBg = l.badgeBg || '#e0f2fe';
+        const badgeColor = l.badgeColor || '#0369a1';
+
+        return `
+          <tr>
+            <td>
+              <span style="display:inline-block; padding:4px 10px; border-radius:6px; font-weight:800; font-size:0.8rem; background:${badgeBg}; color:${badgeColor}; border:1px solid ${badgeColor}33;">
+                ${escapeBmHtml(l.code)}
+              </span>
+            </td>
+            <td>
+              <div style="font-weight:700; color:var(--primary); font-size:0.9rem;">${escapeBmHtml(l.name)}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); font-family:monospace;">Lease: ${escapeBmHtml(l.contractNo || 'N/A')}</div>
+            </td>
+            <td>
+              <div style="font-size:0.83rem; color:var(--text-main); font-weight:500;">
+                <i class="fa-solid fa-location-dot" style="color:#ef4444; margin-right:4px;"></i> ${escapeBmHtml(l.spaces)}
+              </div>
+            </td>
+            <td style="text-align:center;">
+              <span style="font-weight:700; color:var(--primary); font-size:0.85rem;">${totalMeters} Meters</span>
+              <div style="font-size:0.73rem; color:var(--text-muted); margin-top:2px;">
+                <span style="color:#ca8a04;"><i class="fa-solid fa-bolt"></i> ${powerCount}</span> &bull; 
+                <span style="color:#0284c7;"><i class="fa-solid fa-droplet"></i> ${waterCount}</span>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight:600; font-size:0.82rem; color:var(--text-main);">${escapeBmHtml(l.contactPerson || '-')}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">
+                <i class="fa-regular fa-envelope" style="margin-right:3px;"></i> ${escapeBmHtml(l.email || '-')}
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">
+                <i class="fa-solid fa-phone" style="margin-right:3px;"></i> ${escapeBmHtml(l.phone || '-')}
+              </div>
+            </td>
+            <td style="text-align:center;">
+              <span style="display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:999px; font-size:0.75rem; font-weight:700; background:#dcfce7; color:#15803d;">
+                <span style="width:6px; height:6px; border-radius:50%; background:#16a34a;"></span> ${l.status || 'ACTIVE'}
+              </span>
+            </td>
+            <td style="text-align:center;">
+              <div style="display:flex; gap:6px; justify-content:center; align-items:center;">
+                <button type="button" class="btn-action-slip" onclick="viewLesseeDetails('${escapeBmHtml(l.code)}')" title="View Submeters & Details" style="background:#6366f1; color:white; border:none; padding:5px 10px; border-radius:5px; font-size:0.75rem; cursor:pointer; font-weight:600;">
+                  <i class="fa-solid fa-gauge-high"></i> Meters
+                </button>
+                <button type="button" class="btn-action-slip" onclick="viewLesseeStatements('${escapeBmHtml(l.code)}')" title="View Utilities Statements" style="background:#0284c7; color:white; border:none; padding:5px 10px; border-radius:5px; font-size:0.75rem; cursor:pointer; font-weight:600;">
+                  <i class="fa-solid fa-file-invoice-dollar"></i> Statements
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    };
+
+    let currentViewingLesseeCode = null;
+
+    window.viewLesseeDetails = function (code) {
+      currentViewingLesseeCode = code;
+      const lessee = allBuildingLessees.find(l => l.code.toUpperCase() === code.toUpperCase());
+      if (!lessee) return;
+
+      const badge = document.getElementById('modalLesseeBadge');
+      if (badge) {
+        badge.textContent = lessee.code;
+        badge.style.background = lessee.badgeBg || '#6366f1';
+        badge.style.color = lessee.badgeColor || '#ffffff';
+      }
+
+      const title = document.getElementById('modalLesseeTitle');
+      if (title) title.textContent = lessee.name;
+
+      const contract = document.getElementById('modalLesseeContract');
+      if (contract) contract.textContent = `Contract No: ${lessee.contractNo || 'N/A'}`;
+
+      const spaces = document.getElementById('modalLesseeSpaces');
+      if (spaces) spaces.textContent = lessee.spaces || 'N/A';
+
+      const contact = document.getElementById('modalLesseeContact');
+      if (contact) contact.textContent = lessee.contactPerson || 'N/A';
+
+      const email = document.getElementById('modalLesseeEmail');
+      if (email) email.textContent = lessee.email || 'N/A';
+
+      const phone = document.getElementById('modalLesseePhone');
+      if (phone) phone.textContent = lessee.phone || 'N/A';
+
+      // Populate submeters
+      const submeters = DEFAULT_BUILDING_TENANTS.filter(t => t.company && t.company.toUpperCase() === code.toUpperCase());
+      const tbody = document.getElementById('modalLesseeSubmetersTbody');
+      if (tbody) {
+        if (submeters.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:15px; color:#64748b;">No submeters currently registered for this lessee.</td></tr>`;
+        } else {
+          tbody.innerHTML = submeters.map(s => `
+            <tr>
+              <td><strong style="font-family:monospace; color:var(--primary);">${escapeBmHtml(s.meter_serial)}</strong></td>
+              <td>
+                ${s.category === 'Water' ? '<span style="color:#0284c7; font-weight:600;"><i class="fa-solid fa-droplet"></i> Water</span>' : '<span style="color:#ca8a04; font-weight:600;"><i class="fa-solid fa-bolt"></i> Power</span>'}
+              </td>
+              <td>${escapeBmHtml(s.unit_floor)}</td>
+              <td style="text-align:right;">${s.multiplier || 1.0}x</td>
+              <td style="text-align:right; font-weight:700;">${formatBmNumber(s.prev_reading, 2)} ${s.category === 'Water' ? 'm³' : 'kWh'}</td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      const modal = document.getElementById('lesseeDetailsModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeLesseeDetailsModal = function () {
+      const modal = document.getElementById('lesseeDetailsModal');
+      if (modal) modal.style.display = 'none';
+      currentViewingLesseeCode = null;
+    };
+
+    window.jumpToLesseeStatements = function () {
+      if (!currentViewingLesseeCode) return;
+      const code = currentViewingLesseeCode;
+      closeLesseeDetailsModal();
+      viewLesseeStatements(code);
+    };
+
+    window.viewLesseeStatements = function (code) {
+      const link = document.querySelector('a[data-building-maintenance]');
+      if (link) {
+        switchView('view-building-maintenance', link);
+      } else {
+        switchView('view-building-maintenance');
+      }
+      setTimeout(() => {
+        const filter = document.getElementById('bmLedgerCompanyFilter');
+        if (filter) {
+          filter.value = code;
+          if (typeof bmCompanyFilter !== 'undefined') bmCompanyFilter = code;
+          if (typeof filterBmStatementsLedger === 'function') filterBmStatementsLedger();
+        }
+      }, 150);
+    };
+
+    window.exportLesseesCSV = function () {
+      if (!allBuildingLessees || allBuildingLessees.length === 0) {
+        alert('No lessee records to export.');
+        return;
+      }
+      const headers = ['Company Code', 'Company / Lessee Name', 'Occupied Spaces', 'Assigned Submeters', 'Contact Person', 'Email', 'Phone', 'Contract No', 'Status'];
+      const rows = allBuildingLessees.map(l => {
+        const subCount = DEFAULT_BUILDING_TENANTS.filter(t => t.company && t.company.toUpperCase() === l.code.toUpperCase()).length;
+        return [
+          `"${(l.code || '').replace(/"/g, '""')}"`,
+          `"${(l.name || '').replace(/"/g, '""')}"`,
+          `"${(l.spaces || '').replace(/"/g, '""')}"`,
+          subCount,
+          `"${(l.contactPerson || '').replace(/"/g, '""')}"`,
+          `"${(l.email || '').replace(/"/g, '""')}"`,
+          `"${(l.phone || '').replace(/"/g, '""')}"`,
+          `"${(l.contractNo || '').replace(/"/g, '""')}"`,
+          `"${(l.status || 'ACTIVE').replace(/"/g, '""')}"`
+        ];
+      });
+
+      const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `RII_Lessees_Directory_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     };
 
     // ==========================================
@@ -14907,18 +15356,19 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-bottom:18px; font-size:0.82rem;">
           <div style="grid-column: span 2;">
             <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Tenant / Lessee Company Name <span style="color:#ef4444;">*</span></label>
-            <input type="text" id="bmNewTenantName" placeholder="e.g. Primex Energy Services Corp. (PESC)" list="bmCompanySuggestions" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+            <input type="text" id="bmNewTenantName" placeholder="e.g. Phil Ecology Systems Corp. (PESC)" list="bmCompanySuggestions" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
             <datalist id="bmCompanySuggestions">
-              <option value="Primex Energy Services Corp. (PESC)">
-              <option value="R-II Land Development, Inc. (RLDI)">
-              <option value="RMR Coal, Inc. (RMRCI)">
+              <option value="RMR Capital, Inc. (RMRCI)">
+              <option value="Phil Ecology Systems Corp. (PESC)">
               <option value="R-II Builders, Inc. (RBI)">
+              <option value="RLand Development, Inc. (RLDI)">
+              <option value="Phileco (PESC Vitas)">
             </datalist>
           </div>
 
           <div>
             <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Company Code / Acronym <span style="color:#ef4444;">*</span></label>
-            <input type="text" id="bmNewCompanyCode" placeholder="e.g. PESC, RLDI, RMRCI, RBI" style="text-transform:uppercase; width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;" required>
+            <input type="text" id="bmNewCompanyCode" placeholder="e.g. RMRCI, PESC, RBI, RLDI, PESC Vitas" style="text-transform:uppercase; width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;" required>
           </div>
 
           <div>
@@ -14967,6 +15417,61 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 8.6.1.1. Lessee Profile & Submeters Detail Modal -->
+  <div class="bm-slip-modal-backdrop" id="lesseeDetailsModal" onclick="if(event.target === this) closeLesseeDetailsModal()">
+    <div class="bm-slip-paper" style="max-width: 720px; padding: 28px 32px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:12px; margin-bottom:18px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div id="modalLesseeBadge" style="padding:6px 14px; border-radius:6px; font-weight:800; font-size:0.95rem; background:#6366f1; color:white;">
+            CODE
+          </div>
+          <div>
+            <h3 id="modalLesseeTitle" style="margin:0; font-size:1.15rem; color:var(--primary); font-weight:800;">Company Name</h3>
+            <span id="modalLesseeContract" style="font-size:0.75rem; color:var(--text-muted);">Contract: REF-000</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeLesseeDetailsModal()" style="background:none; border:none; font-size:1.4rem; color:var(--text-muted); cursor:pointer;">&times;</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:18px; font-size:0.82rem;">
+        <div><strong>Occupied Spaces:</strong> <span id="modalLesseeSpaces">-</span></div>
+        <div><strong>Contact Person:</strong> <span id="modalLesseeContact">-</span></div>
+        <div><strong>Email Address:</strong> <span id="modalLesseeEmail">-</span></div>
+        <div><strong>Phone / Contact:</strong> <span id="modalLesseePhone">-</span></div>
+      </div>
+
+      <h4 style="margin:0 0 10px 0; font-size:0.92rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-gauge-high" style="color:var(--accent);"></i> Assigned Submeters &amp; Baseline Readings
+      </h4>
+
+      <div style="max-height:240px; overflow-y:auto; border:1px solid var(--border); border-radius:6px; margin-bottom:18px;">
+        <table class="dispatch-table" style="margin:0; width:100%; font-size:0.8rem;">
+          <thead>
+            <tr>
+              <th>Submeter Serial</th>
+              <th>Category</th>
+              <th>Assigned Unit / Floor</th>
+              <th style="text-align:right;">Multiplier</th>
+              <th style="text-align:right;">Baseline / Reading</th>
+            </tr>
+          </thead>
+          <tbody id="modalLesseeSubmetersTbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <button type="button" class="btn-primary" id="btnModalViewStatements" onclick="jumpToLesseeStatements()" style="font-size:0.82rem; padding:8px 16px; background:#0284c7; border-radius:6px;">
+          <i class="fa-solid fa-file-invoice-dollar"></i> View Utility Billing Statements
+        </button>
+        <button type="button" class="btn-primary" onclick="closeLesseeDetailsModal()" style="font-size:0.82rem; padding:8px 18px; background:#64748b; border-radius:6px;">
+          Close
+        </button>
+      </div>
     </div>
   </div>
 
