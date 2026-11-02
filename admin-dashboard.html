@@ -3395,6 +3395,21 @@
       color: #f8fafc;
       border-color: #38bdf8;
     }
+    body.dark-mode #companyVehicleForm label {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode #companyVehicleForm input,
+    body.dark-mode #companyVehicleForm select,
+    body.dark-mode #companyVehicleForm textarea {
+      background: #0f172a !important;
+      color: #f8fafc !important;
+      border-color: var(--border) !important;
+    }
+    body.dark-mode #companyVehicleForm div[style*="background:#f8fafc"],
+    body.dark-mode #companyVehicleForm div[style*="background: #f8fafc"] {
+      background: #0f172a !important;
+      border-color: var(--border) !important;
+    }
 
     /* System Theme Pop-Up Modal (Custom Alert) */
     .system-alert-backdrop {
@@ -4347,6 +4362,9 @@
             </p>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn-primary" onclick="openAddVehicleModal()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
+              <i class="fa-solid fa-plus"></i> Add New Vehicle
+            </button>
             <button type="button" class="btn-primary" onclick="exportCompanyVehiclesCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
               <i class="fa-solid fa-file-excel"></i> Export Fleet CSV
             </button>
@@ -9269,8 +9287,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         if (supabase) {
           const { data, error } = await supabase
             .from('company_vehicles')
-            .select('*')
-            .order('index_no', { ascending: true });
+            .select('*');
           if (!error && data && data.length > 0) {
             allCompanyVehicles = data;
           } else if (Array.isArray(companyVehiclesData) && companyVehiclesData.length > 0) {
@@ -9283,6 +9300,21 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           allCompanyVehicles = [...companyVehiclesData];
         }
       }
+
+      // Merge local storage updates & additions
+      try {
+        const localOverrides = JSON.parse(localStorage.getItem('rii_custom_company_vehicles') || '{}');
+        Object.keys(localOverrides).forEach(key => {
+          const item = localOverrides[key];
+          const idx = allCompanyVehicles.findIndex(v => String(v.id) === String(key) || ('veh_' + v.index) === String(key) || (v.asset_code && v.asset_code === item.asset_code));
+          if (idx >= 0) {
+            allCompanyVehicles[idx] = { ...allCompanyVehicles[idx], ...item };
+          } else {
+            allCompanyVehicles.unshift(item);
+          }
+        });
+      } catch (_) {}
+
       populateCompanyVehiclesDropdowns();
       renderCompanyVehiclesTable();
       updateCompanyVehiclesStats();
@@ -9468,13 +9500,178 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               <div style="color:#0284c7; font-weight:600; font-size:0.75rem;">Renewal: ${escapeVehHtml(v.renewal_month || '-')}</div>
             </td>
             <td style="text-align:center;">
-              <button type="button" class="btn-primary" onclick="viewVehiclePassport('${rowId}')" style="font-size:0.75rem; padding:5px 10px; background:var(--primary);" title="View Vehicle Passport">
-                <i class="fa-solid fa-id-card"></i> Passport
-              </button>
+              <div style="display:inline-flex; gap:5px; justify-content:center;">
+                <button type="button" class="btn-primary" onclick="openEditVehicleModal('${rowId}')" style="font-size:0.75rem; padding:5px 9px; background:#0284c7;" title="Edit Status / Transfer Custodian">
+                  <i class="fa-solid fa-pen-to-square"></i> Edit
+                </button>
+                <button type="button" class="btn-primary" onclick="viewVehiclePassport('${rowId}')" style="font-size:0.75rem; padding:5px 9px; background:var(--primary);" title="View Vehicle Passport">
+                  <i class="fa-solid fa-id-card"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
       }).join('');
+    };
+
+    window.openAddVehicleModal = function () {
+      const form = document.getElementById('companyVehicleForm');
+      if (form) form.reset();
+      document.getElementById('vehFormId').value = '';
+      document.getElementById('vehFormModalTitle').innerHTML = '<i class="fa-solid fa-circle-plus" style="color:var(--accent);"></i> Add New Company Vehicle';
+      document.getElementById('vehFormModalSubtitle').textContent = 'Register a new company vehicle asset to R-II Builders fleet master records.';
+      document.getElementById('vehFormStatus').value = 'OPERATIONAL';
+      document.getElementById('vehFormAccStatus').value = 'ACTIVE';
+      document.getElementById('vehFormDivision').value = 'OPERATIONS';
+      document.getElementById('vehFormOriginalCr').value = 'YES';
+      document.getElementById('vehFormRenewalMonth').value = 'JAN';
+      document.getElementById('vehFormCompanyUser').value = 'RII BUILDERS, INC.';
+      document.getElementById('vehFormRegOwner').value = 'RII BUILDERS, INC.';
+      const modal = document.getElementById('vehFormModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.openEditVehicleModal = function (id) {
+      const veh = allCompanyVehicles.find(v => String(v.id) === String(id) || String(v.index) === String(id) || ('veh_' + v.index) === String(id));
+      if (!veh) return;
+
+      document.getElementById('vehFormId').value = veh.id || ('veh_' + (veh.index || ''));
+      document.getElementById('vehFormModalTitle').innerHTML = `<i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Edit Vehicle &bull; ${escapeVehHtml(veh.plate_no || veh.asset_code)}`;
+      document.getElementById('vehFormModalSubtitle').textContent = 'Transfer custodian, update vehicle operational condition, and modify LTO registration details.';
+      
+      document.getElementById('vehFormAssetCode').value = veh.asset_code || '';
+      document.getElementById('vehFormPlateNo').value = veh.plate_no || '';
+      document.getElementById('vehFormBrand').value = veh.brand_make || '';
+      document.getElementById('vehFormModel').value = veh.model_description || '';
+      document.getElementById('vehFormYear').value = veh.year_model || '';
+      document.getElementById('vehFormDateAcquired').value = (veh.date_acquired && veh.date_acquired.length === 10) ? veh.date_acquired : '';
+      document.getElementById('vehFormStatus').value = (veh.vehicle_status || 'OPERATIONAL').toUpperCase();
+
+      document.getElementById('vehFormAssignee').value = veh.assignee_name || '';
+      document.getElementById('vehFormPosition').value = (veh.position_title && veh.position_title !== '-') ? veh.position_title : '';
+      document.getElementById('vehFormCompanyUser').value = veh.company_user || 'RII BUILDERS, INC.';
+      document.getElementById('vehFormDivision').value = veh.division || 'OPERATIONS';
+      document.getElementById('vehFormProject').value = (veh.department_project && veh.department_project !== '-') ? veh.department_project : '';
+      document.getElementById('vehFormAccCode').value = veh.accountability_code || '';
+      document.getElementById('vehFormAccStatus').value = veh.accountability_status || 'ACTIVE';
+
+      document.getElementById('vehFormRegOwner').value = veh.registered_owner || 'RII BUILDERS, INC.';
+      document.getElementById('vehFormCrOr').value = (veh.cr_or_no && veh.cr_or_no !== 'N/A') ? veh.cr_or_no : '';
+      document.getElementById('vehFormRenewalMonth').value = veh.renewal_month || 'N/A';
+      document.getElementById('vehFormOriginalCr').value = veh.original_cr || 'NO';
+      document.getElementById('vehFormRemarks').value = veh.remarks || '';
+
+      const modal = document.getElementById('vehFormModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeVehicleFormModal = function () {
+      const modal = document.getElementById('vehFormModal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.editVehicleFromPassport = function () {
+      const assetCode = document.getElementById('modalVehAssetCode').textContent;
+      const veh = allCompanyVehicles.find(v => v.asset_code === assetCode);
+      closeVehiclePassportModal();
+      if (veh) {
+        openEditVehicleModal(veh.id || ('veh_' + veh.index));
+      }
+    };
+
+    window.saveCompanyVehicleRecord = async function (e) {
+      if (e && e.preventDefault) e.preventDefault();
+      
+      const formId = document.getElementById('vehFormId').value;
+      const isNew = !formId;
+
+      const recordId = isNew ? ('veh_' + Date.now()) : formId;
+      const existingIdx = allCompanyVehicles.findIndex(v => String(v.id) === String(recordId) || ('veh_' + v.index) === String(recordId));
+
+      const payload = {
+        id: recordId,
+        asset_code: document.getElementById('vehFormAssetCode').value.trim(),
+        plate_no: document.getElementById('vehFormPlateNo').value.trim().toUpperCase(),
+        brand_make: document.getElementById('vehFormBrand').value.trim().toUpperCase(),
+        model_description: document.getElementById('vehFormModel').value.trim(),
+        year_model: document.getElementById('vehFormYear').value.trim(),
+        date_acquired: document.getElementById('vehFormDateAcquired').value.trim() || new Date().toISOString().slice(0, 10),
+        vehicle_status: document.getElementById('vehFormStatus').value.trim().toUpperCase(),
+        
+        assignee_name: document.getElementById('vehFormAssignee').value.trim() || 'Unassigned',
+        position_title: document.getElementById('vehFormPosition').value.trim() || '-',
+        company_user: document.getElementById('vehFormCompanyUser').value.trim() || 'RII BUILDERS, INC.',
+        division: document.getElementById('vehFormDivision').value.trim().toUpperCase(),
+        department_project: document.getElementById('vehFormProject').value.trim() || '-',
+        accountability_code: document.getElementById('vehFormAccCode').value.trim(),
+        accountability_status: document.getElementById('vehFormAccStatus').value.trim().toUpperCase(),
+
+        registered_owner: document.getElementById('vehFormRegOwner').value.trim() || 'RII BUILDERS, INC.',
+        cr_or_no: document.getElementById('vehFormCrOr').value.trim() || 'N/A',
+        renewal_month: document.getElementById('vehFormRenewalMonth').value.trim().toUpperCase(),
+        original_cr: document.getElementById('vehFormOriginalCr').value.trim().toUpperCase(),
+        remarks: document.getElementById('vehFormRemarks').value.trim(),
+        updated_at: new Date().toISOString()
+      };
+
+      const btnSave = document.getElementById('btnSaveVehicle');
+      if (btnSave) {
+        btnSave.disabled = true;
+        btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+      }
+
+      try {
+        // 1. Save to Supabase company_vehicles
+        if (supabase) {
+          try {
+            const { error } = await supabase.from('company_vehicles').upsert([payload], { onConflict: 'id' });
+            if (error) {
+              console.warn('Supabase company_vehicles upsert note:', error.message);
+            }
+          } catch (supErr) {
+            console.warn('Supabase upsert failed, continuing with local persistence:', supErr);
+          }
+        }
+
+        // 2. Dual persistence via localStorage overrides
+        let customVehicles = {};
+        try {
+          customVehicles = JSON.parse(localStorage.getItem('rii_custom_company_vehicles') || '{}');
+        } catch (_) {}
+        customVehicles[recordId] = payload;
+        localStorage.setItem('rii_custom_company_vehicles', JSON.stringify(customVehicles));
+
+        // 3. Update in-memory state
+        if (existingIdx >= 0) {
+          allCompanyVehicles[existingIdx] = { ...allCompanyVehicles[existingIdx], ...payload };
+        } else {
+          payload.index = allCompanyVehicles.length + 1;
+          allCompanyVehicles.unshift(payload);
+        }
+
+        closeVehicleFormModal();
+        renderCompanyVehiclesTable();
+        updateCompanyVehiclesStats();
+        populateCompanyVehiclesDropdowns();
+
+        if (window.showSystemAlert) {
+          window.showSystemAlert(
+            'Vehicle Saved Successfully',
+            isNew ? `New vehicle ${payload.plate_no} (${payload.brand_make}) has been added to the master fleet registry.` : `Vehicle ${payload.plate_no} record has been updated successfully. Current Custodian: ${payload.assignee_name}.`,
+            'success'
+          );
+        } else {
+          alert('Vehicle record saved successfully!');
+        }
+      } catch (err) {
+        console.error('Error saving vehicle:', err);
+        alert('Could not save vehicle record: ' + err.message);
+      } finally {
+        if (btnSave) {
+          btnSave.disabled = false;
+          btnSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Vehicle Record';
+        }
+      }
     };
 
     window.viewVehiclePassport = function (id) {
@@ -10532,9 +10729,203 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:25px;" class="no-print">
-        <button type="button" class="btn-primary" onclick="window.print()" style="padding:8px 18px; font-size:0.85rem;"><i class="fa-solid fa-print"></i> Print Passport</button>
-        <button type="button" class="btn-secondary" onclick="closeVehiclePassportModal()" style="padding:8px 16px; font-size:0.85rem;">Close</button>
+        <button type="button" class="btn-primary" onclick="editVehicleFromPassport()" style="padding:8px 16px; font-size:0.85rem; background:#0284c7;">
+          <i class="fa-solid fa-pen-to-square"></i> Edit / Transfer Custodian
+        </button>
+        <button type="button" class="btn-primary" onclick="window.print()" style="padding:8px 18px; font-size:0.85rem;">
+          <i class="fa-solid fa-print"></i> Print Passport
+        </button>
+        <button type="button" class="btn-secondary" onclick="closeVehiclePassportModal()" style="padding:8px 16px; font-size:0.85rem;">
+          Close
+        </button>
       </div>
+    </div>
+  </div>
+
+  <!-- 8.8. Fleet Management - Add / Edit Vehicle & Custodian Transfer Modal -->
+  <div class="veh-passport-modal-backdrop" id="vehFormModal">
+    <div class="veh-passport-paper" style="max-width: 860px;" id="vehFormPaper">
+      <form id="companyVehicleForm" onsubmit="saveCompanyVehicleRecord(event)">
+        <input type="hidden" id="vehFormId" value="">
+
+        <!-- Modal Header -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:15px; margin-bottom:20px;">
+          <div>
+            <h2 style="margin:0; font-size:1.3rem; color:var(--primary); font-weight:800; letter-spacing:0.5px;" id="vehFormModalTitle">
+              <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Edit Company Vehicle Record
+            </h2>
+            <p style="margin:4px 0 0; font-size:0.82rem; color:var(--text-muted);" id="vehFormModalSubtitle">
+              Transfer custodian, update vehicle operational condition, and modify LTO registration details.
+            </p>
+          </div>
+          <button type="button" onclick="closeVehicleFormModal()" style="background:none; border:none; font-size:1.3rem; color:var(--text-muted); cursor:pointer; padding:4px 8px;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Section 1: Vehicle Specifications & Operational Condition -->
+        <div style="margin-bottom: 22px;">
+          <h4 style="margin:0 0 12px; color:var(--primary); font-size:0.95rem; border-left:3px solid var(--accent); padding-left:8px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-car-side"></i> 1. Vehicle Specifications &amp; Fleet Status
+          </h4>
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid var(--border);">
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Plate No. / CS No. *</label>
+              <input type="text" id="vehFormPlateNo" required placeholder="e.g. NAA-1021" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-weight:700; text-transform:uppercase;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Brand / Make *</label>
+              <input type="text" id="vehFormBrand" list="vehMakeSuggestions" required placeholder="e.g. TOYOTA" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; text-transform:uppercase;">
+              <datalist id="vehMakeSuggestions">
+                <option value="TOYOTA">
+                <option value="ISUZU">
+                <option value="FORD">
+                <option value="NISSAN">
+                <option value="MITSUBISHI">
+                <option value="YAMAHA">
+                <option value="HONDA">
+                <option value="CHEVROLET">
+                <option value="SUZUKI">
+                <option value="HYUNDAI">
+                <option value="HINO">
+              </datalist>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Asset Code *</label>
+              <input type="text" id="vehFormAssetCode" required placeholder="e.g. RII-2026-TY01" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-family:monospace;">
+            </div>
+            <div style="grid-column: span 2;">
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Model Description *</label>
+              <input type="text" id="vehFormModel" required placeholder="e.g. Toyota Hilux 2.4 G 4x2 Dsl" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Year Model</label>
+              <input type="text" id="vehFormYear" placeholder="e.g. 2024" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Date Acquired</label>
+              <input type="date" id="vehFormDateAcquired" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+            <div style="grid-column: span 2;">
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Operational Fleet Status *</label>
+              <select id="vehFormStatus" required style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-weight:600;">
+                <option value="OPERATIONAL">OPERATIONAL &bull; Roadworthy &amp; In-Service</option>
+                <option value="UNDER REPAIR">UNDER REPAIR &bull; In Motorpool / PMS</option>
+                <option value="IDLE / IN STORAGE">IDLE / IN STORAGE</option>
+                <option value="FOR DISPOSAL">FOR DISPOSAL &bull; Unserviceable Asset</option>
+                <option value="TRANSFERRED">TRANSFERRED &bull; Reallocated Asset</option>
+                <option value="SOLD">SOLD &bull; Decommissioned Fleet</option>
+                <option value="UNDER EXTERNAL CONTROL">UNDER EXTERNAL CONTROL &bull; Project / Joint Venture</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Custody Assignment & Employee Transfer -->
+        <div style="margin-bottom: 22px;">
+          <h4 style="margin:0 0 12px; color:var(--primary); font-size:0.95rem; border-left:3px solid var(--accent); padding-left:8px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-user-shield"></i> 2. Custodian Assignment &amp; Transfer (Memorandum Receipt)
+          </h4>
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid var(--border);">
+            <div style="grid-column: span 2;">
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Accountable Custodian / Assignee Name *</label>
+              <input type="text" id="vehFormAssignee" required placeholder="e.g. JUAN DELA CRUZ or CATMON" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-weight:700;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Position Title</label>
+              <input type="text" id="vehFormPosition" placeholder="e.g. PROJECT MANAGER, DRIVER" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Accountability Status *</label>
+              <select id="vehFormAccStatus" required style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-weight:600;">
+                <option value="ACTIVE">ACTIVE &bull; Custodian Holds MR</option>
+                <option value="FOR RENEWAL">FOR RENEWAL &bull; Pending MR Update</option>
+                <option value="CANCELLED">CANCELLED &bull; Returned / Revoked</option>
+                <option value="NOT APPLICABLE">NOT APPLICABLE &bull; Pool / Storage</option>
+                <option value="UNASSIGNED">UNASSIGNED</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">MR / Accountability Code</label>
+              <input type="text" id="vehFormAccCode" placeholder="e.g. ADMIN-SV-046" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-family:monospace;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Operating Company / User</label>
+              <input type="text" id="vehFormCompanyUser" placeholder="e.g. RII BUILDERS, INC." style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Key Division *</label>
+              <select id="vehFormDivision" required style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+                <option value="OPERATIONS">OPERATIONS</option>
+                <option value="HEAD OFFICE">HEAD OFFICE</option>
+                <option value="ADMIN & HR">ADMIN &amp; HR</option>
+                <option value="EQUIPMENT & MOTORPOOL">EQUIPMENT &amp; MOTORPOOL</option>
+                <option value="SUBSIDIARY">SUBSIDIARY</option>
+                <option value="OTC">OTC</option>
+              </select>
+            </div>
+            <div style="grid-column: span 2;">
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Project / Operating Department</label>
+              <input type="text" id="vehFormProject" placeholder="e.g. 180MLD, CEWD, PAMPANGA, LOGISTICS" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: LTO Registration & Documents -->
+        <div style="margin-bottom: 22px;">
+          <h4 style="margin:0 0 12px; color:var(--primary); font-size:0.95rem; border-left:3px solid var(--accent); padding-left:8px; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-file-shield"></i> 3. LTO Registration &amp; Documentation
+          </h4>
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; background:#f8fafc; padding:15px; border-radius:8px; border:1px solid var(--border);">
+            <div style="grid-column: span 2;">
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Registered Owner (Name in CR)</label>
+              <input type="text" id="vehFormRegOwner" placeholder="e.g. RII BUILDERS, INC." style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">LTO CR / OR No.</label>
+              <input type="text" id="vehFormCrOr" placeholder="e.g. CR-98124018" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-family:monospace;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">LTO Renewal Month</label>
+              <select id="vehFormRenewalMonth" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-weight:600; color:#0284c7;">
+                <option value="JAN">JANUARY</option>
+                <option value="FEB">FEBRUARY</option>
+                <option value="MAR">MARCH</option>
+                <option value="APR">APRIL</option>
+                <option value="MAY">MAY</option>
+                <option value="JUN">JUNE</option>
+                <option value="JUL">JULY</option>
+                <option value="AUG">AUGUST</option>
+                <option value="SEP">SEPTEMBER</option>
+                <option value="OCT">OCTOBER</option>
+                <option value="NOV">NOVEMBER</option>
+                <option value="DEC">DECEMBER</option>
+                <option value="N/A">N/A</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Original CR Document on File?</label>
+              <select id="vehFormOriginalCr" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+                <option value="YES">YES &bull; Original Document Available</option>
+                <option value="NO">NO &bull; Copy / Digital Only</option>
+                <option value="COPY ONLY">COPY ONLY</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Transfer / Custody Note</label>
+              <input type="text" id="vehFormRemarks" placeholder="e.g. Transferred on Nov 2, 2026" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Action Buttons -->
+        <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px dashed #cbd5e1; padding-top:16px;">
+          <button type="button" class="btn-secondary" onclick="closeVehicleFormModal()" style="padding:9px 18px; font-size:0.85rem;">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSaveVehicle" style="padding:9px 24px; font-size:0.85rem; background:#10b981;">
+            <i class="fa-solid fa-floppy-disk"></i> Save Vehicle Record
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
