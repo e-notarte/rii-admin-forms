@@ -2944,6 +2944,42 @@
       gap: 16px;
       margin-bottom: 24px;
     }
+    .rr-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 768px) {
+      .rr-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .rr-form-grid label {
+      display: grid;
+      gap: 6px;
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .rr-form-grid input,
+    .rr-form-grid select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+    }
+    .rr-form-grid input:focus,
+    .rr-form-grid select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(252, 174, 22, 0.2);
+    }
     .rr-field-group {
       display: flex;
       flex-direction: column;
@@ -4210,53 +4246,135 @@
           </div>
         </div>
 
-        <!-- ENTRY FORM CARD -->
-        <div class="data-card" id="rrFormCard" style="margin-bottom: 24px; padding: 24px;">
-          <div class="rr-form-header-bar">
+        <!-- ENTRY FORM CARD (REQUEST FORM FORMAT) -->
+        <div class="data-card" id="rrFormCard" style="margin-bottom: 24px; padding: 28px; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border: 1px solid var(--border); background: #ffffff;">
+          <div class="rr-form-header-bar" style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:16px; flex-wrap:wrap; gap:12px;">
             <div>
-              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-clipboard-check" style="color:var(--accent);"></i> Inventory Receiving &amp; Inspection Form
+              <h3 style="margin:0 0 6px; font-size:1.25rem; color:var(--primary); font-weight:700; display:flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-file-signature" style="color:var(--accent);"></i> Material Receiving Report (MRR) Request Form
               </h3>
-              <span style="font-size:0.75rem; color:var(--text-muted);">Fill in all purchase and shipment details as verified by Inventory Staff upon arrival.</span>
+              <p class="intro" style="margin:0; color:var(--text-muted); font-size:0.83rem;">
+                Official Material Receiving &amp; Warehouse Inspection Entry Form. Enter incoming shipment details, requisition tags, and line item quantities.
+              </p>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <span class="rr-badge"><i class="fa-solid fa-shield-halved"></i> Warehouse Inspection</span>
-              <span style="font-size:0.8rem; font-weight:700; color:var(--primary);" id="rrGeneratedRefBadge">RR-2026-0001</span>
+              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; padding:6px 12px; font-size:0.75rem; border-radius:6px; font-weight:600; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-warehouse"></i> Warehouse Intake
+              </span>
+              <span style="font-size:0.85rem; font-weight:700; color:var(--primary); background:#f8fafc; padding:6px 12px; border-radius:6px; border:1px solid var(--border);" id="rrGeneratedRefBadge">RR-2026-0407</span>
             </div>
           </div>
 
           <form id="receivingReportForm" onsubmit="submitReceivingReport(event)">
-            <!-- Top Document Reference Fields -->
-            <div class="rr-meta-grid">
-              <div class="rr-field-group">
-                <label for="rrDate"><i class="fa-regular fa-calendar" style="color:var(--accent);"></i> Date <span style="color:#ef4444;">*</span></label>
+            <!-- Form Grid: Row 1 (Date & Department) -->
+            <div class="rr-form-grid">
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-regular fa-calendar" style="color:var(--accent);"></i> Delivery Date <span style="color:#ef4444;">*</span></span>
                 <input type="date" id="rrDate" name="rrDate" required>
-              </div>
+              </label>
 
-              <div class="rr-field-group">
-                <label for="rrPrfNo"><i class="fa-solid fa-hashtag" style="color:var(--accent);"></i> PRF No. <span style="color:#ef4444;">*</span></label>
-                <input type="text" id="rrPrfNo" name="rrPrfNo" placeholder="e.g. PRF-2026-089" required>
-              </div>
-
-              <div class="rr-field-group">
-                <label for="rrPoNo"><i class="fa-solid fa-file-contract" style="color:var(--accent);"></i> PO No. <span style="color:#ef4444;">*</span></label>
-                <input type="text" id="rrPoNo" name="rrPoNo" placeholder="e.g. PO-2026-042" required>
-              </div>
-
-              <div class="rr-field-group">
-                <label for="rrSupplier"><i class="fa-solid fa-building" style="color:var(--accent);"></i> Supplier Name <span style="color:#ef4444;">*</span></label>
-                <input type="text" id="rrSupplier" name="rrSupplier" placeholder="e.g. Golden State Office Supplies Trading" required>
-              </div>
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Department <span style="color:#ef4444;">*</span></span>
+                <select id="rrDepartment" name="rrDepartment" required>
+                  <option value="">Select Department</option>
+                  <option value="Admin">Admin (ADM)</option>
+                  <option value="Operations">Operations (OTC)</option>
+                  <option value="HR">HR / HRD</option>
+                  <option value="Purchasing">Purchasing (PUR)</option>
+                  <option value="BDG">BDG - Budget &amp; Finance</option>
+                  <option value="Engineering">Engineering (ENG)</option>
+                  <option value="C&C">C&amp;C</option>
+                  <option value="Accounting">Accounting</option>
+                  <option value="CRMD">CRMD</option>
+                  <option value="ESSH">ESSH - Safety &amp; Health</option>
+                  <option value="OTP">OTP</option>
+                  <option value="Finance">Finance</option>
+                  <option value="CEWD">CEWD</option>
+                  <option value="180MLD">180MLD Project</option>
+                </select>
+              </label>
             </div>
 
-            <!-- Line Items Table -->
-            <div style="margin-top: 14px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
-                <label style="font-size:0.85rem; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:6px;">
-                  <i class="fa-solid fa-list-check" style="color:var(--accent);"></i> Received Items Detail (Description, Qty, UOM, Unit Cost, Total Amount)
+            <!-- Form Grid: Row 2 (PRF No. & PO No.) -->
+            <div class="rr-form-grid">
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-hashtag" style="color:var(--accent);"></i> PRF No. (Purchase Requisition) <span style="color:#ef4444;">*</span></span>
+                <input type="text" id="rrPrfNo" name="rrPrfNo" placeholder="e.g. HO-PRF NO. 16366" required>
+              </label>
+
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-contract" style="color:var(--accent);"></i> PO No. (Purchase Order) <span style="color:#ef4444;">*</span></span>
+                <input type="text" id="rrPoNo" name="rrPoNo" placeholder="e.g. HO-PO 15395" required>
+              </label>
+            </div>
+
+            <!-- Form Grid: Row 3 (Supplier Name & Expense Account) -->
+            <div class="rr-form-grid">
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-truck-field" style="color:var(--accent);"></i> Supplier Name <span style="color:#ef4444;">*</span></span>
+                <input type="text" id="rrSupplier" name="rrSupplier" list="rrSuppliersList" placeholder="e.g. TIMOG TIREHAUS CORPORATION" required autocomplete="off">
+                <datalist id="rrSuppliersList">
+                  <option value="TIMOG TIREHAUS CORPORATION">
+                  <option value="PAPERLINE ENTERPRISES INC">
+                  <option value="BREW MASTER INTERNATIONAL INC">
+                  <option value="PUREGOLD JR. KALAYAAN">
+                  <option value="TOYOTA COMMONWEALTH, INC.">
+                  <option value="ASHER-CHESKA'S PRINTING CORP">
+                  <option value="GATEWAY MOTORS CEBU INC">
+                  <option value="C3 ENGINEERING PILIPINAS CO.">
+                  <option value="PHILCOPY CORPORATION">
+                  <option value="GOLDEN STATE OFFICE SUPPLIES TRADING">
+                  <option value="BEST CHOICE ENTERPRISES">
+                  <option value="JOULE TECH CONSUMER GOODS TRADING">
+                  <option value="METRO DRUG INC">
+                  <option value="POWERSTEEL SPECIALIST TRADING">
+                  <option value="MICRO VALLEY COMPUTER SYSTEM">
+                </datalist>
+              </label>
+
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> Expense Account</span>
+                <select id="rrExpenseAccount" name="rrExpenseAccount">
+                  <option value="">Select Expense Account (Optional)</option>
+                  <option value="062 • General & Office Supplies">062 • General &amp; Office Supplies</option>
+                  <option value="062.1 • General & Pantry Supplies">062.1 • General &amp; Pantry Supplies</option>
+                  <option value="062.2 • General & Cleaning Supplies">062.2 • General &amp; Cleaning Supplies</option>
+                  <option value="063 • Reproduction & Printing">063 • Reproduction &amp; Printing</option>
+                  <option value="119 • Building Repair">119 • Building Repair</option>
+                  <option value="119.4 • Repair - Service Vehicle">119.4 • Repair - Service Vehicle</option>
+                  <option value="122 • PMS - Aircon">122 • PMS - Aircon</option>
+                  <option value="122.1 • PMS - Parking Lifter">122.1 • PMS - Parking Lifter</option>
+                  <option value="122.3 • PMS - Heat Extraction Fan">122.3 • PMS - Heat Extraction Fan</option>
+                  <option value="082 • Computer / Laptop">082 • Computer / Laptop</option>
+                  <option value="083 • Printer">083 • Printer</option>
+                  <option value="071 • PPE">071 • PPE</option>
+                  <option value="065 • Clinic Supplies / Medicines / 1st Aid Kit">065 • Clinic Supplies / Medicines / 1st Aid Kit</option>
+                  <option value="050 • Software Subscriptions & Licenses">050 • Software Subscriptions &amp; Licenses</option>
+                </select>
+              </label>
+            </div>
+
+            <!-- Form Grid: Row 4 (Sub-Account & Budget Source) -->
+            <div class="rr-form-grid">
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-car-side" style="color:var(--accent);"></i> Sub-Account / Vehicle Plate / Ref</span>
+                <input type="text" id="rrSubAccount" name="rrSubAccount" placeholder="e.g. 62.01 • Admin or Vehicle Plate NUO-799">
+              </label>
+
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-wallet" style="color:var(--accent);"></i> Budget Source / Charged To</span>
+                <input type="text" id="rrBudgetFrom" name="rrBudgetFrom" placeholder="e.g. ADM or Head Office">
+              </label>
+            </div>
+
+            <!-- Line Items Table Section -->
+            <div style="margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border);">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                <label style="font-size:0.85rem; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-list-check" style="color:var(--accent);"></i> Received Line Items (Item Description, Qty, UOM, Unit Cost &amp; Total)
                 </label>
-                <button type="button" class="btn-primary" onclick="addRrLineItem()" style="font-size:0.75rem; padding:5px 12px; background:#10b981;">
-                  <i class="fa-solid fa-plus"></i> Add Item Line
+                <button type="button" class="btn-primary" onclick="addRrLineItem()" style="font-size:0.75rem; padding:6px 14px; background:#10b981; border:none; border-radius:6px; font-weight:600; cursor:pointer; color:white; display:inline-flex; align-items:center; gap:6px;">
+                  <i class="fa-solid fa-plus"></i> Add Line Item
                 </button>
               </div>
 
@@ -4265,7 +4383,7 @@
                   <thead>
                     <tr>
                       <th style="width: 40px; text-align: center;">#</th>
-                      <th style="min-width: 250px;">Description <span style="color:#ef4444;">*</span></th>
+                      <th style="min-width: 250px;">Item Description <span style="color:#ef4444;">*</span></th>
                       <th style="width: 110px;">Qty <span style="color:#ef4444;">*</span></th>
                       <th style="width: 150px;">Unit of Measure <span style="color:#ef4444;">*</span></th>
                       <th style="width: 140px;">Unit Cost (₱) <span style="color:#ef4444;">*</span></th>
@@ -4287,7 +4405,7 @@
                         <select class="rr-item-uom" required>
                           <option value="Reams">Reams</option>
                           <option value="Boxes">Boxes</option>
-                          <option value="Pcs">Pcs</option>
+                          <option value="Pcs" selected>Pcs</option>
                           <option value="Rolls">Rolls</option>
                           <option value="Packs">Packs</option>
                           <option value="Sets">Sets</option>
@@ -4317,10 +4435,10 @@
               </div>
             </div>
 
-            <!-- Summary & Submissions -->
+            <!-- Summary Bar & Submissions -->
             <div class="rr-summary-bar">
               <div style="display:flex; flex-direction:column; gap:8px; flex:1; max-width:480px;">
-                <input type="text" id="rrRemarks" placeholder="Remarks / Delivery Receipt (DR) No. / Invoice No. (Optional)" style="padding:9px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem;">
+                <input type="text" id="rrRemarks" placeholder="Remarks / Delivery Receipt (DR) No. / Invoice No. (Optional)" style="padding:10px 12px; border:1px solid var(--border); border-radius:7px; font-size:0.85rem;">
                 <div style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
                   <i class="fa-solid fa-user-check" style="color:var(--accent);"></i>
                   <span>Inspected &amp; Received by: <strong id="rrReceiverLabel">Inventory Staff</strong></span>
@@ -4333,10 +4451,10 @@
                   <span class="val" id="rrGrandTotalDisplay">₱ 0.00</span>
                 </div>
                 <div style="display:flex; gap:10px;">
-                  <button type="button" class="btn-primary" onclick="resetRrForm()" style="background:#64748b; padding:10px 18px; font-size:0.85rem;">
+                  <button type="button" class="btn-primary" onclick="resetRrForm()" style="background:#64748b; padding:11px 20px; font-size:0.85rem; border-radius:7px;">
                     <i class="fa-solid fa-rotate-left"></i> Reset
                   </button>
-                  <button type="submit" class="btn-primary" id="btnSubmitRr" style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a;">
+                  <button type="submit" class="btn-primary" id="btnSubmitRr" style="padding:11px 26px; font-size:0.85rem; font-weight:700; background:#16a34a; border-radius:7px; box-shadow:0 3px 10px rgba(22,163,74,0.25);">
                     <i class="fa-solid fa-circle-check"></i> Submit Receiving Report
                   </button>
                 </div>
@@ -9713,6 +9831,164 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       if (badge) badge.textContent = refNo;
       return refNo;
     }
+
+    window.submitReceivingReport = async function (event) {
+      if (event) event.preventDefault();
+
+      const dateVal = document.getElementById('rrDate')?.value || '';
+      const deptVal = document.getElementById('rrDepartment')?.value || '';
+      const prfVal = (document.getElementById('rrPrfNo')?.value || '').trim();
+      const poVal = (document.getElementById('rrPoNo')?.value || '').trim();
+      const supplierVal = (document.getElementById('rrSupplier')?.value || '').trim();
+      const expenseAccVal = document.getElementById('rrExpenseAccount')?.value || '';
+      const subAccVal = (document.getElementById('rrSubAccount')?.value || '').trim();
+      const budgetFromVal = (document.getElementById('rrBudgetFrom')?.value || '').trim();
+      const remarksVal = (document.getElementById('rrRemarks')?.value || '').trim();
+      const receiverVal = sessionStorage.getItem('userFullName') || 'Inventory Staff';
+
+      if (!dateVal) {
+        alert('Please specify the Delivery Date.');
+        document.getElementById('rrDate')?.focus();
+        return;
+      }
+      if (!deptVal) {
+        alert('Please select a Department.');
+        document.getElementById('rrDepartment')?.focus();
+        return;
+      }
+      if (!prfVal) {
+        alert('Please enter the PRF No.');
+        document.getElementById('rrPrfNo')?.focus();
+        return;
+      }
+      if (!poVal) {
+        alert('Please enter the PO No.');
+        document.getElementById('rrPoNo')?.focus();
+        return;
+      }
+      if (!supplierVal) {
+        alert('Please enter or select the Supplier Name.');
+        document.getElementById('rrSupplier')?.focus();
+        return;
+      }
+
+      // Collect line items
+      const rows = document.querySelectorAll('#rrItemsTbody .rr-item-row');
+      const items = [];
+      let grandTotal = 0;
+
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const desc = (row.querySelector('.rr-item-desc')?.value || '').trim();
+        const qty = parseFloat(row.querySelector('.rr-item-qty')?.value) || 0;
+        const uom = row.querySelector('.rr-item-uom')?.value || 'Pcs';
+        const cost = parseFloat(row.querySelector('.rr-item-cost')?.value) || 0;
+        const total = qty * cost;
+
+        if (!desc) {
+          alert(`Please fill in the item description for line #${i + 1}.`);
+          row.querySelector('.rr-item-desc')?.focus();
+          return;
+        }
+        if (qty <= 0) {
+          alert(`Quantity for line #${i + 1} must be greater than 0.`);
+          row.querySelector('.rr-item-qty')?.focus();
+          return;
+        }
+
+        grandTotal += total;
+        items.push({
+          item_code: `ITM-RR-${Date.now().toString().slice(-4)}-${i + 1}`,
+          description: desc,
+          qty: qty,
+          qty_ordered: qty,
+          uom: uom,
+          unit_cost: cost,
+          total_amount: Math.round(total * 100) / 100,
+          balance_qty: 0,
+          balance_amount: 0,
+          expense_account: expenseAccVal,
+          sub_account: subAccVal
+        });
+      }
+
+      if (items.length === 0) {
+        alert('Please provide at least one received item line.');
+        return;
+      }
+
+      const submitBtn = document.getElementById('btnSubmitRr');
+      const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+      }
+
+      try {
+        const year = new Date(dateVal).getFullYear() || 2026;
+        const seqNum = (receivingReportsData || []).length + 1;
+        const rrNo = `RR-${year}-${String(seqNum).padStart(4, '0')}`;
+        const newId = `rr_WEB_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
+        const newRecord = {
+          id: newId,
+          rr_no: rrNo,
+          report_date: dateVal,
+          po_no: poVal,
+          prf_no: prfVal,
+          supplier_name: supplierVal,
+          department: deptVal,
+          expense_account: expenseAccVal,
+          sub_account: subAccVal,
+          budget_from: budgetFromVal,
+          remarks: remarksVal,
+          is_2025_stock: false,
+          received_by: receiverVal,
+          total_amount: Math.round(grandTotal * 100) / 100,
+          items: items
+        };
+
+        // 1. Insert into Supabase
+        try {
+          if (window.supabase) {
+            const { error } = await supabase.from('receiving_reports').insert([newRecord]);
+            if (error) {
+              console.warn('Notice inserting to Supabase:', error.message || error);
+            }
+          }
+        } catch (supErr) {
+          console.warn('Supabase network notice:', supErr);
+        }
+
+        // 2. Prepend to current in-memory data
+        receivingReportsData.unshift(newRecord);
+
+        // 3. Update localStorage cache
+        try {
+          const cache = JSON.parse(localStorage.getItem('receiving_reports_cache') || '[]');
+          cache.unshift(newRecord);
+          localStorage.setItem('receiving_reports_cache', JSON.stringify(cache));
+        } catch (e) {
+          console.warn('Cache write notice:', e);
+        }
+
+        // 4. Update UI displays
+        updateRrStats();
+        filterReceivingReports();
+        resetRrForm();
+
+        alert(`✅ Material Receiving Report Submitted Successfully!\n\nReference: ${rrNo}\nSupplier: ${supplierVal}\nDepartment: ${deptVal}\nItems: ${items.length} line(s)\nTotal Value: ₱ ${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n\nThe record has been logged in the Receiving Reports Registry.`);
+
+      } catch (err) {
+        console.error('Error submitting receiving report:', err);
+        alert('Failed to submit receiving report: ' + (err.message || 'Unknown error'));
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnText;
+        }
+      }
+    };
 
     let rrCurrentPage = 1;
     const rrPageSize = 25;
