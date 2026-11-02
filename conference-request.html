@@ -1721,6 +1721,67 @@
         }
     }
   </style>
+<style>
+    /* CLEAN & NEAT SUBMIT BUTTON (MATCHING SUPPLIES DASHBOARD) */
+    .req-submit-row {
+      padding: 14px 0 0 0;
+      border-top: 1px solid var(--border, #e2e8f0);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 14px;
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+
+    .btn-submit,
+    form button[type="submit"] {
+      background: var(--accent, #FCAE16) !important;
+      color: var(--primary, #1E355F) !important;
+      border: none !important;
+      padding: 9px 24px !important;
+      border-radius: 7px !important;
+      font-size: .85rem !important;
+      font-weight: 700 !important;
+      cursor: pointer !important;
+      width: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      transition: opacity .2s ease, transform .15s ease !important;
+      box-shadow: 0 2px 6px rgba(252, 174, 22, 0.25) !important;
+      align-self: flex-end !important;
+    }
+
+    .btn-submit:hover,
+    form button[type="submit"]:hover {
+      opacity: .85 !important;
+      transform: translateY(-1px) !important;
+    }
+
+    .btn-submit:active,
+    form button[type="submit"]:active {
+      transform: translateY(0) !important;
+    }
+
+    .btn-submit:disabled,
+    form button[type="submit"]:disabled {
+      opacity: .6 !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+    }
+
+    body.dark-mode .req-submit-row {
+      border-top-color: #334155 !important;
+    }
+
+    body.dark-mode .btn-submit,
+    body.dark-mode form button[type="submit"] {
+      background: #FCAE16 !important;
+      color: #0f172a !important;
+    }
+</style>
 </head>
 
 <body>
@@ -1855,8 +1916,9 @@
         <div class="grid"><label>No. of Participants<input name="participants" type="number" min="1"
               required></label><label>Date<input name="date" type="date" required></label></div>
         <div class="grid"><label>Start Time<input name="startTime" type="time" required></label><label>Est. End
-            Time<input name="endTime" type="time" required></label></div><button type="submit">Submit Conference Room
-          Request</button>
+            Time<input name="endTime" type="time" required></label></div><div class="req-submit-row">
+          <button type="submit" class="btn-submit">Submit Conference Room Request</button>
+        </div>
       </form>
     </section>
       </div>
