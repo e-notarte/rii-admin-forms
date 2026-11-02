@@ -1,0 +1,268 @@
+/* =========================================================================
+   USER NAVIGATION PANEL - MATCHING ADMIN ACCOUNT NAVI PANEL EXACTLY
+   Design & Interactions: 275px width, crisp typography, gold accent hover,
+   active left-border, micro-animations, Apple iOS badge notifications.
+   ========================================================================= */
+
+@media (min-width: 901px) {
+  .sidebar {
+    width: 275px !important;
+  }
+  .main-content,
+  main,
+  .main,
+  .page-body {
+    margin-left: 275px !important;
+  }
+  .footer {
+    margin-left: 275px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .footer {
+    margin-left: 0 !important;
+  }
+}
+
+.sidebar {
+  width: 275px;
+  background: #ffffff !important;
+  border-right: 1px solid var(--border, #e2e8f0) !important;
+  position: fixed !important;
+  top: 64px !important;
+  left: 0 !important;
+  height: calc(100vh - 64px) !important;
+  z-index: 90 !important;
+  padding: 14px 0 40px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  box-shadow: none !important;
+}
+
+.nav-label {
+  display: block !important;
+  color: #94a3b8 !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  padding: 14px 18px 4px !important;
+  text-transform: uppercase !important;
+  margin: 0 !important;
+  user-select: none;
+}
+
+.nav-link,
+.nav-group-title {
+  cursor: pointer !important;
+  user-select: none !important;
+  align-items: center !important;
+  border-left: 3px solid transparent !important;
+  color: #334155 !important;
+  display: flex !important;
+  font-size: 0.86rem !important;
+  font-weight: 500 !important;
+  gap: 12px !important;
+  padding: 9px 18px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  transition: all 0.15s ease !important;
+  background: transparent;
+  line-height: 1.4;
+}
+
+.nav-icon-wrapper {
+  position: relative !important;
+  width: 20px !important;
+  height: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+.nav-link i,
+.nav-group-title i,
+.nav-icon-wrapper i {
+  font-size: 0.95rem !important;
+  color: #64748b !important;
+  transition: color 0.15s ease, transform 0.15s ease !important;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-icon-wrapper i {
+  width: 100% !important;
+}
+
+.nav-icon-wrapper .nav-count,
+.nav-count {
+  position: absolute !important;
+  top: -5px !important;
+  right: -8px !important;
+  min-width: 17px !important;
+  height: 17px !important;
+  padding: 0 4px !important;
+  border-radius: 999px !important;
+  background: #ff3b30 !important; /* Authentic Apple iOS notification badge red */
+  color: #ffffff !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 2px solid #ffffff !important; /* Apple iOS badge crisp white ring */
+  box-shadow: 0 2px 4px rgba(255, 59, 48, 0.45) !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  letter-spacing: -0.2px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif !important;
+}
+
+.nav-count:empty {
+  display: none !important;
+}
+
+.nav-title {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  flex: 1 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: -0.1px !important;
+}
+
+/* Hover Reactions matching Admin Account */
+.nav-link:hover,
+.nav-group-title:hover {
+  color: var(--primary, #1e355f) !important;
+  background: rgba(30, 53, 95, 0.04) !important;
+}
+
+.nav-link:hover i,
+.nav-group-title:hover i,
+.nav-link:hover .nav-icon-wrapper i,
+.nav-group-title:hover .nav-icon-wrapper i,
+.nav-link.active i,
+.nav-link.active .nav-icon-wrapper i {
+  color: var(--accent, #fcae16) !important;
+}
+
+.nav-link:hover .nav-icon-wrapper i,
+.nav-group-title:hover .nav-icon-wrapper i {
+  transform: scale(1.08) !important;
+}
+
+/* Active State matching Admin Account */
+.nav-link.active {
+  color: var(--primary, #1e355f) !important;
+  background: rgba(252, 174, 22, 0.09) !important;
+  border-left-color: var(--accent, #fcae16) !important;
+  font-weight: 600 !important;
+}
+
+/* Active Press / Click Effect */
+.nav-link:active,
+.nav-group-title:active {
+  transform: scale(0.99) !important;
+  background: rgba(252, 174, 22, 0.14) !important;
+}
+
+/* Facility Request Submenu / Grouping */
+.nav-group {
+  position: relative;
+}
+
+.nav-group-title {
+  justify-content: flex-start;
+}
+
+.nav-group-title .fa-chevron-down,
+.nav-group-title .nav-chevron {
+  margin-left: auto !important;
+  font-size: 0.75rem !important;
+  transition: transform 0.2s ease !important;
+  color: #94a3b8 !important;
+}
+
+.nav-group.open .fa-chevron-down,
+.nav-group.open .nav-chevron {
+  transform: rotate(180deg) !important;
+}
+
+.sub-links {
+  padding-left: 0 !important;
+  display: none !important;
+  background: rgba(248, 250, 252, 0.7);
+}
+
+.sub-links.open {
+  display: block !important;
+}
+
+.sub-link {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 7px 18px 7px 46px !important;
+  color: #64748b !important;
+  text-decoration: none !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  transition: all 0.15s ease !important;
+  border-left: 3px solid transparent !important;
+}
+
+.sub-link:hover {
+  color: var(--primary, #1e355f) !important;
+  background: rgba(30, 53, 95, 0.04) !important;
+  padding-left: 50px !important;
+}
+
+.sub-link.active {
+  color: var(--primary, #1e355f) !important;
+  font-weight: 600 !important;
+  background: rgba(252, 174, 22, 0.08) !important;
+  border-left-color: var(--accent, #fcae16) !important;
+}
+
+/* Dark Mode Harmonization */
+body.dark-mode .sidebar {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .nav-link,
+body.dark-mode .nav-group-title {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .nav-group-title:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-mode .nav-link.active {
+  background: rgba(252, 174, 22, 0.12) !important;
+}
+
+body.dark-mode .sub-links {
+  background: rgba(15, 23, 42, 0.4) !important;
+}
+
+body.dark-mode .sub-link {
+  color: #94a3b8 !important;
+}
+
+body.dark-mode .sub-link:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.dark-mode .nav-icon-wrapper .nav-count,
+body.dark-mode .nav-count {
+  border-color: #0f172a !important;
+}

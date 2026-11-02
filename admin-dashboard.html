@@ -3687,6 +3687,86 @@
       background: #0f172a;
     }
 
+    /* Responsive Budget Ledger Action Buttons (Update, Delete, +Expense) */
+    .bgt-actions-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+    .bgt-btn-action {
+      padding: 5px 9px;
+      font-size: 0.72rem;
+      border: none;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+      text-decoration: none;
+      line-height: 1.2;
+    }
+    .bgt-btn-action:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+    }
+    .bgt-btn-action:active {
+      transform: translateY(0);
+      filter: brightness(0.95);
+    }
+    .bgt-btn-update {
+      background: #0284c7;
+    }
+    .bgt-btn-delete {
+      background: #ef4444;
+    }
+    .bgt-btn-expense {
+      background: #10b981;
+    }
+    @media (max-width: 1280px) {
+      .bgt-btn-action {
+        padding: 4px 7px;
+        font-size: 0.7rem;
+        gap: 3px;
+      }
+    }
+    @media (max-width: 992px) {
+      .bgt-actions-group {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: center;
+      }
+      .bgt-btn-action {
+        flex: 1 1 auto;
+        min-width: 60px;
+        padding: 4px 6px;
+      }
+    }
+    @media (max-width: 640px) {
+      .bgt-actions-group {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 4px;
+      }
+      .bgt-btn-action {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 0.75rem;
+      }
+    }
+
     /* System Theme Pop-Up Modal (Custom Alert) */
     .system-alert-backdrop {
       display: none;
@@ -8529,16 +8609,16 @@ This serves as your official electronic copy of the posted Requisition & Issue S
                 <div class="bgt-progress-fill ${barClass}" style="width: ${Math.min(util, 100)}%;"></div>
               </div>
             </td>
-            <td style="text-align:center;">
-              <div style="display:inline-flex; align-items:center; gap:4px; justify-content:center; flex-wrap:nowrap;">
-                <button type="button" class="btn-primary" onclick="openEditBudgetModal('${escapeDispatchHtml(item.cost_code)}')" title="Update this budget account record" style="padding:4px 8px; font-size:0.72rem; background:#0284c7; border:none; border-radius:4px; display:inline-flex; align-items:center; gap:3px; cursor:pointer; font-weight:600; color:white;">
-                  <i class="fa-solid fa-pen-to-square"></i> Update
+            <td style="text-align:center; min-width:180px;">
+              <div class="bgt-actions-group">
+                <button type="button" class="bgt-btn-action bgt-btn-update" onclick="openEditBudgetModal('${escapeDispatchHtml(item.cost_code)}')" title="Update this budget account record">
+                  <i class="fa-solid fa-pen-to-square"></i> <span>Update</span>
                 </button>
-                <button type="button" class="btn-primary" onclick="deleteBudgetAccount('${escapeDispatchHtml(item.cost_code)}')" title="Delete this budget account record" style="padding:4px 8px; font-size:0.72rem; background:#ef4444; border:none; border-radius:4px; display:inline-flex; align-items:center; gap:3px; cursor:pointer; font-weight:600; color:white;">
-                  <i class="fa-solid fa-trash-can"></i> Delete
+                <button type="button" class="bgt-btn-action bgt-btn-delete" onclick="deleteBudgetAccount('${escapeDispatchHtml(item.cost_code)}')" title="Delete this budget account record">
+                  <i class="fa-solid fa-trash-can"></i> <span>Delete</span>
                 </button>
-                <button type="button" class="btn-primary" onclick="openBudgetExpenseModal('${escapeDispatchHtml(item.cost_code)}')" title="Charge expense against this account" style="padding:4px 8px; font-size:0.72rem; background:#10b981; border:none; border-radius:4px; display:inline-flex; align-items:center; gap:3px; cursor:pointer; font-weight:600; color:white;">
-                  <i class="fa-solid fa-plus"></i> Expense
+                <button type="button" class="bgt-btn-action bgt-btn-expense" onclick="openBudgetExpenseModal('${escapeDispatchHtml(item.cost_code)}')" title="Charge expense against this account">
+                  <i class="fa-solid fa-plus"></i> <span>Expense</span>
                 </button>
               </div>
             </td>

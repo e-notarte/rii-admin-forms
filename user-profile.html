@@ -480,6 +480,7 @@
   <title>Welcome - Admin Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="user-nav-panel.css">
   <style>
     :root {
       --primary: #1E355F;
@@ -1777,33 +1778,50 @@
       </div>
     </div>
   </header>
-  <aside class="sidebar" aria-label="User navigation">
+    <aside class="sidebar" aria-label="User navigation">
     <div class="sidebar-brand-mobile">
-      <div class="brand"><img
-          src="RII_Logo.png"
-          alt="RII Logo"><span>R-II BUILDERS</span></div>
-      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
-          class="fa-solid fa-xmark"></i></button>
+      <div class="brand"><img src="RII_Logo.png" alt="RII Logo"><span>R-II BUILDERS</span></div>
+      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="nav-label">User Accounts</div>
     <nav>
-      <a class="nav-link" href="welcome.html?view=requests"><i class="fa-solid fa-chart-pie"></i> User Dashboard</a>
+      <a class="nav-link " href="welcome.html?view=requests">
+        <span class="nav-icon-wrapper"><i class="fa-solid fa-chart-pie"></i></span>
+        <span class="nav-title">User Dashboard</span>
+      </a>
     </nav>
     <div class="nav-label">Navi Options</div>
     <nav>
-      <a class="nav-link" href="vehicle-request.html"><i class="fa-solid fa-car"></i> Vehicle Request</a>
-      <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
-      <div class="nav-group">
-        <div class="nav-group-title" onclick="this.nextElementSibling.classList.toggle('open')"><i
-            class="fa-solid fa-building"></i> Facility Request <i class="fa-solid fa-chevron-down"
-            style="margin-left:auto; font-size:0.8em;"></i></div>
-        <div class="sub-links"><a class="sub-link" href="conference-request.html">Conference Room</a><a class="sub-link"
-            href="function-request.html">Function Hall</a><a class="sub-link" href="parking-request.html">Parking
-            Slot</a><a class="sub-link" href="zoom-request.html">Zoom Meeting</a><a class="sub-link"
-            href="teams-request.html">MS Teams</a></div>
+      <a class="nav-link " href="vehicle-request.html">
+        <span class="nav-icon-wrapper"><i class="fa-solid fa-car"></i></span>
+        <span class="nav-title">Vehicle Request</span>
+      </a>
+      <a class="nav-link " href="driver-request.html">
+        <span class="nav-icon-wrapper"><i class="fa-solid fa-id-card"></i></span>
+        <span class="nav-title">Driver Request</span>
+      </a>
+      <div class="nav-group ">
+        <div class="nav-group-title" onclick="this.parentElement.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+          <span class="nav-icon-wrapper"><i class="fa-solid fa-building"></i></span>
+          <span class="nav-title">Facility Request</span>
+          <i class="fa-solid fa-chevron-down nav-chevron" style="margin-left:auto; font-size:0.75rem; transition:transform 0.2s;"></i>
+        </div>
+        <div class="sub-links ">
+          <a class="sub-link " href="conference-request.html">Conference Room</a>
+          <a class="sub-link " href="function-request.html">Function Hall</a>
+          <a class="sub-link " href="parking-request.html">Parking Slot</a>
+          <a class="sub-link " href="zoom-request.html">Zoom Meeting</a>
+          <a class="sub-link " href="teams-request.html">MS Teams</a>
+        </div>
       </div>
-      <a class="nav-link" href="liaison-request.html"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison</a>
-      <a class="nav-link" href="supplies-dashboard.html"><i class="fa-solid fa-boxes-stacked"></i> Supplies</a>
+      <a class="nav-link " href="liaison-request.html">
+        <span class="nav-icon-wrapper"><i class="fa-solid fa-person-walking-arrow-right"></i></span>
+        <span class="nav-title">Liaison</span>
+      </a>
+      <a class="nav-link " href="supplies-dashboard.html">
+        <span class="nav-icon-wrapper"><i class="fa-solid fa-boxes-stacked"></i></span>
+        <span class="nav-title">Supplies</span>
+      </a>
     </nav>
   </aside>
   <main>

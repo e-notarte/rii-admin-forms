@@ -125,6 +125,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="user-nav-panel.css">
 
     <style>
         :root {
@@ -276,9 +277,26 @@
             margin-left: 260px;
         }
 
-        /* REQUESTOR NAVIGATION */
+        @media (min-width: 901px) {
+            .sidebar {
+                width: 275px !important;
+            }
+            .page-body {
+                margin-left: 275px !important;
+            }
+            .footer {
+                margin-left: 275px !important;
+            }
+        }
+        @media (max-width: 900px) {
+            .footer {
+                margin-left: 0 !important;
+            }
+        }
+
+        /* REQUESTOR NAVIGATION - Styled to match Admin Account Navi Panel */
         .sidebar {
-            width: 260px;
+            width: 275px;
             background: #fff;
             border-right: 1px solid var(--border);
             position: fixed;
@@ -286,69 +304,130 @@
             left: 0;
             height: calc(100vh - 64px);
             z-index: 90;
-            padding: 20px 0;
+            padding: 14px 0 40px !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
         }
 
         .nav-label {
-            color: var(--muted);
-            font-size: .75rem;
-            font-weight: 600;
-            letter-spacing: .05em;
-            padding: 10px 24px 5px;
-            text-transform: uppercase;
+            display: block;
+            color: #94a3b8 !important;
+            font-size: 0.7rem !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.08em !important;
+            padding: 14px 18px 4px !important;
+            text-transform: uppercase !important;
+            margin: 0 !important;
         }
 
         .nav-link,
         .nav-group-title {
             cursor: pointer;
             user-select: none;
-
-            align-items: center;
-            border-left: 3px solid transparent;
-            color: #2d3748;
-            display: flex;
-            font-size: .9rem;
-            font-weight: 500;
-            gap: 15px;
-            padding: 12px 24px;
-            text-decoration: none;
-            transition: all .2s;
+            align-items: center !important;
+            border-left: 3px solid transparent !important;
+            color: #334155 !important;
+            display: flex !important;
+            font-size: 0.86rem !important;
+            font-weight: 500 !important;
+            gap: 12px !important;
+            padding: 9px 18px !important;
+            text-decoration: none !important;
+            white-space: nowrap !important;
+            transition: all 0.15s ease !important;
         }
 
-        .nav-link i,
-        .nav-group-title i {
-            color: var(--muted);
-            text-align: center;
+        .nav-icon-wrapper {
+            position: relative;
             width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .nav-icon-wrapper i {
+            width: 100%;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #64748b;
+            transition: color 0.15s ease, transform 0.15s ease;
+        }
+
+        .nav-icon-wrapper .nav-count,
+        .nav-count {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            min-width: 17px;
+            height: 17px;
+            padding: 0 4px;
+            border-radius: 999px;
+            background: #ff3b30 !important;
+            color: #ffffff !important;
+            font-size: 9px;
+            font-weight: 800;
+            line-height: 1;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff !important;
+            box-shadow: 0 2px 4px rgba(255, 59, 48, 0.45);
+            z-index: 10;
+            pointer-events: none;
+            margin: 0 !important;
+            letter-spacing: -0.2px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+        }
+
+        .nav-count:empty {
+            display: none !important;
+        }
+
+        .nav-title {
+            white-space: nowrap !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            font-size: 0.85rem;
+            letter-spacing: -0.1px;
         }
 
         .nav-link:hover,
-        .nav-link.active {
-            background: #1e355f0d;
-            color: var(--primary);
+        .nav-group-title:hover {
+            color: var(--primary) !important;
+            background: rgba(30, 53, 95, 0.04) !important;
+        }
+
+        .nav-link:hover .nav-icon-wrapper i,
+        .nav-group-title:hover .nav-icon-wrapper i,
+        .nav-link.active .nav-icon-wrapper i {
+            color: var(--accent, #fcae16) !important;
+            transform: scale(1.08);
         }
 
         .nav-link.active {
-            border-left-color: var(--accent);
+            color: var(--primary) !important;
+            background: rgba(252, 174, 22, 0.09) !important;
+            border-left-color: var(--accent) !important;
+            font-weight: 600 !important;
         }
 
-        .nav-group-title {
-            color: var(--primary);
+        .nav-link:active,
+        .nav-group-title:active {
+            transform: scale(0.99);
+            background: rgba(252, 174, 22, 0.14) !important;
         }
 
-
-
-        .nav-link.active i {
-            color: var(--accent);
-        }
-
-        .nav-link.active {
-            background: rgba(252, 174, 22, 0.05);
-            border-left-color: var(--accent);
+        .nav-group.open .nav-chevron,
+        .nav-group.open .fa-chevron-down {
+            transform: rotate(180deg);
         }
 
         .sub-links {
-            padding-left: 26px;
+            padding-left: 0;
             display: none;
         }
 
@@ -357,17 +436,29 @@
         }
 
         .sub-link {
-            display: block;
-            color: var(--muted);
-            font-size: .82rem;
-            padding: 7px 24px 7px 33px;
-            text-decoration: none;
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            padding: 7px 18px 7px 46px !important;
+            color: #64748b !important;
+            text-decoration: none !important;
+            font-size: 0.82rem !important;
+            font-weight: 500 !important;
+            white-space: nowrap !important;
+            transition: all 0.15s ease !important;
         }
 
-        .sub-link:hover,
+        .sub-link:hover {
+            color: var(--primary) !important;
+            background: rgba(30, 53, 95, 0.04) !important;
+            padding-left: 50px !important;
+        }
+
         .sub-link.active {
-            color: var(--primary);
-            background: #f8fafc;
+            color: var(--primary) !important;
+            font-weight: 600 !important;
+            background: rgba(252, 174, 22, 0.08) !important;
+            border-left: 3px solid var(--accent);
         }
 
         /* PANELS */
@@ -2035,26 +2126,31 @@
 
     <aside class="sidebar" aria-label="User navigation">
         <div class="sidebar-brand-mobile">
-            <div class="brand"><img
-                    src="RII_Logo.png"
-                    alt="RII Logo"><span>R-II BUILDERS</span></div>
-            <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
-                    class="fa-solid fa-xmark"></i></button>
+            <div class="brand"><img src="RII_Logo.png" alt="RII Logo"><span>R-II BUILDERS</span></div>
+            <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="nav-label">User Accounts</div>
         <nav>
-          <a class="nav-link" href="welcome.html?view=requests"><i class="fa-solid fa-chart-pie"></i> User Dashboard</a>
+            <a class="nav-link" href="welcome.html?view=requests">
+                <span class="nav-icon-wrapper"><i class="fa-solid fa-chart-pie"></i></span>
+                <span class="nav-title">User Dashboard</span>
+            </a>
         </nav>
         <div class="nav-label">Navi Options</div>
         <nav>
             <a href="vehicle-request.html" class="nav-link">
-                <i class="fa-solid fa-car"></i> Vehicle Request
+                <span class="nav-icon-wrapper"><i class="fa-solid fa-car"></i></span>
+                <span class="nav-title">Vehicle Request</span>
             </a>
-            <a class="nav-link" href="driver-request.html"><i class="fa-solid fa-id-card"></i> Driver Request</a>
+            <a class="nav-link" href="driver-request.html">
+                <span class="nav-icon-wrapper"><i class="fa-solid fa-id-card"></i></span>
+                <span class="nav-title">Driver Request</span>
+            </a>
             <div class="nav-group">
-                <div class="nav-group-title" onclick="this.nextElementSibling.classList.toggle('open')">
-                    <i class="fa-solid fa-building"></i> Facility Request
-                    <i class="fa-solid fa-chevron-down" style="margin-left:auto; font-size:0.8em;"></i>
+                <div class="nav-group-title" onclick="this.parentElement.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+                    <span class="nav-icon-wrapper"><i class="fa-solid fa-building"></i></span>
+                    <span class="nav-title">Facility Request</span>
+                    <i class="fa-solid fa-chevron-down nav-chevron" style="margin-left:auto; font-size:0.75rem; transition:transform 0.2s;"></i>
                 </div>
                 <div class="sub-links">
                     <a href="conference-request.html" class="sub-link">Conference Room</a>
@@ -2065,10 +2161,12 @@
                 </div>
             </div>
             <a href="liaison-request.html" class="nav-link">
-                <i class="fa-solid fa-person-walking-arrow-right"></i> Liaison
+                <span class="nav-icon-wrapper"><i class="fa-solid fa-person-walking-arrow-right"></i></span>
+                <span class="nav-title">Liaison</span>
             </a>
             <a href="supplies-dashboard.html" class="nav-link active" aria-current="page">
-                <i class="fa-solid fa-boxes-stacked"></i> Supplies
+                <span class="nav-icon-wrapper"><i class="fa-solid fa-boxes-stacked"></i></span>
+                <span class="nav-title">Supplies</span>
             </a>
         </nav>
     </aside>
@@ -2152,17 +2250,6 @@
                     <label for="deptSelect" style="font-size:0.8rem; font-weight:600; color:var(--primary); display:flex; align-items:center; gap:6px;">
                         <i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Department Requisition
                     </label>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <button type="button" onclick="openPasteBudgetModal()" style="border:1px solid var(--border); border-radius:5px; background:white; padding:3px 8px; font-size:0.75rem; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; gap:4px;" title="Paste copied rows from SharePoint Excel">
-                            <i class="fa-solid fa-paste" style="color:var(--accent);"></i>
-                            <span>Paste Excel</span>
-                        </button>
-                        <label for="budgetFileInput" style="cursor:pointer; font-size:0.75rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; padding:3px 8px; border:1px solid var(--border); border-radius:5px; background:white;" title="Load custom budget file (.json/.csv)">
-                            <i class="fa-solid fa-file-import" style="color:var(--accent);"></i>
-                            <span id="budgetLoadBtnText">Import File</span>
-                            <input type="file" id="budgetFileInput" accept=".json,.csv" style="display:none;">
-                        </label>
-                    </div>
                 </div>
                 <select id="deptSelect">
                     <option value="">Select Department</option>
@@ -2994,14 +3081,49 @@
         }
         window.escapeHtml = escapeHtml;
 
+        // User Account Supplies Filter: strictly pull only authorized supplies accounts:
+        // 062 • General Office Supplies (General & Office Supplies)
+        // 062.1 • General & Pantry Supplies
+        // 062.2 • General & Cleaning Supplies
+        // 063 • Reproduction & Printing
+        function sanitizeSuppliesInventory(data) {
+            if (!data || !Array.isArray(data.items)) return data;
+            const allowedPrefixes = ['062', '062.1', '062.2', '063'];
+            const filteredItems = data.items.filter(it => {
+                const acc = String(it.expense_account || '').trim();
+                return allowedPrefixes.some(p => acc.startsWith(p));
+            });
+            let inStock = 0, lowStock = 0, outOfStock = 0;
+            filteredItems.forEach(it => {
+                const qty = Number(it.on_hand_qty) || 0;
+                if (qty > 5) inStock++;
+                else if (qty > 0) lowStock++;
+                else outOfStock++;
+            });
+            return {
+                ...data,
+                items: filteredItems,
+                meta: {
+                    ...(data.meta || {}),
+                    total_items: filteredItems.length,
+                    in_stock_count: inStock,
+                    low_stock_count: lowStock,
+                    out_of_stock_count: outOfStock
+                }
+            };
+        }
+        window.sanitizeSuppliesInventory = sanitizeSuppliesInventory;
+
         window.initUserOnHandInventory = async function () {
             if (!window.onHandInventoryData) {
                 try {
                     const mod = await import('./on_hand_inventory_data.js');
-                    window.onHandInventoryData = mod.onHandInventoryData;
+                    window.onHandInventoryData = sanitizeSuppliesInventory(mod.onHandInventoryData);
                 } catch (e) {
                     console.warn('Could not load onHandInventoryData:', e);
                 }
+            } else {
+                window.onHandInventoryData = sanitizeSuppliesInventory(window.onHandInventoryData);
             }
             updateUserOnHandStats();
             filterUserOnHandInventory();
@@ -3009,19 +3131,16 @@
 
         function updateUserOnHandStats() {
             const items = window.onHandInventoryData?.items || [];
-            const meta = window.onHandInventoryData?.meta || {};
-            let inStock = meta.in_stock_count || 0;
-            let lowStock = meta.low_stock_count || 0;
-            let outOfStock = meta.out_of_stock_count || 0;
+            let inStock = 0;
+            let lowStock = 0;
+            let outOfStock = 0;
 
-            if (!meta.in_stock_count && items.length > 0) {
-                inStock = 0; lowStock = 0; outOfStock = 0;
-                items.forEach(it => {
-                    if (it.on_hand_qty > 5) inStock++;
-                    else if (it.on_hand_qty > 0) lowStock++;
-                    else outOfStock++;
-                });
-            }
+            items.forEach(it => {
+                const qty = Number(it.on_hand_qty) || 0;
+                if (qty > 5) inStock++;
+                else if (qty > 0) lowStock++;
+                else outOfStock++;
+            });
 
             const pills = document.getElementById('userStockFilterPills');
             if (pills) {
@@ -3295,7 +3414,11 @@
         import { supabase } from './supabase-client.js';
         import { onHandInventoryData } from './on_hand_inventory_data.js';
 
-        window.onHandInventoryData = onHandInventoryData;
+        if (typeof window.sanitizeSuppliesInventory === 'function') {
+            window.onHandInventoryData = window.sanitizeSuppliesInventory(onHandInventoryData);
+        } else {
+            window.onHandInventoryData = onHandInventoryData;
+        }
         if (typeof initUserOnHandInventory === 'function') {
             initUserOnHandInventory();
         }
