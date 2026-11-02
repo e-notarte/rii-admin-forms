@@ -5165,38 +5165,6 @@
               </div>
 
               <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                <!-- Company / Lessee Filter -->
-                <select id="bmLedgerCompanyFilter" onchange="bmCompanyFilter = this.value; filterBmStatementsLedger();" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
-                  <option value="ALL">All Lessees (5 Companies)</option>
-                  <option value="RMRCI">RMRCI &bull; RMR Capital, Inc.</option>
-                  <option value="PESC">PESC &bull; Phil Ecology Systems Corp.</option>
-                  <option value="RBI">RBI &bull; R-II Builders, Inc.</option>
-                  <option value="RLDI">RLDI &bull; RLand Development, Inc.</option>
-                  <option value="PESC Vitas">PESC Vitas &bull; Phileco</option>
-                </select>
-
-                <!-- Month Filter -->
-                <select id="bmLedgerMonthFilter" onchange="filterBmStatementsLedger()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
-                  <option value="ALL">All Billing Months (10 Months)</option>
-                  <option value="JAN">JAN &bull; January 2026</option>
-                  <option value="FEB">FEB &bull; February 2026</option>
-                  <option value="MAR">MAR &bull; March 2026</option>
-                  <option value="APR">APR &bull; April 2026</option>
-                  <option value="MAY">MAY &bull; May 2026</option>
-                  <option value="JUN">JUN &bull; June 2026</option>
-                  <option value="JUL">JUL &bull; July 2026</option>
-                  <option value="AUG">AUG &bull; August 2026</option>
-                  <option value="SEP">SEP &bull; September 2026</option>
-                  <option value="OCT">OCT &bull; October 2026</option>
-                </select>
-
-                <!-- Status Filter -->
-                <select id="bmLedgerStatusFilter" onchange="filterBmStatementsLedger()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
-                  <option value="ALL">All Payment Statuses</option>
-                  <option value="PAID">PAID</option>
-                  <option value="PENDING">PENDING</option>
-                </select>
-
                 <!-- Category Pills -->
                 <div style="display:flex; gap:6px; align-items:center;">
                   <button type="button" class="veh-filter-btn active" id="btnBmCatAll" onclick="filterBmCategory('ALL', this)">All Utilities (220)</button>
@@ -12767,7 +12735,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
         // Search text
         if (searchTerm) {
-          const str = `${r.soa_no || ''} ${r.company || ''} ${r.unit || ''} ${r.category || ''} ${r.bill_period || ''} ${r.month || ''}`.toLowerCase();
+          const str = `${r.soa_no || ''} ${r.company || ''} ${r.tenant_name || ''} ${r.unit || ''} ${r.unit_floor || ''} ${r.category || ''} ${r.bill_period || ''} ${r.month || ''} ${r.payment_status || ''}`.toLowerCase();
           if (!str.includes(searchTerm)) return false;
         }
 
