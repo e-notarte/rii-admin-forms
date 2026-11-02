@@ -4889,28 +4889,6 @@
 
       <!-- BUILDING MAINTENANCE - SUBMETER UTILITIES (POWER & WATER) BILLING VIEW -->
       <div id="view-building-maintenance" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
-          <div>
-            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
-              <h1><i class="fa-solid fa-bolt" style="color:var(--accent);"></i> Building Maintenance - Submeter Utilities (Power &amp; Water)</h1>
-            </div>
-            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-              Official R-II Builders building utilities ledger. Real-time submeter reading logger, Meralco &amp; water bill computation, and tenant Statement of Accounts (SOA).
-            </p>
-          </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-primary" onclick="document.getElementById('bmReadingCard').scrollIntoView({ behavior: 'smooth' });" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
-              <i class="fa-solid fa-plus"></i> Log Reading Batch
-            </button>
-            <button type="button" class="btn-primary" onclick="exportSubmeterBillingCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
-              <i class="fa-solid fa-file-excel"></i> Export Utilities CSV
-            </button>
-            <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
-              <i class="fa-solid fa-print"></i> Print Ledger
-            </button>
-          </div>
-        </div>
-
         <!-- MASTER UTILITIES BILLING STATEMENTS & READINGS LEDGER -->
         <div class="data-card" id="bmStatementsLedgerCard" style="margin-bottom: 24px; padding: 24px;">
           <!-- Search & Filter Controls -->
@@ -4921,6 +4899,29 @@
                   <i class="fa-solid fa-book-open" style="color:var(--accent);"></i> Submeter Utilities Statements &amp; Consumption Ledger
                 </h3>
                 <span style="font-size:0.75rem; color:var(--text-muted);" id="bmResultCount">Showing 220 utility billing records</span>
+              </div>
+
+              <!-- Top Action Buttons -->
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <button type="button" class="btn-primary" onclick="openBmAddLesseeModal()" style="font-size:0.8rem; padding:7px 14px; background:#16a34a; border-radius:6px; font-weight:700;">
+                  <i class="fa-solid fa-user-plus"></i> Add Lessee
+                </button>
+                <button type="button" class="btn-primary" onclick="openBmMonthlyReadingModal()" style="font-size:0.8rem; padding:7px 14px; background:#0284c7; border-radius:6px; font-weight:700;">
+                  <i class="fa-solid fa-calendar-plus"></i> Add Monthly Reading
+                </button>
+                <button type="button" class="btn-primary" onclick="exportSubmeterBillingCSV()" style="font-size:0.8rem; padding:7px 14px; background:var(--primary); border-radius:6px;">
+                  <i class="fa-solid fa-file-excel"></i> Export CSV
+                </button>
+                <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 14px; background:#475569; border-radius:6px;">
+                  <i class="fa-solid fa-print"></i> Print
+                </button>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div style="position:relative; flex:1; min-width:280px; max-width:420px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
+                <input type="text" id="bmLedgerSearch" oninput="filterBmStatementsLedger()" placeholder="Search SOA No., Lessee, Submeter Unit, Floor..." style="width:100%; padding:8px 12px 8px 34px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:var(--bg-surface); color:var(--text-main);">
               </div>
 
               <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
@@ -4951,23 +4952,16 @@
                 <!-- Status Filter -->
                 <select id="bmLedgerStatusFilter" onchange="filterBmStatementsLedger()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
                   <option value="ALL">All Payment Statuses</option>
-                  <option value="PAID">PAID (110 Records)</option>
-                  <option value="PENDING">PENDING (110 Records)</option>
+                  <option value="PAID">PAID</option>
+                  <option value="PENDING">PENDING</option>
                 </select>
-              </div>
-            </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-              <div style="position:relative; flex:1; min-width:280px; max-width:450px;">
-                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
-                <input type="text" id="bmLedgerSearch" oninput="filterBmStatementsLedger()" placeholder="Search SOA No., Lessee, Submeter Unit, Floor..." style="width:100%; padding:8px 12px 8px 34px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:var(--bg-surface); color:var(--text-main);">
-              </div>
-
-              <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
                 <!-- Category Pills -->
-                <button type="button" class="veh-filter-btn active" id="btnBmCatAll" onclick="filterBmCategory('ALL', this)">All Utilities (220)</button>
-                <button type="button" class="veh-filter-btn" id="btnBmCatPower" onclick="filterBmCategory('Power', this)"><i class="fa-solid fa-bolt" style="color:#ca8a04;"></i> Power (150)</button>
-                <button type="button" class="veh-filter-btn" id="btnBmCatWater" onclick="filterBmCategory('Water', this)"><i class="fa-solid fa-droplet" style="color:#0284c7;"></i> Water (70)</button>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <button type="button" class="veh-filter-btn active" id="btnBmCatAll" onclick="filterBmCategory('ALL', this)">All Utilities (220)</button>
+                  <button type="button" class="veh-filter-btn" id="btnBmCatPower" onclick="filterBmCategory('Power', this)"><i class="fa-solid fa-bolt" style="color:#ca8a04;"></i> Power (150)</button>
+                  <button type="button" class="veh-filter-btn" id="btnBmCatWater" onclick="filterBmCategory('Water', this)"><i class="fa-solid fa-droplet" style="color:#0284c7;"></i> Water (70)</button>
+                </div>
               </div>
             </div>
           </div>
@@ -11269,7 +11263,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     let bmCompanyFilter = 'ALL';
     let bmCategoryFilter = 'ALL';
 
-    const DEFAULT_BUILDING_TENANTS = [
+    let DEFAULT_BUILDING_TENANTS = [
       { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM01)', meter_serial: '2F-PESC-SM01', category: 'Power', prev_reading: 57518, pres_reading: '', multiplier: 1.0, common_share: 0 },
       { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM02)', meter_serial: '2F-PESC-SM02', category: 'Power', prev_reading: 112332, pres_reading: '', multiplier: 1.0, common_share: 0 },
       { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM03)', meter_serial: '2F-PESC-SM03', category: 'Power', prev_reading: 46214, pres_reading: '', multiplier: 1.0, common_share: 0 },
@@ -11606,6 +11600,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     };
 
     window.loadBuildingMaintenanceModule = async function () {
+      // 0. Load custom registered tenants & update filters
+      loadBmCustomTenants();
+
       // 1. Initialize from official buildingUtilitiesData (220 records)
       let baseRecords = [];
       if (typeof buildingUtilitiesData !== 'undefined' && Array.isArray(buildingUtilitiesData.records)) {
@@ -11999,6 +11996,420 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    };
+
+    // ==========================================
+    // BUILDING MAINTENANCE - ADD LESSEE & ADD MONTHLY READING MODAL HANDLERS
+    // ==========================================
+    function loadBmCustomTenants() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('building_custom_tenants') || '[]');
+        if (Array.isArray(stored)) {
+          stored.forEach(custom => {
+            const exists = DEFAULT_BUILDING_TENANTS.some(t => t.meter_serial === custom.meter_serial);
+            if (!exists) {
+              DEFAULT_BUILDING_TENANTS.push(custom);
+            }
+          });
+        }
+      } catch (e) {
+        console.warn('Error loading custom tenants:', e);
+      }
+      updateBmCompanyFilterOptions();
+    }
+
+    function updateBmCompanyFilterOptions() {
+      const select = document.getElementById('bmLedgerCompanyFilter');
+      if (!select) return;
+      const companies = new Set();
+      DEFAULT_BUILDING_TENANTS.forEach(t => {
+        if (t.company) companies.add(t.company);
+      });
+      ['PESC', 'RLDI', 'RMRCI', 'RBI'].forEach(c => companies.add(c));
+
+      const currentVal = select.value;
+      const count = companies.size;
+
+      let html = `<option value="ALL">All Lessees (${count} Companies)</option>`;
+      const companyLabels = {
+        'PESC': 'PESC • Primex Energy',
+        'RLDI': 'RLDI • R-II Land',
+        'RMRCI': 'RMRCI • RMR Coal',
+        'RBI': 'RBI • R-II Builders'
+      };
+
+      companies.forEach(code => {
+        const label = companyLabels[code] || `${code} • Registered Lessee`;
+        html += `<option value="${escapeBmHtml(code)}">${escapeBmHtml(label)}</option>`;
+      });
+      select.innerHTML = html;
+      if (currentVal && Array.from(select.options).some(o => o.value === currentVal)) {
+        select.value = currentVal;
+      }
+    }
+
+    window.openBmAddLesseeModal = function () {
+      const form = document.getElementById('bmAddLesseeForm');
+      if (form) form.reset();
+      const mult = document.getElementById('bmNewMultiplier');
+      if (mult) mult.value = '1.0';
+      const prev = document.getElementById('bmNewPrevReading');
+      if (prev) prev.value = '0.00';
+      const common = document.getElementById('bmNewCommonShare');
+      if (common) common.value = '0.00';
+      const modal = document.getElementById('bmAddLesseeModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeBmAddLesseeModal = function () {
+      const modal = document.getElementById('bmAddLesseeModal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.submitBmAddLessee = function () {
+      const name = (document.getElementById('bmNewTenantName')?.value || '').trim();
+      const company = (document.getElementById('bmNewCompanyCode')?.value || '').trim().toUpperCase();
+      const category = document.getElementById('bmNewCategory')?.value || 'Power';
+      const unitFloor = (document.getElementById('bmNewUnitFloor')?.value || '').trim();
+      const meterSerial = (document.getElementById('bmNewMeterSerial')?.value || '').trim().toUpperCase();
+      const multiplier = parseFloat(document.getElementById('bmNewMultiplier')?.value) || 1.0;
+      const prevReading = parseFloat(document.getElementById('bmNewPrevReading')?.value) || 0;
+      const commonShare = parseFloat(document.getElementById('bmNewCommonShare')?.value) || 0;
+
+      if (!name || !company || !unitFloor || !meterSerial) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      // Check if meter_serial already exists
+      const existing = DEFAULT_BUILDING_TENANTS.find(t => t.meter_serial.toLowerCase() === meterSerial.toLowerCase());
+      if (existing) {
+        alert(`A submeter with serial "${meterSerial}" is already registered to ${existing.tenant_name}.`);
+        return;
+      }
+
+      const newTenant = {
+        tenant_name: name,
+        company: company,
+        unit_floor: unitFloor,
+        meter_serial: meterSerial,
+        category: category,
+        prev_reading: prevReading,
+        pres_reading: '',
+        multiplier: multiplier,
+        common_share: commonShare
+      };
+
+      DEFAULT_BUILDING_TENANTS.push(newTenant);
+
+      // Persist to localStorage
+      try {
+        const stored = JSON.parse(localStorage.getItem('building_custom_tenants') || '[]');
+        stored.push(newTenant);
+        localStorage.setItem('building_custom_tenants', JSON.stringify(stored));
+      } catch (e) {
+        console.warn('Failed to save custom tenant to localStorage:', e);
+      }
+
+      // If batch table exists, append row
+      addBmTenantRow(newTenant);
+
+      // Update company filter dropdown
+      updateBmCompanyFilterOptions();
+
+      // Update tenant count KPI
+      const statTenants = document.getElementById('bmStatTenantCount');
+      if (statTenants) statTenants.textContent = `${DEFAULT_BUILDING_TENANTS.length} Submeters`;
+
+      closeBmAddLesseeModal();
+
+      if (typeof window.showSystemAlert === 'function') {
+        window.showSystemAlert(
+          'Lessee Registered',
+          `Successfully registered ${name} (${meterSerial}) under ${company}.`,
+          'success'
+        );
+      } else {
+        alert(`Successfully registered ${name} (${meterSerial})!`);
+      }
+    };
+
+    window.openBmMonthlyReadingModal = function () {
+      // 1. Populate submeter select
+      const select = document.getElementById('bmSingleSubmeterSelect');
+      if (select) {
+        let opts = '<option value="" disabled selected>-- Select Lessee Submeter --</option>';
+        DEFAULT_BUILDING_TENANTS.forEach((t, i) => {
+          const icon = t.category === 'Water' ? '💧' : '⚡';
+          opts += `<option value="${escapeBmHtml(t.meter_serial)}" data-idx="${i}">
+            ${icon} [${escapeBmHtml(t.company)}] ${escapeBmHtml(t.meter_serial)} - ${escapeBmHtml(t.tenant_name)} (${escapeBmHtml(t.unit_floor)})
+          </option>`;
+        });
+        select.innerHTML = opts;
+      }
+
+      // 2. Set default dates
+      const now = new Date();
+      const curYear = now.getFullYear();
+      const curMonth = String(now.getMonth() + 1).padStart(2, '0');
+      const monthInput = document.getElementById('bmSingleMonth');
+      if (monthInput) monthInput.value = `${curYear}-${curMonth}`;
+
+      const readDateInput = document.getElementById('bmSingleReadingDate');
+      if (readDateInput) readDateInput.value = now.toISOString().slice(0, 10);
+
+      const dueDateInput = document.getElementById('bmSingleDueDate');
+      if (dueDateInput) {
+        const nextDue = new Date(now.getTime() + 15 * 24 * 60 * 60 * 1000);
+        dueDateInput.value = nextDue.toISOString().slice(0, 10);
+      }
+
+      // 3. Clear present reading & reset calculations
+      const presInput = document.getElementById('bmSinglePresReading');
+      if (presInput) presInput.value = '';
+
+      const prevInput = document.getElementById('bmSinglePrevReading');
+      if (prevInput) prevInput.value = '0.00';
+
+      calcBmSingleModalDue();
+
+      // 4. Default to single mode
+      switchBmReadingMode('single');
+
+      // 5. Open modal
+      const modal = document.getElementById('bmMonthlyReadingModal');
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeBmMonthlyReadingModal = function () {
+      const modal = document.getElementById('bmMonthlyReadingModal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.switchBmReadingMode = function (mode) {
+      const singleForm = document.getElementById('bmSingleReadingForm');
+      const batchNotice = document.getElementById('bmBatchModeNotice');
+      const btnSingle = document.getElementById('btnBmModeSingle');
+      const btnBatch = document.getElementById('btnBmModeBatch');
+
+      if (mode === 'single') {
+        if (singleForm) singleForm.style.display = 'block';
+        if (batchNotice) batchNotice.style.display = 'none';
+        if (btnSingle) {
+          btnSingle.style.background = 'white';
+          btnSingle.style.color = 'var(--primary)';
+          btnSingle.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+        }
+        if (btnBatch) {
+          btnBatch.style.background = 'transparent';
+          btnBatch.style.color = '#64748b';
+          btnBatch.style.boxShadow = 'none';
+        }
+      } else {
+        if (singleForm) singleForm.style.display = 'none';
+        if (batchNotice) batchNotice.style.display = 'block';
+        if (btnBatch) {
+          btnBatch.style.background = 'white';
+          btnBatch.style.color = 'var(--primary)';
+          btnBatch.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+        }
+        if (btnSingle) {
+          btnSingle.style.background = 'transparent';
+          btnSingle.style.color = '#64748b';
+          btnSingle.style.boxShadow = 'none';
+        }
+      }
+    };
+
+    window.goToBmBatchLogger = function () {
+      closeBmMonthlyReadingModal();
+      const readingCard = document.getElementById('bmReadingCard');
+      if (readingCard) {
+        readingCard.scrollIntoView({ behavior: 'smooth' });
+        const monthInput = document.getElementById('bmBillingMonth');
+        if (monthInput) monthInput.focus();
+      }
+    };
+
+    window.onBmSingleSubmeterChange = function () {
+      const serial = document.getElementById('bmSingleSubmeterSelect')?.value;
+      if (!serial) return;
+
+      const tenant = DEFAULT_BUILDING_TENANTS.find(t => t.meter_serial === serial);
+      if (!tenant) return;
+
+      // Check if there is a previous record in ledger for this submeter
+      let prevVal = tenant.prev_reading !== undefined ? tenant.prev_reading : 0;
+      const pastRecord = bmSubmeterLedger.find(r => (r.unit === serial || r.meter_serial === serial) && r.curr_reading !== null && r.curr_reading !== undefined);
+      if (pastRecord && !isNaN(parseFloat(pastRecord.curr_reading))) {
+        prevVal = parseFloat(pastRecord.curr_reading);
+      }
+
+      const prevInput = document.getElementById('bmSinglePrevReading');
+      if (prevInput) prevInput.value = prevVal;
+
+      // Rate default
+      const rateInput = document.getElementById('bmSingleRate');
+      if (rateInput) {
+        if (tenant.category === 'Water') {
+          rateInput.value = '45.5000';
+        } else {
+          const totalBill = parseFloat(document.getElementById('bmMeralcoTotalBill')?.value || 0);
+          const totalKwh = parseFloat(document.getElementById('bmMeralcoTotalKwh')?.value || 0);
+          const computedRate = totalBill > 0 && totalKwh > 0 ? (totalBill / totalKwh) : 15.2340;
+          rateInput.value = computedRate.toFixed(4);
+        }
+      }
+
+      calcBmSingleModalDue();
+    };
+
+    window.calcBmSingleModalDue = function () {
+      const serial = document.getElementById('bmSingleSubmeterSelect')?.value;
+      const tenant = DEFAULT_BUILDING_TENANTS.find(t => t.meter_serial === serial);
+
+      const isWater = tenant && tenant.category === 'Water';
+      const unitLabel = isWater ? 'm³' : 'kWh';
+
+      const prev = parseFloat(document.getElementById('bmSinglePrevReading')?.value) || 0;
+      const pres = parseFloat(document.getElementById('bmSinglePresReading')?.value);
+      const rate = parseFloat(document.getElementById('bmSingleRate')?.value) || 0;
+      const mult = tenant?.multiplier || 1.0;
+      const commonShare = tenant?.common_share || 0;
+
+      let consumption = 0;
+      if (!isNaN(pres) && pres >= prev) {
+        consumption = (pres - prev) * mult;
+      }
+
+      const energyCharge = consumption * rate;
+      const amountDue = energyCharge + commonShare;
+      const netAmount = amountDue * 1.10; // including 10% admin fee
+
+      const consDisp = document.getElementById('bmSingleConsDisplay');
+      if (consDisp) {
+        consDisp.textContent = `${formatBmNumber(consumption, 2)} ${unitLabel}`;
+      }
+
+      const totalDisp = document.getElementById('bmSingleTotalDueDisplay');
+      if (totalDisp) {
+        totalDisp.textContent = formatBmCurrency(netAmount);
+      }
+    };
+
+    window.submitBmSingleReading = async function () {
+      const serial = document.getElementById('bmSingleSubmeterSelect')?.value;
+      if (!serial) {
+        alert('Please select a lessee submeter.');
+        return;
+      }
+
+      const tenant = DEFAULT_BUILDING_TENANTS.find(t => t.meter_serial === serial);
+      if (!tenant) return;
+
+      const period = document.getElementById('bmSingleMonth')?.value || '';
+      const readDate = document.getElementById('bmSingleReadingDate')?.value || '';
+      const dueDate = document.getElementById('bmSingleDueDate')?.value || '';
+      const prev = parseFloat(document.getElementById('bmSinglePrevReading')?.value) || 0;
+      const pres = parseFloat(document.getElementById('bmSinglePresReading')?.value);
+      const rate = parseFloat(document.getElementById('bmSingleRate')?.value) || 0;
+
+      if (isNaN(pres)) {
+        alert('Please enter a valid present meter reading.');
+        return;
+      }
+
+      if (pres < prev) {
+        if (!confirm(`Warning: Present reading (${pres}) is less than previous reading (${prev}). Continue anyway?`)) {
+          return;
+        }
+      }
+
+      const mult = tenant.multiplier || 1.0;
+      const commonShare = tenant.common_share || 0;
+      const consumption = Math.max(0, pres - prev) * mult;
+      const energyCharge = consumption * rate;
+      const amountDue = energyCharge + commonShare;
+      const netAmount = amountDue * 1.10;
+
+      const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+      let monthAbbr = 'NOV';
+      if (period.includes('-')) {
+        const mIdx = parseInt(period.split('-')[1], 10) - 1;
+        if (mIdx >= 0 && mIdx < 12) monthAbbr = monthNames[mIdx];
+      }
+
+      const prefix = tenant.category === 'Water' ? 'WTR' : 'ELEC';
+      const cleanPeriod = period.replace('-', '');
+      const randNum = String(Math.floor(Math.random() * 900) + 100);
+      const stmtNo = `${tenant.company || prefix}-${cleanPeriod}-${randNum}`;
+      const recId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'bm_' + Date.now();
+      const readerStaff = sessionStorage.getItem('userFullName') || 'Building Maintenance Custodian';
+
+      const newRecord = {
+        id: recId,
+        soa_no: stmtNo,
+        billing_period: period,
+        bill_period: monthAbbr,
+        month: monthAbbr,
+        period: monthAbbr,
+        reading_date: readDate,
+        due_date: dueDate,
+        rate: rate,
+        company: tenant.company,
+        category: tenant.category || 'Power',
+        tenant_name: tenant.tenant_name,
+        unit: tenant.meter_serial,
+        unit_floor: tenant.unit_floor,
+        meter_serial: tenant.meter_serial,
+        prev_reading: prev,
+        curr_reading: pres,
+        consumption: consumption,
+        amount_due: amountDue,
+        net_amount: netAmount,
+        payment_status: 'PENDING',
+        status: 'PENDING',
+        read_by: readerStaff,
+        created_at: new Date().toISOString()
+      };
+
+      // Add to ledger
+      bmSubmeterLedger.unshift(newRecord);
+
+      // Update tenant previous reading in registry
+      tenant.prev_reading = pres;
+
+      // Save to Supabase
+      try {
+        if (supabase) {
+          await supabase.from('building_utility_records').insert([newRecord]);
+        }
+      } catch (err) {
+        console.warn('Supabase insert single reading notice:', err);
+      }
+
+      // Save to local storage
+      try {
+        localStorage.setItem('building_utility_records', JSON.stringify(bmSubmeterLedger));
+      } catch (e) {}
+
+      closeBmMonthlyReadingModal();
+      renderBmStatementsLedger();
+
+      // Recalculate KPIs
+      if (typeof loadBuildingMaintenanceModule === 'function') {
+        loadBuildingMaintenanceModule();
+      }
+
+      if (typeof window.showSystemAlert === 'function') {
+        window.showSystemAlert(
+          'Monthly Reading Logged',
+          `Statement ${stmtNo} generated for ${tenant.tenant_name}.\nConsumption: ${formatBmNumber(consumption, 2)} ${tenant.category === 'Water' ? 'm³' : 'kWh'} | Net Due: ${formatBmCurrency(netAmount)}`,
+          'success'
+        );
+      } else {
+        alert(`Reading logged successfully! Statement ${stmtNo} generated.`);
+      }
     };
 
     // ==========================================
@@ -13478,6 +13889,190 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:25px;" class="no-print">
         <button type="button" class="btn-primary" onclick="window.print()" style="padding:8px 18px; font-size:0.85rem;"><i class="fa-solid fa-print"></i> Print Statement</button>
         <button type="button" class="btn-secondary" onclick="closeBmSlipModal()" style="padding:8px 16px; font-size:0.85rem;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8.6.1. Add New Lessee Modal -->
+  <div class="bm-slip-modal-backdrop" id="bmAddLesseeModal" onclick="if(event.target === this) closeBmAddLesseeModal()">
+    <div class="bm-slip-paper" style="max-width: 580px; padding: 28px 32px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:12px; margin-bottom:18px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:8px; background:#dcfce7; color:#15803d; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          <div>
+            <h3 style="margin:0; font-size:1.15rem; color:var(--primary); font-weight:800;">Add New Lessee / Submeter</h3>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Register a tenant company and assign their utility submeter</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeBmAddLesseeModal()" style="background:none; border:none; font-size:1.2rem; color:var(--text-muted); cursor:pointer;">&times;</button>
+      </div>
+
+      <form id="bmAddLesseeForm" onsubmit="event.preventDefault(); submitBmAddLessee();">
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-bottom:18px; font-size:0.82rem;">
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Tenant / Lessee Company Name <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="bmNewTenantName" placeholder="e.g. Primex Energy Services Corp. (PESC)" list="bmCompanySuggestions" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+            <datalist id="bmCompanySuggestions">
+              <option value="Primex Energy Services Corp. (PESC)">
+              <option value="R-II Land Development, Inc. (RLDI)">
+              <option value="RMR Coal, Inc. (RMRCI)">
+              <option value="R-II Builders, Inc. (RBI)">
+            </datalist>
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Company Code / Acronym <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="bmNewCompanyCode" placeholder="e.g. PESC, RLDI, RMRCI, RBI" style="text-transform:uppercase; width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;" required>
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Utility Category <span style="color:#ef4444;">*</span></label>
+            <select id="bmNewCategory" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box; background:white;">
+              <option value="Power">⚡ Power (Electricity Meter)</option>
+              <option value="Water">💧 Water (Maynilad / Water Meter)</option>
+            </select>
+          </div>
+
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Assigned Unit / Floor <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="bmNewUnitFloor" placeholder="e.g. 3rd Floor (3F-PESC-SM06) or Penthouse Suite" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Submeter Serial / ID <span style="color:#ef4444;">*</span></label>
+            <input type="text" id="bmNewMeterSerial" placeholder="e.g. 3F-PESC-SM06" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; font-family:monospace; font-weight:700; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Meter Multiplier</label>
+            <input type="number" id="bmNewMultiplier" value="1.0" min="0.01" step="0.01" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Initial / Previous Reading</label>
+            <input type="number" id="bmNewPrevReading" value="0.00" min="0" step="any" placeholder="0.00" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Common Area Share (₱)</label>
+            <input type="number" id="bmNewCommonShare" value="0.00" min="0" step="0.01" placeholder="0.00" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid var(--border); border-radius:6px; padding:10px 14px; font-size:0.75rem; color:var(--text-muted); margin-bottom:18px;">
+          <i class="fa-solid fa-circle-info" style="color:#0284c7; margin-right:4px;"></i>
+          Registering a lessee will add this submeter into your active building registry and monthly billing logger.
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn-secondary" onclick="closeBmAddLesseeModal()" style="padding:8px 16px; font-size:0.85rem;">Cancel</button>
+          <button type="submit" class="btn-primary" style="background:#16a34a; padding:8px 20px; font-size:0.85rem; font-weight:700;">
+            <i class="fa-solid fa-check"></i> Save &amp; Register Lessee
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8.6.2. Add Monthly Reading Modal -->
+  <div class="bm-slip-modal-backdrop" id="bmMonthlyReadingModal" onclick="if(event.target === this) closeBmMonthlyReadingModal()">
+    <div class="bm-slip-paper" style="max-width: 620px; padding: 28px 32px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:12px; margin-bottom:18px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:36px; height:36px; border-radius:8px; background:#e0f2fe; color:#0369a1; display:flex; align-items:center; justify-content:center; font-size:1.1rem;">
+            <i class="fa-solid fa-calendar-plus"></i>
+          </div>
+          <div>
+            <h3 style="margin:0; font-size:1.15rem; color:var(--primary); font-weight:800;">Add Monthly Utility Reading</h3>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Log meter consumption and generate tenant Statement of Account (SOA)</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeBmMonthlyReadingModal()" style="background:none; border:none; font-size:1.2rem; color:var(--text-muted); cursor:pointer;">&times;</button>
+      </div>
+
+      <!-- Quick Switch Bar -->
+      <div style="display:flex; gap:8px; margin-bottom:16px; background:#f1f5f9; padding:4px; border-radius:8px;">
+        <button type="button" id="btnBmModeSingle" onclick="switchBmReadingMode('single')" style="flex:1; padding:7px 12px; border:none; border-radius:6px; font-size:0.8rem; font-weight:700; cursor:pointer; background:white; color:var(--primary); box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+          <i class="fa-solid fa-gauge-high"></i> Single Lessee Reading
+        </button>
+        <button type="button" id="btnBmModeBatch" onclick="switchBmReadingMode('batch')" style="flex:1; padding:7px 12px; border:none; border-radius:6px; font-size:0.8rem; font-weight:700; cursor:pointer; background:transparent; color:#64748b;">
+          <i class="fa-solid fa-layer-group"></i> Full 22-Meter Batch Logger
+        </button>
+      </div>
+
+      <!-- Mode 1: Single Lessee Reading Form -->
+      <form id="bmSingleReadingForm" onsubmit="event.preventDefault(); submitBmSingleReading();">
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-bottom:16px; font-size:0.82rem;">
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Select Lessee / Submeter <span style="color:#ef4444;">*</span></label>
+            <select id="bmSingleSubmeterSelect" onchange="onBmSingleSubmeterChange()" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box; background:white;">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Billing Period (Month) <span style="color:#ef4444;">*</span></label>
+            <input type="month" id="bmSingleMonth" value="2026-11" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Reading Date <span style="color:#ef4444;">*</span></label>
+            <input type="date" id="bmSingleReadingDate" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Previous Reading</label>
+            <input type="number" id="bmSinglePrevReading" readonly style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; background:#f8fafc; font-weight:700; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Present Meter Reading <span style="color:#ef4444;">*</span></label>
+            <input type="number" id="bmSinglePresReading" step="any" min="0" placeholder="0.00" oninput="calcBmSingleModalDue()" required style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; font-weight:700; color:#1E355F; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Effective Rate (₱ / unit)</label>
+            <input type="number" id="bmSingleRate" step="0.0001" min="0" value="15.2340" oninput="calcBmSingleModalDue()" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label style="display:block; font-weight:700; color:var(--primary); margin-bottom:4px;">Payment Due Date</label>
+            <input type="date" id="bmSingleDueDate" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.83rem; box-sizing:border-box;">
+          </div>
+        </div>
+
+        <!-- Real-time calculation preview box -->
+        <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-bottom:18px;">
+          <div>
+            <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Net Consumption:</span>
+            <strong id="bmSingleConsDisplay" style="font-size:1.05rem; color:#2563eb; font-family:monospace;">0.00 kWh</strong>
+          </div>
+          <div style="text-align:right;">
+            <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Total Amount Due (inc. 10% admin fee):</span>
+            <strong id="bmSingleTotalDueDisplay" style="font-size:1.2rem; color:#16a34a; font-family:monospace;">₱ 0.00</strong>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button type="button" class="btn-secondary" onclick="closeBmMonthlyReadingModal()" style="padding:8px 16px; font-size:0.85rem;">Cancel</button>
+          <button type="submit" class="btn-primary" style="background:#0284c7; padding:8px 22px; font-size:0.85rem; font-weight:700;">
+            <i class="fa-solid fa-circle-check"></i> Save &amp; Generate SOA
+          </button>
+        </div>
+      </form>
+
+      <!-- Mode 2: Batch Logger Guide/Jump -->
+      <div id="bmBatchModeNotice" style="display:none; text-align:center; padding:20px 10px;">
+        <i class="fa-solid fa-file-invoice" style="font-size:2.5rem; color:var(--accent); margin-bottom:12px; display:block;"></i>
+        <h4 style="margin:0 0 6px; color:var(--primary); font-size:1.1rem;">Full Building 22-Meter Batch Logger</h4>
+        <p style="margin:0 0 18px; font-size:0.82rem; color:var(--text-muted); max-width:420px; margin-left:auto; margin-right:auto;">
+          The batch logger allows you to enter the Meralco master bill and calculate rates across all 22 tenant submeters simultaneously.
+        </p>
+        <button type="button" class="btn-primary" onclick="goToBmBatchLogger()" style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:var(--primary);">
+          <i class="fa-solid fa-arrow-down"></i> Open Batch Logger Form Below
+        </button>
       </div>
     </div>
   </div>
