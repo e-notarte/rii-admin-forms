@@ -5039,28 +5039,6 @@
 
       <!-- FLEET MANAGEMENT - LIST OF COMPANY VEHICLES MASTER VIEW -->
       <div id="view-company-vehicles" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
-          <div>
-            <div style="display:flex; align-items:center; gap:10px;">
-              <h1><i class="fa-solid fa-truck-pickup" style="color:var(--accent);"></i> List of Company Vehicles</h1>
-            </div>
-            <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-              Official master records of company-owned fleet vehicles, active custodians, accountability codes (MR), registration renewals, and operational status.
-            </p>
-          </div>
-          <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-primary" onclick="openAddVehicleModal()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
-              <i class="fa-solid fa-plus"></i> Add New Vehicle
-            </button>
-            <button type="button" class="btn-primary" onclick="exportCompanyVehiclesCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
-              <i class="fa-solid fa-file-excel"></i> Export Fleet CSV
-            </button>
-            <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
-              <i class="fa-solid fa-print"></i> Print Roster
-            </button>
-          </div>
-        </div>
-
         <!-- Master Registry Table Card -->
         <div class="data-card" style="padding: 24px;">
           <!-- Search & Filter Controls -->
@@ -5068,27 +5046,38 @@
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
               <div>
                 <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                  <i class="fa-solid fa-warehouse" style="color:var(--accent);"></i> R-II Builders Master Fleet Inventory
+                  <i class="fa-solid fa-truck-pickup" style="color:var(--accent);"></i> R-II Builders Master Fleet Inventory
                 </h3>
                 <span style="font-size:0.75rem; color:var(--text-muted);" id="vehResultCount">Showing 135 of 135 registered company vehicles</span>
               </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                <!-- Brand / Make Filter -->
-                <select id="vehBrandFilter" onchange="filterCompanyVehicles()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
-                  <option value="ALL">All Brands / Makes</option>
-                </select>
-                <!-- Key Division Filter -->
-                <select id="vehDivisionFilter" onchange="filterCompanyVehicles()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
-                  <option value="ALL">All Divisions</option>
-                </select>
+              <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                <button type="button" class="btn-primary" onclick="openAddVehicleModal()" style="font-size:0.8rem; padding:7px 14px; background:#10b981; border-radius:6px; font-weight:700;">
+                  <i class="fa-solid fa-plus"></i> Add New Vehicle
+                </button>
+                <button type="button" class="btn-primary" onclick="exportCompanyVehiclesCSV()" style="font-size:0.8rem; padding:7px 14px; background:#0284c7; border-radius:6px; font-weight:700;">
+                  <i class="fa-solid fa-file-excel"></i> Export Fleet CSV
+                </button>
+                <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 14px; background:var(--primary); border-radius:6px;">
+                  <i class="fa-solid fa-print"></i> Print Roster
+                </button>
               </div>
             </div>
 
             <!-- Search input & filter pills -->
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-              <div style="position:relative; flex:1; min-width:280px; max-width:480px;">
-                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
-                <input type="text" id="vehSearchInput" oninput="filterCompanyVehicles()" placeholder="Search plate no, make, model, custodian, MR code..." style="width:100%; padding:8px 12px 8px 34px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:var(--bg-surface); color:var(--text-main);">
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; flex:1; min-width:280px;">
+                <div style="position:relative; flex:1; min-width:240px; max-width:380px;">
+                  <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
+                  <input type="text" id="vehSearchInput" oninput="filterCompanyVehicles()" placeholder="Search plate no, make, model, custodian, MR code..." style="width:100%; padding:8px 12px 8px 34px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:var(--bg-surface); color:var(--text-main);">
+                </div>
+                <!-- Brand / Make Filter -->
+                <select id="vehBrandFilter" onchange="filterCompanyVehicles()" style="padding:7px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
+                  <option value="ALL">All Brands / Makes</option>
+                </select>
+                <!-- Key Division Filter -->
+                <select id="vehDivisionFilter" onchange="filterCompanyVehicles()" style="padding:7px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
+                  <option value="ALL">All Divisions</option>
+                </select>
               </div>
               <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
                 <button type="button" class="veh-filter-btn active" onclick="filterCompanyVehiclesByStatus('ALL', this)">All (135)</button>
