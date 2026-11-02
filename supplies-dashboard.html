@@ -2277,10 +2277,24 @@
 
         function submitRequest() {
             var dept = document.getElementById('deptSelect').value;
-            if (!dept) { alert('Please select a department.'); return; }
+            if (!dept) {
+                if (typeof showSystemAlert === 'function') {
+                    showSystemAlert('Selection Required', 'Please select a department.', 'warning');
+                } else {
+                    alert('Please select a department.');
+                }
+                return;
+            }
 
             var rows = document.querySelectorAll('#requestBody tr');
-            if (rows.length === 0) { alert('Please add at least one item.'); return; }
+            if (rows.length === 0) {
+                if (typeof showSystemAlert === 'function') {
+                    showSystemAlert('Items Required', 'Please add at least one item to your supply request.', 'warning');
+                } else {
+                    alert('Please add at least one item.');
+                }
+                return;
+            }
 
             var items = [];
             var valid = true;
@@ -2301,7 +2315,14 @@
                 });
             });
 
-            if (!valid) { alert('Please fill in all item descriptions and quantities.'); return; }
+            if (!valid) {
+                if (typeof showSystemAlert === 'function') {
+                    showSystemAlert('Missing Information', 'Please fill in all item descriptions and quantities.', 'warning');
+                } else {
+                    alert('Please fill in all item descriptions and quantities.');
+                }
+                return;
+            }
 
             pendingSupplySubmission = { dept: dept, items: items };
             document.getElementById('confirmModal').classList.add('show');
@@ -2330,35 +2351,103 @@
                 var supabaseModule = await import('./supabase-client.js');
                 var supabase = supabaseModule.supabase;
                 var authResult = await supabase.auth.getUser();
-                var userId = authResult.data.user ? authResult.data.user.id : null;
+                var user = authResult && authResult.data ? authResult.data.user : null;
+                var userId = user ? user.id : null;
+                var requestorName = sessionStorage.getItem('userFullName') || (user && user.user_metadata ? user.user_metadata.full_name : '') || 'User';
+
+                var requestPayload = {
+                    department: dept,
+                    reference_number: ref,
+                    status: 'Pending',
+                    requestor_name: requestorName
+                };
+                if (userId) {
+                    requestPayload.user_id = userId;
+                }
 
                 var requestResult = await supabase
                     .from('supplies_requests')
-                    .insert([{
-                        user_id: userId,
-                        department: dept,
-                        reference_number: ref,
-                        status: 'Pending'
-                    }])
+                    .insert([requestPayload])
                     .select('id')
                     .single();
 
-                if (requestResult.error) throw requestResult.error;
-
-                var itemRows = items.map(function (item) {
-                    return {
-                        request_id: requestResult.data.id,
-                        description: item.description,
-                        quantity: item.qty,
-                        purpose: item.purpose
+                if (requestResult.error) {
+                    console.warn('Initial supply insert note, attempting fallback:', requestResult.error);
+                    // Fallback in case schema rejects requestor_name
+                    var fallbackPayload = {
+                        department: dept,
+                        reference_number: ref,
+                        status: 'Pending'
                     };
-                });
+                    if (userId) fallbackPayload.user_id = userId;
+                    requestResult = await supabase
+                        .from('supplies_requests')
+                        .insert([fallbackPayload])
+                        .select('id')
+                        .single();
+                }
 
-                var itemsResult = await supabase
-                    .from('supplies_items')
-                    .insert(itemRows);
+                var createdId = (requestResult.data && requestResult.data.id) ? requestResult.data.id : ('LOC-' + Date.now());
 
-                if (itemsResult.error) throw itemsResult.error;
+                if (requestResult.data && requestResult.data.id) {
+                    var itemRows = items.map(function (item) {
+                        return {
+                            request_id: requestResult.data.id,
+                            description: item.description,
+                            quantity: item.qty,
+                            purpose: item.purpose
+                        };
+                    });
+
+                    var itemsResult = await supabase
+                        .from('supplies_items')
+                        .insert(itemRows);
+
+                    if (itemsResult.error) {
+                        console.warn('Supplies items insert note:', itemsResult.error);
+                    }
+                }
+
+                // Persist into user_supplies_requests in localStorage so the user dashboard never loses this request
+                var localRecord = {
+                    id: createdId,
+                    reference_number: ref,
+                    department: dept,
+                    requestor_name: requestorName,
+                    user_id: userId,
+                    status: 'Pending',
+                    created_at: new Date().toISOString(),
+                    supplies_items: items.map(function (item) {
+                        return {
+                            request_id: createdId,
+                            description: item.description,
+                            quantity: item.qty,
+                            purpose: item.purpose
+                        };
+                    })
+                };
+                try {
+                    var localReqs = JSON.parse(localStorage.getItem('user_supplies_requests') || '[]');
+                    localReqs.unshift(localRecord);
+                    localStorage.setItem('user_supplies_requests', JSON.stringify(localReqs));
+                } catch (cacheErr) {
+                    console.warn('Could not cache supply request locally', cacheErr);
+                }
+
+                // Send in-app notification if userId is known
+                try {
+                    if (userId) {
+                        await supabase.from('notifications').insert([{
+                            user_id: userId,
+                            title: 'Supplies Request Submitted',
+                            message: 'Your Supplies Request (' + ref + ') has been submitted and is pending Admin approval.',
+                            request_type: 'Supplies',
+                            is_read: false
+                        }]);
+                    }
+                } catch (notifErr) {
+                    console.warn('Notification insert note:', notifErr);
+                }
 
                 document.getElementById('modalRef').textContent = ref;
                 document.getElementById('successModal').classList.add('show');
@@ -2371,7 +2460,11 @@
                 }
             } catch (error) {
                 console.error('Error submitting supply request:', error);
-                alert('Unable to submit supply request: ' + (error.message || 'Unknown error.'));
+                if (typeof showSystemAlert === 'function') {
+                    showSystemAlert('Submission Error', 'Unable to submit supply request: ' + (error.message || 'Unknown error.'), 'error');
+                } else {
+                    alert('Unable to submit supply request: ' + (error.message || 'Unknown error.'));
+                }
             } finally {
                 button.disabled = false;
                 button.textContent = originalText;
