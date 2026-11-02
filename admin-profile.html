@@ -838,7 +838,25 @@
       gap: 8px;
       color: var(--accent);
       font-size: .85rem;
-      font-weight: 600
+      font-weight: 600;
+    }
+
+    .nav-count {
+      display: none;
+      min-width: 18px;
+      height: 18px;
+      line-height: 18px;
+      margin-left: auto;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: #ef4444;
+      color: white;
+      font-size: .68rem;
+      font-weight: 700;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(239, 68, 68, 0.4);
     }
 
     .sidebar {
@@ -2015,9 +2033,9 @@
     <div class="nav-label">MAIN</div>
     <nav>
       <a href="admin-dashboard.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
-      <a href="admin-dashboard.html?view=view-account-approvals" class="nav-link"><i class="fa-solid fa-user-check"></i> Account Approvals</a>
-      <a href="admin-dashboard.html?view=view-calendar" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Facility Reservation</a>
-      <a href="admin-dashboard.html?view=view-liaison" class="nav-link"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker</a>
+      <a href="admin-dashboard.html?view=view-account-approvals" class="nav-link"><i class="fa-solid fa-user-check"></i> Account Approvals <span class="nav-count" id="pendingAccountNavCount"></span></a>
+      <a href="admin-dashboard.html?view=view-calendar" class="nav-link"><i class="fa-solid fa-calendar-days"></i> Facility Reservation <span class="nav-count" id="pendingFacilityNavCount"></span></a>
+      <a href="admin-dashboard.html?view=view-liaison" class="nav-link"><i class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker <span class="nav-count" id="pendingLiaisonNavCount"></span></a>
     </nav>
 
     <div class="nav-label">FINANCE</div>
@@ -2028,13 +2046,20 @@
 
     <div class="nav-label">INVENTORY</div>
     <nav>
-      <a href="admin-dashboard.html?view=view-supplies" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Supplies Inventory</a>
+      <a href="admin-dashboard.html?view=view-supplies" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Supplies Request <span class="nav-count" id="pendingSuppliesNavCount"></span></a>
+      <a href="admin-dashboard.html?view=view-receiving-report" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Receiving Report</a>
     </nav>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
-      <a href="admin-dashboard.html?view=view-vehicle" class="nav-link"><i class="fa-solid fa-car"></i> Vehicle Dispatch Board</a>
+      <a href="admin-dashboard.html?view=view-vehicle" class="nav-link"><i class="fa-solid fa-car"></i> Vehicle Dispatch Board <span class="nav-count" id="pendingVehicleNavCount"></span></a>
       <a href="admin-dashboard.html?view=view-driver-kra" class="nav-link"><i class="fa-solid fa-chart-line"></i> Driver KRA &amp; KPI Evaluation</a>
+      <a href="admin-dashboard.html?view=view-company-vehicles" class="nav-link"><i class="fa-solid fa-truck-pickup"></i> List of Company Vehicles <span style="font-size:0.65rem; background:#fef3c7; color:#b45309; padding:2px 6px; border-radius:4px; font-weight:600; margin-left:auto; display:inline-block;">Under Dev</span></a>
+    </nav>
+
+    <div class="nav-label">BUILDING MAINTENANCE</div>
+    <nav>
+      <a href="admin-dashboard.html?view=view-building-maintenance" class="nav-link"><i class="fa-solid fa-bolt"></i> Electricity Submeter Billing</a>
     </nav>
   </aside>
 
@@ -2137,10 +2162,51 @@
       }
     }
 
+    async function loadPendingNavCounts() {
+      try {
+        const updateBadge = (id, count) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.textContent = count;
+          el.style.display = count > 0 ? 'inline-flex' : 'none';
+        };
+
+        const [accRes, vRes, lRes, supRes, cfRes, fnRes, pkRes, zmRes, tmRes] = await Promise.all([
+          supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('source_app', 'admin-request-management').eq('approval_status', 'pending'),
+          supabase.from('vehicle_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+          supabase.from('liaison_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+          supabase.from('supplies_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+          supabase.from('conference_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+          supabase.from('function_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+          supabase.from('parking_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+          supabase.from('zoom_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending'),
+          supabase.from('teams_requests').select('id', { count: 'exact', head: true }).ilike('status', 'pending')
+        ]);
+
+        const accCount = accRes.count || 0;
+        const vCount = vRes.count || 0;
+        const lCount = lRes.count || 0;
+        const supCount = supRes.count || 0;
+        const facCount = (cfRes.count || 0) + (fnRes.count || 0) + (pkRes.count || 0) + (zmRes.count || 0) + (tmRes.count || 0);
+
+        updateBadge('pendingAccountNavCount', accCount);
+        updateBadge('pendingFacilityNavCount', facCount);
+        updateBadge('pendingVehicleNavCount', vCount);
+        updateBadge('pendingLiaisonNavCount', lCount);
+        updateBadge('pendingSuppliesNavCount', supCount);
+      } catch (e) {
+        console.warn('Error loading pending nav counts', e);
+      }
+    }
+
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadProfile);
+      document.addEventListener('DOMContentLoaded', () => {
+        loadProfile();
+        loadPendingNavCounts();
+      });
     } else {
       loadProfile();
+      loadPendingNavCounts();
     }
   </script>
 
