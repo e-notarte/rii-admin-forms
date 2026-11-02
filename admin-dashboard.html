@@ -881,22 +881,140 @@
       justify-content: center;
     }
 
-    .nav-count {
-      display: none;
-      min-width: 18px;
-      height: 18px;
-      line-height: 18px;
-      margin-left: auto;
-      padding: 0 6px;
-      border-radius: 999px;
-      background: #ef4444;
-      color: white;
-      font-size: .68rem;
-      font-weight: 700;
-      text-align: center;
+    /* IPHONE-STYLE NOTIFICATION BADGE ON ICON HEAD */
+    .nav-icon-wrapper {
+      position: relative;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 1px 3px rgba(239, 68, 68, 0.4);
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .nav-icon-wrapper i {
+      font-size: 1.05rem;
+      width: 20px;
+      text-align: center;
+      color: #64748b;
+      transition: color 0.15s ease;
+    }
+
+    .nav-icon-wrapper .nav-count,
+    .nav-count {
+      position: absolute;
+      top: -5px;
+      right: -8px;
+      min-width: 17px;
+      height: 17px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: #ff3b30 !important; /* Authentic Apple iOS notification badge red */
+      color: #ffffff !important;
+      font-size: 9px;
+      font-weight: 800;
+      line-height: 1;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff !important; /* Apple iOS badge crisp white ring */
+      box-shadow: 0 2px 4px rgba(255, 59, 48, 0.45);
+      z-index: 10;
+      pointer-events: none;
+      margin: 0 !important;
+      letter-spacing: -0.2px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    }
+
+    .nav-count:empty {
+      display: none !important;
+    }
+
+    .nav-title {
+      white-space: nowrap !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      font-size: 0.85rem;
+      letter-spacing: -0.1px;
+    }
+
+    @media (min-width: 901px) {
+      .sidebar {
+        width: 275px !important;
+      }
+      main {
+        margin-left: 275px !important;
+      }
+      .footer {
+        margin-left: 275px !important;
+      }
+    }
+
+    .sidebar {
+      padding: 14px 0 40px !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+
+    .nav-label {
+      display: block;
+      color: #94a3b8 !important;
+      font-size: 0.7rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+      padding: 14px 18px 4px !important;
+      text-transform: uppercase !important;
+      margin: 0 !important;
+    }
+
+    .nav-link {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      padding: 9px 18px !important;
+      color: #334155 !important;
+      text-decoration: none !important;
+      font-size: 0.86rem !important;
+      font-weight: 500 !important;
+      border-left: 3px solid transparent !important;
+      white-space: nowrap !important;
+      transition: all 0.15s ease !important;
+    }
+
+    .nav-link:hover {
+      color: var(--primary) !important;
+      background: rgba(30, 53, 95, 0.04) !important;
+    }
+
+    .nav-link.active {
+      color: var(--primary) !important;
+      background: rgba(252, 174, 22, 0.09) !important;
+      border-left-color: var(--accent) !important;
+      font-weight: 600 !important;
+    }
+
+    .nav-link:hover .nav-icon-wrapper i,
+    .nav-link.active .nav-icon-wrapper i {
+      color: var(--accent, #fcae16) !important;
+    }
+
+    body.dark-mode .nav-link {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .nav-link:hover {
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    body.dark-mode .nav-link.active {
+      background: rgba(252, 174, 22, 0.12) !important;
+    }
+
+    body.dark-mode .nav-icon-wrapper .nav-count,
+    body.dark-mode .nav-count {
+      border-color: #0f172a !important;
     }
 
     .admin-notif-dropdown {
@@ -3738,68 +3856,142 @@
 
     <div class="nav-label">MAIN</div>
     <nav>
-      <a href="#" class="nav-link active" onclick="return switchView('view-dashboard', this)"><i
-          class="fa-solid fa-chart-pie"></i> Admin Dashboard</a>
-      <a href="#" class="nav-link" data-account-approvals onclick="return switchView('view-account-approvals', this)"><i
-          class="fa-solid fa-user-check"></i>
-        Account Approvals <span class="nav-count" id="pendingAccountNavCount"></span></a>
-      <a href="#" class="nav-link" data-facility-requests onclick="return switchView('view-calendar', this)"><i
-          class="fa-solid fa-calendar-days"></i>
-        Facility Reservation <span class="nav-count" id="pendingFacilityNavCount"></span></a>
-      <a href="#" class="nav-link" data-liaison-requests onclick="return switchView('view-liaison', this)"><i
-          class="fa-solid fa-person-walking-arrow-right"></i> Liaison Task Tracker <span class="nav-count" id="pendingLiaisonNavCount"></span></a>
+      <a href="#" class="nav-link active" onclick="return switchView('view-dashboard', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-chart-pie"></i>
+        </span>
+        <span class="nav-title">Admin Dashboard</span>
+      </a>
+      <a href="#" class="nav-link" data-account-approvals onclick="return switchView('view-account-approvals', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-user-check"></i>
+          <span class="nav-count" id="pendingAccountNavCount"></span>
+        </span>
+        <span class="nav-title">Account Approvals</span>
+      </a>
+      <a href="#" class="nav-link" data-facility-requests onclick="return switchView('view-calendar', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span class="nav-count" id="pendingFacilityNavCount"></span>
+        </span>
+        <span class="nav-title">Facility Reservation</span>
+      </a>
+      <a href="#" class="nav-link" data-liaison-requests onclick="return switchView('view-liaison', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-person-walking-arrow-right"></i>
+          <span class="nav-count" id="pendingLiaisonNavCount"></span>
+        </span>
+        <span class="nav-title">Liaison Task Tracker</span>
+      </a>
     </nav>
 
     <div class="nav-label">FINANCE</div>
     <nav>
-      <a href="#" class="nav-link" onclick="return switchView('view-statement', this)"><i
-          class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
-      <a href="#" class="nav-link" onclick="return switchView('view-budget', this)"><i
-          class="fa-solid fa-chart-line"></i>
-        Budget Monitoring <span class="nav-count" id="budgetNavCount" style="display:inline-flex; background:#0284c7;">2026</span></a>
+      <a href="#" class="nav-link" onclick="return switchView('view-statement', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+        </span>
+        <span class="nav-title">Statement of Accounts</span>
+      </a>
+      <a href="#" class="nav-link" onclick="return switchView('view-budget', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-chart-line"></i>
+          <span class="nav-count" id="budgetNavCount">2026</span>
+        </span>
+        <span class="nav-title">Budget Monitoring</span>
+      </a>
     </nav>
 
     <div class="nav-label">INVENTORY &amp; WAREHOUSE</div>
     <nav>
-      <a href="#" class="nav-link" data-supplies-requests onclick="return switchView('view-supplies', this)"><i
-          class="fa-solid fa-boxes-stacked"></i>
-        Supplies Request <span class="nav-count" id="pendingSuppliesNavCount"></span></a>
-      <a href="#" class="nav-link" data-purchase-order onclick="return switchView('view-purchase-order', this)"><i
-          class="fa-solid fa-file-invoice"></i>
-        Purchase Order <span class="nav-count" id="poNavCount" style="display:inline-flex; background:#6366f1;">0</span></a>
-      <a href="#" class="nav-link" data-receiving-report onclick="return switchView('view-receiving-report', this)"><i
-          class="fa-solid fa-truck-ramp-box"></i>
-        Receiving Report <span class="nav-count" id="rrNavCount" style="display:inline-flex; background:#0284c7;">406</span></a>
-      <a href="#" class="nav-link" data-material-issuance onclick="return switchView('view-issuance', this)"><i
-          class="fa-solid fa-hand-holding-hand"></i>
-        Material Issuance <span class="nav-count" id="issuanceNavCount" style="display:inline-flex; background:#f59e0b;">807</span></a>
-      <a href="#" class="nav-link" data-on-hand-inventory onclick="return switchView('view-on-hand-inventory', this)"><i
-          class="fa-solid fa-warehouse"></i>
-        On-Hand Inventory <span class="nav-count" id="onHandNavCount" style="display:inline-flex; background:#10b981;">588</span></a>
+      <a href="#" class="nav-link" data-supplies-requests onclick="return switchView('view-supplies', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span class="nav-count" id="pendingSuppliesNavCount"></span>
+        </span>
+        <span class="nav-title">Supplies Request</span>
+      </a>
+      <a href="#" class="nav-link" data-purchase-order onclick="return switchView('view-purchase-order', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-file-invoice"></i>
+          <span class="nav-count" id="poNavCount">5</span>
+        </span>
+        <span class="nav-title">Purchase Order</span>
+      </a>
+      <a href="#" class="nav-link" data-receiving-report onclick="return switchView('view-receiving-report', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-truck-ramp-box"></i>
+          <span class="nav-count" id="rrNavCount">406</span>
+        </span>
+        <span class="nav-title">Receiving Report</span>
+      </a>
+      <a href="#" class="nav-link" data-material-issuance onclick="return switchView('view-issuance', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-hand-holding-hand"></i>
+          <span class="nav-count" id="issuanceNavCount">807</span>
+        </span>
+        <span class="nav-title">Material Issuance</span>
+      </a>
+      <a href="#" class="nav-link" data-on-hand-inventory onclick="return switchView('view-on-hand-inventory', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-warehouse"></i>
+          <span class="nav-count" id="onHandNavCount">588</span>
+        </span>
+        <span class="nav-title">On-Hand Inventory</span>
+      </a>
     </nav>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
-      <a href="#" class="nav-link" data-vehicle-requests onclick="return switchView('view-vehicle', this)"><i class="fa-solid fa-car"></i>
-        Vehicle Dispatch Board <span class="nav-count" id="pendingVehicleNavCount"></span></a>
-      <a href="#" class="nav-link" onclick="return switchView('view-driver-kra', this)"><i class="fa-solid fa-chart-line"></i>
-        Driver KRA &amp; KPI Evaluation</a>
-      <a href="#" class="nav-link" data-company-vehicles onclick="return switchView('view-company-vehicles', this)"><i class="fa-solid fa-truck-pickup"></i>
-        List of Company Vehicles <span class="nav-count" id="companyVehiclesNavCount" style="display:inline-flex; background:#10b981;">135</span></a>
+      <a href="#" class="nav-link" data-vehicle-requests onclick="return switchView('view-vehicle', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-car"></i>
+          <span class="nav-count" id="pendingVehicleNavCount"></span>
+        </span>
+        <span class="nav-title">Vehicle Dispatch Board</span>
+      </a>
+      <a href="#" class="nav-link" onclick="return switchView('view-driver-kra', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-chart-line"></i>
+        </span>
+        <span class="nav-title">Driver KRA &amp; KPI Evaluation</span>
+      </a>
+      <a href="#" class="nav-link" data-company-vehicles onclick="return switchView('view-company-vehicles', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-truck-pickup"></i>
+          <span class="nav-count" id="companyVehiclesNavCount">135</span>
+        </span>
+        <span class="nav-title">List of Company Vehicles</span>
+      </a>
     </nav>
 
     <div class="nav-label">BUILDING MAINTENANCE</div>
     <nav>
-      <a href="#" class="nav-link" data-building-maintenance onclick="return switchView('view-building-maintenance', this)"><i class="fa-solid fa-bolt"></i>
-        Submeter Utilities Billing <span class="nav-count" id="buildingNavCount" style="display:inline-flex; background:#0284c7;">220</span></a>
-      <a href="#" class="nav-link" data-lessees onclick="return switchView('view-lessees', this)"><i class="fa-solid fa-users-rectangle"></i>
-        Lessee's <span class="nav-count" id="lesseesNavCount" style="display:inline-flex; background:#6366f1;">5</span></a>
+      <a href="#" class="nav-link" data-building-maintenance onclick="return switchView('view-building-maintenance', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-bolt"></i>
+          <span class="nav-count" id="buildingNavCount">220</span>
+        </span>
+        <span class="nav-title">Submeter Utilities Billing</span>
+      </a>
+      <a href="#" class="nav-link" data-lessees onclick="return switchView('view-lessees', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-users-rectangle"></i>
+          <span class="nav-count" id="lesseesNavCount">5</span>
+        </span>
+        <span class="nav-title">Lessee's</span>
+      </a>
     </nav>
 
     <div class="nav-label">TRANSMITTAL MANAGEMENT</div>
     <nav>
-      <a href="#" class="nav-link" data-transmittal onclick="return switchView('view-transmittal', this)"><i class="fa-solid fa-file-signature"></i>
-        Document Transmittal <span class="nav-count" id="transmittalNavCount" style="display:inline-flex; background:#0284c7;">1,755</span></a>
+      <a href="#" class="nav-link" data-transmittal onclick="return switchView('view-transmittal', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-file-signature"></i>
+          <span class="nav-count" id="transmittalNavCount">1,755</span>
+        </span>
+        <span class="nav-title">Document Transmittal</span>
+      </a>
     </nav>
   </aside>
 
