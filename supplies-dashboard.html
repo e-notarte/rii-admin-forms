@@ -2902,60 +2902,289 @@
         }
         loadBudgetDataset();
 
-        // SWITCH LEFT PANEL TABS (INVENTORY VS BUDGET EXCEL)
-        window.switchLeftPanelTab = function(tab) {
-            var invWrap = document.getElementById('inventoryIframeWrap');
-            var bgtWrap = document.getElementById('budgetIframeWrap');
-            var invBtn = document.getElementById('tabInventoryBtn');
-            var bgtBtn = document.getElementById('tabBudgetBtn');
-            var extLink = document.getElementById('openSharePointExternal');
+        // =========================================================================
+        // LIVE WAREHOUSE ON-HAND INVENTORY (FROM ADMIN ACCOUNT CATALOG)
+        // =========================================================================
+        let userStockCurrentPage = 1;
+        const userStockPageSize = 25;
+        let userStockFilteredCache = [];
+        let userStockStatusFilter = 'ALL';
 
-            if (tab === 'budget') {
-                if (invWrap) invWrap.style.display = 'none';
-                if (bgtWrap) bgtWrap.style.display = 'flex';
-                if (invBtn) invBtn.classList.remove('active');
-                if (bgtBtn) bgtBtn.classList.add('active');
-                if (extLink) {
-                    extLink.href = 'https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQCdLpPE09xpR77uT6B535daAVPYEu2B4y9QXA_suGYQaj8?e=pHu8Rk';
-                    extLink.title = 'Open Budget vs Expense in Excel Online';
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+        window.escapeHtml = escapeHtml;
+
+        window.initUserOnHandInventory = async function () {
+            if (!window.onHandInventoryData) {
+                try {
+                    const mod = await import('./on_hand_inventory_data.js');
+                    window.onHandInventoryData = mod.onHandInventoryData;
+                } catch (e) {
+                    console.warn('Could not load onHandInventoryData:', e);
                 }
-            } else {
-                if (invWrap) invWrap.style.display = 'flex';
-                if (bgtWrap) bgtWrap.style.display = 'none';
-                if (invBtn) invBtn.classList.add('active');
-                if (bgtBtn) bgtBtn.classList.remove('active');
-                if (extLink) {
-                    extLink.href = 'https://rmrriibuilders-my.sharepoint.com/:x:/g/personal/emmanuel_notarte_riibuilders_com_ph/IQATn-9YklpERrSWDpO_hYkOAebQ9nRiGtcSg1WxKs2PsnM?action=embedview';
-                    extLink.title = 'Open On-Hand Inventory in Excel Online';
+            }
+            updateUserOnHandStats();
+            filterUserOnHandInventory();
+        };
+
+        function updateUserOnHandStats() {
+            const items = window.onHandInventoryData?.items || [];
+            const meta = window.onHandInventoryData?.meta || {};
+            let inStock = meta.in_stock_count || 0;
+            let lowStock = meta.low_stock_count || 0;
+            let outOfStock = meta.out_of_stock_count || 0;
+
+            if (!meta.in_stock_count && items.length > 0) {
+                inStock = 0; lowStock = 0; outOfStock = 0;
+                items.forEach(it => {
+                    if (it.on_hand_qty > 5) inStock++;
+                    else if (it.on_hand_qty > 0) lowStock++;
+                    else outOfStock++;
+                });
+            }
+
+            const pills = document.getElementById('userStockFilterPills');
+            if (pills) {
+                pills.innerHTML = `
+                    <div class="user-pill ${userStockStatusFilter === 'ALL' ? 'active' : ''}" onclick="filterUserStockStatus('ALL', this)">All Items (${items.length.toLocaleString()})</div>
+                    <div class="user-pill in-stock ${userStockStatusFilter === 'IN_STOCK' ? 'active' : ''}" onclick="filterUserStockStatus('IN_STOCK', this)">In Stock (${inStock.toLocaleString()})</div>
+                    <div class="user-pill low-stock ${userStockStatusFilter === 'LOW_STOCK' ? 'active' : ''}" onclick="filterUserStockStatus('LOW_STOCK', this)">Low Stock (${lowStock.toLocaleString()})</div>
+                    <div class="user-pill out-stock ${userStockStatusFilter === 'OUT_OF_STOCK' ? 'active' : ''}" onclick="filterUserStockStatus('OUT_OF_STOCK', this)">Out of Stock (${outOfStock.toLocaleString()})</div>
+                `;
+            }
+
+            const subtitle = document.getElementById('userStockSubtitle');
+            if (subtitle) {
+                subtitle.textContent = `Catalog of ${items.length.toLocaleString()} warehouse stock items with real-time on-hand quantities.`;
+            }
+        }
+
+        window.filterUserStockStatus = function (status, el) {
+            userStockStatusFilter = status;
+            document.querySelectorAll('#userStockFilterPills .user-pill').forEach(p => p.classList.remove('active'));
+            if (el) el.classList.add('active');
+            filterUserOnHandInventory();
+        };
+
+        window.filterUserOnHandInventory = function () {
+            const searchTerm = (document.getElementById('userStockSearchInput')?.value || '').trim().toLowerCase();
+            const items = window.onHandInventoryData?.items || [];
+
+            userStockFilteredCache = items.filter(it => {
+                let matchesStatus = true;
+                if (userStockStatusFilter === 'IN_STOCK') matchesStatus = it.on_hand_qty > 5;
+                if (userStockStatusFilter === 'LOW_STOCK') matchesStatus = it.on_hand_qty > 0 && it.on_hand_qty <= 5;
+                if (userStockStatusFilter === 'OUT_OF_STOCK') matchesStatus = it.on_hand_qty <= 0;
+
+                let matchesSearch = true;
+                if (searchTerm) {
+                    const str = `${it.item_code || ''} ${it.description || ''} ${it.expense_account || ''} ${it.uom || ''}`.toLowerCase();
+                    matchesSearch = str.includes(searchTerm);
+                }
+                return matchesStatus && matchesSearch;
+            });
+
+            userStockCurrentPage = 1;
+            renderUserOnHandInventoryTable();
+        };
+
+        window.changeUserOnHandPage = function (delta) {
+            const maxPages = Math.max(1, Math.ceil(userStockFilteredCache.length / userStockPageSize));
+            userStockCurrentPage = Math.max(1, Math.min(maxPages, userStockCurrentPage + delta));
+            renderUserOnHandInventoryTable();
+        };
+
+        window.renderUserOnHandInventoryTable = function () {
+            const tbody = document.getElementById('userInventoryTableBody');
+            if (!tbody) return;
+
+            const total = userStockFilteredCache.length;
+            const maxPages = Math.max(1, Math.ceil(total / userStockPageSize));
+            if (userStockCurrentPage > maxPages) userStockCurrentPage = maxPages;
+
+            const start = (userStockCurrentPage - 1) * userStockPageSize;
+            const end = Math.min(start + userStockPageSize, total);
+            const pageItems = userStockFilteredCache.slice(start, end);
+
+            const infoEl = document.getElementById('userStockPaginationInfo');
+            if (infoEl) {
+                infoEl.textContent = total === 0
+                    ? 'Showing 0 of 0 items'
+                    : `Showing ${(start + 1).toLocaleString()} to ${end.toLocaleString()} of ${total.toLocaleString()} catalog items`;
+            }
+
+            const pageNumEl = document.getElementById('userStockCurrentPageNum');
+            if (pageNumEl) pageNumEl.textContent = `Page ${userStockCurrentPage} of ${maxPages}`;
+
+            const prevBtn = document.getElementById('userStockBtnPrev');
+            if (prevBtn) prevBtn.disabled = (userStockCurrentPage <= 1);
+            const nextBtn = document.getElementById('userStockBtnNext');
+            if (nextBtn) nextBtn.disabled = (userStockCurrentPage >= maxPages);
+
+            if (total === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding:40px 20px; color:#64748b;">
+                            <i class="fa-solid fa-boxes-packing" style="font-size:2rem; color:#cbd5e1; display:block; margin-bottom:10px;"></i>
+                            No warehouse stock items match the filter criteria.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = pageItems.map(it => {
+                let badge = '';
+                let qtyColor = '#15803d';
+                if (it.on_hand_qty > 5) {
+                    badge = '<span style="display:inline-flex; align-items:center; gap:4px; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:12px; font-weight:600; font-size:0.72rem;"><i class="fa-solid fa-circle-check" style="font-size:0.65rem;"></i> In Stock</span>';
+                } else if (it.on_hand_qty > 0) {
+                    qtyColor = '#d97706';
+                    badge = '<span style="display:inline-flex; align-items:center; gap:4px; background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:12px; font-weight:600; font-size:0.72rem;"><i class="fa-solid fa-triangle-exclamation" style="font-size:0.65rem;"></i> Low Stock</span>';
+                } else {
+                    qtyColor = '#dc2626';
+                    badge = '<span style="display:inline-flex; align-items:center; gap:4px; background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:12px; font-weight:600; font-size:0.72rem;"><i class="fa-solid fa-circle-xmark" style="font-size:0.65rem;"></i> Out of Stock</span>';
+                }
+
+                const safeDesc = escapeHtml(it.description || '');
+                const safeCode = escapeHtml(it.item_code || '');
+                const safeUom = escapeHtml(it.uom || 'PCS');
+                const safeAccount = escapeHtml(it.expense_account || '');
+                const formattedQty = Math.round(it.on_hand_qty || 0).toLocaleString();
+
+                return `
+                    <tr style="${it.on_hand_qty <= 0 ? 'background:#fffbfb;' : ''}">
+                        <td style="padding: 9px 12px;">
+                            <code style="background:#f1f5f9; color:#0369a1; padding:2px 6px; border-radius:4px; font-weight:700; font-size:0.75rem;">
+                                ${safeCode}
+                            </code>
+                        </td>
+                        <td style="padding: 9px 12px;">
+                            <div style="font-weight:600; color:var(--primary); font-size:0.82rem; line-height:1.35;">${safeDesc}</div>
+                            ${safeAccount ? `<div style="font-size:0.7rem; color:#64748b; margin-top:2px;">${safeAccount}</div>` : ''}
+                        </td>
+                        <td style="padding: 9px 8px; text-align: center;">
+                            <span style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:4px; padding:2px 6px; font-size:0.72rem; font-weight:600; color:#475569;">
+                                ${safeUom}
+                            </span>
+                        </td>
+                        <td style="padding: 9px 12px; text-align: right; font-weight: 700; color: ${qtyColor}; font-size: 0.85rem;">
+                            ${formattedQty}
+                        </td>
+                        <td style="padding: 9px 8px; text-align: center;">
+                            ${badge}
+                        </td>
+                        <td style="padding: 9px 8px; text-align: center;">
+                            <button type="button" class="btn-add-item-req" onclick="addItemToRequestForm('${safeDesc.replace(/'/g, "\\'")}', '${safeUom.replace(/'/g, "\\'")}')" title="Add this item to Department Requisition">
+                                <i class="fa-solid fa-plus"></i> Add
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        };
+
+        window.addItemToRequestForm = function (description, uom) {
+            var tbody = document.getElementById('requestBody');
+            if (!tbody) return;
+
+            var rows = tbody.querySelectorAll('tr');
+            var targetRow = null;
+            var targetInput = null;
+            var targetQty = null;
+
+            // Check if there is an empty row already in the form
+            for (var i = 0; i < rows.length; i++) {
+                var descInput = rows[i].querySelector('input[id^="desc-"]');
+                if (descInput && !descInput.value.trim()) {
+                    targetRow = rows[i];
+                    targetInput = descInput;
+                    targetQty = rows[i].querySelector('input[id^="qty-"]');
+                    break;
+                }
+            }
+
+            // If all existing rows have content or no rows exist, add a new row
+            if (!targetRow) {
+                addRequestRow();
+                var allRows = tbody.querySelectorAll('tr');
+                targetRow = allRows[allRows.length - 1];
+                targetInput = targetRow.querySelector('input[id^="desc-"]');
+                targetQty = targetRow.querySelector('input[id^="qty-"]');
+            }
+
+            if (targetInput) {
+                targetInput.value = description + (uom ? ' (' + uom + ')' : '');
+                if (targetQty && (!targetQty.value || targetQty.value <= 0)) {
+                    targetQty.value = 1;
+                }
+                
+                // Highlight visual effect
+                targetRow.style.transition = 'background-color 0.4s ease';
+                targetRow.style.backgroundColor = '#dcfce7';
+                setTimeout(function () {
+                    targetRow.style.backgroundColor = '';
+                }, 900);
+
+                var purposeInput = targetRow.querySelector('input[id^="purpose-"]');
+                if (purposeInput) {
+                    purposeInput.focus();
                 }
             }
         };
 
-        // TAB SWITCHER
-        function switchTab(tab) {
-            var tableView = document.getElementById('tableView');
-            var liveView = document.getElementById('liveView');
-            var tabTable = document.getElementById('tabTable');
-            var tabLive = document.getElementById('tabLive');
-
-            if (tab === 'table') {
-                tableView.style.display = 'flex';
-                liveView.classList.remove('show');
-                tabTable.classList.add('active-tab');
-                tabLive.classList.remove('active-tab');
-            } else {
-                tableView.style.display = 'none';
-                liveView.classList.add('show');
-                tabTable.classList.remove('active-tab');
-                tabLive.classList.add('active-tab');
+        window.exportUserOnHandCSV = function () {
+            const items = userStockFilteredCache.length > 0 ? userStockFilteredCache : (window.onHandInventoryData?.items || []);
+            if (!items || items.length === 0) {
+                alert('No warehouse stock items to export.');
+                return;
             }
-        }
 
-        // INIT
-        setTimeout(function () {
-            filteredData = INVENTORY.slice();
-            renderTable();
-        }, 400);
+            const headers = ['Item Code', 'Item Description', 'UOM', 'Expense Account', 'On Hand Qty', 'Unit Cost', 'On Hand Value', 'Stock Status'];
+            const csvRows = [headers.join(',')];
+
+            items.forEach(it => {
+                let status = 'In Stock';
+                if (it.on_hand_qty <= 0) status = 'Out of Stock';
+                else if (it.on_hand_qty <= 5) status = 'Low Stock';
+
+                const row = [
+                    `"${(it.item_code || '').replace(/"/g, '""')}"`,
+                    `"${(it.description || '').replace(/"/g, '""')}"`,
+                    `"${(it.uom || 'PCS').replace(/"/g, '""')}"`,
+                    `"${(it.expense_account || '').replace(/"/g, '""')}"`,
+                    it.on_hand_qty || 0,
+                    it.unit_cost || 0,
+                    it.on_hand_value || 0,
+                    `"${status}"`
+                ];
+                csvRows.push(row.join(','));
+            });
+
+            const blob = new Blob([csvRows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `RII_Warehouse_On_Hand_Inventory_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        // Fallback tab switcher compatibility
+        window.switchLeftPanelTab = function(tab) {};
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof initUserOnHandInventory === 'function') {
+                initUserOnHandInventory();
+            }
+        });
 
         addRequestRow();
     </script>
@@ -2991,6 +3220,12 @@
     </script>
     <script type="module">
         import { supabase } from './supabase-client.js';
+        import { onHandInventoryData } from './on_hand_inventory_data.js';
+
+        window.onHandInventoryData = onHandInventoryData;
+        if (typeof initUserOnHandInventory === 'function') {
+            initUserOnHandInventory();
+        }
 
         function escapeNotificationHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -3163,19 +3398,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // Role-based rendering for supplies inventory
+            // Role-based title initialization if applicable
             const userRole = sessionStorage.getItem('userRole') || '';
             const isAdmin = userRole.toLowerCase() === 'admin';
-            const iframeWrap = document.querySelector('.iframe-wrap');
-            const requestorView = document.getElementById('requestorInventoryView');
-            const requestorBody = document.getElementById('requestorInventoryBody');
-
-            if (!isAdmin) {
-                const panelTitle = document.querySelector('.panel-title');
-                if (panelTitle && panelTitle.innerHTML.includes('Item Summary')) {
-                    panelTitle.innerHTML = '<i class="fa-solid fa-boxes-stacked" style="color:var(--accent);margin-right:8px;"></i>Item Summary';
-                }
-            }
 
             const toggleBtns = document.querySelectorAll('button[title="Toggle dark mode"]');
 
