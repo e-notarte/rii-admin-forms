@@ -3805,6 +3805,28 @@
       to { transform: translateY(0) scale(1); opacity: 1; }
     }
   </style>
+<style>
+    /* UNIVERSAL ADMIN CONFIRM MODAL STYLES & DARK MODE */
+    #adminConfirmModal.show {
+      display: grid !important;
+    }
+    body.dark-mode #adminConfirmModal .modal-box {
+      background: #1e293b !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6) !important;
+    }
+    body.dark-mode #adminConfirmTitle {
+      color: #f8fafc !important;
+    }
+    body.dark-mode #adminConfirmMessage {
+      color: #94a3b8 !important;
+    }
+    body.dark-mode #adminConfirmCancelBtn {
+      background: #334155 !important;
+      color: #f1f5f9 !important;
+      border-color: #475569 !important;
+    }
+</style>
 </head>
 
 <body>
@@ -5967,6 +5989,81 @@
 
 
   <script type="module">
+
+    // ========================================================
+    // UNIVERSAL ADMIN CONFIRMATION MODAL ENGINE (LIKE USER SUPPLIES)
+    // ========================================================
+    let pendingAdminConfirmCallback = null;
+
+    window.showAdminConfirmModal = function (options) {
+      const {
+        title = "Confirm Submission",
+        message = "Are you sure you want to proceed with this action?",
+        confirmText = "Yes, Submit",
+        confirmColor = "#1E355F",
+        icon = "fa-circle-question",
+        iconColor = "#d97706",
+        iconBg = "#fef3c7",
+        onConfirm = null
+      } = options || {};
+
+      const modal = document.getElementById('adminConfirmModal');
+      if (!modal) {
+        if (typeof onConfirm === 'function') onConfirm();
+        return;
+      }
+
+      const titleEl = document.getElementById('adminConfirmTitle');
+      const msgEl = document.getElementById('adminConfirmMessage');
+      const proceedBtn = document.getElementById('adminConfirmProceedBtn');
+      const iconBox = document.getElementById('adminConfirmIconBox');
+      const iconEl = document.getElementById('adminConfirmIcon');
+
+      if (titleEl) titleEl.textContent = title;
+      if (msgEl) msgEl.textContent = message;
+
+      if (proceedBtn) {
+        proceedBtn.textContent = confirmText;
+        proceedBtn.style.background = confirmColor;
+      }
+
+      if (iconBox) {
+        iconBox.style.background = iconBg;
+        iconBox.style.color = iconColor;
+      }
+
+      if (iconEl) {
+        iconEl.className = 'fa-solid ' + icon;
+      }
+
+      pendingAdminConfirmCallback = onConfirm;
+      modal.style.display = 'grid';
+    };
+
+    window.closeAdminConfirmModal = function () {
+      const modal = document.getElementById('adminConfirmModal');
+      if (modal) modal.style.display = 'none';
+      pendingAdminConfirmCallback = null;
+    };
+
+    // Initialize button listeners once DOM is loaded
+    if (typeof window !== 'undefined') {
+      window.addEventListener('DOMContentLoaded', function () {
+        const cancelBtn = document.getElementById('adminConfirmCancelBtn');
+        const proceedBtn = document.getElementById('adminConfirmProceedBtn');
+        if (cancelBtn) {
+          cancelBtn.addEventListener('click', window.closeAdminConfirmModal);
+        }
+        if (proceedBtn) {
+          proceedBtn.addEventListener('click', function () {
+            const cb = pendingAdminConfirmCallback;
+            window.closeAdminConfirmModal();
+            if (typeof cb === 'function') cb();
+          });
+        }
+      });
+    }
+
     import { supabase } from './supabase-client.js';
     import { companyVehiclesData } from './company_vehicles_data.js';
     import { approvedBudget2026 } from './approved_budget_data.js';
@@ -6606,12 +6703,34 @@
           }
           return;
         }
-      } else if (approvalStatus === 'rejected') {
-        if (!confirm(`Are you sure you want to reject the account registration for ${name}?`)) {
-          return;
-        }
-      }
 
+        window.showAdminConfirmModal({
+          title: "Confirm Account Approval",
+          message: `Are you sure you want to approve the account registration for ${name} and assign them to the ${selectedDept} department?`,
+          confirmText: "Yes, Approve",
+          confirmColor: "#10b981",
+          icon: "fa-user-check",
+          iconColor: "#059669",
+          iconBg: "#d1fae5",
+          onConfirm: () => executeAccountApproval(profileId, approvalStatus, selectedDept, email, name)
+        });
+        return;
+      } else if (approvalStatus === 'rejected') {
+        window.showAdminConfirmModal({
+          title: "Confirm Account Rejection",
+          message: `Are you sure you want to reject the account registration for ${name}?`,
+          confirmText: "Yes, Reject",
+          confirmColor: "#ef4444",
+          icon: "fa-user-xmark",
+          iconColor: "#dc2626",
+          iconBg: "#fee2e2",
+          onConfirm: () => executeAccountApproval(profileId, approvalStatus, selectedDept, email, name)
+        });
+        return;
+      }
+    };
+
+    async function executeAccountApproval(profileId, approvalStatus, selectedDept, email, name) {
       // 1. Instantly record override to local storage so UI updates reliably and immediately
       setAccountApprovalOverride(profileId, email, approvalStatus, selectedDept);
 
@@ -7251,8 +7370,21 @@
       const button = statusSelect?.closest('tr')?.querySelector('.dispatch-save');
       if (!task || !statusSelect || !button) return;
 
-      const previousStatus = liaisonStatus(task.status);
       const nextStatus = statusSelect.value;
+      window.showAdminConfirmModal({
+        title: "Confirm Liaison Task Update",
+        message: `Are you sure you want to update the status of the liaison task for ${task.requestor_name || 'Requestor'} to "${nextStatus}"?`,
+        confirmText: "Yes, Update",
+        confirmColor: "#1E355F",
+        icon: "fa-person-walking-arrow-right",
+        iconColor: "#1E355F",
+        iconBg: "#e0f2fe",
+        onConfirm: () => executeSaveLiaisonTask(taskId, task, statusSelect, button, nextStatus)
+      });
+    };
+
+    async function executeSaveLiaisonTask(taskId, task, statusSelect, button, nextStatus) {
+      const previousStatus = liaisonStatus(task.status);
       button.disabled = true;
       button.textContent = 'Saving...';
 
@@ -7568,6 +7700,52 @@
       const request = supplyRequests.find(item => String(item.id) === String(requestId) || (item.reference_number && item.reference_number === requestId));
       if (!request) return;
 
+      const refNo = request ? (request.reference_number || `SUP-${request.id}`) : `Request #${requestId}`;
+      const dept = request && request.department ? ` (${request.department})` : '';
+
+      let confirmTitle = "Confirm Supplies Status Update";
+      let confirmMsg = `Are you sure you want to change Supplies Request ${refNo}${dept} to ${nextStatus}?`;
+      let confirmColor = "#1E355F";
+      let icon = "fa-boxes-stacked";
+      let iconColor = "#0284c7";
+      let iconBg = "#e0f2fe";
+
+      if (nextStatus === 'Approved') {
+        confirmTitle = "Confirm Supplies Approval";
+        confirmMsg = `Are you sure you want to APPROVE Supplies Request ${refNo}${dept} and forward it to warehouse release?`;
+        confirmColor = "#10b981";
+        icon = "fa-boxes-packing";
+        iconColor = "#059669";
+        iconBg = "#d1fae5";
+      } else if (nextStatus === 'Rejected') {
+        confirmTitle = "Confirm Supplies Rejection";
+        confirmMsg = `Are you sure you want to REJECT Supplies Request ${refNo}${dept}?`;
+        confirmColor = "#ef4444";
+        icon = "fa-circle-xmark";
+        iconColor = "#dc2626";
+        iconBg = "#fee2e2";
+      } else if (nextStatus === 'Pending') {
+        confirmTitle = "Confirm Reinstatement";
+        confirmMsg = `Are you sure you want to reinstate Supplies Request ${refNo}${dept} back to Pending status?`;
+        confirmColor = "#64748b";
+        icon = "fa-rotate-left";
+        iconColor = "#475569";
+        iconBg = "#f1f5f9";
+      }
+
+      window.showAdminConfirmModal({
+        title: confirmTitle,
+        message: confirmMsg,
+        confirmText: `Yes, ${nextStatus}`,
+        confirmColor: confirmColor,
+        icon: icon,
+        iconColor: iconColor,
+        iconBg: iconBg,
+        onConfirm: () => executeAdminUpdateSupplyStatus(requestId, nextStatus, request)
+      });
+    };
+
+    async function executeAdminUpdateSupplyStatus(requestId, nextStatus, request) {
       const previousStatus = request.status;
 
       // Persist status in local override cache immediately so it never reverts on polling or refresh
@@ -9794,6 +9972,55 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
 
     window.updateRequestStatus = async function (id, table, newStatus) {
+      const request = (typeof window._allRequests !== "undefined")
+        ? window._allRequests.find(req => String(req.id) === String(id))
+        : null;
+      const type = request ? (request.display_title || request.request_type || 'Facility Request') : 'Facility Request';
+      const requestor = request ? (request.requestor_name || 'Requester') : 'Requester';
+
+      let confirmTitle = "Confirm Facility Action";
+      let confirmMsg = `Are you sure you want to mark the ${type} request for ${requestor} as ${newStatus}?`;
+      let confirmColor = "#1E355F";
+      let icon = "fa-circle-question";
+      let iconColor = "#d97706";
+      let iconBg = "#fef3c7";
+
+      if (newStatus === 'Approved') {
+        confirmTitle = "Confirm Facility Approval";
+        confirmMsg = `Are you sure you want to APPROVE the ${type} reservation for ${requestor} on ${request?.request_date || 'scheduled date'}?`;
+        confirmColor = "#10b981";
+        icon = "fa-building-circle-check";
+        iconColor = "#059669";
+        iconBg = "#d1fae5";
+      } else if (newStatus === 'Rejected') {
+        confirmTitle = "Confirm Facility Rejection";
+        confirmMsg = `Are you sure you want to REJECT the ${type} reservation for ${requestor}?`;
+        confirmColor = "#ef4444";
+        icon = "fa-building-circle-xmark";
+        iconColor = "#dc2626";
+        iconBg = "#fee2e2";
+      } else if (newStatus === 'Cancelled') {
+        confirmTitle = "Confirm Cancellation";
+        confirmMsg = `Are you sure you want to CANCEL the ${type} reservation for ${requestor}?`;
+        confirmColor = "#64748b";
+        icon = "fa-calendar-xmark";
+        iconColor = "#475569";
+        iconBg = "#f1f5f9";
+      }
+
+      window.showAdminConfirmModal({
+        title: confirmTitle,
+        message: confirmMsg,
+        confirmText: `Yes, ${newStatus}`,
+        confirmColor: confirmColor,
+        icon: icon,
+        iconColor: iconColor,
+        iconBg: iconBg,
+        onConfirm: () => executeRequestStatus(id, table, newStatus)
+      });
+    };
+
+    async function executeRequestStatus(id, table, newStatus) {
       try {
         // Find user id
         let targetUserId = null;
@@ -10236,6 +10463,19 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return;
       }
 
+      window.showAdminConfirmModal({
+        title: "Confirm Receiving Report",
+        message: `Are you sure you want to submit Receiving Report for ${deptVal} from ${supplierVal} (PRF: ${prfVal}, PO: ${poVal}) totaling ₱ ${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}?`,
+        confirmText: "Yes, Submit RR",
+        confirmColor: "#16a34a",
+        icon: "fa-truck-ramp-box",
+        iconColor: "#16a34a",
+        iconBg: "#dcfce7",
+        onConfirm: () => executeSubmitRr(dateVal, deptVal, prfVal, poVal, supplierVal, expenseAccVal, subAccVal, budgetFromVal, remarksVal, receiverVal, items, grandTotal)
+      });
+    };
+
+    async function executeSubmitRr(dateVal, deptVal, prfVal, poVal, supplierVal, expenseAccVal, subAccVal, budgetFromVal, remarksVal, receiverVal, items, grandTotal) {
       const submitBtn = document.getElementById('btnSubmitRr');
       const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
@@ -10885,6 +11125,19 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return;
       }
 
+      window.showAdminConfirmModal({
+        title: "Confirm Purchase Order",
+        message: `Are you sure you want to record and print Purchase Order ${poNoVal} for ${deptVal} totaling ₱ ${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}?`,
+        confirmText: "Yes, Record PO",
+        confirmColor: "#16a34a",
+        icon: "fa-file-circle-check",
+        iconColor: "#16a34a",
+        iconBg: "#dcfce7",
+        onConfirm: () => executeSubmitPo(dateVal, deptVal, poNoVal, prfNoVal, items, grandTotal)
+      });
+    };
+
+    function executeSubmitPo(dateVal, deptVal, poNoVal, prfNoVal, items, grandTotal) {
       const recId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'po_' + Date.now();
       const newPo = {
         id: recId,
@@ -16175,6 +16428,22 @@ This serves as your official electronic copy of the posted Requisition & Issue S
   </div>
 
   <!-- 9. System Theme Custom Alert Modal -->
+  
+  <!-- UNIVERSAL ADMIN CONFIRM SUBMISSION MODAL (LIKE SUPPLIES USER ACCOUNT) -->
+  <div class="modal-overlay" id="adminConfirmModal" style="z-index: 21000; display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(4px); place-items: center;">
+    <div class="modal-box" style="max-width: 420px; width: 90%; padding: 28px; text-align: center; border-radius: 14px; box-shadow: 0 20px 45px rgba(0,0,0,0.3); background: #ffffff; border: 1px solid rgba(0,0,0,0.08);">
+      <div id="adminConfirmIconBox" style="width: 56px; height: 56px; border-radius: 50%; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.7rem;">
+        <i class="fa-solid fa-circle-question" id="adminConfirmIcon"></i>
+      </div>
+      <h2 style="margin: 0 0 10px; font-size: 1.35rem; color: var(--primary, #1E355F); font-weight: 800;" id="adminConfirmTitle">Confirm Submission</h2>
+      <p style="margin: 0 0 24px; font-size: 0.9rem; color: #64748b; line-height: 1.55;" id="adminConfirmMessage">Are you sure you want to proceed with this submission?</p>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button type="button" id="adminConfirmCancelBtn" style="flex: 1; padding: 10px 16px; border: 1px solid var(--border, #cbd5e1); background: #fff; color: #475569; border-radius: 7px; font-weight: 700; cursor: pointer; transition: background 0.2s;">Cancel</button>
+        <button type="button" id="adminConfirmProceedBtn" style="flex: 1; padding: 10px 16px; border: none; background: #1E355F; color: #fff; border-radius: 7px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 3px 10px rgba(30, 53, 95, 0.25);">Yes, Submit</button>
+      </div>
+    </div>
+  </div>
+
   <div class="system-alert-backdrop" id="systemAlertModal">
     <div class="system-alert-box">
       <div class="system-alert-icon success" id="systemAlertIcon">
