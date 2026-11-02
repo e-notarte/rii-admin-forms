@@ -4795,13 +4795,10 @@
 
       <!-- FLEET MANAGEMENT - LIST OF COMPANY VEHICLES MASTER VIEW -->
       <div id="view-company-vehicles" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
           <div>
             <div style="display:flex; align-items:center; gap:10px;">
               <h1><i class="fa-solid fa-truck-pickup" style="color:var(--accent);"></i> List of Company Vehicles</h1>
-              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-circle-check"></i> Master Fleet Registry &bull; 135 Units
-              </span>
             </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
               Official master records of company-owned fleet vehicles, active custodians, accountability codes (MR), registration renewals, and operational status.
@@ -4817,45 +4814,6 @@
             <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
               <i class="fa-solid fa-print"></i> Print Roster
             </button>
-          </div>
-        </div>
-
-        <!-- Metric Summary Cards -->
-        <div class="rr-stats-grid" style="margin-bottom: 24px;">
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon blue"><i class="fa-solid fa-car-side"></i></div>
-            <div>
-              <div class="rr-stat-val" id="vehStatTotal">135 Units</div>
-              <div class="rr-stat-lbl">Total Registered Fleet</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
-            <div>
-              <div class="rr-stat-val" id="vehStatOperational">50 Units</div>
-              <div class="rr-stat-lbl">Operational &amp; In-Service</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon purple"><i class="fa-solid fa-user-shield"></i></div>
-            <div>
-              <div class="rr-stat-val" id="vehStatActiveAcc">45 Units</div>
-              <div class="rr-stat-lbl">Active Custodians Assigned</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon amber"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-            <div>
-              <div class="rr-stat-val" id="vehStatRepair">7 Units</div>
-              <div class="rr-stat-lbl">Under Repair / Maintenance</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon red"><i class="fa-solid fa-trash-can"></i></div>
-            <div>
-              <div class="rr-stat-val" id="vehStatDisposal">33 Units</div>
-              <div class="rr-stat-lbl">Disposal / Transferred / Sold</div>
-            </div>
           </div>
         </div>
 
@@ -4930,19 +4888,10 @@
 
       <!-- BUILDING MAINTENANCE - SUBMETER UTILITIES (POWER & WATER) BILLING VIEW -->
       <div id="view-building-maintenance" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
           <div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <h1><i class="fa-solid fa-bolt" style="color:var(--accent);"></i> Building Maintenance - Submeter Utilities (Power &amp; Water)</h1>
-              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-stamp"></i> Billed: ₱ 3,835,996.12
-              </span>
-              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-calendar-days"></i> 220 Utility Records (Jan - Oct 2026)
-              </span>
-              <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-building"></i> 4 Lessees &bull; 22 Monitored Submeters
-              </span>
             </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
               Official R-II Builders building utilities ledger. Real-time submeter reading logger, Meralco &amp; water bill computation, and tenant Statement of Accounts (SOA).
@@ -4961,114 +4910,6 @@
           </div>
         </div>
 
-        <!-- Metric Cards -->
-        <div class="bm-stats-grid" style="margin-bottom: 22px;">
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon green"><i class="fa-solid fa-receipt"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatTotalBilled">₱ 3,835,996.12</div>
-              <div class="bm-stat-lbl">Total Utilities Billed (Net: ₱ 4,142,248.40)</div>
-            </div>
-          </div>
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon yellow"><i class="fa-solid fa-bolt-lightning"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatPowerBilled">₱ 3,375,069.56</div>
-              <div class="bm-stat-lbl">Power (Electricity) &bull; 216,900 kWh</div>
-            </div>
-          </div>
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon blue"><i class="fa-solid fa-droplet"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatWaterBilled">₱ 460,926.56</div>
-              <div class="bm-stat-lbl">Water Utility &bull; 2,828 m³</div>
-            </div>
-          </div>
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon indigo"><i class="fa-solid fa-sack-dollar"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatCollectionStatus" style="font-size:1.1rem;">₱ 1,841,270.89</div>
-              <div class="bm-stat-lbl">Collections Paid (110 Paid &bull; 110 Pending)</div>
-            </div>
-          </div>
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon yellow"><i class="fa-solid fa-gauge-high"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatTenantCount">22 Submeters</div>
-              <div class="bm-stat-lbl">15 Power &bull; 7 Water &bull; 4 Lessees</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 4 Lessee Profile Cards Grid -->
-        <div style="margin-bottom: 22px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-              <i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Lessee Entities &amp; Utility Allocation
-            </h3>
-            <span style="font-size:0.75rem; color:var(--text-muted);">Click any company card to filter ledger records</span>
-          </div>
-          <div class="bm-company-grid" id="bmCompanyCards">
-            <!-- Dynamically populated or static cards -->
-            <div class="bm-company-card active" onclick="filterBmCompany('ALL', this)">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <strong style="color:var(--primary); font-size:0.95rem;">All Lessees</strong>
-                <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.7rem;">4 Companies</span>
-              </div>
-              <div style="font-size:1.2rem; font-weight:700; color:#10b981; margin-bottom:4px;">₱ 3,835,996.12</div>
-              <div style="font-size:0.75rem; color:var(--text-muted);">220 total utility billing records</div>
-            </div>
-
-            <div class="bm-company-card" onclick="filterBmCompany('PESC', this)">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <strong style="color:var(--primary); font-size:0.95rem;">PESC &bull; Primex Energy</strong>
-                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">2nd Floor</span>
-              </div>
-              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 636,855.15</div>
-              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>5 Submeters (4P / 1W)</span>
-                <span style="color:#15803d; font-weight:600;">50 Records</span>
-              </div>
-            </div>
-
-            <div class="bm-company-card" onclick="filterBmCompany('RLDI', this)">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <strong style="color:var(--primary); font-size:0.95rem;">RLDI &bull; R-II Land</strong>
-                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">5th Floor</span>
-              </div>
-              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 750,010.90</div>
-              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>4 Submeters (2P / 2W)</span>
-                <span style="color:#15803d; font-weight:600;">40 Records</span>
-              </div>
-            </div>
-
-            <div class="bm-company-card" onclick="filterBmCompany('RMRCI', this)">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <strong style="color:var(--primary); font-size:0.95rem;">RMRCI &bull; RMR Coal</strong>
-                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">GF, 4F &amp; 5F</span>
-              </div>
-              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 1,213,958.44</div>
-              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>7 Submeters (5P / 2W)</span>
-                <span style="color:#15803d; font-weight:600;">70 Records</span>
-              </div>
-            </div>
-
-            <div class="bm-company-card" onclick="filterBmCompany('RBI', this)">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <strong style="color:var(--primary); font-size:0.95rem;">RBI &bull; R-II Builders</strong>
-                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">GF, 3F &amp; 6F</span>
-              </div>
-              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 1,235,171.63</div>
-              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
-                <span>6 Submeters (4P / 2W)</span>
-                <span style="color:#15803d; font-weight:600;">60 Records</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- MASTER UTILITIES BILLING STATEMENTS & READINGS LEDGER -->
         <div class="data-card" id="bmStatementsLedgerCard" style="margin-bottom: 24px; padding: 24px;">
           <!-- Search & Filter Controls -->
@@ -5082,6 +4923,15 @@
               </div>
 
               <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <!-- Company / Lessee Filter -->
+                <select id="bmLedgerCompanyFilter" onchange="bmCompanyFilter = this.value; filterBmStatementsLedger();" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
+                  <option value="ALL">All Lessees (4 Companies)</option>
+                  <option value="PESC">PESC &bull; Primex Energy</option>
+                  <option value="RLDI">RLDI &bull; R-II Land</option>
+                  <option value="RMRCI">RMRCI &bull; RMR Coal</option>
+                  <option value="RBI">RBI &bull; R-II Builders</option>
+                </select>
+
                 <!-- Month Filter -->
                 <select id="bmLedgerMonthFilter" onchange="filterBmStatementsLedger()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
                   <option value="ALL">All Billing Months (10 Months)</option>
@@ -5291,19 +5141,10 @@
 
       <!-- DOCUMENT TRANSMITTAL MANAGEMENT VIEW -->
       <div id="view-transmittal" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
           <div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <h1><i class="fa-solid fa-file-signature" style="color:var(--accent);"></i> Executive Document Transmittals</h1>
-              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-stamp"></i> Total Value: ₱ 162,664,232.45
-              </span>
-              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-file-contract"></i> 1,755 Transmitted Documents
-              </span>
-              <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-paper-plane"></i> To: Office of the President &bull; From: HRAD
-              </span>
             </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
               Official R-II Builders Document Transmittal &amp; Summary of for Signature per Department. Standardized executive routing for RFPs, PRFs, Liquidations, Memos, and Contracts.
@@ -5319,45 +5160,6 @@
             <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
               <i class="fa-solid fa-print"></i> Print Transmittal Sheet
             </button>
-          </div>
-        </div>
-
-        <!-- Metric KPI Cards -->
-        <div class="rr-stats-grid" style="margin-bottom: 22px;">
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon blue"><i class="fa-solid fa-file-signature"></i></div>
-            <div>
-              <div class="rr-stat-val" id="trnStatTotalCount">1,755</div>
-              <div class="rr-stat-lbl">Documents Transmitted</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon green"><i class="fa-solid fa-peso-sign"></i></div>
-            <div>
-              <div class="rr-stat-val" id="trnStatTotalValue">₱ 162,664,232.45</div>
-              <div class="rr-stat-lbl">Total Financial Transmittal Volume</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon amber"><i class="fa-solid fa-receipt"></i></div>
-            <div>
-              <div class="rr-stat-val" id="trnStatRfpCount">893 RFPs</div>
-              <div class="rr-stat-lbl">Requests for Payment</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon purple"><i class="fa-solid fa-cart-shopping"></i></div>
-            <div>
-              <div class="rr-stat-val" id="trnStatPrfCount">440 PRFs</div>
-              <div class="rr-stat-lbl">Purchase Requisition Forms</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon red"><i class="fa-solid fa-building"></i></div>
-            <div>
-              <div class="rr-stat-val" id="trnStatTopDept">ADMIN</div>
-              <div class="rr-stat-lbl">Lead Department (964 Records)</div>
-            </div>
           </div>
         </div>
 
