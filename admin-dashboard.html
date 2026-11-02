@@ -5531,51 +5531,10 @@
 
         <!-- TRANSMITTAL MASTER REGISTRY CARD (1,755 HISTORICAL RECORDS) -->
         <div class="data-card" style="padding: 24px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-            <div>
-              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-clock-rotate-left" style="color:var(--accent);"></i> Transmittal Master Registry &amp; Audit Trail
-              </h3>
-              <span style="font-size:0.75rem; color:var(--text-muted);" id="trnRegistrySubtitle">Complete fiscal records of all 1,755 transmitted documents submitted for executive signature.</span>
-            </div>
-
-            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-              <select id="trnDocTypeFilter" onchange="filterDocumentTransmittals()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
-                <option value="ALL">All Document Types</option>
-                <option value="Request for Payment">Request for Payment (893)</option>
-                <option value="Purchase Requisition Form">Purchase Requisition (440)</option>
-                <option value="Abstract of Canvass">Abstract of Canvass (50)</option>
-                <option value="Liquidation">Liquidation Form (49)</option>
-                <option value="Fuel Consumption Summary">Fuel Consumption (22)</option>
-                <option value="Memorandum">Memorandum (20)</option>
-                <option value="Request for Disposal">Request for Disposal (16)</option>
-                <option value="Leave Application">Leave Application (7)</option>
-                <option value="Document for Signature">Other Documents (251)</option>
-              </select>
-
-              <select id="trnDeptFilter" onchange="filterDocumentTransmittals()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
-                <option value="ALL">All Departments &bull; Projects</option>
-                <option value="ADMIN">ADMIN (964)</option>
-                <option value="BSP ILO ILO">BSP ILO ILO (186)</option>
-                <option value="180MLD">180MLD (185)</option>
-                <option value="QCESNP2">QCESNP2 (169)</option>
-                <option value="CATMON">CATMON (107)</option>
-                <option value="ENGINEERING">ENGINEERING (19)</option>
-                <option value="LAS PINAS P2">LAS PINAS P2 (13)</option>
-                <option value="NKTI">NKTI Projects (31)</option>
-                <option value="PURCHASING">PURCHASING (12)</option>
-                <option value="BDG">BDG (12)</option>
-                <option value="HR">HR (6)</option>
-              </select>
-
-              <div class="search-box" style="margin:0;">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="trnSearchInput" placeholder="Search doc #, payee, particulars..." oninput="filterDocumentTransmittals()" style="width:230px;">
-              </div>
-              <input type="date" id="trnDateFilter" onchange="filterDocumentTransmittals()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; background:white;">
-              <button type="button" class="btn-primary" onclick="exportTransmittalsCSV()" style="font-size:0.8rem; padding:7px 14px; background:#0284c7; border-radius:6px; font-weight:700;">
-                <i class="fa-solid fa-file-excel"></i> Export CSV
-              </button>
+          <div style="margin-bottom:16px;">
+            <div class="search-box" style="margin:0; max-width:380px;">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="trnSearchInput" placeholder="Search doc #, payee, particulars, dept..." oninput="filterDocumentTransmittals()">
             </div>
           </div>
 
