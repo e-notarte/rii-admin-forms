@@ -3141,6 +3141,44 @@
     .bm-stat-val { font-size: 1.35rem; font-weight: 700; color: var(--primary); line-height: 1.2; }
     .bm-stat-lbl { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-top: 2px; }
 
+    .bm-company-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .bm-company-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .bm-company-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      border-color: #0284c7;
+    }
+    .bm-company-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(30, 53, 95, 0.25);
+      background: #f8fafc;
+    }
+    .bm-cat-pill {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .bm-cat-pill.power { background: #fef3c7; color: #b45309; }
+    .bm-cat-pill.water { background: #e0f2fe; color: #0284c7; }
+
     .bm-card-header {
       display: flex;
       justify-content: space-between;
@@ -3411,6 +3449,42 @@
       border-color: var(--border) !important;
     }
 
+    /* Budget Monitoring FY 2026 Styles */
+    .bgt-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .bgt-cat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .bgt-cat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      border-color: #cbd5e1;
+    }
+    .bgt-cat-card.active {
+      border-color: var(--accent);
+      background: #f8fafc;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    body.dark-mode .bgt-cat-card {
+      background: #1e293b;
+      border-color: var(--border);
+    }
+    body.dark-mode .bgt-cat-card.active {
+      background: #0f172a;
+    }
+
     /* System Theme Pop-Up Modal (Custom Alert) */
     .system-alert-backdrop {
       display: none;
@@ -3598,7 +3672,7 @@
           class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</a>
       <a href="#" class="nav-link" onclick="return switchView('view-budget', this)"><i
           class="fa-solid fa-chart-line"></i>
-        Budget Monitoring</a>
+        Budget Monitoring <span class="nav-count" id="budgetNavCount" style="display:inline-flex; background:#0284c7;">2026</span></a>
     </nav>
 
     <div class="nav-label">INVENTORY</div>
@@ -3624,7 +3698,7 @@
     <div class="nav-label">BUILDING MAINTENANCE</div>
     <nav>
       <a href="#" class="nav-link" data-building-maintenance onclick="return switchView('view-building-maintenance', this)"><i class="fa-solid fa-bolt"></i>
-        Submeter Electricity Billing</a>
+        Submeter Utilities Billing <span class="nav-count" id="buildingNavCount" style="display:inline-flex; background:#0284c7;">220</span></a>
     </nav>
   </aside>
 
@@ -3827,80 +3901,193 @@
         </div>
       </div>
 
-      <!-- BUDGET MONITORING VIEW -->
+      <!-- BUDGET MONITORING VIEW - FY 2026 APPROVED BUDGET -->
       <div id="view-budget" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
           <div>
-            <h1><i class="fa-solid fa-chart-line"></i> Budget Monitoring Dashboard</h1>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <h1><i class="fa-solid fa-chart-line" style="color:var(--accent);"></i> FY 2026 Admin Approved Budget Monitoring</h1>
+              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-stamp"></i> Approved: ₱ 147,643,884.24
+              </span>
+              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-user-check"></i> Prepared by: Emmanuel Notarte | Noted: Clarisa P. Lasam
+              </span>
+            </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-              Departmental supplies budget tracking and actual expense allocations updated upon warehouse issuance.
+              Official master operating budget ledger for R-II Builders Admin Department. Real-time disbursement tracking across 14 expense categories &amp; 200 account lines.
             </p>
           </div>
-          <div style="display:flex; gap:8px;">
-            <button type="button" class="btn-primary" onclick="loadBudgetMonitoringBoard()" style="font-size:0.8rem; padding:6px 14px;">
-              <i class="fa-solid fa-arrows-rotate"></i> Refresh Budget
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn-primary" onclick="openBudgetExpenseModal()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
+              <i class="fa-solid fa-plus"></i> Record Expense
+            </button>
+            <button type="button" class="btn-primary" onclick="exportAdminBudgetCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
+              <i class="fa-solid fa-file-excel"></i> Export Budget CSV
+            </button>
+            <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
+              <i class="fa-solid fa-print"></i> Print Budget
             </button>
           </div>
         </div>
 
-        <!-- Budget Metric Cards -->
-        <div class="kpi-cards-grid" id="budgetOverviewCards" style="margin-bottom: 24px;">
-          <!-- Populated dynamically -->
+        <!-- Top Executive KPI Metric Cards -->
+        <div class="rr-stats-grid" style="margin-bottom: 24px;">
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon blue"><i class="fa-solid fa-coins"></i></div>
+            <div>
+              <div class="rr-stat-val" id="bgtStatTotal" style="font-size:1.25rem;">₱ 147,643,884.24</div>
+              <div class="rr-stat-lbl">Total Approved FY 2026 Budget</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon amber"><i class="fa-solid fa-receipt"></i></div>
+            <div>
+              <div class="rr-stat-val" id="bgtStatDisbursed" style="font-size:1.25rem;">₱ 0.00</div>
+              <div class="rr-stat-lbl">Actual Disbursed Expenses</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon green"><i class="fa-solid fa-piggy-bank"></i></div>
+            <div>
+              <div class="rr-stat-val" id="bgtStatRemaining" style="font-size:1.25rem;">₱ 147,643,884.24</div>
+              <div class="rr-stat-lbl">Available Remaining Balance</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon purple"><i class="fa-solid fa-fire-flame-curved"></i></div>
+            <div>
+              <div class="rr-stat-val" id="bgtStatBurnRate" style="font-size:1.25rem;">0.00%</div>
+              <div class="rr-stat-lbl">Overall Budget Utilization</div>
+            </div>
+          </div>
+          <div class="rr-stat-card">
+            <div class="rr-stat-icon red"><i class="fa-solid fa-list-ol"></i></div>
+            <div>
+              <div class="rr-stat-val" id="bgtStatLineItems" style="font-size:1.25rem;">200 Accounts</div>
+              <div class="rr-stat-lbl">14 Categories &bull; 106 Main</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Department Budget Breakdown Table -->
-        <div class="data-card" style="margin-bottom: 24px; padding: 20px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+        <!-- Expense Category Breakdown Grid -->
+        <div style="margin-bottom: 24px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-              <i class="fa-solid fa-building-columns" style="color:var(--accent);"></i> Department Budget vs. Expense Allocation
+              <i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> FY 2026 Budget by Expense Category
             </h3>
-            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">FY 2026 Official Ledger</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Click any category card to filter ledger below</span>
           </div>
+          <div class="bgt-cat-grid" id="budgetCategoryCards">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Master Budget Ledger Table Card -->
+        <div class="data-card" style="margin-bottom: 24px; padding: 22px;">
+          <!-- Search & Filter Bar -->
+          <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-book-bookmark" style="color:var(--accent);"></i> Approved Budget Accounts Ledger
+                </h3>
+                <span style="font-size:0.75rem; color:var(--text-muted);" id="budgetResultCount">Showing 200 budget accounts</span>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <!-- Category Select Dropdown -->
+                <select id="budgetCategorySelect" onchange="filterBudgetAccounts()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
+                  <option value="ALL">All Categories</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div style="position:relative; flex:1; min-width:280px; max-width:480px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
+                <input type="text" id="budgetSearchInput" oninput="filterBudgetAccounts()" placeholder="Search cost code, account title, department, category..." style="width:100%; padding:8px 12px 8px 34px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:var(--bg-surface); color:var(--text-main);">
+              </div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;" id="budgetScopePills">
+                <button type="button" class="veh-filter-btn active" onclick="filterBudgetScope('ALL', this)">All Items (200)</button>
+                <button type="button" class="veh-filter-btn" onclick="filterBudgetScope('MAIN', this)">Main Accounts (106)</button>
+                <button type="button" class="veh-filter-btn" onclick="filterBudgetScope('SUBS', this)">Dept Breakdowns (88)</button>
+                <button type="button" class="veh-filter-btn" onclick="filterBudgetScope('WITH_EXPENSES', this)">With Expenses</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Master Table -->
           <div style="overflow-x: auto;">
-            <table class="dispatch-table" style="min-width: 820px;">
+            <table class="dispatch-table" style="min-width: 950px;">
               <thead>
                 <tr>
-                  <th>Department</th>
-                  <th>Budget Code</th>
-                  <th style="text-align: right;">Allocated Budget</th>
-                  <th style="text-align: right;">Actual Expense</th>
-                  <th style="text-align: right;">Remaining Balance</th>
-                  <th style="width: 220px;">Utilization Progress</th>
-                  <th style="text-align: center;">Status</th>
+                  <th style="width:75px; text-align:center;">Code</th>
+                  <th>Account Title &amp; Department Allocation</th>
+                  <th>Expense Category</th>
+                  <th style="text-align: right; width: 140px;">Approved Budget</th>
+                  <th style="text-align: right; width: 130px;">Actual Expense</th>
+                  <th style="text-align: right; width: 130px;">Remaining Balance</th>
+                  <th style="width: 140px; text-align: center;">Utilization</th>
+                  <th style="text-align: center; width: 85px;">Action</th>
                 </tr>
               </thead>
-              <tbody id="budgetDeptTableBody">
-                <tr><td colspan="7" style="text-align:center;">Loading department budgets...</td></tr>
+              <tbody id="budgetMasterTableBody">
+                <tr><td colspan="8" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> Loading approved budget accounts...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- Supplies Issuance & Expenditure Transaction Log -->
-        <div class="data-card" style="padding: 20px;">
+        <!-- Recent Disbursements / Expenditures Log -->
+        <div class="data-card" style="padding: 22px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
-            <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-              <i class="fa-solid fa-receipt" style="color:#10b981;"></i> Recent Supplies Issuance &amp; Expense Ledger
-            </h3>
-            <span style="font-size:0.75rem; color:var(--text-muted);">Real-time Issuance Debits</span>
+            <div>
+              <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-receipt" style="color:#10b981;"></i> Recent Disbursements &amp; Expenses Ledger
+              </h3>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Real-time debits charged against FY 2026 approved budget cost codes</span>
+            </div>
+            <button type="button" class="btn-primary" onclick="openBudgetExpenseModal()" style="font-size:0.75rem; padding:6px 12px; background:#10b981;">
+              <i class="fa-solid fa-plus"></i> Charge Expense
+            </button>
           </div>
           <div style="overflow-x: auto;">
-            <table class="dispatch-table" style="min-width: 750px;">
+            <table class="dispatch-table" style="min-width: 850px;">
               <thead>
                 <tr>
-                  <th>Ref #</th>
-                  <th>Department</th>
-                  <th>Items Issued</th>
+                  <th>Date</th>
+                  <th>Ref # / Voucher</th>
+                  <th>Cost Code</th>
+                  <th>Account Title</th>
+                  <th>Payee / Supplier</th>
+                  <th>Description / Particulars</th>
                   <th style="text-align: right;">Amount Charged</th>
-                  <th>Date &amp; Time</th>
-                  <th>Issued By</th>
-                  <th>Action</th>
+                  <th>Recorded By</th>
                 </tr>
               </thead>
               <tbody id="budgetTransactionsTableBody">
-                <tr><td colspan="7" style="text-align:center;">No supplies issuance records yet.</td></tr>
+                <tr><td colspan="8" style="text-align:center; padding:25px; color:var(--text-muted);">No recorded disbursements yet. Click "+ Record Expense" to charge an invoice against any budget cost code.</td></tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- Signatories Footer Box -->
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; margin-top:24px; padding:20px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; font-size:0.8rem;">
+          <div>
+            <p style="margin:0 0 25px; color:var(--text-muted);">Prepared by:</p>
+            <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;">Emmanuel Notarte</div>
+            <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">Admin Officer &bull; Admin Department</p>
+          </div>
+          <div>
+            <p style="margin:0 0 25px; color:var(--text-muted);">Noted by:</p>
+            <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;">Clarisa P. Lasam</div>
+            <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">Admin Supervisor &bull; Admin Department</p>
+          </div>
+          <div>
+            <p style="margin:0 0 25px; color:var(--text-muted);">Furnished to:</p>
+            <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;">Ms. Regina Therese R. Lava</div>
+            <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">RMR Chief Financial Officer (CFO)</p>
           </div>
         </div>
       </div>
@@ -4482,75 +4669,245 @@
         </div>
       </div>
 
-      <!-- BUILDING MAINTENANCE - SUBMETER ELECTRICITY BILLING VIEW -->
+      <!-- BUILDING MAINTENANCE - SUBMETER UTILITIES (POWER & WATER) BILLING VIEW -->
       <div id="view-building-maintenance" class="view-section">
         <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
           <div>
-            <h1><i class="fa-solid fa-bolt" style="color:var(--accent);"></i> Building Maintenance - Electricity Submeter Billing</h1>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <h1><i class="fa-solid fa-bolt" style="color:var(--accent);"></i> Building Maintenance - Submeter Utilities (Power &amp; Water)</h1>
+              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-stamp"></i> Billed: ₱ 3,835,996.12
+              </span>
+              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-calendar-days"></i> 220 Utility Records (Jan - Oct 2026)
+              </span>
+              <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
+                <i class="fa-solid fa-building"></i> 4 Lessees &bull; 22 Monitored Submeters
+              </span>
+            </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-              Tenant submeter reading logger, Meralco master bill computation, and official electricity billing statement generator.
+              Official R-II Builders building utilities ledger. Real-time submeter reading logger, Meralco &amp; water bill computation, and tenant Statement of Accounts (SOA).
             </p>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-primary" onclick="document.getElementById('bmReadingCard').scrollIntoView({ behavior: 'smooth' });" style="font-size:0.8rem; padding:7px 15px;">
-              <i class="fa-solid fa-plus"></i> New Reading Batch
-            </button>
-            <button type="button" class="btn-primary" onclick="loadDefaultTenantSubmeters()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
-              <i class="fa-solid fa-building-user"></i> Populate Tenants
+            <button type="button" class="btn-primary" onclick="document.getElementById('bmReadingCard').scrollIntoView({ behavior: 'smooth' });" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
+              <i class="fa-solid fa-plus"></i> Log Reading Batch
             </button>
             <button type="button" class="btn-primary" onclick="exportSubmeterBillingCSV()" style="font-size:0.8rem; padding:7px 15px; background:#0284c7;">
-              <i class="fa-solid fa-file-excel"></i> Export Ledger CSV
+              <i class="fa-solid fa-file-excel"></i> Export Utilities CSV
+            </button>
+            <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:#10b981;">
+              <i class="fa-solid fa-print"></i> Print Ledger
             </button>
           </div>
         </div>
 
         <!-- Metric Cards -->
-        <div class="bm-stats-grid">
+        <div class="bm-stats-grid" style="margin-bottom: 22px;">
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon green"><i class="fa-solid fa-receipt"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatTotalBilled">₱ 3,835,996.12</div>
+              <div class="bm-stat-lbl">Total Utilities Billed (Net: ₱ 4,142,248.40)</div>
+            </div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon yellow"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatPowerBilled">₱ 3,375,069.56</div>
+              <div class="bm-stat-lbl">Power (Electricity) &bull; 216,900 kWh</div>
+            </div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon blue"><i class="fa-solid fa-droplet"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatWaterBilled">₱ 460,926.56</div>
+              <div class="bm-stat-lbl">Water Utility &bull; 2,828 m³</div>
+            </div>
+          </div>
+          <div class="bm-stat-card">
+            <div class="bm-stat-icon indigo"><i class="fa-solid fa-sack-dollar"></i></div>
+            <div>
+              <div class="bm-stat-val" id="bmStatCollectionStatus" style="font-size:1.1rem;">₱ 1,841,270.89</div>
+              <div class="bm-stat-lbl">Collections Paid (110 Paid &bull; 110 Pending)</div>
+            </div>
+          </div>
           <div class="bm-stat-card">
             <div class="bm-stat-icon yellow"><i class="fa-solid fa-gauge-high"></i></div>
             <div>
-              <div class="bm-stat-val" id="bmStatTenantCount">0</div>
-              <div class="bm-stat-lbl">Submeters Monitored</div>
-            </div>
-          </div>
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon blue"><i class="fa-solid fa-bolt-lightning"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatEffectiveRate">₱ 0.00 / kWh</div>
-              <div class="bm-stat-lbl">Meralco Master Rate</div>
-            </div>
-          </div>
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon indigo"><i class="fa-solid fa-chart-area"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatTotalKwh">0.00 kWh</div>
-              <div class="bm-stat-lbl">Total Period Consumption</div>
-            </div>
-          </div>
-          <div class="bm-stat-card">
-            <div class="bm-stat-icon green"><i class="fa-solid fa-peso-sign"></i></div>
-            <div>
-              <div class="bm-stat-val" id="bmStatTotalBilled">₱ 0.00</div>
-              <div class="bm-stat-lbl">Total Tenant Billed</div>
+              <div class="bm-stat-val" id="bmStatTenantCount">22 Submeters</div>
+              <div class="bm-stat-lbl">15 Power &bull; 7 Water &bull; 4 Lessees</div>
             </div>
           </div>
         </div>
 
-        <!-- STEP 1: MERALCO MASTER BILL & BATCH ENTRY CARD -->
-        <div class="data-card" id="bmReadingCard" style="margin-bottom: 24px; padding: 24px;">
-          <div class="bm-card-header">
-            <div>
-              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-file-invoice-dollar" style="color:var(--accent);"></i> Step 1: Meralco Master Bill &amp; Billing Period
-              </h3>
-              <span style="font-size:0.75rem; color:var(--text-muted);">Enter the official Meralco invoice details for the building to establish the effective rate per kWh.</span>
+        <!-- 4 Lessee Profile Cards Grid -->
+        <div style="margin-bottom: 22px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Lessee Entities &amp; Utility Allocation
+            </h3>
+            <span style="font-size:0.75rem; color:var(--text-muted);">Click any company card to filter ledger records</span>
+          </div>
+          <div class="bm-company-grid" id="bmCompanyCards">
+            <!-- Dynamically populated or static cards -->
+            <div class="bm-company-card active" onclick="filterBmCompany('ALL', this)">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="color:var(--primary); font-size:0.95rem;">All Lessees</strong>
+                <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.7rem;">4 Companies</span>
+              </div>
+              <div style="font-size:1.2rem; font-weight:700; color:#10b981; margin-bottom:4px;">₱ 3,835,996.12</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">220 total utility billing records</div>
             </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <span class="rr-badge" style="background:#fef3c7; color:#b45309;"><i class="fa-solid fa-building-circle-check"></i> Building Maintenance Module</span>
-              <span style="font-size:0.8rem; font-weight:700; color:var(--primary);" id="bmBatchRefBadge">BATCH-2026-10</span>
+
+            <div class="bm-company-card" onclick="filterBmCompany('PESC', this)">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="color:var(--primary); font-size:0.95rem;">PESC &bull; Primex Energy</strong>
+                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">2nd Floor</span>
+              </div>
+              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 636,855.15</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>5 Submeters (4P / 1W)</span>
+                <span style="color:#15803d; font-weight:600;">50 Records</span>
+              </div>
+            </div>
+
+            <div class="bm-company-card" onclick="filterBmCompany('RLDI', this)">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="color:var(--primary); font-size:0.95rem;">RLDI &bull; R-II Land</strong>
+                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">5th Floor</span>
+              </div>
+              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 750,010.90</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>4 Submeters (2P / 2W)</span>
+                <span style="color:#15803d; font-weight:600;">40 Records</span>
+              </div>
+            </div>
+
+            <div class="bm-company-card" onclick="filterBmCompany('RMRCI', this)">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="color:var(--primary); font-size:0.95rem;">RMRCI &bull; RMR Coal</strong>
+                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">GF, 4F &amp; 5F</span>
+              </div>
+              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 1,213,958.44</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>7 Submeters (5P / 2W)</span>
+                <span style="color:#15803d; font-weight:600;">70 Records</span>
+              </div>
+            </div>
+
+            <div class="bm-company-card" onclick="filterBmCompany('RBI', this)">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <strong style="color:var(--primary); font-size:0.95rem;">RBI &bull; R-II Builders</strong>
+                <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem;">GF, 3F &amp; 6F</span>
+              </div>
+              <div style="font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:4px;">₱ 1,235,171.63</div>
+              <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+                <span>6 Submeters (4P / 2W)</span>
+                <span style="color:#15803d; font-weight:600;">60 Records</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MASTER UTILITIES BILLING STATEMENTS & READINGS LEDGER -->
+        <div class="data-card" id="bmStatementsLedgerCard" style="margin-bottom: 24px; padding: 24px;">
+          <!-- Search & Filter Controls -->
+          <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-book-open" style="color:var(--accent);"></i> Submeter Utilities Statements &amp; Consumption Ledger
+                </h3>
+                <span style="font-size:0.75rem; color:var(--text-muted);" id="bmResultCount">Showing 220 utility billing records</span>
+              </div>
+
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <!-- Month Filter -->
+                <select id="bmLedgerMonthFilter" onchange="filterBmStatementsLedger()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
+                  <option value="ALL">All Billing Months (10 Months)</option>
+                  <option value="JAN">JAN &bull; January 2026</option>
+                  <option value="FEB">FEB &bull; February 2026</option>
+                  <option value="MAR">MAR &bull; March 2026</option>
+                  <option value="APR">APR &bull; April 2026</option>
+                  <option value="MAY">MAY &bull; May 2026</option>
+                  <option value="JUN">JUN &bull; June 2026</option>
+                  <option value="JUL">JUL &bull; July 2026</option>
+                  <option value="AUG">AUG &bull; August 2026</option>
+                  <option value="SEP">SEP &bull; September 2026</option>
+                  <option value="OCT">OCT &bull; October 2026</option>
+                </select>
+
+                <!-- Status Filter -->
+                <select id="bmLedgerStatusFilter" onchange="filterBmStatementsLedger()" style="padding:6px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.8rem; background:var(--bg-surface); color:var(--text-main);">
+                  <option value="ALL">All Payment Statuses</option>
+                  <option value="PAID">PAID (110 Records)</option>
+                  <option value="PENDING">PENDING (110 Records)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div style="position:relative; flex:1; min-width:280px; max-width:450px;">
+                <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
+                <input type="text" id="bmLedgerSearch" oninput="filterBmStatementsLedger()" placeholder="Search SOA No., Lessee, Submeter Unit, Floor..." style="width:100%; padding:8px 12px 8px 34px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:var(--bg-surface); color:var(--text-main);">
+              </div>
+
+              <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+                <!-- Category Pills -->
+                <button type="button" class="veh-filter-btn active" id="btnBmCatAll" onclick="filterBmCategory('ALL', this)">All Utilities (220)</button>
+                <button type="button" class="veh-filter-btn" id="btnBmCatPower" onclick="filterBmCategory('Power', this)"><i class="fa-solid fa-bolt" style="color:#ca8a04;"></i> Power (150)</button>
+                <button type="button" class="veh-filter-btn" id="btnBmCatWater" onclick="filterBmCategory('Water', this)"><i class="fa-solid fa-droplet" style="color:#0284c7;"></i> Water (70)</button>
+              </div>
             </div>
           </div>
 
+          <!-- Master Table -->
+          <div style="overflow-x: auto;">
+            <table class="dispatch-table" style="min-width: 1050px;">
+              <thead>
+                <tr>
+                  <th style="width:125px;">SOA No.</th>
+                  <th style="width:110px;">Bill Period</th>
+                  <th>Company / Lessee</th>
+                  <th style="width:100px; text-align:center;">Category</th>
+                  <th style="width:120px;">Submeter Unit</th>
+                  <th style="width:140px; text-align:center;">Prev &rarr; Present</th>
+                  <th style="text-align:right; width:110px;">Consumption</th>
+                  <th style="text-align:right; width:95px;">Rate (₱)</th>
+                  <th style="text-align:right; width:115px;">Amount Due</th>
+                  <th style="text-align:right; width:115px;">Net Amount</th>
+                  <th style="text-align:center; width:90px;">Status</th>
+                  <th style="text-align:center; width:85px;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="bmStatementsTableBody">
+                <tr>
+                  <td colspan="12" style="text-align:center; padding:30px; color:#64748b;">
+                    <i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i> Loading building utilities records...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- STEP 1 & 2: NEW MERALCO / SUBMETER READING BATCH ENTRY CARD (COLLAPSIBLE FOR RECORDING FUTURE MONTHS) -->
+        <div class="data-card" id="bmReadingCard" style="padding: 24px;">
+          <div class="bm-card-header">
+            <div>
+              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-file-circle-plus" style="color:var(--accent);"></i> Log New Submeter Reading Batch
+              </h3>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Enter Meralco master invoice details and present meter readings for upcoming billing cycles.</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="rr-badge" style="background:#fef3c7; color:#b45309;"><i class="fa-solid fa-building-circle-check"></i> Submeter Logger</span>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--primary);" id="bmBatchRefBadge">BATCH-NEW</span>
+            </div>
+          </div>
+
+          <!-- Step 1 Fields -->
           <div class="bm-master-grid">
             <div class="bm-field-group">
               <label for="bmBillingMonth"><i class="fa-regular fa-calendar-days" style="color:var(--accent);"></i> Billing Period (Month) <span style="color:#ef4444;">*</span></label>
@@ -4594,7 +4951,7 @@
           </div>
 
           <!-- Rate Computed Banner -->
-          <div class="bm-rate-callout" id="bmRateCalloutBox">
+          <div class="bm-rate-callout" id="bmRateCalloutBox" style="margin-bottom:20px;">
             <div style="display:flex; align-items:center; gap:10px;">
               <i class="fa-solid fa-calculator" style="font-size:1.2rem;"></i>
               <span>Computed Meralco Effective Rate: <strong id="bmComputedRateDisplay" style="font-size:1.15rem; color:#b45309;">₱ 0.0000</strong> per kWh</span>
@@ -4604,21 +4961,21 @@
             </div>
           </div>
 
-          <!-- STEP 2: TENANT SUBMETER READINGS TABLE -->
+          <!-- Step 2: Tenant Readings Table -->
           <div style="margin-top: 10px;">
             <div class="bm-card-header" style="border-bottom:none; margin-bottom:10px; padding-bottom:0;">
               <div>
                 <h3 style="margin:0; font-size:1.05rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                  <i class="fa-solid fa-users" style="color:var(--accent);"></i> Step 2: Tenant Submeter Readings &amp; Electricity Computation
+                  <i class="fa-solid fa-users" style="color:var(--accent);"></i> Present Submeter Readings (22 Building Meters)
                 </h3>
-                <span style="font-size:0.75rem; color:var(--text-muted);">Enter present readings for each tenant. Consumption and charges are computed automatically.</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Enter present readings for each tenant submeter. Consumption and energy charges calculate automatically.</span>
               </div>
               <div style="display:flex; gap:8px;">
                 <button type="button" class="btn-primary" onclick="addBmTenantRow()" style="font-size:0.75rem; padding:6px 14px; background:#10b981;">
-                  <i class="fa-solid fa-plus"></i> Add Tenant
+                  <i class="fa-solid fa-plus"></i> Add Row
                 </button>
                 <button type="button" class="btn-secondary" onclick="loadDefaultTenantSubmeters()" style="font-size:0.75rem; padding:6px 14px;">
-                  <i class="fa-solid fa-rotate"></i> Reset to Building Tenants
+                  <i class="fa-solid fa-rotate"></i> Reset to 22 Real Submeters
                 </button>
               </div>
             </div>
@@ -4629,12 +4986,12 @@
                   <tr>
                     <th style="width: 35px; text-align: center;">#</th>
                     <th style="min-width: 170px;">Tenant / Lessee Name <span style="color:#ef4444;">*</span></th>
-                    <th style="width: 110px;">Unit / Floor <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 130px;">Unit / Floor <span style="color:#ef4444;">*</span></th>
                     <th style="width: 120px;">Meter Serial No. <span style="color:#ef4444;">*</span></th>
-                    <th style="width: 115px;">Previous (kWh) <span style="color:#ef4444;">*</span></th>
-                    <th style="width: 115px;">Present (kWh) <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 115px;">Previous <span style="color:#ef4444;">*</span></th>
+                    <th style="width: 115px;">Present <span style="color:#ef4444;">*</span></th>
                     <th style="width: 70px;">Mult.</th>
-                    <th style="width: 110px; text-align: right;">Total kWh</th>
+                    <th style="width: 110px; text-align: right;">Total Cons.</th>
                     <th style="width: 120px; text-align: right;">Energy Charge</th>
                     <th style="width: 105px; text-align: right;">Common Area</th>
                     <th style="width: 125px; text-align: right;">Total Due (₱)</th>
@@ -4669,57 +5026,6 @@
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- STEP 3: TENANT SUBMETER BILLING LEDGER / HISTORY TABLE -->
-        <div class="data-card" style="padding: 24px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-            <div>
-              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-book-open" style="color:var(--accent);"></i> Tenant Electricity Billing Statements Ledger
-              </h3>
-              <span style="font-size:0.75rem; color:var(--text-muted);">Historical record of all issued electricity bills to lessees with individual statement printing.</span>
-            </div>
-
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-              <div class="search-box" style="margin:0;">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="bmLedgerSearch" placeholder="Search Tenant, Unit, Meter..." oninput="filterBmStatementsLedger()" style="width:200px;">
-              </div>
-              <input type="month" id="bmLedgerMonthFilter" onchange="filterBmStatementsLedger()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem;">
-              <select id="bmLedgerStatusFilter" onchange="filterBmStatementsLedger()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; background:white; color:var(--text);">
-                <option value="All">All Statuses</option>
-                <option value="Billed">Billed / Unpaid</option>
-                <option value="Paid">Paid</option>
-              </select>
-            </div>
-          </div>
-
-          <div style="overflow-x: auto;">
-            <table class="dispatch-table" style="min-width: 1000px;">
-              <thead>
-                <tr>
-                  <th>Period</th>
-                  <th>Unit / Floor</th>
-                  <th>Tenant / Lessee Name</th>
-                  <th>Meter Serial</th>
-                  <th>Prev &rarr; Pres (kWh)</th>
-                  <th style="text-align:right;">Consumption</th>
-                  <th style="text-align:right;">Rate / kWh</th>
-                  <th style="text-align:right;">Total Due</th>
-                  <th style="text-align:center;">Status</th>
-                  <th style="text-align:center;">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="bmStatementsTableBody">
-                <tr>
-                  <td colspan="10" style="text-align:center; padding:30px; color:#64748b;">
-                    <i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i> Loading submeter billing records...
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
@@ -4908,9 +5214,13 @@
   <script type="module">
     import { supabase } from './supabase-client.js';
     import { companyVehiclesData } from './company_vehicles_data.js';
+    import { approvedBudget2026 } from './approved_budget_data.js';
+    import { buildingUtilitiesData } from './building_utilities_data.js';
 
     window.adminSupabase = supabase;
     window.companyVehiclesData = companyVehiclesData;
+    window.approvedBudget2026 = approvedBudget2026;
+    window.buildingUtilitiesData = buildingUtilitiesData;
 
     const panelAccessPolicy = {
       'view-dashboard': {
@@ -6793,154 +7103,527 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     };
 
     // ==========================================
-    // BUDGET MONITORING DASHBOARD ENGINE
+    // FY 2026 ADMIN APPROVED BUDGET MONITORING ENGINE
+    // Total Approved: ₱ 147,643,884.24 (200 Accounts)
+    // Prepared: Emmanuel Notarte | Noted: Clarisa P. Lasam | Furnished: Regina Therese R. Lava
     // ==========================================
+    let allBudgetItems = [...(approvedBudget2026 && approvedBudget2026.items ? approvedBudget2026.items : [])];
+    let allBudgetExpenses = [];
+    let budgetScopeFilter = 'ALL';
+    let budgetCategoryFilter = 'ALL';
+    let budgetSearchQuery = '';
+
     window.loadBudgetMonitoringBoard = async function () {
-      let budgets = getDepartmentBudgets();
-      if (!budgets) {
-        try {
-          const resp = await fetch('./department_budgets.json');
-          if (resp.ok) {
-            const data = await resp.json();
-            budgets = data.departments || data;
-            saveDepartmentBudgets(budgets);
+      // 1. Fetch live expenses from Supabase (or fallback to local storage)
+      try {
+        if (supabase) {
+          const { data, error } = await supabase
+            .from('admin_budget_expenses')
+            .select('*')
+            .order('expense_date', { ascending: false });
+          if (!error && data) {
+            allBudgetExpenses = data;
+            localStorage.setItem('admin_budget_expenses', JSON.stringify(data));
+          } else {
+            allBudgetExpenses = JSON.parse(localStorage.getItem('admin_budget_expenses') || '[]');
           }
-        } catch(e) {}
+        } else {
+          allBudgetExpenses = JSON.parse(localStorage.getItem('admin_budget_expenses') || '[]');
+        }
+      } catch (err) {
+        console.warn('Error loading budget expenses, using local cache:', err);
+        allBudgetExpenses = JSON.parse(localStorage.getItem('admin_budget_expenses') || '[]');
       }
 
-      if (!budgets) budgets = {};
+      // 2. Sum expenses per cost code
+      const expenseMap = {};
+      allBudgetExpenses.forEach(exp => {
+        const code = String(exp.cost_code || '').trim();
+        const amt = Number(exp.amount) || 0;
+        expenseMap[code] = (expenseMap[code] || 0) + amt;
+      });
 
+      // 3. Update allBudgetItems with actual expenses and remaining balances
+      allBudgetItems.forEach(item => {
+        const code = String(item.cost_code || '').trim();
+        const directExpense = expenseMap[code] || 0;
+        item.actual_expense = directExpense;
+        item.remaining_budget = (Number(item.allocated_budget) || 0) - item.actual_expense;
+        item.utilization_rate = item.allocated_budget > 0 ? (item.actual_expense / item.allocated_budget) * 100 : 0;
+      });
+
+      // 4. Calculate Master Department Totals (Using main items to match official ₱147,643,884.24)
       let totalAllocated = 0;
       let totalActual = 0;
 
-      for (const k in budgets) {
-        if (budgets.hasOwnProperty(k)) {
-          totalAllocated += Number(budgets[k].allocated_budget) || 0;
-          totalActual += Number(budgets[k].actual_expense) || 0;
+      allBudgetItems.forEach(item => {
+        if (!item.is_sub_item) {
+          totalAllocated += Number(item.allocated_budget) || 0;
+          totalActual += Number(item.actual_expense) || 0;
         }
-      }
+      });
 
       const totalRemaining = totalAllocated - totalActual;
       const totalUtilization = totalAllocated > 0 ? (totalActual / totalAllocated) * 100 : 0;
 
-      // 1. Overview cards
-      const cardsGrid = document.getElementById('budgetOverviewCards');
-      if (cardsGrid) {
-        cardsGrid.innerHTML = `
-          <div class="kpi-card highlight">
-            <div>
-              <div class="kpi-label">Total Allocated Supplies Budget</div>
-              <div class="kpi-value" style="font-size: 1.5rem;">${formatPHP(totalAllocated)}</div>
-              <div class="kpi-subtext">FY 2026 Official Budget across 14 Departments</div>
+      // 5. Update Executive KPI Metric Cards
+      const statTotalEl = document.getElementById('bgtStatTotal');
+      const statDisbursedEl = document.getElementById('bgtStatDisbursed');
+      const statRemainingEl = document.getElementById('bgtStatRemaining');
+      const statBurnRateEl = document.getElementById('bgtStatBurnRate');
+      const statLineItemsEl = document.getElementById('bgtStatLineItems');
+
+      if (statTotalEl) statTotalEl.textContent = formatPHP(totalAllocated);
+      if (statDisbursedEl) statDisbursedEl.textContent = formatPHP(totalActual);
+      if (statRemainingEl) {
+        statRemainingEl.textContent = formatPHP(totalRemaining);
+        statRemainingEl.style.color = totalRemaining < 0 ? '#b91c1c' : '#15803d';
+      }
+      if (statBurnRateEl) statBurnRateEl.textContent = totalUtilization.toFixed(2) + '%';
+      if (statLineItemsEl) statLineItemsEl.textContent = `${allBudgetItems.length} Accounts`;
+
+      // 6. Render 14 Category Cards
+      renderBudgetCategoryCards();
+
+      // 7. Populate Category & Cost Code Dropdowns
+      populateBudgetDropdowns();
+
+      // 8. Render Master Ledger Table
+      filterBudgetAccounts();
+
+      // 9. Render Disbursements Ledger Table
+      renderBudgetTransactionsTable();
+    };
+
+    function renderBudgetCategoryCards() {
+      const container = document.getElementById('budgetCategoryCards');
+      if (!container) return;
+
+      // Calculate totals per category
+      const categories = approvedBudget2026.categories || [];
+      const catMap = {};
+      categories.forEach(cat => {
+        catMap[cat.name] = {
+          name: cat.name,
+          allocated: 0,
+          actual: 0,
+          remaining: 0,
+          count: 0
+        };
+      });
+
+      allBudgetItems.forEach(item => {
+        if (!item.is_sub_item && catMap[item.expense_category]) {
+          catMap[item.expense_category].allocated += Number(item.allocated_budget) || 0;
+          catMap[item.expense_category].actual += Number(item.actual_expense) || 0;
+          catMap[item.expense_category].count++;
+        }
+      });
+
+      const iconList = [
+        'fa-bolt', 'fa-phone', 'fa-print', 'fa-gas-pump',
+        'fa-plane-departure', 'fa-laptop', 'fa-building', 'fa-shield-halved',
+        'fa-user-shield', 'fa-scale-balanced', 'fa-wrench', 'fa-screwdriver-wrench',
+        'fa-hammer', 'fa-briefcase'
+      ];
+
+      container.innerHTML = categories.map((cat, idx) => {
+        const data = catMap[cat.name] || { allocated: cat.allocated_budget, actual: 0, count: cat.line_items_count };
+        const allocated = data.allocated || cat.allocated_budget || 0;
+        const actual = data.actual || 0;
+        const remaining = allocated - actual;
+        const util = allocated > 0 ? (actual / allocated) * 100 : 0;
+        const icon = iconList[idx % iconList.length];
+        const isActive = budgetCategoryFilter === cat.name;
+
+        return `
+          <div class="bgt-cat-card ${isActive ? 'active' : ''}" onclick="filterBudgetByCategory('${escapeDispatchHtml(cat.name).replace(/'/g, "\\'")}')">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+              <span class="bgt-cat-title" title="${escapeDispatchHtml(cat.name)}">
+                <i class="fa-solid ${icon}" style="color:var(--accent); margin-right:6px;"></i>${escapeDispatchHtml(cat.name)}
+              </span>
+              <span style="font-size:0.7rem; color:var(--text-muted); background:#f1f5f9; padding:2px 6px; border-radius:4px; font-weight:600;">
+                ${data.count} items
+              </span>
             </div>
-          </div>
-          <div class="kpi-card">
-            <div>
-              <div class="kpi-label">Total Actual Expenses</div>
-              <div class="kpi-value" style="font-size: 1.5rem; color: #1E355F;">${formatPHP(totalActual)}</div>
-              <div class="kpi-subtext">Sum of Issued Supplies to Date</div>
+            <div class="bgt-cat-amount">${formatPHP(allocated)}</div>
+            <div class="bgt-cat-subtext">
+              <span>Spent: ${formatPHP(actual)}</span>
+              <span style="color:${remaining < 0 ? '#b91c1c' : '#15803d'}; font-weight:600;">${util.toFixed(1)}%</span>
             </div>
-            <div>
-              <div class="kra-badge ${totalUtilization > 90 ? 'danger' : 'success'}">${totalUtilization.toFixed(1)}% Utilized</div>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div>
-              <div class="kpi-label">Total Remaining Balance</div>
-              <div class="kpi-value" style="font-size: 1.5rem; color: ${totalRemaining < 0 ? '#b91c1c' : '#15803d'};">${formatPHP(totalRemaining)}</div>
-              <div class="kpi-subtext">${totalRemaining < 0 ? 'Exceeded allocation!' : 'Available for remaining fiscal year'}</div>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div>
-              <div class="kpi-label">Overall Budget Health</div>
-              <div class="kpi-value" style="font-size: 1.5rem; color: ${totalUtilization <= 75 ? '#15803d' : (totalUtilization <= 90 ? '#d97706' : '#b91c1c')};">
-                ${totalUtilization <= 75 ? 'Healthy' : (totalUtilization <= 90 ? 'Moderate' : 'Critical')}
-              </div>
-              <div class="kpi-subtext">${totalUtilization <= 75 ? 'Well within annual ceiling' : 'Approaching threshold'}</div>
+            <div class="bgt-progress-bar">
+              <div class="bgt-progress-fill ${util > 90 ? 'danger' : (util > 75 ? 'warn' : '')}" style="width: ${Math.min(util, 100)}%;"></div>
             </div>
           </div>
         `;
+      }).join('');
+    }
+
+    function populateBudgetDropdowns() {
+      // Category Dropdown
+      const catSelect = document.getElementById('budgetCategorySelect');
+      if (catSelect && catSelect.options.length <= 1) {
+        (approvedBudget2026.categories || []).forEach(cat => {
+          const opt = document.createElement('option');
+          opt.value = cat.name;
+          opt.textContent = `${cat.name} (${formatPHP(cat.allocated_budget)})`;
+          catSelect.appendChild(opt);
+        });
       }
 
-      // 2. Department Breakdown Table
-      const deptTbody = document.getElementById('budgetDeptTableBody');
-      if (deptTbody) {
-        const deptKeys = Object.keys(budgets);
-        if (deptKeys.length === 0) {
-          deptTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No departmental budget data found.</td></tr>';
-        } else {
-          deptTbody.innerHTML = deptKeys.map(k => {
-            const b = budgets[k];
-            const alloc = Number(b.allocated_budget) || 0;
-            const act = Number(b.actual_expense) || 0;
-            const rem = alloc - act;
-            const util = alloc > 0 ? (act / alloc) * 100 : 0;
-            const code = b.notes || 'Code 64';
+      // Expense Modal Cost Code Select
+      const codeSelect = document.getElementById('expenseCostCodeSelect');
+      if (codeSelect && codeSelect.options.length <= 1) {
+        allBudgetItems.forEach(item => {
+          const opt = document.createElement('option');
+          opt.value = item.cost_code;
+          const prefix = item.is_sub_item ? `  ↳ [${item.cost_code}] ` : `[${item.cost_code}] `;
+          opt.textContent = `${prefix}${item.account_title} - ₱ ${Number(item.allocated_budget).toLocaleString('en-US', {minimumFractionDigits:2})}`;
+          codeSelect.appendChild(opt);
+        });
+      }
+    }
 
-            let statusPill = '';
-            let barColor = 'green';
-            if (util <= 75) {
-              statusPill = '<span class="policy-badge ontime" style="background:#dcfce7; color:#15803d;">Healthy</span>';
-              barColor = 'green';
-            } else if (util <= 90) {
-              statusPill = '<span class="policy-badge" style="background:#fef9c3; color:#854d0e;">Near Limit</span>';
-              barColor = 'amber';
-            } else {
-              statusPill = '<span class="policy-badge late" style="background:#fee2e2; color:#b91c1c;">Over Budget</span>';
-              barColor = 'red';
-            }
+    window.filterBudgetByCategory = function (catName) {
+      if (budgetCategoryFilter === catName) {
+        budgetCategoryFilter = 'ALL';
+      } else {
+        budgetCategoryFilter = catName;
+      }
+      const catSelect = document.getElementById('budgetCategorySelect');
+      if (catSelect) catSelect.value = budgetCategoryFilter;
+      renderBudgetCategoryCards();
+      filterBudgetAccounts();
+    };
 
-            return `
-              <tr>
-                <td><strong>${escapeDispatchHtml(k)}</strong></td>
-                <td><code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-size:0.75rem;">${escapeDispatchHtml(code)}</code></td>
-                <td style="text-align: right; font-weight: 600;">${formatPHP(alloc)}</td>
-                <td style="text-align: right; font-weight: 600; color: #1E355F;">${formatPHP(act)}</td>
-                <td style="text-align: right; font-weight: 700; color: ${rem < 0 ? '#b91c1c' : '#15803d'};">
-                  ${formatPHP(rem)}
-                </td>
-                <td>
-                  <div style="display:flex; justify-content:space-between; font-size:0.75rem; margin-bottom:3px;">
-                    <span>${util.toFixed(1)}%</span>
-                  </div>
-                  <div class="kpi-bar" style="height:6px; background:#e2e8f0; border-radius:3px; overflow:hidden;">
-                    <div style="height:100%; width:${Math.min(util, 100)}%; background:${barColor === 'green' ? '#10b981' : (barColor === 'amber' ? '#f59e0b' : '#ef4444')};"></div>
-                  </div>
-                </td>
-                <td style="text-align: center;">${statusPill}</td>
-              </tr>
-            `;
-          }).join('');
+    window.filterBudgetScope = function (scope, btn) {
+      budgetScopeFilter = scope;
+      const pills = document.querySelectorAll('#budgetScopePills .veh-filter-btn');
+      pills.forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      filterBudgetAccounts();
+    };
+
+    window.filterBudgetAccounts = function () {
+      const searchInput = document.getElementById('budgetSearchInput');
+      budgetSearchQuery = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+      const catSelect = document.getElementById('budgetCategorySelect');
+      if (catSelect) budgetCategoryFilter = catSelect.value;
+
+      let filtered = allBudgetItems.filter(item => {
+        // Scope filter
+        if (budgetScopeFilter === 'MAIN' && item.is_sub_item) return false;
+        if (budgetScopeFilter === 'SUBS' && !item.is_sub_item) return false;
+        if (budgetScopeFilter === 'WITH_EXPENSES' && item.actual_expense <= 0) return false;
+
+        // Category filter
+        if (budgetCategoryFilter !== 'ALL' && item.expense_category !== budgetCategoryFilter) return false;
+
+        // Text search
+        if (budgetSearchQuery) {
+          const matchCode = String(item.cost_code || '').toLowerCase().includes(budgetSearchQuery);
+          const matchTitle = String(item.account_title || '').toLowerCase().includes(budgetSearchQuery);
+          const matchCat = String(item.expense_category || '').toLowerCase().includes(budgetSearchQuery);
+          const matchDept = String(item.department || '').toLowerCase().includes(budgetSearchQuery);
+          if (!matchCode && !matchTitle && !matchCat && !matchDept) return false;
         }
+
+        return true;
+      });
+
+      renderBudgetMasterTable(filtered);
+    };
+
+    function renderBudgetMasterTable(items) {
+      const tbody = document.getElementById('budgetMasterTableBody');
+      const countLabel = document.getElementById('budgetResultCount');
+      if (countLabel) {
+        countLabel.textContent = `Showing ${items.length} of ${allBudgetItems.length} budget accounts`;
       }
 
-      // 3. Transactions Log
-      const txnTbody = document.getElementById('budgetTransactionsTableBody');
-      if (txnTbody) {
-        let txns = [];
-        try {
-          txns = JSON.parse(localStorage.getItem('budget_transactions') || '[]');
-        } catch(e) {}
+      if (!tbody) return;
 
-        if (txns.length === 0) {
-          txnTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px; color: #64748b;">No supplies issuance transactions logged yet. When warehouse releases approved items, they will appear here.</td></tr>';
+      if (items.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align:center; padding:35px; color:var(--text-muted);">
+              <i class="fa-solid fa-folder-open" style="font-size:2rem; margin-bottom:10px; display:block; color:#cbd5e1;"></i>
+              No budget accounts matched your current filter criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = items.map(item => {
+        const alloc = Number(item.allocated_budget) || 0;
+        const actual = Number(item.actual_expense) || 0;
+        const rem = item.remaining_budget !== undefined ? item.remaining_budget : (alloc - actual);
+        const util = alloc > 0 ? (actual / alloc) * 100 : 0;
+        const isSub = Boolean(item.is_sub_item);
+
+        let utilPill = '';
+        let barClass = '';
+        if (util > 100) {
+          utilPill = '<span class="rr-badge" style="background:#fee2e2; color:#b91c1c; font-size:0.7rem; padding:2px 6px;">Exceeded</span>';
+          barClass = 'danger';
+        } else if (util > 80) {
+          utilPill = '<span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.7rem; padding:2px 6px;">High</span>';
+          barClass = 'warn';
         } else {
-          txnTbody.innerHTML = txns.map(t => `
-            <tr>
-              <td><strong>${escapeDispatchHtml(t.reference)}</strong></td>
-              <td><span style="font-weight:600; color:#1E355F;">${escapeDispatchHtml(t.department)}</span></td>
-              <td style="font-size:0.8rem;">${escapeDispatchHtml(t.itemsSummary || 'Office Supplies')}</td>
-              <td style="text-align: right; font-weight: 700; color: #1E355F;">${formatPHP(t.amount)}</td>
-              <td style="font-size:0.75rem; color:#64748b;">${new Date(t.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
-              <td style="font-size:0.8rem;">${escapeDispatchHtml(t.issuedBy || 'Warehouse Staff')}</td>
-              <td>
-                <span class="policy-badge ontime" style="background:#dcfce7; color:#15803d;"><i class="fa-solid fa-check"></i> Debited</span>
-              </td>
-            </tr>
-          `).join('');
+          utilPill = '<span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.7rem; padding:2px 6px;">Normal</span>';
+          barClass = '';
         }
+
+        return `
+          <tr style="${isSub ? 'background:#fcfdfd;' : 'background:#ffffff; font-weight:500;'}">
+            <td style="text-align:center;">
+              <code style="background:${isSub ? '#f1f5f9' : '#e0f2fe'}; color:${isSub ? '#475569' : '#0369a1'}; padding:3px 7px; border-radius:4px; font-weight:700; font-size:0.75rem;">
+                ${escapeDispatchHtml(item.cost_code)}
+              </code>
+            </td>
+            <td>
+              <div style="${isSub ? 'padding-left:22px;' : ''}">
+                ${isSub ? `<span style="font-size:0.7rem; color:var(--accent); font-weight:700; margin-right:4px;"><i class="fa-solid fa-turn-up fa-rotate-90"></i></span>` : ''}
+                <span style="font-weight:${isSub ? '500' : '700'}; color:${isSub ? '#334155' : 'var(--primary)'}; font-size:0.85rem;">
+                  ${escapeDispatchHtml(item.account_title)}
+                </span>
+                ${item.department ? `<span style="margin-left:6px; font-size:0.7rem; background:#f1f5f9; color:#475569; padding:2px 6px; border-radius:3px;">${escapeDispatchHtml(item.department)}</span>` : ''}
+              </div>
+            </td>
+            <td>
+              <span style="font-size:0.75rem; color:var(--text-muted); background:#f8fafc; border:1px solid #e2e8f0; padding:2px 8px; border-radius:4px;">
+                ${escapeDispatchHtml(item.expense_category)}
+              </span>
+            </td>
+            <td style="text-align:right; font-weight:700; color:var(--primary);">
+              ${formatPHP(alloc)}
+            </td>
+            <td style="text-align:right; font-weight:600; color:#0284c7;">
+              ${formatPHP(actual)}
+            </td>
+            <td style="text-align:right; font-weight:700; color:${rem < 0 ? '#b91c1c' : '#15803d'};">
+              ${formatPHP(rem)}
+            </td>
+            <td>
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem; margin-bottom:3px;">
+                <span>${util.toFixed(1)}%</span>
+                ${utilPill}
+              </div>
+              <div class="bgt-progress-bar" style="height:5px;">
+                <div class="bgt-progress-fill ${barClass}" style="width: ${Math.min(util, 100)}%;"></div>
+              </div>
+            </td>
+            <td style="text-align:center;">
+              <button type="button" class="btn-primary" onclick="openBudgetExpenseModal('${item.cost_code}')" title="Charge expense against this account" style="padding:5px 9px; font-size:0.72rem; background:#10b981; border-radius:4px; display:inline-flex; align-items:center; gap:4px;">
+                <i class="fa-solid fa-plus"></i> Expense
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderBudgetTransactionsTable() {
+      const tbody = document.getElementById('budgetTransactionsTableBody');
+      if (!tbody) return;
+
+      if (!allBudgetExpenses || allBudgetExpenses.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align:center; padding:25px; color:var(--text-muted);">
+              <i class="fa-solid fa-receipt" style="font-size:1.8rem; margin-bottom:8px; display:block; color:#cbd5e1;"></i>
+              No disbursements charged yet against FY 2026 Budget. Click "+ Record Expense" to charge an invoice or voucher.
+            </td>
+          </tr>
+        `;
+        return;
       }
+
+      tbody.innerHTML = allBudgetExpenses.map(exp => {
+        return `
+          <tr>
+            <td style="font-size:0.8rem; font-weight:600; color:var(--text-main); white-space:nowrap;">
+              ${exp.expense_date ? new Date(exp.expense_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
+            </td>
+            <td>
+              <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-size:0.78rem; font-weight:700;">
+                ${escapeDispatchHtml(exp.reference_no || '—')}
+              </code>
+            </td>
+            <td style="text-align:center;">
+              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:2px 6px;">
+                ${escapeDispatchHtml(exp.cost_code || '—')}
+              </span>
+            </td>
+            <td style="font-size:0.82rem; font-weight:600; color:var(--primary);">
+              ${escapeDispatchHtml(exp.account_title || '—')}
+            </td>
+            <td style="font-size:0.82rem;">
+              ${escapeDispatchHtml(exp.payee || '—')}
+            </td>
+            <td style="font-size:0.8rem; color:var(--text-muted);">
+              ${escapeDispatchHtml(exp.description || '—')}
+            </td>
+            <td style="text-align:right; font-weight:700; color:#10b981; font-size:0.85rem;">
+              ${formatPHP(exp.amount)}
+            </td>
+            <td style="font-size:0.78rem; color:var(--text-muted);">
+              ${escapeDispatchHtml(exp.recorded_by || 'Emmanuel Notarte')}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Modal Operations
+    window.openBudgetExpenseModal = function (costCode) {
+      const modal = document.getElementById('budgetExpenseModal');
+      const form = document.getElementById('budgetExpenseForm');
+      if (form) form.reset();
+
+      const dateInput = document.getElementById('expenseDate');
+      if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+
+      const recorderInput = document.getElementById('expenseRecordedBy');
+      if (recorderInput) {
+        recorderInput.value = sessionStorage.getItem('userFullName') || 'Emmanuel Notarte (Admin Officer)';
+      }
+
+      const codeSelect = document.getElementById('expenseCostCodeSelect');
+      if (codeSelect && costCode) {
+        codeSelect.value = costCode;
+        onExpenseCostCodeChanged();
+      } else {
+        const hint = document.getElementById('expenseCostCodeHint');
+        if (hint) hint.textContent = '';
+      }
+
+      if (modal) modal.classList.add('open');
+    };
+
+    window.closeBudgetExpenseModal = function () {
+      const modal = document.getElementById('budgetExpenseModal');
+      if (modal) modal.classList.remove('open');
+    };
+
+    window.onExpenseCostCodeChanged = function () {
+      const codeSelect = document.getElementById('expenseCostCodeSelect');
+      const hint = document.getElementById('expenseCostCodeHint');
+      if (!codeSelect || !hint) return;
+
+      const code = codeSelect.value;
+      const item = allBudgetItems.find(i => String(i.cost_code).trim() === String(code).trim());
+      if (item) {
+        const alloc = Number(item.allocated_budget) || 0;
+        const rem = item.remaining_budget !== undefined ? item.remaining_budget : alloc;
+        hint.innerHTML = `<i class="fa-solid fa-circle-info"></i> <strong>${escapeDispatchHtml(item.account_title)}</strong> &bull; Approved: ${formatPHP(alloc)} &bull; Available Remaining: <span style="color:${rem < 0 ? '#b91c1c' : '#15803d'}; font-weight:700;">${formatPHP(rem)}</span>`;
+      } else {
+        hint.textContent = '';
+      }
+    };
+
+    window.saveBudgetExpenseRecord = async function (event) {
+      if (event) event.preventDefault();
+
+      const codeSelect = document.getElementById('expenseCostCodeSelect');
+      const costCode = codeSelect ? codeSelect.value : '';
+      const dateVal = document.getElementById('expenseDate').value;
+      const amtVal = parseFloat(document.getElementById('expenseAmount').value) || 0;
+      const refVal = document.getElementById('expenseReferenceNo').value.trim();
+      const payeeVal = document.getElementById('expensePayee').value.trim();
+      const descVal = document.getElementById('expenseDescription').value.trim();
+      const recorderVal = document.getElementById('expenseRecordedBy').value.trim();
+
+      if (!costCode || !amtVal || amtVal <= 0) {
+        showSystemAlert('Invalid Entry', 'Please select a budget account cost code and enter a valid disbursement amount.');
+        return;
+      }
+
+      const item = allBudgetItems.find(i => String(i.cost_code).trim() === String(costCode).trim());
+
+      const newExpense = {
+        id: 'EXP-' + Date.now(),
+        cost_code: costCode,
+        account_title: item ? item.account_title : 'Admin Account',
+        expense_category: item ? item.expense_category : 'General',
+        expense_date: dateVal,
+        amount: amtVal,
+        reference_no: refVal,
+        payee: payeeVal,
+        description: descVal,
+        recorded_by: recorderVal || 'Emmanuel Notarte',
+        created_at: new Date().toISOString()
+      };
+
+      // Save to Supabase
+      try {
+        if (supabase) {
+          const { error } = await supabase.from('admin_budget_expenses').insert([newExpense]);
+          if (error) console.warn('Supabase expense insert notice:', error);
+        }
+      } catch (err) {
+        console.warn('Could not post expense to Supabase:', err);
+      }
+
+      // Dual persistence to localStorage
+      allBudgetExpenses.unshift(newExpense);
+      localStorage.setItem('admin_budget_expenses', JSON.stringify(allBudgetExpenses));
+
+      closeBudgetExpenseModal();
+      await loadBudgetMonitoringBoard();
+
+      showSystemAlert(
+        'Disbursement Recorded',
+        `Successfully charged ₱ ${amtVal.toLocaleString('en-US', {minimumFractionDigits:2})} against [${costCode}] ${item ? item.account_title : ''}. Remaining budget updated in real-time.`
+      );
+    };
+
+    window.exportAdminBudgetCSV = function () {
+      const headers = [
+        'Cost Code',
+        'Account Title',
+        'Expense Category',
+        'Item Type',
+        'Department / Scope',
+        'Approved FY 2026 Budget',
+        'Actual Disbursed',
+        'Remaining Balance',
+        'Utilization Rate (%)'
+      ];
+
+      const csvRows = [headers.join(',')];
+
+      allBudgetItems.forEach(item => {
+        const alloc = Number(item.allocated_budget) || 0;
+        const actual = Number(item.actual_expense) || 0;
+        const rem = alloc - actual;
+        const util = alloc > 0 ? ((actual / alloc) * 100).toFixed(2) : '0.00';
+
+        const row = [
+          `"${(item.cost_code || '').replace(/"/g, '""')}"`,
+          `"${(item.account_title || '').replace(/"/g, '""')}"`,
+          `"${(item.expense_category || '').replace(/"/g, '""')}"`,
+          item.is_sub_item ? '"Department Sub-allocation"' : '"Main Account"',
+          `"${(item.department || 'Admin Department').replace(/"/g, '""')}"`,
+          alloc.toFixed(2),
+          actual.toFixed(2),
+          rem.toFixed(2),
+          util
+        ];
+        csvRows.push(row.join(','));
+      });
+
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `RII_Admin_Approved_Budget_2026_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     };
 
     // Modal helpers
@@ -8665,18 +9348,38 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     // ========================================================
     // BUILDING MAINTENANCE & ELECTRICITY SUBMETER ENGINE
     // ========================================================
+    // BUILDING MAINTENANCE - UTILITIES SUBMETER BILLING ENGINE
+    // Source: Statement of Accounts.xlsm (Utilities Sheet)
+    // 220 Records across 10 Months (JAN-OCT 2026) | 4 Lessees | Power & Water
+    // Total Amount Due: ₱ 3,835,996.12 | Total Net Amount: ₱ 4,142,248.40
+    // ========================================================
     let bmSubmeterLedger = [];
+    let bmCompanyFilter = 'ALL';
+    let bmCategoryFilter = 'ALL';
 
     const DEFAULT_BUILDING_TENANTS = [
-      { tenant_name: 'R-II Builders Admin & Reception', unit_floor: 'Ground Floor, Suite 101', meter_serial: 'MTR-00101', prev_reading: 14250.0, pres_reading: 15480.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'Canteen & Food Services Concessionaire', unit_floor: 'Ground Floor, Suite 102', meter_serial: 'MTR-00102', prev_reading: 28410.0, pres_reading: 30120.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'Megatech Engineering Solutions', unit_floor: '2nd Floor, Suite 201', meter_serial: 'MTR-00201', prev_reading: 41800.0, pres_reading: 43950.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'Prime Horizon Logistics Inc.', unit_floor: '2nd Floor, Suite 202', meter_serial: 'MTR-00202', prev_reading: 36220.0, pres_reading: 38100.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'Apex Global Consulting Services', unit_floor: '3rd Floor, Suite 301', meter_serial: 'MTR-00301', prev_reading: 19850.0, pres_reading: 21320.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'Vanguard Legal & Accounting Firm', unit_floor: '3rd Floor, Suite 302', meter_serial: 'MTR-00302', prev_reading: 22100.0, pres_reading: 23640.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'Skyline Design & Architecture Studio', unit_floor: '4th Floor, Suite 401', meter_serial: 'MTR-00401', prev_reading: 17400.0, pres_reading: 18950.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'Bluefin Maritime & Crewing Agency', unit_floor: '4th Floor, Suite 402', meter_serial: 'MTR-00402', prev_reading: 25300.0, pres_reading: 27150.0, multiplier: 1.0, common_share: 0.0 },
-      { tenant_name: 'R-II Executive Penthouse & Boardroom', unit_floor: '5th Floor, Suite 501', meter_serial: 'MTR-00501', prev_reading: 52140.0, pres_reading: 55420.0, multiplier: 1.0, common_share: 0.0 }
+      { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM01)', meter_serial: '2F-PESC-SM01', category: 'Power', prev_reading: 57518, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM02)', meter_serial: '2F-PESC-SM02', category: 'Power', prev_reading: 112332, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM03)', meter_serial: '2F-PESC-SM03', category: 'Power', prev_reading: 46214, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM04)', meter_serial: '2F-PESC-SM04', category: 'Power', prev_reading: 101267, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'Primex Energy Services Corp. (PESC)', company: 'PESC', unit_floor: '2nd Floor (2F-PESC-SM05)', meter_serial: '2F-PESC-SM05', category: 'Water', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Land Development, Inc. (RLDI)', company: 'RLDI', unit_floor: '5th Floor (5F-RLDI-SM01)', meter_serial: '5F-RLDI-SM01', category: 'Power', prev_reading: 33050, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Land Development, Inc. (RLDI)', company: 'RLDI', unit_floor: '5th Floor (5F-RLDI-SM02)', meter_serial: '5F-RLDI-SM02', category: 'Power', prev_reading: 33488, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Land Development, Inc. (RLDI)', company: 'RLDI', unit_floor: '5th Floor (5F-RLDI-SM03)', meter_serial: '5F-RLDI-SM03', category: 'Water', prev_reading: 115.527, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Land Development, Inc. (RLDI)', company: 'RLDI', unit_floor: '5th Floor (5F-RLDI-SM04)', meter_serial: '5F-RLDI-SM04', category: 'Water', prev_reading: 96.665, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'RMR Coal, Inc. (RMRCI)', company: 'RMRCI', unit_floor: 'Ground Floor (GF-RMR-SM05)', meter_serial: 'GF-RMR-SM05', category: 'Power', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'RMR Coal, Inc. (RMRCI)', company: 'RMRCI', unit_floor: '4th Floor (4F-RMR-SM01)', meter_serial: '4F-RMR-SM01', category: 'Power', prev_reading: 3119, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'RMR Coal, Inc. (RMRCI)', company: 'RMRCI', unit_floor: '4th Floor (4F-RMR-SM02)', meter_serial: '4F-RMR-SM02', category: 'Power', prev_reading: 10528, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'RMR Coal, Inc. (RMRCI)', company: 'RMRCI', unit_floor: '4th Floor (4F-RMR-SM03)', meter_serial: '4F-RMR-SM03', category: 'Power', prev_reading: 2875, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'RMR Coal, Inc. (RMRCI)', company: 'RMRCI', unit_floor: '5th Floor (5F-RMR-SM04)', meter_serial: '5F-RMR-SM04', category: 'Power', prev_reading: 28745, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'RMR Coal, Inc. (RMRCI)', company: 'RMRCI', unit_floor: '4th Floor (4F-RMR-SM06)', meter_serial: '4F-RMR-SM06', category: 'Water', prev_reading: 187.669, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'RMR Coal, Inc. (RMRCI)', company: 'RMRCI', unit_floor: '5th Floor (5F-RMR-SM07)', meter_serial: '5F-RMR-SM07', category: 'Water', prev_reading: 224.767, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: 'Ground Floor (GF-RBI-SM01)', meter_serial: 'GF-RBI-SM01', category: 'Power', prev_reading: 3733, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '3rd Floor (3F-RBI-SM02)', meter_serial: '3F-RBI-SM02', category: 'Power', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '6th Floor (6F-RBI-SM03)', meter_serial: '6F-RBI-SM03', category: 'Power', prev_reading: 1836, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '6th Floor (6F-RBI-SM04)', meter_serial: '6F-RBI-SM04', category: 'Power', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '6th Floor (6F-RBI-SM05)', meter_serial: '6F-RBI-SM05', category: 'Water', prev_reading: 54.423, pres_reading: '', multiplier: 1.0, common_share: 0 },
+      { tenant_name: 'R-II Builders, Inc. (RBI)', company: 'RBI', unit_floor: '3rd Floor (3F-RBI-SM06)', meter_serial: '3F-RBI-SM06', category: 'Water', prev_reading: 0, pres_reading: '', multiplier: 1.0, common_share: 0 }
     ];
 
     function escapeBmHtml(str) {
@@ -8808,7 +9511,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const rows = document.querySelectorAll('#bmSubmeterTbody .bm-submeter-row');
       let batchTotalKwh = 0;
       let batchGrandTotal = 0;
-      let tenantCount = 0;
 
       rows.forEach(row => {
         const prev = parseFloat(row.querySelector('.bm-prev-reading')?.value) || 0;
@@ -8833,7 +9535,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
         batchTotalKwh += consumption;
         batchGrandTotal += totalDue;
-        tenantCount++;
 
         const kwhField = row.querySelector('.bm-kwh-consumed');
         if (kwhField) kwhField.value = formatBmNumber(consumption, 2) + ' kWh';
@@ -8844,15 +9545,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const totalDueField = row.querySelector('.bm-total-due');
         if (totalDueField) totalDueField.value = formatBmCurrency(totalDue);
       });
-
-      const statCount = document.getElementById('bmStatTenantCount');
-      if (statCount) statCount.textContent = tenantCount;
-
-      const statKwh = document.getElementById('bmStatTotalKwh');
-      if (statKwh) statKwh.textContent = formatBmNumber(batchTotalKwh, 2) + ' kWh';
-
-      const statBilled = document.getElementById('bmStatTotalBilled');
-      if (statBilled) statBilled.textContent = formatBmCurrency(batchGrandTotal);
 
       const batchKwhDisplay = document.getElementById('bmBatchTotalKwhDisplay');
       if (batchKwhDisplay) batchKwhDisplay.textContent = formatBmNumber(batchTotalKwh, 2) + ' kWh';
@@ -8957,23 +9649,24 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
           readings.push({
             id: readingId,
-            statement_no: stmtNo,
+            soa_no: stmtNo,
             billing_period: period,
             reading_date: readingDate,
             due_date: dueDate,
             meralco_invoice_no: meralcoInvoice,
-            meralco_rate_kwh: effectiveRate,
+            rate: effectiveRate,
+            company: name.includes('PESC') ? 'PESC' : (name.includes('RLDI') ? 'RLDI' : (name.includes('RMR') ? 'RMRCI' : 'RBI')),
+            category: 'Power',
             tenant_name: name,
+            unit: serial,
             unit_floor: unit,
             meter_serial: serial,
             prev_reading: prev,
-            pres_reading: pres,
-            multiplier: mult,
-            consumption_kwh: consumption,
-            energy_charge: energyCharge,
-            common_area_share: commonShare,
-            total_amount_due: totalDue,
-            status: 'Billed',
+            curr_reading: pres,
+            consumption: consumption,
+            amount_due: totalDue,
+            net_amount: totalDue * 1.10, // includes 10% admin fee
+            payment_status: 'PENDING',
             read_by: readerStaff,
             created_at: new Date().toISOString()
           });
@@ -8985,41 +9678,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return;
       }
 
-      const batchId = `BATCH-${period}`;
-      const batchRecord = {
-        id: batchId,
-        billing_period: period,
-        reading_date: readingDate,
-        meralco_invoice_no: meralcoInvoice,
-        meralco_total_bill: totalBill,
-        meralco_total_kwh: totalKwh,
-        effective_rate: effectiveRate,
-        total_submeter_kwh: batchTotalSubmeterKwh,
-        total_billed_amount: batchTotalAmount,
-        readings_count: readings.length,
-        created_by: readerStaff,
-        created_at: new Date().toISOString()
-      };
-
+      // Add to current ledger
+      readings.forEach(r => bmSubmeterLedger.unshift(r));
       try {
-        await supabase.from('building_submeter_batches').upsert([batchRecord]);
-        await supabase.from('building_submeter_readings').upsert(readings);
-      } catch (e) {
-        console.warn('Supabase submeter save notice:', e);
-      }
-
-      try {
-        let localLedger = JSON.parse(localStorage.getItem('building_submeter_cache') || '[]');
-        localLedger = localLedger.filter(r => r.billing_period !== period);
-        localLedger = [...readings, ...localLedger];
-        localStorage.setItem('building_submeter_cache', JSON.stringify(localLedger));
-      } catch (e) {
-        console.error('Local cache save error:', e);
-      }
+        localStorage.setItem('building_utility_records', JSON.stringify(bmSubmeterLedger));
+      } catch (e) {}
 
       window.showSystemAlert(
-        'Submeter Electricity Batch Saved',
-        `Successfully generated ${readings.length} electricity billing statements for ${period}.\nTotal Master Rate: ₱ ${effectiveRate.toFixed(4)}/kWh\nTotal Tenant Billing: ${formatBmCurrency(batchTotalAmount)}`,
+        'Submeter Readings Batch Logged',
+        `Successfully recorded ${readings.length} electricity billing statements for ${period}.\nTotal Billed: ${formatBmCurrency(batchTotalAmount)}`,
         'success'
       );
 
@@ -9027,41 +9694,119 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     };
 
     window.loadBuildingMaintenanceModule = async function () {
+      // 1. Initialize from official buildingUtilitiesData (220 records)
+      let baseRecords = [];
+      if (typeof buildingUtilitiesData !== 'undefined' && Array.isArray(buildingUtilitiesData.records)) {
+        baseRecords = buildingUtilitiesData.records;
+      }
+
+      // 2. Load from Supabase building_utility_records or local storage cache
       let remoteRecords = [];
       try {
-        const { data, error } = await supabase
-          .from('building_submeter_readings')
-          .select('*')
-          .order('created_at', { ascending: false });
-        if (!error && Array.isArray(data)) {
-          remoteRecords = data;
+        if (supabase) {
+          const { data, error } = await supabase
+            .from('building_utility_records')
+            .select('*')
+            .order('due_date', { ascending: false });
+          if (!error && Array.isArray(data) && data.length > 0) {
+            remoteRecords = data;
+          }
         }
       } catch (err) {
-        console.warn('Supabase fetch submeter readings notice:', err);
+        console.warn('Supabase fetch building utility records notice:', err);
       }
 
       let localCache = [];
       try {
-        localCache = JSON.parse(localStorage.getItem('building_submeter_cache') || '[]');
+        localCache = JSON.parse(localStorage.getItem('building_utility_records') || '[]');
       } catch (e) {}
 
+      // Merge records by id or soa_no
       const map = new Map();
-      localCache.forEach(r => {
-        if (r.id || r.statement_no) map.set(r.id || r.statement_no, r);
-      });
-      remoteRecords.forEach(r => {
-        if (r.id || r.statement_no) map.set(r.id || r.statement_no, r);
+      baseRecords.forEach(r => map.set(r.id || `${r.soa_no}_${r.unit}`, r));
+      localCache.forEach(r => map.set(r.id || `${r.soa_no}_${r.unit}`, r));
+      remoteRecords.forEach(r => map.set(r.id || `${r.soa_no}_${r.unit}`, r));
+
+      bmSubmeterLedger = Array.from(map.values());
+
+      // 3. Compute Executive KPI Totals
+      let totalBilled = 0;
+      let totalNet = 0;
+      let powerBilled = 0;
+      let waterBilled = 0;
+      let powerKwh = 0;
+      let waterM3 = 0;
+      let paidBilled = 0;
+      let pendingBilled = 0;
+      let paidCount = 0;
+      let pendingCount = 0;
+      const unitSet = new Set();
+
+      bmSubmeterLedger.forEach(r => {
+        const amt = Number(r.amount_due) || 0;
+        const net = Number(r.net_amount) || amt;
+        const cons = Number(r.consumption) || 0;
+        totalBilled += amt;
+        totalNet += net;
+        if (r.unit) unitSet.add(r.unit);
+
+        if (r.category === 'Power') {
+          powerBilled += amt;
+          powerKwh += cons;
+        } else {
+          waterBilled += amt;
+          waterM3 += cons;
+        }
+
+        const isPaid = String(r.payment_status || r.status || '').toUpperCase() === 'PAID';
+        if (isPaid) {
+          paidBilled += amt;
+          paidCount++;
+        } else {
+          pendingBilled += amt;
+          pendingCount++;
+        }
       });
 
-      bmSubmeterLedger = Array.from(map.values()).sort((a, b) => {
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-      });
+      // Update KPI Elements
+      const statTotal = document.getElementById('bmStatTotalBilled');
+      if (statTotal) statTotal.textContent = formatBmCurrency(totalBilled);
 
+      const statPower = document.getElementById('bmStatPowerBilled');
+      if (statPower) statPower.textContent = formatBmCurrency(powerBilled);
+
+      const statWater = document.getElementById('bmStatWaterBilled');
+      if (statWater) statWater.textContent = formatBmCurrency(waterBilled);
+
+      const statColl = document.getElementById('bmStatCollectionStatus');
+      if (statColl) statColl.textContent = formatBmCurrency(paidBilled);
+
+      const statTenants = document.getElementById('bmStatTenantCount');
+      if (statTenants) statTenants.textContent = `${unitSet.size || 22} Submeters`;
+
+      // 4. Initialize Batch Entry form if empty
       const monthInput = document.getElementById('bmBillingMonth');
       if (monthInput && !monthInput.value) {
         resetBmForm();
       }
 
+      // 5. Render Master Ledger Table
+      renderBmStatementsLedger();
+    };
+
+    window.filterBmCompany = function (companyCode, cardEl) {
+      bmCompanyFilter = companyCode;
+      document.querySelectorAll('#bmCompanyCards .bm-company-card').forEach(c => c.classList.remove('active'));
+      if (cardEl) cardEl.classList.add('active');
+      renderBmStatementsLedger();
+    };
+
+    window.filterBmCategory = function (category, btn) {
+      bmCategoryFilter = category;
+      document.getElementById('btnBmCatAll')?.classList.remove('active');
+      document.getElementById('btnBmCatPower')?.classList.remove('active');
+      document.getElementById('btnBmCatWater')?.classList.remove('active');
+      if (btn) btn.classList.add('active');
       renderBmStatementsLedger();
     };
 
@@ -9071,29 +9816,47 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
     window.renderBmStatementsLedger = function () {
       const tbody = document.getElementById('bmStatementsTableBody');
+      const countLabel = document.getElementById('bmResultCount');
       if (!tbody) return;
 
       const searchTerm = (document.getElementById('bmLedgerSearch')?.value || '').trim().toLowerCase();
-      const monthFilter = document.getElementById('bmLedgerMonthFilter')?.value || '';
-      const statusFilter = document.getElementById('bmLedgerStatusFilter')?.value || 'All';
+      const monthFilter = document.getElementById('bmLedgerMonthFilter')?.value || 'ALL';
+      const statusFilter = document.getElementById('bmLedgerStatusFilter')?.value || 'ALL';
 
       const filtered = bmSubmeterLedger.filter(r => {
-        const matchesMonth = !monthFilter || r.billing_period === monthFilter;
-        const matchesStatus = statusFilter === 'All' || r.status === statusFilter;
-        let matchesSearch = true;
+        // Company filter
+        if (bmCompanyFilter !== 'ALL' && r.company !== bmCompanyFilter) return false;
+
+        // Category filter
+        if (bmCategoryFilter !== 'ALL' && r.category !== bmCategoryFilter) return false;
+
+        // Month filter
+        if (monthFilter !== 'ALL' && r.month !== monthFilter && r.billing_period !== monthFilter) return false;
+
+        // Status filter
+        const isPaid = String(r.payment_status || r.status || '').toUpperCase() === 'PAID';
+        if (statusFilter === 'PAID' && !isPaid) return false;
+        if (statusFilter === 'PENDING' && isPaid) return false;
+
+        // Search text
         if (searchTerm) {
-          const str = `${r.statement_no || ''} ${r.tenant_name || ''} ${r.unit_floor || ''} ${r.meter_serial || ''}`.toLowerCase();
-          matchesSearch = str.includes(searchTerm);
+          const str = `${r.soa_no || ''} ${r.company || ''} ${r.unit || ''} ${r.category || ''} ${r.bill_period || ''} ${r.month || ''}`.toLowerCase();
+          if (!str.includes(searchTerm)) return false;
         }
-        return matchesMonth && matchesStatus && matchesSearch;
+
+        return true;
       });
+
+      if (countLabel) {
+        countLabel.textContent = `Showing ${filtered.length} of ${bmSubmeterLedger.length} utility billing records`;
+      }
 
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="10" style="text-align:center; padding:35px 20px; color:#64748b;">
-              <i class="fa-solid fa-bolt" style="font-size:2rem; color:#fde68a; display:block; margin-bottom:10px;"></i>
-              No electricity submeter billing statements match the filter.
+            <td colspan="12" style="text-align:center; padding:35px 20px; color:#64748b;">
+              <i class="fa-solid fa-droplet-slash" style="font-size:2rem; color:#cbd5e1; display:block; margin-bottom:10px;"></i>
+              No utility billing records match your selected filter criteria.
             </td>
           </tr>
         `;
@@ -9101,41 +9864,58 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
 
       tbody.innerHTML = filtered.map(r => {
-        const isPaid = (r.status === 'Paid');
+        const isPaid = String(r.payment_status || r.status || '').toUpperCase() === 'PAID';
+        const isPower = r.category === 'Power';
+        const consUnit = isPower ? 'kWh' : 'm³';
+        const prevText = r.prev_reading !== null ? formatBmNumber(r.prev_reading, 2) : '—';
+        const currText = r.curr_reading !== null ? formatBmNumber(r.curr_reading, 2) : '—';
+        const rateVal = parseFloat(r.rate) || 0;
+        const amtVal = parseFloat(r.amount_due) || 0;
+        const netVal = parseFloat(r.net_amount) || amtVal;
+        const recordId = r.id || `${r.soa_no}_${r.unit}`;
+
         return `
           <tr>
-            <td style="font-weight:600; font-size:0.83rem; white-space:nowrap;">
-              <span class="rr-badge" style="background:#eff6ff; color:#2563eb;">${escapeBmHtml(r.billing_period || '-')}</span>
+            <td style="font-family:monospace; font-weight:700; color:var(--primary); font-size:0.82rem; white-space:nowrap;">
+              ${escapeBmHtml(r.soa_no || '—')}
             </td>
-            <td style="font-size:0.83rem; font-weight:600; color:var(--primary);">${escapeBmHtml(r.unit_floor || '-')}</td>
+            <td style="font-size:0.8rem; font-weight:600; color:#475569; white-space:nowrap;">
+              <span class="rr-badge" style="background:#f1f5f9; color:#334155;">${escapeBmHtml(r.month || r.bill_period || '—')}</span>
+            </td>
             <td>
-              <div style="font-weight:700; color:var(--text);">${escapeBmHtml(r.tenant_name || '-')}</div>
-              <div style="font-size:0.75rem; color:var(--text-muted); font-family:monospace;">${escapeBmHtml(r.statement_no || '-')}</div>
-            </td>
-            <td style="font-family:monospace; font-size:0.82rem;">${escapeBmHtml(r.meter_serial || '-')}</td>
-            <td style="font-size:0.82rem; font-family:monospace; white-space:nowrap;">
-              ${formatBmNumber(r.prev_reading)} &rarr; <strong>${formatBmNumber(r.pres_reading)}</strong>
-            </td>
-            <td style="text-align:right; font-weight:700; color:#2563eb; font-family:monospace;">
-              ${formatBmNumber(r.consumption_kwh)} kWh
-            </td>
-            <td style="text-align:right; font-size:0.82rem; color:var(--text-muted);">
-              ₱ ${(parseFloat(r.meralco_rate_kwh) || 0).toFixed(4)}
-            </td>
-            <td style="text-align:right; font-weight:800; color:#16a34a; font-size:0.92rem; white-space:nowrap;">
-              ${formatBmCurrency(r.total_amount_due)}
+              <strong style="color:var(--primary); font-size:0.85rem;">${escapeBmHtml(r.company || '—')}</strong>
             </td>
             <td style="text-align:center;">
-              <span class="user-badge" style="cursor:pointer; background:${isPaid ? '#dcfce7; color:#15803d;' : '#fef2f2; color:#b91c1c;'}" onclick="toggleBmPaymentStatus('${escapeBmHtml(r.id || r.statement_no)}')">
-                <i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-clock'}"></i> ${isPaid ? 'Paid' : 'Unpaid'}
+              <span class="bm-cat-pill ${isPower ? 'power' : 'water'}">
+                <i class="fa-solid ${isPower ? 'fa-bolt' : 'fa-droplet'}"></i> ${escapeBmHtml(r.category || 'Power')}
+              </span>
+            </td>
+            <td style="font-family:monospace; font-weight:600; font-size:0.82rem; color:#0369a1;">
+              ${escapeBmHtml(r.unit || '—')}
+            </td>
+            <td style="text-align:center; font-family:monospace; font-size:0.78rem; color:#475569; white-space:nowrap;">
+              ${prevText} &rarr; <strong>${currText}</strong>
+            </td>
+            <td style="text-align:right; font-weight:700; color:#2563eb; font-family:monospace; font-size:0.82rem; white-space:nowrap;">
+              ${formatBmNumber(r.consumption, 2)} ${consUnit}
+            </td>
+            <td style="text-align:right; font-size:0.8rem; color:var(--text-muted); font-family:monospace;">
+              ₱ ${rateVal.toFixed(2)}
+            </td>
+            <td style="text-align:right; font-weight:700; color:var(--primary); font-size:0.85rem; white-space:nowrap;">
+              ${formatBmCurrency(amtVal)}
+            </td>
+            <td style="text-align:right; font-weight:800; color:#16a34a; font-size:0.85rem; white-space:nowrap;">
+              ${formatBmCurrency(netVal)}
+            </td>
+            <td style="text-align:center; white-space:nowrap;">
+              <span class="user-badge" style="cursor:pointer; background:${isPaid ? '#dcfce7; color:#15803d;' : '#fef2f2; color:#b91c1c;'}" onclick="toggleBmPaymentStatus('${escapeBmHtml(recordId)}')" title="Click to toggle PAID / PENDING">
+                <i class="fa-solid ${isPaid ? 'fa-circle-check' : 'fa-clock'}"></i> ${isPaid ? 'PAID' : 'PENDING'}
               </span>
             </td>
             <td style="text-align:center; white-space:nowrap;">
-              <button type="button" class="btn-primary" onclick="viewBmBillingSlip('${escapeBmHtml(r.id || r.statement_no)}')" style="padding:4px 10px; font-size:0.75rem; background:#1E355F; border-radius:4px; margin-right:4px;" title="Print Electricity Billing Statement">
-                <i class="fa-solid fa-file-invoice"></i> Slip
-              </button>
-              <button type="button" class="btn-secondary" onclick="deleteBmStatement('${escapeBmHtml(r.id || r.statement_no)}')" style="padding:4px 8px; font-size:0.75rem; color:#ef4444; border:1px solid #fecaca; background:white; border-radius:4px;" title="Delete Record">
-                <i class="fa-solid fa-trash-can"></i>
+              <button type="button" class="btn-primary" onclick="viewBmBillingSlip('${escapeBmHtml(recordId)}')" style="padding:4px 9px; font-size:0.75rem; background:#1E355F; border-radius:4px;" title="View Statement of Account Voucher">
+                <i class="fa-solid fa-file-invoice"></i> SOA
               </button>
             </td>
           </tr>
@@ -9144,76 +9924,96 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     };
 
     window.toggleBmPaymentStatus = async function (idOrNo) {
-      const record = bmSubmeterLedger.find(r => r.id === idOrNo || r.statement_no === idOrNo);
+      const record = bmSubmeterLedger.find(r => r.id === idOrNo || r.soa_no === idOrNo || `${r.soa_no}_${r.unit}` === idOrNo);
       if (!record) return;
-      const newStatus = record.status === 'Paid' ? 'Billed' : 'Paid';
+      const current = String(record.payment_status || record.status || '').toUpperCase();
+      const newStatus = current === 'PAID' ? 'PENDING' : 'PAID';
+      record.payment_status = newStatus;
       record.status = newStatus;
 
       try {
-        await supabase.from('building_submeter_readings').update({ status: newStatus }).eq('id', record.id || idOrNo);
+        if (supabase) {
+          await supabase.from('building_utility_records').update({ payment_status: newStatus }).eq('id', record.id || idOrNo);
+        }
       } catch (e) {}
 
       try {
-        localStorage.setItem('building_submeter_cache', JSON.stringify(bmSubmeterLedger));
+        localStorage.setItem('building_utility_records', JSON.stringify(bmSubmeterLedger));
       } catch (e) {}
 
       renderBmStatementsLedger();
     };
 
     window.viewBmBillingSlip = function (idOrNo) {
-      const record = bmSubmeterLedger.find(r => r.id === idOrNo || r.statement_no === idOrNo);
+      const record = bmSubmeterLedger.find(r => r.id === idOrNo || r.soa_no === idOrNo || `${r.soa_no}_${r.unit}` === idOrNo);
       if (!record) {
         alert('Statement record not found.');
         return;
       }
 
+      const isPower = record.category === 'Power';
+      const consUnit = isPower ? 'kWh' : 'm³';
+      const rateLabel = isPower ? '/ kWh' : '/ m³';
+
       const stmtNo = document.getElementById('modalBmStatementNo');
-      if (stmtNo) stmtNo.textContent = record.statement_no || 'ELEC-STMT';
+      if (stmtNo) stmtNo.textContent = record.soa_no || record.statement_no || 'SOA-2026';
+
       const name = document.getElementById('modalBmTenantName');
-      if (name) name.textContent = record.tenant_name || '-';
+      if (name) {
+        const fullName = record.company === 'PESC' ? 'Primex Energy Services Corp. (PESC)' :
+                         record.company === 'RLDI' ? 'R-II Land Development, Inc. (RLDI)' :
+                         record.company === 'RMRCI' ? 'RMR Coal, Inc. (RMRCI)' : 'R-II Builders, Inc. (RBI)';
+        name.textContent = fullName;
+      }
+
       const period = document.getElementById('modalBmPeriod');
-      if (period) period.textContent = record.billing_period || '-';
+      if (period) period.textContent = record.period || record.bill_period || record.billing_period || '-';
+
       const unit = document.getElementById('modalBmUnit');
-      if (unit) unit.textContent = record.unit_floor || '-';
+      if (unit) unit.textContent = record.unit || record.unit_floor || '-';
+
       const readDate = document.getElementById('modalBmReadingDate');
-      if (readDate) readDate.textContent = record.reading_date || '-';
+      if (readDate) readDate.textContent = record.soa_date || record.reading_date || '2026';
+
       const meterSerial = document.getElementById('modalBmMeterSerial');
-      if (meterSerial) meterSerial.textContent = record.meter_serial || '-';
+      if (meterSerial) meterSerial.textContent = record.unit || record.meter_serial || '-';
+
       const dueDate = document.getElementById('modalBmDueDate');
       if (dueDate) dueDate.textContent = record.due_date || 'Within 15 days upon receipt';
-      const meralcoInv = document.getElementById('modalBmMeralcoInvoice');
-      if (meralcoInv) meralcoInv.textContent = record.meralco_invoice_no || '-';
 
-      const rateNum = parseFloat(record.meralco_rate_kwh) || 0;
+      const meralcoInv = document.getElementById('modalBmMeralcoInvoice');
+      if (meralcoInv) meralcoInv.textContent = isPower ? `Meralco Master (${record.month || '2026'})` : 'Maynilad / Building Water Master';
+
+      const rateNum = parseFloat(record.rate) || 0;
       const rateKwh = document.getElementById('modalBmRateKwh');
-      if (rateKwh) rateKwh.textContent = `₱ ${rateNum.toFixed(4)} / kWh`;
+      if (rateKwh) rateKwh.textContent = `₱ ${rateNum.toFixed(4)} ${rateLabel}`;
 
       const prevKwh = document.getElementById('modalBmPrevKwh');
-      if (prevKwh) prevKwh.textContent = formatBmNumber(record.prev_reading) + ' kWh';
+      if (prevKwh) prevKwh.textContent = (record.prev_reading !== null ? formatBmNumber(record.prev_reading, 2) : '—') + ' ' + consUnit;
 
       const presKwh = document.getElementById('modalBmPresKwh');
-      if (presKwh) presKwh.textContent = formatBmNumber(record.pres_reading) + ' kWh';
+      if (presKwh) presKwh.textContent = (record.curr_reading !== null ? formatBmNumber(record.curr_reading, 2) : '—') + ' ' + consUnit;
 
       const totalKwh = document.getElementById('modalBmTotalKwh');
-      if (totalKwh) totalKwh.textContent = formatBmNumber(record.consumption_kwh) + ' kWh';
+      if (totalKwh) totalKwh.textContent = formatBmNumber(record.consumption, 2) + ' ' + consUnit;
 
       const multNote = document.getElementById('modalBmMultiplierNote');
-      if (multNote) multNote.textContent = `× ${(parseFloat(record.multiplier) || 1).toFixed(1)} Mult`;
+      if (multNote) multNote.textContent = isPower ? 'Electricity' : 'Water Metered';
 
       const rateFormula = document.getElementById('modalBmRateFormula');
-      if (rateFormula) rateFormula.textContent = `@ ₱ ${rateNum.toFixed(4)} / kWh`;
+      if (rateFormula) rateFormula.textContent = `@ ₱ ${rateNum.toFixed(4)} ${rateLabel}`;
 
       const energyCharge = document.getElementById('modalBmEnergyCharge');
-      if (energyCharge) energyCharge.textContent = formatBmCurrency(record.energy_charge);
+      if (energyCharge) energyCharge.textContent = formatBmCurrency(record.amount_due);
 
       const commonAreaRate = document.getElementById('modalBmCommonAreaRate');
-      if (commonAreaRate) commonAreaRate.textContent = (parseFloat(record.common_area_share) > 0) ? 'Allocated Common Share' : 'None / Included';
+      if (commonAreaRate) commonAreaRate.textContent = `VAT: ${formatBmCurrency(record.vat_amt || 0)} | Admin Fee: ${formatBmCurrency(record.admin_fee || 0)}`;
 
       const commonAreaCharge = document.getElementById('modalBmCommonAreaCharge');
-      if (commonAreaCharge) commonAreaCharge.textContent = formatBmCurrency(record.common_area_share || 0);
+      if (commonAreaCharge) commonAreaCharge.textContent = formatBmCurrency((record.vat_amt || 0) + (record.admin_fee || 0));
 
       const grandTotal = document.getElementById('modalBmGrandTotal');
-      if (grandTotal) grandTotal.textContent = formatBmCurrency(record.total_amount_due);
+      if (grandTotal) grandTotal.textContent = formatBmCurrency(record.net_amount || record.amount_due);
 
       const signReader = document.getElementById('modalBmSignReader');
       if (signReader) signReader.textContent = record.read_by || 'Building Maintenance Staff';
@@ -9227,39 +10027,62 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       if (modal) modal.style.display = 'none';
     };
 
-    window.deleteBmStatement = async function (idOrNo) {
-      if (!confirm('Are you sure you want to delete this tenant electricity billing statement?')) {
-        return;
-      }
-      try {
-        await supabase.from('building_submeter_readings').delete().eq('id', idOrNo);
-      } catch (e) {}
-
-      try {
-        bmSubmeterLedger = bmSubmeterLedger.filter(r => r.id !== idOrNo && r.statement_no !== idOrNo);
-        localStorage.setItem('building_submeter_cache', JSON.stringify(bmSubmeterLedger));
-      } catch (e) {}
-
-      renderBmStatementsLedger();
-    };
-
     window.exportSubmeterBillingCSV = function () {
-      if (bmSubmeterLedger.length === 0) {
+      if (!bmSubmeterLedger || bmSubmeterLedger.length === 0) {
         alert('No submeter billing records to export.');
         return;
       }
 
-      let csv = 'Statement No,Billing Period,Reading Date,Due Date,Tenant Name,Unit Floor,Meter Serial,Prev Reading (kWh),Pres Reading (kWh),Multiplier,Consumption (kWh),Rate per kWh,Energy Charge,Common Area Share,Total Due (PHP),Status,Read By\n';
+      const headers = [
+        'SOA No',
+        'Company',
+        'Category',
+        'Submeter Unit',
+        'Billing Period',
+        'Prev Reading',
+        'Present Reading',
+        'Total Consumption',
+        'Rate',
+        'Amount Due (Meter Based)',
+        'VAT Amount',
+        'EWT',
+        'Admin Fee',
+        'Net Amount Due',
+        'SOA Date',
+        'Due Date',
+        'Payment Status'
+      ];
+
+      const csvRows = [headers.join(',')];
 
       bmSubmeterLedger.forEach(r => {
-        csv += `"${r.statement_no || ''}","${r.billing_period || ''}","${r.reading_date || ''}","${r.due_date || ''}","${(r.tenant_name || '').replace(/"/g, '""')}","${(r.unit_floor || '').replace(/"/g, '""')}","${r.meter_serial || ''}","${r.prev_reading || 0}","${r.pres_reading || 0}","${r.multiplier || 1}","${r.consumption_kwh || 0}","${r.meralco_rate_kwh || 0}","${r.energy_charge || 0}","${r.common_area_share || 0}","${r.total_amount_due || 0}","${r.status || 'Billed'}","${(r.read_by || '').replace(/"/g, '""')}"\n`;
+        const row = [
+          `"${(r.soa_no || '').replace(/"/g, '""')}"`,
+          `"${(r.company || '').replace(/"/g, '""')}"`,
+          `"${(r.category || '').replace(/"/g, '""')}"`,
+          `"${(r.unit || '').replace(/"/g, '""')}"`,
+          `"${(r.period || r.bill_period || '').replace(/"/g, '""')}"`,
+          r.prev_reading !== null ? r.prev_reading : '',
+          r.curr_reading !== null ? r.curr_reading : '',
+          r.consumption || 0,
+          r.rate || 0,
+          (r.amount_due || 0).toFixed(2),
+          (r.vat_amt || 0).toFixed(2),
+          (r.ewt || 0).toFixed(2),
+          (r.admin_fee || 0).toFixed(2),
+          (r.net_amount || r.amount_due || 0).toFixed(2),
+          `"${r.soa_date || ''}"`,
+          `"${r.due_date || ''}"`,
+          `"${r.payment_status || r.status || 'PENDING'}"`
+        ];
+        csvRows.push(row.join(','));
       });
 
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `Electricity_Submeter_Billing_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.download = `RII_Building_Utilities_SOA_Ledger_${new Date().toISOString().slice(0, 10)}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -9810,7 +10633,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           loadSupplyRequests(),
           loadReceivingReports(),
           loadBuildingMaintenanceModule(),
-          loadCompanyVehicles()
+          loadCompanyVehicles(),
+          loadBudgetMonitoringBoard()
         ]);
       } finally {
         dashboardRefreshInProgress = false;
@@ -9840,7 +10664,10 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         'receiving_reports',
         'building_submeter_batches',
         'building_submeter_readings',
+        'building_utility_records',
         'company_vehicles',
+        'admin_budget_items',
+        'admin_budget_expenses',
         'profiles'
       ];
 
@@ -9878,6 +10705,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
 
       loadCompanyVehicles();
+      loadBudgetMonitoringBoard();
       refreshDashboardData();
       subscribeToDashboardChanges();
       dashboardPollingTimer = setInterval(() => {
@@ -10923,6 +11751,74 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           <button type="button" class="btn-secondary" onclick="closeVehicleFormModal()" style="padding:9px 18px; font-size:0.85rem;">Cancel</button>
           <button type="submit" class="btn-primary" id="btnSaveVehicle" style="padding:9px 24px; font-size:0.85rem; background:#10b981;">
             <i class="fa-solid fa-floppy-disk"></i> Save Vehicle Record
+          </button>
+        </div>
+      </form>
+    </div>
+  <!-- 8.9. Budget Monitoring - Record Expense / Disbursement Modal -->
+  <div class="veh-passport-modal-backdrop" id="budgetExpenseModal">
+    <div class="veh-passport-paper" style="max-width: 650px;" id="budgetExpensePaper">
+      <form id="budgetExpenseForm" onsubmit="saveBudgetExpenseRecord(event)">
+        <!-- Modal Header -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:15px; margin-bottom:20px;">
+          <div>
+            <h2 style="margin:0; font-size:1.25rem; color:var(--primary); font-weight:800; letter-spacing:0.5px;">
+              <i class="fa-solid fa-receipt" style="color:#10b981;"></i> Record Expense / Disbursement
+            </h2>
+            <p style="margin:4px 0 0; font-size:0.82rem; color:var(--text-muted);">
+              Charge an invoice, billing, or voucher against FY 2026 Admin Approved Budget.
+            </p>
+          </div>
+          <button type="button" onclick="closeBudgetExpenseModal()" style="background:none; border:none; font-size:1.3rem; color:var(--text-muted); cursor:pointer; padding:4px 8px;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; background:#f8fafc; padding:18px; border-radius:8px; border:1px solid var(--border); margin-bottom:20px;">
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Charge to Budget Account / Cost Code *</label>
+            <select id="expenseCostCodeSelect" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-weight:600;" onchange="onExpenseCostCodeChanged()">
+              <option value="">-- Select Budget Account --</option>
+            </select>
+            <div id="expenseCostCodeHint" style="font-size:0.75rem; color:#0369a1; margin-top:4px; font-weight:500;"></div>
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Disbursement / Expense Date *</label>
+            <input type="date" id="expenseDate" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Amount to Charge (₱) *</label>
+            <input type="number" id="expenseAmount" step="0.01" min="0.01" required placeholder="0.00" style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:#10b981;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Reference No. / Voucher No. *</label>
+            <input type="text" id="expenseReferenceNo" required placeholder="e.g. CV-2026-0041 / OR-98102" style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; font-family:monospace;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Payee / Vendor / Supplier *</label>
+            <input type="text" id="expensePayee" required placeholder="e.g. Meralco, Maynilad, Shell, etc." style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;">
+          </div>
+
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Description / Particulars *</label>
+            <textarea id="expenseDescription" rows="2" required placeholder="Details of expense, billing period, or items purchased..." style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem;"></textarea>
+          </div>
+
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px;">Recorded By</label>
+            <input type="text" id="expenseRecordedBy" readonly style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:#f1f5f9; color:#475569;">
+          </div>
+        </div>
+
+        <!-- Form Action Buttons -->
+        <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px dashed #cbd5e1; padding-top:16px;">
+          <button type="button" class="btn-secondary" onclick="closeBudgetExpenseModal()" style="padding:9px 18px; font-size:0.85rem;">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSaveExpense" style="padding:9px 24px; font-size:0.85rem; background:#10b981;">
+            <i class="fa-solid fa-floppy-disk"></i> Post Disbursement
           </button>
         </div>
       </form>
