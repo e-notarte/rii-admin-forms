@@ -1,87 +1,87 @@
 {
-  "_comment": "Department Budget vs Actual Expense Allocation for Admin Supplies Management. FY 2026 Official Ledger.",
+  "_comment": "Department Budget vs Actual Expense Allocation for Admin Supplies Management. FY 2026 Official Ledger. Sourced from FY 2026 Admin Approved Budget Monitoring.",
   "fiscal_year": "2026",
   "currency": "PHP",
   "departments": {
     "Admin": {
       "allocated_budget": 120000.0,
-      "actual_expense": 51988.0,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.1 ADM"
     },
     "HR": {
       "allocated_budget": 60000.0,
-      "actual_expense": 85951.5,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.2 HR"
     },
     "Engineering": {
       "allocated_budget": 641705.5,
-      "actual_expense": 53157.0,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.3 ENG"
     },
     "Purchasing": {
       "allocated_budget": 289989.75,
-      "actual_expense": 46335.5,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.4 PUR"
     },
     "Operations": {
       "allocated_budget": 21000.0,
-      "actual_expense": 51666.5,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.5 OPS"
     },
     "C&C": {
       "allocated_budget": 50400.0,
-      "actual_expense": 185262.0,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.6 C&C"
     },
     "BDG": {
       "allocated_budget": 205137.8,
-      "actual_expense": 40860.0,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.7 BDG"
     },
     "CEWD": {
       "allocated_budget": 7632.0,
-      "actual_expense": 6234.5,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.8 CEWD"
     },
     "ESSH": {
       "allocated_budget": 120000.0,
-      "actual_expense": 51619.8,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.9 ESSH"
     },
     "CRMD": {
       "allocated_budget": 90000.0,
-      "actual_expense": 22864.0,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.10 CRMD"
     },
     "OTP": {
       "allocated_budget": 28000.0,
-      "actual_expense": 16.0,
+      "actual_expense": 0.0,
       "period": "FY 2026",
       "notes": "Code 64.11 OTP"
     },
     "Accounting": {
-      "allocated_budget": 0,
-      "actual_expense": 0,
+      "allocated_budget": 0.0,
+      "actual_expense": 0.0,
       "period": "FY 2026"
     },
     "Finance": {
-      "allocated_budget": 0,
-      "actual_expense": 0,
+      "allocated_budget": 0.0,
+      "actual_expense": 0.0,
       "period": "FY 2026"
     },
     "OTC": {
-      "allocated_budget": 0,
-      "actual_expense": 0,
+      "allocated_budget": 0.0,
+      "actual_expense": 0.0,
       "period": "FY 2026"
     }
   }

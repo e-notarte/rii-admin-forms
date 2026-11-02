@@ -2220,13 +2220,11 @@
                     </div>
 
                     <div class="budget-footer-note" id="budgetSourceNote" style="display:flex; justify-content:space-between; align-items:center;">
-                        <div style="display:flex; align-items:center; gap:5px;">
-                            <i class="fa-solid fa-file-excel" style="color:#16a34a;"></i>
-                            <span id="budgetSourceText">SharePoint Excel Connected</span>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <i class="fa-solid fa-chart-line" style="color:var(--accent);"></i>
+                            <span id="budgetSourceText">Live from Admin Budget Panel</span>
                         </div>
-                        <a href="javascript:void(0)" onclick="switchLeftPanelTab('budget')" style="color:var(--primary); font-weight:600; text-decoration:underline; font-size:0.7rem; display:inline-flex; align-items:center; gap:4px;" title="Switch left panel to Budget Excel">
-                            <i class="fa-solid fa-eye" style="color:var(--accent);"></i> View in Live Excel
-                        </a>
+                        <span style="font-size:0.7rem; color:var(--muted); font-weight:600;">FY 2026 Master Ledger</span>
                     </div>
                 </div>
             </div>
@@ -2558,23 +2556,26 @@
         });
 
         // ==========================================
-        // BUDGET VS ACTUAL EXPENSE ENGINE
+        // FY 2026 ADMIN APPROVED BUDGET ENGINE
+        // Synchronized directly with Admin Account Budget Monitoring Panel
         // ==========================================
-        const DEFAULT_DEPARTMENT_BUDGETS = {
-            "Admin": { allocated_budget: 120000.00, actual_expense: 51988.00, period: "FY 2026" },
-            "HR": { allocated_budget: 60000.00, actual_expense: 85951.50, period: "FY 2026" },
-            "Engineering": { allocated_budget: 641705.50, actual_expense: 53157.00, period: "FY 2026" },
-            "Purchasing": { allocated_budget: 289989.75, actual_expense: 46335.50, period: "FY 2026" },
-            "Operations": { allocated_budget: 21000.00, actual_expense: 51666.50, period: "FY 2026" },
-            "C&C": { allocated_budget: 50400.00, actual_expense: 185262.00, period: "FY 2026" },
-            "BDG": { allocated_budget: 205137.80, actual_expense: 40860.00, period: "FY 2026" },
-            "CEWD": { allocated_budget: 7632.00, actual_expense: 6234.50, period: "FY 2026" },
-            "ESSH": { allocated_budget: 120000.00, actual_expense: 51619.80, period: "FY 2026" },
-            "CRMD": { allocated_budget: 90000.00, actual_expense: 22864.00, period: "FY 2026" },
-            "OTP": { allocated_budget: 28000.00, actual_expense: 16.00, period: "FY 2026" },
-            "Accounting": { allocated_budget: 0, actual_expense: 0, period: "FY 2026" },
-            "Finance": { allocated_budget: 0, actual_expense: 0, period: "FY 2026" },
-            "OTC": { allocated_budget: 0, actual_expense: 0, period: "FY 2026" }
+        let adminApprovedBudgetItems = null;
+
+        const DEPARTMENT_BUDGET_METAS = {
+            'Admin': { code: '64.1', title: 'ADM', allocated: 120000.00, notes: 'Code 64.1 ADM' },
+            'HR': { code: '64.2', title: 'HRD', allocated: 60000.00, notes: 'Code 64.2 HR' },
+            'Engineering': { code: '64.3', title: 'ENG', allocated: 641705.50, notes: 'Code 64.3 ENG' },
+            'Purchasing': { code: '64.4', title: 'PUR', allocated: 289989.75, notes: 'Code 64.4 PUR' },
+            'Operations': { code: '64.5', title: 'OPS', allocated: 21000.00, notes: 'Code 64.5 OPS' },
+            'C&C': { code: '64.6', title: 'C&C', allocated: 50400.00, notes: 'Code 64.6 C&C' },
+            'BDG': { code: '64.7', title: 'BDG', allocated: 205137.80, notes: 'Code 64.7 BDG' },
+            'CEWD': { code: '64.8', title: 'CEWD', allocated: 7632.00, notes: 'Code 64.8 CEWD' },
+            'ESSH': { code: '64.9', title: 'ESSH', allocated: 120000.00, notes: 'Code 64.9 ESSH' },
+            'CRMD': { code: '64.1', altCode: '64.10', title: 'CRMD', allocated: 90000.00, notes: 'Code 64.10 CRMD' },
+            'OTP': { code: '64.11', title: 'OTP', allocated: 28000.00, notes: 'Code 64.11 OTP' },
+            'Accounting': { code: '73.1.1', title: 'Accounting', allocated: 0.00, notes: 'Code 73.1.1' },
+            'Finance': { code: 'FIN', title: 'Finance', allocated: 0.00, notes: 'Finance' },
+            'OTC': { code: '73.1.3', title: 'OTC', allocated: 0.00, notes: 'Code 73.1.3' }
         };
 
         const DEPT_ALIASES = {
@@ -2605,8 +2606,8 @@
             return DEPT_ALIASES[cleaned] || raw;
         }
 
-        var departmentBudgets = Object.assign({}, DEFAULT_DEPARTMENT_BUDGETS);
-        var currentBudgetSource = 'department_budgets.json';
+        var departmentBudgets = {};
+        var currentBudgetSource = 'Live from Admin Budget Panel';
 
         function formatBudgetCurrency(val, currency) {
             var curr = currency || 'PHP';
@@ -2618,35 +2619,115 @@
             }).format(Number(val) || 0);
         }
 
+        // Purge any stale mock budget cache from localStorage
+        try {
+            var oldCached = localStorage.getItem('cached_department_budgets');
+            if (oldCached && (oldCached.includes('51988') || oldCached.includes('85951'))) {
+                localStorage.removeItem('cached_department_budgets');
+            }
+        } catch(e) {}
+
         async function loadBudgetDataset() {
             try {
-                var res = await fetch('./department_budgets.json', { cache: 'no-store' });
-                if (res.ok) {
-                    var data = await res.json();
-                    if (data && typeof data === 'object') {
-                        var map = data.departments || data;
-                        for (var k in map) {
-                            if (map.hasOwnProperty(k)) {
-                                departmentBudgets[k] = map[k];
-                            }
-                        }
-                        currentBudgetSource = 'department_budgets.json';
-                        var note = document.getElementById('budgetSourceText');
-                        if (note) note.textContent = 'Loaded from department_budgets.json';
+                // 1. Load official approved budget master dataset from approved_budget_data.js
+                try {
+                    var bgtModule = await import('./approved_budget_data.js');
+                    if (bgtModule && bgtModule.approvedBudget2026 && Array.isArray(bgtModule.approvedBudget2026.items)) {
+                        adminApprovedBudgetItems = bgtModule.approvedBudget2026.items;
                     }
-                } else {
-                    var cached = localStorage.getItem('cached_department_budgets');
-                    if (cached) {
-                        departmentBudgets = JSON.parse(cached);
-                        currentBudgetSource = 'Local Cache';
+                } catch(e) {
+                    console.warn('Could not import approved_budget_data.js, using fallback metadata:', e);
+                }
+
+                // 2. Load custom edited budget accounts from Admin Account panel (localStorage)
+                var customItems = null;
+                try {
+                    customItems = JSON.parse(localStorage.getItem('admin_budget_items_custom') || 'null');
+                } catch(e) {}
+
+                // 3. Load recorded expenses from Admin disbursements & supplies issuances
+                var expensesList = [];
+                try {
+                    expensesList = JSON.parse(localStorage.getItem('admin_budget_expenses') || '[]');
+                } catch(e) {}
+
+                var issuancesMap = {};
+                try {
+                    issuancesMap = JSON.parse(localStorage.getItem('supplies_issuances') || '{}');
+                } catch(e) {}
+
+                var deptIssuancesTotal = {};
+                for (var reqId in issuancesMap) {
+                    var rec = issuancesMap[reqId];
+                    if (rec && rec.totalCost && rec.department) {
+                        var dName = resolveDeptName(rec.department);
+                        deptIssuancesTotal[dName] = (deptIssuancesTotal[dName] || 0) + (Number(rec.totalCost) || 0);
                     }
                 }
+
+                var codeExpensesMap = {};
+                var deptExpensesMap = {};
+                expensesList.forEach(function(exp) {
+                    var amt = Number(exp.amount) || 0;
+                    if (exp.cost_code) {
+                        var c = String(exp.cost_code).trim();
+                        codeExpensesMap[c] = (codeExpensesMap[c] || 0) + amt;
+                    }
+                    if (exp.department) {
+                        var d = resolveDeptName(exp.department);
+                        deptExpensesMap[d] = (deptExpensesMap[d] || 0) + amt;
+                    }
+                });
+
+                // 4. Construct live department budgets from Admin Account Budget Panel
+                departmentBudgets = {};
+                for (var deptName in DEPARTMENT_BUDGET_METAS) {
+                    var meta = DEPARTMENT_BUDGET_METAS[deptName];
+                    var allocatedVal = meta.allocated;
+
+                    // Match against Admin custom edited budget accounts
+                    var matchedCustom = null;
+                    if (customItems && Array.isArray(customItems)) {
+                        matchedCustom = customItems.find(function(it) {
+                            return (String(it.cost_code).trim() === meta.code && (!meta.title || String(it.account_title).toUpperCase().includes(meta.title.toUpperCase()))) ||
+                                   (meta.altCode && String(it.cost_code).trim() === meta.altCode);
+                        });
+                    }
+
+                    // Match against Admin official approved budget master dataset
+                    var matchedOfficial = null;
+                    if (!matchedCustom && adminApprovedBudgetItems) {
+                        matchedOfficial = adminApprovedBudgetItems.find(function(it) {
+                            return (String(it.cost_code).trim() === meta.code && (!meta.title || String(it.account_title).toUpperCase().includes(meta.title.toUpperCase()))) ||
+                                   (meta.altCode && String(it.cost_code).trim() === meta.altCode);
+                        });
+                    }
+
+                    if (matchedCustom && matchedCustom.allocated_budget != null) {
+                        allocatedVal = Number(matchedCustom.allocated_budget) || 0;
+                    } else if (matchedOfficial && matchedOfficial.allocated_budget != null) {
+                        allocatedVal = Number(matchedOfficial.allocated_budget) || 0;
+                    }
+
+                    // Compute actual expenses from actual transactions (starts at 0.00, NOT fake 51,988)
+                    var actualVal = (codeExpensesMap[meta.code] || 0) +
+                                    (deptExpensesMap[deptName] || 0) +
+                                    (deptIssuancesTotal[deptName] || 0);
+
+                    departmentBudgets[deptName] = {
+                        allocated_budget: allocatedVal,
+                        actual_expense: actualVal,
+                        period: 'FY 2026',
+                        cost_code: meta.code,
+                        notes: meta.notes
+                    };
+                }
+
+                currentBudgetSource = 'Live from Admin Budget Panel';
+                var note = document.getElementById('budgetSourceText');
+                if (note) note.textContent = currentBudgetSource;
             } catch (err) {
-                console.warn('Budget file fetch fallback to default values:', err);
-                var cachedLocal = localStorage.getItem('cached_department_budgets');
-                if (cachedLocal) {
-                    try { departmentBudgets = JSON.parse(cachedLocal); } catch(e){}
-                }
+                console.warn('Error loading admin budget dataset:', err);
             }
             updateBudgetDisplay();
         }
