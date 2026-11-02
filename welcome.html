@@ -2333,11 +2333,11 @@
     let userRequestFilter = 'Pending';
 
     function requestStatus(value) {
-      const status = String(value || 'Pending').toLowerCase();
-      if (status === 'approved') return 'Approved';
-      if (status === 'issued') return 'Issued';
-      if (status === 'rejected') return 'Rejected';
-      if (status === 'cancelled') return 'Cancelled';
+      const status = String(value || 'Pending').toLowerCase().trim();
+      if (status.includes('approved')) return 'Approved';
+      if (status.includes('issued') || status.includes('released')) return 'Issued';
+      if (status.includes('rejected')) return 'Rejected';
+      if (status.includes('cancelled')) return 'Cancelled';
       return 'Pending';
     }
 
@@ -2502,6 +2502,11 @@
         }
       }));
 
+      let vehicleOverrides = {};
+      try {
+        vehicleOverrides = JSON.parse(localStorage.getItem('vehicle_dispatch_overrides') || '{}');
+      } catch(e) {}
+
       userRequests = responses
         .filter(result => {
           if (result.error) {
@@ -2510,12 +2515,28 @@
           }
           return true;
         })
-        .flatMap(result => (result.data || []).map(request => ({
-          ...request,
-          type: result.source.type,
-          details: result.source.details(request),
-          date: request.request_date || request.date || '-'
-        })));
+        .flatMap(result => (result.data || []).map(request => {
+          let reqStatus = request.status;
+          let driver = request.driver;
+          let car = request.car;
+          if (result.source.table === 'vehicle_requests') {
+            const vOverride = vehicleOverrides[String(request.id)];
+            if (vOverride) {
+              if (vOverride.status) reqStatus = vOverride.status;
+              if (vOverride.driver) driver = vOverride.driver;
+              if (vOverride.car) car = vOverride.car;
+            }
+          }
+          return {
+            ...request,
+            status: reqStatus,
+            driver,
+            car,
+            type: result.source.type,
+            details: result.source.details(request),
+            date: request.request_date || request.date || '-'
+          };
+        }));
 
       let suppliesOverrides = {};
       try {
@@ -2527,28 +2548,102 @@
         suppliesIssuances = JSON.parse(localStorage.getItem('supplies_issuances') || '{}');
       } catch(e) {}
 
-      const suppliesResult = await supabase
-        .from('supplies_requests')
-        .select('*, supplies_items(*)')
-        .eq('user_id', user.id);
-      if (suppliesResult.error) {
-        console.error('Error loading supplies requests', suppliesResult.error);
-      } else {
-        userRequests.push(...(suppliesResult.data || []).map(request => {
-          const reqIdStr = String(request.id);
-          const isIssued = Boolean(suppliesIssuances[reqIdStr]) || request.status === 'Issued';
-          const overrideStatus = isIssued ? 'Issued' : suppliesOverrides[reqIdStr];
-          const issuanceRecord = request.issuance_details || suppliesIssuances[reqIdStr] || null;
-          return {
-            ...request,
-            status: overrideStatus || request.status || 'Pending',
-            issuance_details: issuanceRecord,
-            type: 'Supplies',
-            details: (request.supplies_items || []).map(item => `${item.description} × ${item.quantity}`).join(', ') || 'Supplies request',
-            date: request.request_date || request.date || '-'
-          };
-        }));
+      // 1. Fetch from Supabase with user_id or requestor_name matching & robust fallback
+      let dbSupplies = [];
+      try {
+        let suppliesQuery = supabase
+          .from('supplies_requests')
+          .select('*, supplies_items(*)');
+
+        if (cleanName) {
+          suppliesQuery = suppliesQuery.or(`user_id.eq.${user.id},requestor_name.ilike.%${cleanName}%`);
+        } else {
+          suppliesQuery = suppliesQuery.eq('user_id', user.id);
+        }
+
+        const suppliesResult = await suppliesQuery;
+        if (!suppliesResult.error && Array.isArray(suppliesResult.data)) {
+          dbSupplies = suppliesResult.data;
+        } else {
+          console.warn('Supplies join error or empty, trying direct fetch:', suppliesResult.error);
+          let simpleQuery = supabase.from('supplies_requests').select('*');
+          if (cleanName) {
+            simpleQuery = simpleQuery.or(`user_id.eq.${user.id},requestor_name.ilike.%${cleanName}%`);
+          } else {
+            simpleQuery = simpleQuery.eq('user_id', user.id);
+          }
+          const simpleRes = await simpleQuery;
+          if (!simpleRes.error && Array.isArray(simpleRes.data)) {
+            const reqIds = simpleRes.data.map(r => r.id);
+            let items = [];
+            if (reqIds.length > 0) {
+              const { data: itemData } = await supabase.from('supplies_items').select('*').in('request_id', reqIds);
+              items = itemData || [];
+            }
+            dbSupplies = simpleRes.data.map(r => ({
+              ...r,
+              supplies_items: items.filter(it => it.request_id === r.id)
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn('Error loading supplies from Supabase:', err);
       }
+
+      // 2. Load locally cached supplies requests (user_supplies_requests)
+      let localSupplies = [];
+      try {
+        localSupplies = JSON.parse(localStorage.getItem('user_supplies_requests') || '[]');
+      } catch(e) {}
+
+      const matchedLocalSupplies = localSupplies.filter(req => {
+        if (!req) return false;
+        if (req.user_id && req.user_id === user.id) return true;
+        if (req.requestor_name && cleanName && req.requestor_name.toLowerCase().includes(cleanName.toLowerCase())) return true;
+        if (!req.user_id && !req.requestor_name) return true;
+        return false;
+      });
+
+      // 3. Merge Supabase supplies and local supplies cache by reference_number / ID
+      const allSuppliesMap = new Map();
+      matchedLocalSupplies.forEach(r => {
+        const key = r.reference_number || String(r.id);
+        allSuppliesMap.set(key, r);
+      });
+      dbSupplies.forEach(r => {
+        const key = r.reference_number || String(r.id);
+        const existingLocal = allSuppliesMap.get(key);
+        allSuppliesMap.set(key, {
+          ...existingLocal,
+          ...r,
+          supplies_items: (r.supplies_items && r.supplies_items.length > 0) ? r.supplies_items : (existingLocal?.supplies_items || [])
+        });
+      });
+
+      allSuppliesMap.forEach(request => {
+        const reqIdStr = String(request.id);
+        const refStr = String(request.reference_number || '');
+        const isIssued = Boolean(suppliesIssuances[reqIdStr]) || Boolean(suppliesIssuances[refStr]) || String(request.status).toLowerCase() === 'issued';
+        const overrideStatus = isIssued ? 'Issued' : (suppliesOverrides[reqIdStr] || suppliesOverrides[refStr]);
+        const effectiveStatus = overrideStatus || request.status || 'Pending';
+        const issuanceRecord = request.issuance_details || suppliesIssuances[reqIdStr] || suppliesIssuances[refStr] || null;
+
+        const itemsList = Array.isArray(request.supplies_items) ? request.supplies_items : [];
+        const detailsStr = itemsList.length > 0
+          ? itemsList.map(item => `${item.description} × ${item.quantity}`).join(', ')
+          : (request.department ? `${request.department} Supplies (${request.reference_number || 'Req'})` : 'Supplies request');
+
+        const reqDate = request.request_date || request.date || (request.created_at ? new Date(request.created_at).toLocaleDateString() : '-');
+
+        userRequests.push({
+          ...request,
+          status: effectiveStatus,
+          issuance_details: issuanceRecord,
+          type: 'Supplies',
+          details: detailsStr,
+          date: reqDate
+        });
+      });
 
       // Deduplicate by ID if any record matched multiple filters
       const seenIds = new Set();
