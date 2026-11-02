@@ -10529,17 +10529,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const dateEl = document.getElementById('trnDateInput');
       if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().slice(0, 10);
 
-      let remoteRecords = [];
-      try {
-        const { data, error } = await supabase
-          .from('document_transmittals')
-          .select('*')
-          .order('transmittal_date', { ascending: false });
-        if (!error && Array.isArray(data)) remoteRecords = data;
-      } catch (err) {
-        console.warn('Transmittal Supabase fetch notice:', err);
-      }
-
+      // 1. Immediately compile and render master data + local cache (zero waiting)
       let localCache = [];
       try {
         localCache = JSON.parse(localStorage.getItem('document_transmittals_cache') || '[]');
@@ -10548,16 +10538,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
 
       const map = new Map();
-      if (window.transmittalMasterData && Array.isArray(window.transmittalMasterData.items)) {
-        window.transmittalMasterData.items.forEach(it => {
-          if (it.id) map.set(it.id, it);
-        });
-      }
-      localCache.forEach(it => {
-        if (it.id) map.set(it.id, it);
+      const masterItems = (window.transmittalMasterData && Array.isArray(window.transmittalMasterData.items))
+        ? window.transmittalMasterData.items
+        : (typeof transmittalMasterData !== 'undefined' && Array.isArray(transmittalMasterData.items) ? transmittalMasterData.items : []);
+
+      masterItems.forEach(it => {
+        if (it && it.id) map.set(it.id, it);
       });
-      remoteRecords.forEach(it => {
-        if (it.id) map.set(it.id, it);
+      localCache.forEach(it => {
+        if (it && it.id) map.set(it.id, it);
       });
 
       window.allDocumentTransmittals = Array.from(map.values()).sort((a, b) => {
@@ -10566,8 +10555,39 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return dateA - dateB;
       });
 
-      updateTransmittalStats();
-      filterDocumentTransmittals();
+      try {
+        updateTransmittalStats();
+        filterDocumentTransmittals();
+      } catch (err) {
+        console.warn('Initial transmittal render error:', err);
+      }
+
+      // 2. Fetch remote records from Supabase in the background (with 4-second timeout)
+      try {
+        if (supabase) {
+          const fetchPromise = supabase
+            .from('document_transmittals')
+            .select('*')
+            .order('transmittal_date', { ascending: false });
+          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000));
+          const { data, error } = await Promise.race([fetchPromise, timeoutPromise]).catch(() => ({ data: null, error: 'timed_out' }));
+
+          if (!error && Array.isArray(data) && data.length > 0) {
+            data.forEach(it => {
+              if (it && it.id) map.set(it.id, it);
+            });
+            window.allDocumentTransmittals = Array.from(map.values()).sort((a, b) => {
+              const dateA = new Date(b.transmittal_date || b.created_at || 0);
+              const dateB = new Date(a.transmittal_date || a.created_at || 0);
+              return dateA - dateB;
+            });
+            updateTransmittalStats();
+            filterDocumentTransmittals();
+          }
+        }
+      } catch (err) {
+        console.warn('Transmittal Supabase fetch notice:', err);
+      }
     };
 
     function updateTransmittalStats() {
@@ -10603,7 +10623,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const statR = document.getElementById('trnStatRfpCount');
       if (statR) statR.textContent = `${rfpCount.toLocaleString()} RFPs`;
       const statP = document.getElementById('trnStatPrfCount');
-      if (statP) statP.textContent = `${prfp = prfCount.toLocaleString()} PRFs`;
+      if (statP) statP.textContent = `${prfCount.toLocaleString()} PRFs`;
       const statD = document.getElementById('trnStatTopDept');
       if (statD) statD.textContent = `${topDept} (${maxD})`;
 
@@ -12194,7 +12214,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           loadReceivingReports(),
           loadBuildingMaintenanceModule(),
           loadCompanyVehicles(),
-          loadBudgetMonitoringBoard()
+          loadBudgetMonitoringBoard(),
+          loadDocumentTransmittals()
         ]);
       } finally {
         dashboardRefreshInProgress = false;
@@ -12228,6 +12249,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         'company_vehicles',
         'admin_budget_items',
         'admin_budget_expenses',
+        'document_transmittals',
         'profiles'
       ];
 
@@ -12266,6 +12288,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
       loadCompanyVehicles();
       loadBudgetMonitoringBoard();
+      loadBuildingMaintenanceModule();
+      loadDocumentTransmittals();
       refreshDashboardData();
       subscribeToDashboardChanges();
       dashboardPollingTimer = setInterval(() => {
