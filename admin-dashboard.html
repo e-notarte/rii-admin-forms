@@ -4460,16 +4460,16 @@
 
         <!-- Material Issuance Registry Table Card -->
         <div class="data-card" style="padding: 24px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-            <div>
-              <h3 style="margin:0; font-size:1.1rem; color:var(--primary); display:flex; align-items:center; gap:8px;">
-                <i class="fa-solid fa-clock-rotate-left" style="color:var(--accent);"></i> Material Issuances Registry &amp; Ledger
-              </h3>
-              <span style="font-size:0.75rem; color:var(--text-muted);">Audited physical withdrawals from warehouse charged to departments.</span>
+          <!-- Filter & Search Toolbar (Clean Unified Alignment) -->
+          <div class="mis-toolbar" style="display:flex; align-items:center; gap:12px; margin-bottom:18px; flex-wrap:wrap; background:#f8fafc; padding:12px 16px; border-radius:8px; border:1px solid var(--border);">
+            <div style="display:flex; align-items:center; gap:8px; flex:0 0 auto;">
+              <i class="fa-solid fa-filter" style="color:var(--accent); font-size:0.85rem;"></i>
+              <span style="font-size:0.82rem; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.5px;">Filter:</span>
             </div>
 
-            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-              <select id="misDeptFilter" onchange="filterMaterialIssuances()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
+            <!-- Department Dropdown -->
+            <div style="flex: 1 1 230px; min-width: 190px;">
+              <select id="misDeptFilter" onchange="filterMaterialIssuances()" style="width:100%; height:38px; padding:0 12px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; font-weight:600; color:var(--primary); background:#ffffff; outline:none; transition:border-color 0.2s, box-shadow 0.2s; cursor:pointer;">
                 <option value="ALL">All Requisitioning Departments</option>
                 <option value="ADMIN">ADMIN / ADM</option>
                 <option value="OTC">OTC - Operations</option>
@@ -4483,12 +4483,23 @@
                 <option value="CATMON">CATMON Project</option>
                 <option value="180MLD">180MLD Project</option>
               </select>
-              <div class="search-box" style="margin:0;">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="misSearchInput" placeholder="Search MIS No., item, requisitioner, account..." oninput="filterMaterialIssuances()" style="width:230px;">
-              </div>
-              <input type="date" id="misDateFilter" onchange="filterMaterialIssuances()" style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; background:white;">
             </div>
+
+            <!-- Search Box -->
+            <div class="search-box" style="flex: 2 1 300px; min-width: 230px; margin: 0; position: relative;">
+              <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
+              <input type="text" id="misSearchInput" placeholder="Search MIS No., item description, requisitioner, account..." oninput="filterMaterialIssuances()" style="width:100%; height:38px; padding:0 14px 0 38px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; background:#ffffff; outline:none; box-sizing:border-box;">
+            </div>
+
+            <!-- Date Filter -->
+            <div style="flex: 1 1 180px; min-width: 150px; position: relative;">
+              <input type="date" id="misDateFilter" onchange="filterMaterialIssuances()" style="width:100%; height:38px; padding:0 12px; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; background:#ffffff; color:var(--primary); outline:none; box-sizing:border-box; cursor:pointer;">
+            </div>
+
+            <!-- Reset Button -->
+            <button type="button" onclick="document.getElementById('misDeptFilter').value='ALL'; document.getElementById('misSearchInput').value=''; document.getElementById('misDateFilter').value=''; filterMaterialIssuances();" style="height:38px; padding:0 14px; border:1px solid var(--border); border-radius:6px; background:#ffffff; color:#64748b; font-size:0.82rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s; white-space:nowrap;" title="Clear all filters">
+              <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
           </div>
 
           <div style="overflow-x: auto;">
@@ -4530,19 +4541,10 @@
 
       <!-- ON-HAND INVENTORY VIEW (LIVE WAREHOUSE STOCK BALANCE) -->
       <div id="view-on-hand-inventory" class="view-section">
-        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 24px;">
           <div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
               <h1><i class="fa-solid fa-warehouse" style="color:var(--accent);"></i> Live Warehouse On-Hand Inventory</h1>
-              <span class="rr-badge" style="background:#dcfce7; color:#15803d; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-coins"></i> Stock Value: ₱ 5,068,655.10
-              </span>
-              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-boxes-stacked"></i> 8,690 Units Available
-              </span>
-              <span class="rr-badge" style="background:#fef3c7; color:#b45309; font-size:0.75rem; padding:4px 10px; border-radius:6px; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-calculator"></i> Stock = Inflow (RR) - Outflow (MIS)
-              </span>
             </div>
             <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
               Master stock balance computed from <strong>Receiving Report</strong> (2025 Opening Stock + 2026 Deliveries) minus <strong>Material Issuance Slips (MIS)</strong>.
@@ -4555,45 +4557,6 @@
             <button type="button" class="btn-primary" onclick="window.print()" style="font-size:0.8rem; padding:7px 15px; background:var(--primary);">
               <i class="fa-solid fa-print"></i> Print Stock Audit
             </button>
-          </div>
-        </div>
-
-        <!-- Metric Cards -->
-        <div class="rr-stats-grid" style="margin-bottom: 22px;">
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon green"><i class="fa-solid fa-vault"></i></div>
-            <div>
-              <div class="rr-stat-val" id="stockStatValue">₱ 5,068,655.10</div>
-              <div class="rr-stat-lbl">Total On-Hand Inventory Value</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon blue"><i class="fa-solid fa-boxes-stacked"></i></div>
-            <div>
-              <div class="rr-stat-val" id="stockStatUnits">8,690</div>
-              <div class="rr-stat-lbl">Physical Units in Warehouse</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
-            <div>
-              <div class="rr-stat-val" id="stockStatInStock">187 Items</div>
-              <div class="rr-stat-lbl">In Stock (&gt; 5 units)</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div>
-              <div class="rr-stat-val" id="stockStatLowStock">319 Items</div>
-              <div class="rr-stat-lbl">Low Stock Alert (1-5 units)</div>
-            </div>
-          </div>
-          <div class="rr-stat-card">
-            <div class="rr-stat-icon red"><i class="fa-solid fa-circle-xmark"></i></div>
-            <div>
-              <div class="rr-stat-val" id="stockStatOutOfStock">82 Items</div>
-              <div class="rr-stat-lbl">Out of Stock / Reorder Needed</div>
-            </div>
           </div>
         </div>
 
