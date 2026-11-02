@@ -2844,6 +2844,14 @@
       margin-top: 3px;
     }
 
+    body.dark-mode .schedule-item {
+      background: #1e293b !important;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    }
+    body.dark-mode .schedule-item strong {
+      color: #f8fafc !important;
+    }
+
     @media (max-width: 1200px) {
       .dispatch-layout {
         grid-template-columns: 1fr;
@@ -5480,7 +5488,7 @@
           <h1><i class="fa-solid fa-building-circle-check"></i> Facility Requests Approval</h1>
         </div>
 
-        <div class="admin-facility-layout">
+        <div class="dispatch-layout">
           <div class="data-card">
             <div class="toolbar">
               <div class="search-box">
@@ -5523,46 +5531,19 @@
               </tbody>
             </table>
           </div>
-          <div class="calendar-card">
-            <div class="calendar-container">
-              <div class="calendar-title-bar">
-                <h2 style="margin: 0; color: var(--accent); font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-                  <i class="fa-solid fa-calendar-days"></i> Reservation Calendar
-                </h2>
-                <div class="calendar-controls"
-                  style="display: flex; gap: 6px; align-items: center; color: white; font-size: 0.78rem;">
-                  <select id="calMonth" onchange="updateAdminCal()" style="padding: 4px 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: 600; background: white; color: var(--primary); cursor: pointer;">
-                    <option value="0">Jan</option>
-                    <option value="1">Feb</option>
-                    <option value="2">Mar</option>
-                    <option value="3">Apr</option>
-                    <option value="4">May</option>
-                    <option value="5">Jun</option>
-                    <option value="6">Jul</option>
-                    <option value="7">Aug</option>
-                    <option value="8">Sep</option>
-                    <option value="9" selected>Oct</option>
-                    <option value="10">Nov</option>
-                    <option value="11">Dec</option>
-                  </select>
-                  <select id="calYear" onchange="updateAdminCal()" style="padding: 4px 6px; border-radius: 4px; border: none; font-size: 0.78rem; font-weight: 600; background: white; color: var(--primary); cursor: pointer;">
-                    <option value="2026">2026</option>
-                    <option value="2027">2027</option>
-                  </select>
-                  <button type="button" onclick="updateAdminCal()"
-                    style="background: var(--accent); color: var(--primary); border: none; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 0.78rem;">Go</button>
-                </div>
-              </div>
-              <div class="calendar-grid" id="calendarGrid"></div>
-              <div class="calendar-legend">
-                <div class="legend-item">
-                  <div class="legend-dot legend-reserved"></div><span>Occupied</span>
-                </div>
-                <div class="legend-item">
-                  <div class="legend-dot legend-available"></div><span>Available</span>
-                </div>
-              </div>
+          <div class="data-card dispatch-card">
+            <h2 style="margin: 0 0 16px; color: var(--primary); font-size: 1.1rem; display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fa-solid fa-calendar-check" style="color: var(--accent);"></i> Approved Schedule</span>
+              <span style="font-size: 0.72rem; padding: 2px 8px; background: #dcfce7; color: #166534; border-radius: 12px; font-weight: 700;">LIVE</span>
+            </h2>
+            <div class="schedule-controls">
+              <label>Date
+                <input type="date" id="facilityScheduleDate">
+              </label>
+              <button type="button" id="facilityTodayButton">Today</button>
             </div>
+            <div class="schedule-header" id="facilityScheduleHeader"></div>
+            <div class="schedule-content" id="facilityScheduleContent"></div>
           </div>
         </div>
       </div>
@@ -5851,7 +5832,7 @@
 
         window._currentFacilityFilter = window._currentFacilityFilter || 'Pending';
         window.renderFacilityTable();
-        window.renderAdminCal();
+        window.renderFacilitySchedule();
       } catch (e) {
         console.error(e);
         tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error loading requests.</td></tr>';
@@ -9368,6 +9349,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     };
 
     window.filterFacilityRequestsByDate = function () {
+      const selected = document.getElementById('facilityRequestDateFilter')?.value;
+      if (selected && document.getElementById('facilityScheduleDate')) {
+        document.getElementById('facilityScheduleDate').value = selected;
+        window.renderFacilitySchedule(selected);
+      }
       window.renderFacilityTable();
     };
 
@@ -9375,106 +9361,66 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       window.renderFacilityTable();
     };
 
-    window.renderAdminCal = function (year, month) {
-      const calendarGrid = document.getElementById('calendarGrid');
-      if (!calendarGrid) return;
+    window.renderFacilitySchedule = function (dateValue) {
+      const header = document.getElementById('facilityScheduleHeader');
+      const content = document.getElementById('facilityScheduleContent');
+      if (!header || !content) return;
 
-      const today = new Date();
-      if (month === undefined) month = parseInt(document.getElementById('calMonth').value) || today.getMonth();
-      if (year === undefined) year = parseInt(document.getElementById('calYear').value) || today.getFullYear();
+      const dateInput = document.getElementById('facilityScheduleDate');
+      const today = new Date().toISOString().slice(0, 10);
+      const selectedDate = dateValue || dateInput?.value || today;
+      if (dateInput && !dateInput.value) dateInput.value = selectedDate;
 
-      calendarGrid.innerHTML = `
-            <div class="calendar-day-header">Sun</div>
-            <div class="calendar-day-header">Mon</div>
-            <div class="calendar-day-header">Tue</div>
-            <div class="calendar-day-header">Wed</div>
-            <div class="calendar-day-header">Thu</div>
-            <div class="calendar-day-header">Fri</div>
-            <div class="calendar-day-header">Sat</div>
-        `;
+      const date = new Date(`${selectedDate}T00:00:00`);
+      header.textContent = Number.isNaN(date.getTime())
+        ? selectedDate
+        : date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const approvedRequests = (window._allRequests || []).filter(request =>
+        String(request.status || '').toLowerCase() === 'approved' && request.request_date === selectedDate
+      );
 
-      for (let i = 0; i < firstDay; i++) {
-        calendarGrid.innerHTML += '<div class="calendar-day empty"></div>';
+      if (approvedRequests.length === 0) {
+        content.innerHTML = '<div class="schedule-empty" style="padding: 24px; text-align: center; color:#94a3b8;"><i class="fa-regular fa-calendar" style="font-size:1.8rem; display:block; margin-bottom:8px;"></i>No Approved Reservations for this date</div>';
+        return;
       }
 
-      const approvedEvents = (window._allRequests || []).filter(req => req.status === 'Approved');
+      content.innerHTML = approvedRequests.map(request => {
+        const type = request.request_type || 'Facility';
+        const color = type.includes('Function') ? '#f59e0b' : (type.includes('Conference') ? 'var(--primary)' : (type.includes('Parking') ? '#0284c7' : '#7c3aed'));
+        const timeDisplay = (request.start_time || request.end_time) ? formatDispatchTime(request.start_time, request.end_time) : (request.display_time || 'All Day');
+        const department = request.department || request.dept || 'General';
+        const participants = request.display_pax || (request.participants ? `${request.participants} pax` : '-');
 
-      for (let i = 1; i <= daysInMonth; i++) {
-        const mStr = String(month + 1).padStart(2, '0');
-        const dStr = String(i).padStart(2, '0');
-        const dateString = year + "-" + mStr + "-" + dStr;
+        return `
+          <div class="schedule-item" style="border-left: 4px solid ${color}; padding: 10px 12px; margin-bottom: 8px; background: white; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <strong style="color: var(--primary); font-size: 0.9rem;">${escapeDispatchHtml(request.requestor_name || request.display_title || 'Facility Reservation')}</strong>
+              <span style="font-size: 0.72rem; padding: 2px 8px; background: #f1f5f9; color: var(--primary); border-radius: 12px; font-weight: 700; white-space: nowrap;">${escapeDispatchHtml(type)}</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #1e40af; font-weight: 600; margin: 3px 0;">
+              <i class="fa-regular fa-clock"></i> ${escapeDispatchHtml(timeDisplay)}
+            </div>
+            <div style="font-size: 0.8rem; color: #475569;">
+              <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> ${escapeDispatchHtml(type)}${request.display_title && request.display_title !== request.requestor_name ? ` · ${escapeDispatchHtml(request.display_title)}` : ''}
+            </div>
+            <div style="font-size: 0.78rem; color: #64748b; margin-top: 4px;">
+              <i class="fa-solid fa-building-user"></i> ${escapeDispatchHtml(department)} · <i class="fa-solid fa-users"></i> ${escapeDispatchHtml(participants)}
+            </div>
+          </div>`;
+      }).join('');
+    };
 
-        const dayEvents = approvedEvents.filter(e => e.request_date === dateString);
-        const hasEvent = dayEvents.length > 0;
-
-        let classStr = hasEvent ? "calendar-day reserved clickable" : "calendar-day";
-        let labelStr = hasEvent ? '<span style="width:5px; height:5px; border-radius:50%; background:var(--accent); display:block; margin-top:3px;"></span>' : "";
-        let clickHandler = hasEvent ? `onclick="showAdminDayDetails('${dateString}')"` : "";
-        let titleStr = hasEvent ? `title="${dayEvents.length} Occupied Reservation(s) on ${dateString}. Click to view details"` : `title="${dateString} - Available"`;
-
-        calendarGrid.innerHTML += `<div class="${classStr}" ${clickHandler} ${titleStr}><span style="line-height:1; font-size:0.8rem; font-weight:${hasEvent ? '700' : '600'};">${i}</span>${labelStr}</div>`;
+    window.renderAdminCal = function (year, month) {
+      if (typeof window.renderFacilitySchedule === 'function') {
+        window.renderFacilitySchedule();
       }
     };
 
     window.updateAdminCal = function () {
-      renderAdminCal();
-    };
-
-    window.showAdminDayDetails = function (dateStr) {
-      const dayEvents = (window._allRequests || []).filter(e => e.status === 'Approved' && e.request_date === dateStr);
-      if (dayEvents.length === 0) return;
-
-      let html = `<h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for ${dateStr}</h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">`;
-      dayEvents.forEach(e => {
-        const start = e.start_time ? e.start_time.substring(0, 5) : '';
-        const end = e.end_time ? e.end_time.substring(0, 5) : '';
-        const title = e.display_title || e.request_type;
-        html += `<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
-                    <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i> ${start} - ${end} (${e.request_type})</div>
-                    <div style="color:var(--primary); font-weight:600;">${title}</div>
-                </li>`;
-      });
-      html += '</ul>';
-
-      let popup = document.getElementById('dayDetailsPopup');
-      if (!popup) {
-        popup = document.createElement('div');
-        popup.id = 'dayDetailsPopup';
-        popup.style.position = 'fixed';
-        popup.style.top = '50%';
-        popup.style.left = '50%';
-        popup.style.transform = 'translate(-50%, -50%)';
-        popup.style.background = '#fff';
-        popup.style.padding = '24px';
-        popup.style.borderRadius = '12px';
-        popup.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
-        popup.style.zIndex = '10001';
-        popup.style.minWidth = '320px';
-        popup.style.maxWidth = '90vw';
-        popup.style.color = '#334155';
-
-        const overlay = document.createElement('div');
-        overlay.id = 'dayDetailsOverlay';
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.background = 'rgba(15,23,42,0.6)';
-        overlay.style.zIndex = '10000';
-        overlay.onclick = () => { popup.style.display = 'none'; overlay.style.display = 'none'; };
-
-        document.body.appendChild(overlay);
-        document.body.appendChild(popup);
+      if (typeof window.renderFacilitySchedule === 'function') {
+        window.renderFacilitySchedule();
       }
-
-      popup.innerHTML = html + `<button onclick="document.getElementById('dayDetailsPopup').style.display='none'; document.getElementById('dayDetailsOverlay').style.display='none';" style="margin-top:20px; width:100%; padding:10px 16px; background:var(--primary); color:white; font-weight:600; font-family:'Poppins',sans-serif; border:none; border-radius:6px; cursor:pointer; transition: opacity 0.2s;">Close</button>`;
-
-      popup.style.display = 'block';
-      overlay.style.display = 'block';
     };
 
     // ==========================================
@@ -12700,6 +12646,13 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       });
       if (facilityDateFilter) facilityDateFilter.addEventListener('change', window.filterFacilityRequestsByDate);
       if (facilityNameSearch) facilityNameSearch.addEventListener('input', window.filterFacilityRequestsByName);
+      const facilityScheduleDate = document.getElementById('facilityScheduleDate');
+      const facilityTodayButton = document.getElementById('facilityTodayButton');
+      if (facilityScheduleDate) facilityScheduleDate.addEventListener('change', () => window.renderFacilitySchedule(facilityScheduleDate.value));
+      if (facilityTodayButton) facilityTodayButton.addEventListener('click', () => {
+        facilityScheduleDate.value = new Date().toISOString().slice(0, 10);
+        window.renderFacilitySchedule(facilityScheduleDate.value);
+      });
 
       // Support direct URL view parameter (e.g. ?view=view-vehicle)
       const urlView = new URLSearchParams(window.location.search).get('view');
