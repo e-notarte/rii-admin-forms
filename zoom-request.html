@@ -1288,18 +1288,24 @@
 
     .notification-badge {
       position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #ef4444;
-      color: white;
-      font-size: 0.65rem;
+      top: -7px;
+      right: -9px;
+      background: #ff3b30;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 4px rgba(255, 59, 48, 0.45);
+      font-size: 9px;
       font-weight: bold;
-      border-radius: 50%;
-      width: 18px;
+      border-radius: 999px;
+      min-width: 18px;
       height: 18px;
+      padding: 0 5px;
       display: flex;
       align-items: center;
       justify-content: center;
+      line-height: 18px;
+      z-index: 10;
+      pointer-events: none;
     }
 
     .notification-dropdown {
