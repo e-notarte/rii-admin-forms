@@ -2113,6 +2113,11 @@
       }
     }
   </style>
+  <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: 0s; }
+  </style>
 </head>
 
 <body>
@@ -2122,16 +2127,14 @@
   <button class="mobile-account-button" type="button" aria-label="Open account menu"
     onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i
       class="fa-solid fa-user"></i><span>Account</span></button>
-  <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
-        class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin Dashboard</a><button type="button"
+  <div class="mobile-account-menu" aria-label="Account menu"><button type="button"
       title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
       title="User Notifications" onclick="document.getElementById('notifDropdown').classList.toggle('active')"><i class="fa-regular fa-bell"></i> User Notifications</button><button type="button"
       title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
         class="fa-solid fa-right-from-bracket"></i> Log out</button></div>
   <header class="header">
     <div class="brand"><img src="RII_Logo.png" alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
-    <div class="header-right"><a class="switch-admin" href="admin-dashboard.html"><i
-          class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin Dashboard</a><button class="icon-btn"
+    <div class="header-right"><button class="icon-btn"
         type="button" title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
       <div class="notification-container" style="position: relative;">
         <button class="icon-btn notification-btn" type="button" title="User Notifications"
@@ -2299,13 +2302,6 @@
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span>developed by leo
       worksuite</span>
   </footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem('userRole') !== 'admin') {
-        document.querySelectorAll('a[href="admin-dashboard.html"]').forEach(el => el.style.display = 'none');
-      }
-    });
-  </script>
 
   <!-- AI Bot Wrapper -->
   <div class="ai-bot-wrapper" id="aiBotWrapper">
