@@ -3773,6 +3773,97 @@
       }
     }
 
+    /* Transmittal Registry Table Action Buttons */
+    .trn-actions-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      justify-content: center;
+      white-space: nowrap;
+    }
+    .trn-btn-slip {
+      padding: 4px 9px;
+      font-size: 0.75rem;
+      background: #1E355F;
+      border: none;
+      border-radius: 4px;
+      color: #ffffff;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .trn-btn-slip:hover {
+      background: #0f172a;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(30, 53, 95, 0.3);
+    }
+    .trn-btn-update {
+      padding: 4px 9px;
+      font-size: 0.75rem;
+      background: #0284c7;
+      border: none;
+      border-radius: 4px;
+      color: #ffffff;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .trn-btn-update:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(2, 132, 199, 0.35);
+    }
+    .trn-btn-delete {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      color: #ef4444;
+      border: 1px solid #fecaca;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .trn-btn-delete:hover {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #b91c1c;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(239, 68, 68, 0.25);
+    }
+    body.dark-mode .trn-btn-delete {
+      background: #1e293b;
+      border-color: #7f1d1d;
+      color: #f87171;
+    }
+    body.dark-mode .trn-btn-delete:hover {
+      background: #991b1b;
+      color: #ffffff;
+      border-color: #ef4444;
+    }
+    body.dark-mode #updateTransmittalModal .trn-modal-grid {
+      background: #0f172a !important;
+      border-color: #334155 !important;
+    }
+    body.dark-mode #updateTransmittalModal label {
+      color: #cbd5e1 !important;
+    }
+    body.dark-mode #updateTransmittalModal input,
+    body.dark-mode #updateTransmittalModal select,
+    body.dark-mode #updateTransmittalModal textarea {
+      background: #1e293b !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+
     /* System Theme Pop-Up Modal (Custom Alert) */
     .system-alert-backdrop {
       display: none;
@@ -5875,7 +5966,7 @@
           </div>
 
           <div style="overflow-x: auto;">
-            <table class="dispatch-table" style="min-width: 1050px;">
+            <table class="dispatch-table" style="min-width: 1120px;">
               <thead>
                 <tr>
                   <th style="width:100px;">Date</th>
@@ -5885,7 +5976,7 @@
                   <th style="width:120px;">Project | Dept</th>
                   <th style="min-width:260px;">Description &amp; Particulars</th>
                   <th style="text-align:right; width:125px;">Amount</th>
-                  <th style="text-align:center; width:95px;">Actions</th>
+                  <th style="text-align:center; width:165px;">Actions</th>
                 </tr>
               </thead>
               <tbody id="transmittalTableBody">
@@ -12148,10 +12239,13 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
       // 1. Immediately compile and render master data + local cache (zero waiting)
       let localCache = [];
+      let deletedIds = [];
       try {
         localCache = JSON.parse(localStorage.getItem('document_transmittals_cache') || '[]');
+        deletedIds = JSON.parse(localStorage.getItem('document_transmittals_deleted') || '[]');
       } catch (e) {
         localCache = [];
+        deletedIds = [];
       }
 
       const map = new Map();
@@ -12165,6 +12259,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       localCache.forEach(it => {
         if (it && it.id) map.set(it.id, it);
       });
+      if (Array.isArray(deletedIds)) {
+        deletedIds.forEach(id => map.delete(id));
+      }
 
       window.allDocumentTransmittals = Array.from(map.values()).sort((a, b) => {
         const dateA = new Date(b.transmittal_date || 0).getTime();
@@ -12196,6 +12293,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             data.forEach(it => {
               if (it && it.id) map.set(it.id, it);
             });
+            if (Array.isArray(deletedIds)) {
+              deletedIds.forEach(id => map.delete(id));
+            }
             window.allDocumentTransmittals = Array.from(map.values()).sort((a, b) => {
               const dateA = new Date(b.transmittal_date || 0).getTime();
               const dateB = new Date(a.transmittal_date || 0).getTime();
@@ -12372,9 +12472,17 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               ${r.amount > 0 ? formatPHP(r.amount) : '-'}
             </td>
             <td style="text-align:center; white-space:nowrap;">
-              <button type="button" class="btn-primary" onclick="viewOfficialTransmittalSlip('${escapeDispatchHtml(r.id)}')" style="padding:4px 9px; font-size:0.75rem; background:#1E355F; border-radius:4px;" title="Print Official Transmittal Slip">
-                <i class="fa-solid fa-print"></i> Slip
-              </button>
+              <div class="trn-actions-group">
+                <button type="button" class="trn-btn-slip" onclick="viewOfficialTransmittalSlip('${escapeDispatchHtml(r.id)}')" title="Print Official Transmittal Slip">
+                  <i class="fa-solid fa-print"></i> Slip
+                </button>
+                <button type="button" class="trn-btn-update" onclick="openUpdateTransmittalModal('${escapeDispatchHtml(r.id)}')" title="Update Transmittal Record">
+                  <i class="fa-solid fa-pen-to-square"></i> Update
+                </button>
+                <button type="button" class="trn-btn-delete" onclick="deleteDocumentTransmittal('${escapeDispatchHtml(r.id)}')" title="Delete Record">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -12744,6 +12852,271 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           amt: parseFloat(record.amount) || 0
         }]
       });
+    };
+
+    window.openUpdateTransmittalModal = function (id) {
+      const records = window.allDocumentTransmittals || [];
+      const rec = records.find(r => String(r.id) === String(id));
+      if (!rec) {
+        if (typeof showSystemAlert === 'function') {
+          showSystemAlert('Not Found', 'The requested transmittal record could not be found.', 'warning');
+        } else {
+          alert('Transmittal record not found.');
+        }
+        return;
+      }
+
+      const idInput = document.getElementById('trnEditId');
+      const dateInput = document.getElementById('trnEditDate');
+      const docNoInput = document.getElementById('trnEditDocNo');
+      const docNoBadge = document.getElementById('trnEditDocNoBadge');
+      const typeSelect = document.getElementById('trnEditType');
+      const payeeInput = document.getElementById('trnEditPayee');
+      const deptSelect = document.getElementById('trnEditDept');
+      const descInput = document.getElementById('trnEditDesc');
+      const amtInput = document.getElementById('trnEditAmount');
+      const recipientInput = document.getElementById('trnEditRecipient');
+      const senderInput = document.getElementById('trnEditSender');
+
+      if (idInput) idInput.value = rec.id;
+      if (dateInput) dateInput.value = rec.transmittal_date || '';
+      if (docNoInput) docNoInput.value = rec.document_number || '';
+      if (docNoBadge) docNoBadge.textContent = rec.document_number || rec.id;
+      if (payeeInput) payeeInput.value = (rec.payee && rec.payee !== '-') ? rec.payee : '';
+      if (descInput) descInput.value = rec.description || '';
+      if (amtInput) amtInput.value = rec.amount != null ? Number(rec.amount) : 0;
+      if (recipientInput) recipientInput.value = rec.recipient || 'Office of the President';
+      if (senderInput) senderInput.value = rec.sender || 'HRAD';
+
+      if (typeSelect) {
+        let found = false;
+        for (let i = 0; i < typeSelect.options.length; i++) {
+          if (typeSelect.options[i].value === rec.document_type) {
+            typeSelect.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found && rec.document_type) {
+          const opt = document.createElement('option');
+          opt.value = rec.document_type;
+          opt.textContent = rec.document_type;
+          opt.selected = true;
+          typeSelect.appendChild(opt);
+        }
+      }
+
+      if (deptSelect) {
+        let found = false;
+        for (let i = 0; i < deptSelect.options.length; i++) {
+          if (deptSelect.options[i].value === rec.department) {
+            deptSelect.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found && rec.department) {
+          const opt = document.createElement('option');
+          opt.value = rec.department;
+          opt.textContent = rec.department;
+          opt.selected = true;
+          deptSelect.appendChild(opt);
+        }
+      }
+
+      const modal = document.getElementById('updateTransmittalModal');
+      if (modal) modal.classList.add('open');
+    };
+
+    window.closeUpdateTransmittalModal = function () {
+      const modal = document.getElementById('updateTransmittalModal');
+      if (modal) modal.classList.remove('open');
+    };
+
+    window.saveUpdatedDocumentTransmittal = async function (e) {
+      if (e) e.preventDefault();
+      const id = document.getElementById('trnEditId')?.value;
+      if (!id) return;
+
+      const dateVal = document.getElementById('trnEditDate')?.value || '';
+      const docNoVal = (document.getElementById('trnEditDocNo')?.value || '').trim();
+      const typeVal = document.getElementById('trnEditType')?.value || 'Document for Signature';
+      const payeeVal = (document.getElementById('trnEditPayee')?.value || '').trim() || '-';
+      const deptVal = (document.getElementById('trnEditDept')?.value || 'ADMIN').trim();
+      const descVal = (document.getElementById('trnEditDesc')?.value || '').trim();
+      const amtVal = parseFloat(document.getElementById('trnEditAmount')?.value) || 0;
+      const recipientVal = (document.getElementById('trnEditRecipient')?.value || '').trim() || 'Office of the President';
+      const senderVal = (document.getElementById('trnEditSender')?.value || '').trim() || 'HRAD';
+
+      if (!docNoVal || !descVal) {
+        if (typeof showSystemAlert === 'function') {
+          showSystemAlert('Required Fields', 'Document Number and Description are required.', 'warning');
+        } else {
+          alert('Document Number and Description are required.');
+        }
+        return;
+      }
+
+      const records = window.allDocumentTransmittals || [];
+      const recIndex = records.findIndex(r => String(r.id) === String(id));
+      if (recIndex === -1) {
+        if (typeof showSystemAlert === 'function') {
+          showSystemAlert('Not Found', 'Record could not be located in memory.', 'error');
+        }
+        return;
+      }
+
+      const updatedRecord = {
+        ...records[recIndex],
+        transmittal_date: dateVal,
+        document_number: docNoVal,
+        document_type: typeVal,
+        payee: payeeVal,
+        department: deptVal,
+        description: descVal,
+        amount: amtVal,
+        recipient: recipientVal,
+        sender: senderVal,
+        updated_at: new Date().toISOString()
+      };
+
+      records[recIndex] = updatedRecord;
+
+      // Update local storage cache
+      try {
+        let localCache = JSON.parse(localStorage.getItem('document_transmittals_cache') || '[]');
+        const cIdx = localCache.findIndex(r => String(r.id) === String(id));
+        if (cIdx >= 0) {
+          localCache[cIdx] = updatedRecord;
+        } else {
+          localCache.unshift(updatedRecord);
+        }
+        localStorage.setItem('document_transmittals_cache', JSON.stringify(localCache));
+      } catch (err) {
+        console.warn('Transmittal update cache notice:', err);
+      }
+
+      // Persist to Supabase if connected
+      try {
+        if (typeof supabase !== 'undefined' && supabase) {
+          supabase.from('document_transmittals').update({
+            transmittal_date: dateVal,
+            document_number: docNoVal,
+            document_type: typeVal,
+            payee: payeeVal,
+            department: deptVal,
+            description: descVal,
+            amount: amtVal,
+            recipient: recipientVal,
+            sender: senderVal,
+            updated_at: new Date().toISOString()
+          }).eq('id', id).then(({ error }) => {
+            if (error) console.warn('Supabase transmittal update notice:', error);
+          });
+        }
+      } catch (err) {
+        console.warn('Supabase update notice:', err);
+      }
+
+      closeUpdateTransmittalModal();
+      updateTransmittalStats();
+      filterDocumentTransmittals();
+
+      if (typeof showSystemAlert === 'function') {
+        showSystemAlert('Transmittal Updated', `Document "${docNoVal}" has been updated successfully.`, 'success');
+      }
+    };
+
+    window.deleteDocumentTransmittal = function (id) {
+      const records = window.allDocumentTransmittals || [];
+      const rec = records.find(r => String(r.id) === String(id));
+      if (!rec) {
+        if (typeof showSystemAlert === 'function') {
+          showSystemAlert('Not Found', 'Transmittal record could not be found.', 'warning');
+        }
+        return;
+      }
+
+      const docNo = rec.document_number || 'Record';
+      const descPreview = rec.description ? (rec.description.length > 55 ? rec.description.slice(0, 55) + '...' : rec.description) : '';
+
+      if (typeof showAdminConfirmModal === 'function') {
+        showAdminConfirmModal({
+          title: 'Delete Transmittal Record',
+          message: `Are you sure you want to delete transmittal document "${docNo}" (${descPreview})? This action cannot be undone.`,
+          confirmText: 'Yes, Delete',
+          confirmColor: '#ef4444',
+          icon: 'fa-trash-can',
+          iconColor: '#ef4444',
+          iconBg: '#fee2e2',
+          onConfirm: () => executeDeleteDocumentTransmittal(id, docNo)
+        });
+      } else {
+        if (confirm(`Are you sure you want to delete transmittal "${docNo}"?`)) {
+          executeDeleteDocumentTransmittal(id, docNo);
+        }
+      }
+    };
+
+    window.executeDeleteDocumentTransmittal = async function (id, docNo) {
+      // Remove from memory
+      if (Array.isArray(window.allDocumentTransmittals)) {
+        window.allDocumentTransmittals = window.allDocumentTransmittals.filter(r => String(r.id) !== String(id));
+      }
+
+      // Record in deleted list & remove from cache in localStorage
+      try {
+        let deletedList = JSON.parse(localStorage.getItem('document_transmittals_deleted') || '[]');
+        if (!deletedList.includes(id)) {
+          deletedList.push(id);
+          localStorage.setItem('document_transmittals_deleted', JSON.stringify(deletedList));
+        }
+
+        let localCache = JSON.parse(localStorage.getItem('document_transmittals_cache') || '[]');
+        localCache = localCache.filter(r => String(r.id) !== String(id));
+        localStorage.setItem('document_transmittals_cache', JSON.stringify(localCache));
+      } catch (err) {
+        console.warn('Transmittal delete local storage notice:', err);
+      }
+
+      // Delete from Supabase if connected
+      try {
+        if (typeof supabase !== 'undefined' && supabase) {
+          supabase.from('document_transmittals').delete().eq('id', id).then(({ error }) => {
+            if (error) console.warn('Supabase delete transmittal notice:', error);
+          });
+        }
+      } catch (err) {
+        console.warn('Supabase delete notice:', err);
+      }
+
+      updateTransmittalStats();
+      filterDocumentTransmittals();
+
+      if (typeof showSystemAlert === 'function') {
+        showSystemAlert('Record Deleted', `Document "${docNo || id}" has been deleted from the registry.`, 'success');
+      }
+    };
+
+    window.deleteReceivingReport = function (id) {
+      if (typeof showAdminConfirmModal === 'function') {
+        showAdminConfirmModal({
+          title: 'Delete Receiving Report',
+          message: `Are you sure you want to delete Receiving Report "${id}"?`,
+          confirmText: 'Yes, Delete',
+          confirmColor: '#ef4444',
+          icon: 'fa-trash-can',
+          iconColor: '#ef4444',
+          iconBg: '#fee2e2',
+          onConfirm: () => {
+            if (Array.isArray(window.receivingReportsData)) {
+              window.receivingReportsData = window.receivingReportsData.filter(r => (String(r.id) !== String(id) && String(r.rr_no) !== String(id)));
+            }
+            if (typeof renderReceivingReportsTable === 'function') renderReceivingReportsTable();
+            if (typeof showSystemAlert === 'function') showSystemAlert('Deleted', `Receiving report "${id}" has been deleted.`, 'success');
+          }
+        });
+      }
     };
 
     // ========================================================
@@ -16400,6 +16773,136 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           <button type="button" class="btn-secondary" onclick="closeBudgetExpenseModal()" style="padding:9px 18px; font-size:0.85rem;">Cancel</button>
           <button type="submit" class="btn-primary" id="btnSaveExpense" style="padding:9px 24px; font-size:0.85rem; background:#10b981;">
             <i class="fa-solid fa-floppy-disk"></i> Post Disbursement
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8.7. Document Transmittal - Update Record Modal -->
+  <div class="veh-passport-modal-backdrop" id="updateTransmittalModal" onclick="if(event.target === this) closeUpdateTransmittalModal()">
+    <div class="veh-passport-paper" style="max-width: 660px; padding: 28px 32px;" id="updateTransmittalPaper">
+      <form id="updateTransmittalForm" onsubmit="saveUpdatedDocumentTransmittal(event)">
+        <!-- Modal Header -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:14px; margin-bottom:18px;">
+          <div>
+            <h2 style="margin:0; font-size:1.25rem; color:var(--primary); font-weight:800; display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-pen-to-square" style="color:#0284c7;"></i> Update Document Transmittal
+            </h2>
+            <p style="margin:4px 0 0; font-size:0.8rem; color:var(--text-muted);">
+              Modify document particulars, payee, department, transmittal date, or amount.
+            </p>
+          </div>
+          <button type="button" onclick="closeUpdateTransmittalModal()" style="background:none; border:none; font-size:1.3rem; color:var(--text-muted); cursor:pointer; padding:4px 8px;">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Hidden ID for keying -->
+        <input type="hidden" id="trnEditId">
+
+        <!-- Top Badge Strip -->
+        <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px; padding:10px 14px; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:0.75rem; font-weight:700; color:#0369a1; text-transform:uppercase;">Document #:</span>
+            <span id="trnEditDocNoBadge" style="font-family:monospace; font-weight:800; color:var(--primary); font-size:0.95rem;">-</span>
+          </div>
+          <span style="font-size:0.75rem; background:#0284c7; color:white; padding:3px 10px; border-radius:12px; font-weight:700;">Executive Registry</span>
+        </div>
+
+        <!-- Form fields grid -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; background:#f8fafc; padding:18px; border-radius:8px; border:1px solid var(--border); margin-bottom:20px;" class="trn-modal-grid">
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px; text-transform:uppercase;">
+              <i class="fa-regular fa-calendar-days" style="color:var(--accent);"></i> Transmittal Date *
+            </label>
+            <input type="date" id="trnEditDate" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; background:white;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px; text-transform:uppercase;">
+              <i class="fa-solid fa-hashtag" style="color:var(--accent);"></i> Document Number *
+            </label>
+            <input type="text" id="trnEditDocNo" required placeholder="e.g. RFP - 31285" style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-family:monospace; font-weight:700; color:var(--primary); background:white;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px; text-transform:uppercase;">
+              <i class="fa-solid fa-file-lines" style="color:var(--accent);"></i> Type of Document *
+            </label>
+            <select id="trnEditType" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:600; background:white;">
+              <option value="Request for Payment">Request for Payment (RFP)</option>
+              <option value="Purchase Requisition Form">Purchase Requisition (PRF)</option>
+              <option value="Memorandum">Memorandum (MEMO)</option>
+              <option value="Liquidation">Liquidation Form</option>
+              <option value="Abstract of Canvass">Abstract of Canvass (AOC)</option>
+              <option value="Request for Disposal">Request for Disposal (RFD)</option>
+              <option value="Leave Application">Leave Application</option>
+              <option value="Document for Signature">Other Document for Signature</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px; text-transform:uppercase;">
+              <i class="fa-solid fa-building" style="color:var(--accent);"></i> Project | Dept *
+            </label>
+            <select id="trnEditDept" required style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:600; background:white;">
+              <option value="ADMIN">ADMIN</option>
+              <option value="180MLD">180MLD</option>
+              <option value="QCESNP2">QCESNP2</option>
+              <option value="CATMON">CATMON</option>
+              <option value="BSP ILO ILO">BSP ILO ILO</option>
+              <option value="ENGINEERING">ENGINEERING</option>
+              <option value="HR">HR</option>
+              <option value="BDG">BDG</option>
+              <option value="PURCHASING">PURCHASING</option>
+              <option value="CRMD">CRMD</option>
+              <option value="NKTI">NKTI</option>
+              <option value="C&C">C&amp;C</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px; text-transform:uppercase;">
+              <i class="fa-solid fa-user-tag" style="color:var(--accent);"></i> Payee / Vendor
+            </label>
+            <input type="text" id="trnEditPayee" placeholder="e.g. MERALCO / Jardine Schindler" style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; background:white;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px; text-transform:uppercase;">
+              <i class="fa-solid fa-peso-sign" style="color:#16a34a;"></i> Amount (₱)
+            </label>
+            <input type="number" id="trnEditAmount" step="0.01" min="0" placeholder="0.00" style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; text-align:right; color:#15803d; background:white;">
+          </div>
+
+          <div style="grid-column: span 2;">
+            <label style="display:block; font-size:0.78rem; font-weight:700; color:#334155; margin-bottom:4px; text-transform:uppercase;">
+              <i class="fa-solid fa-align-left" style="color:var(--accent);"></i> Description &amp; Particulars *
+            </label>
+            <textarea id="trnEditDesc" required rows="3" placeholder="Details and particulars of the document submitted..." style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; resize:vertical; font-family:inherit; line-height:1.4; background:white;"></textarea>
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.74rem; font-weight:700; color:#64748b; margin-bottom:4px; text-transform:uppercase;">
+              Recipient (TO)
+            </label>
+            <input type="text" id="trnEditRecipient" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:white;">
+          </div>
+
+          <div>
+            <label style="display:block; font-size:0.74rem; font-weight:700; color:#64748b; margin-bottom:4px; text-transform:uppercase;">
+              Sender (FROM)
+            </label>
+            <input type="text" id="trnEditSender" style="width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border); font-size:0.82rem; background:white;">
+          </div>
+        </div>
+
+        <!-- Form Action Buttons -->
+        <div style="display:flex; justify-content:flex-end; gap:10px; border-top:1px dashed #cbd5e1; padding-top:16px;">
+          <button type="button" class="btn-secondary" onclick="closeUpdateTransmittalModal()" style="padding:9px 18px; font-size:0.85rem;">Cancel</button>
+          <button type="submit" class="btn-primary" style="padding:9px 24px; font-size:0.85rem; background:#0284c7; font-weight:700;">
+            <i class="fa-solid fa-check"></i> Save Changes
           </button>
         </div>
       </form>
