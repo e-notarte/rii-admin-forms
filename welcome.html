@@ -1502,18 +1502,24 @@
 
     .notification-badge {
       position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #ef4444;
-      color: white;
-      font-size: 0.65rem;
+      top: -7px;
+      right: -9px;
+      background: #ff3b30;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 4px rgba(255, 59, 48, 0.45);
+      font-size: 9px;
       font-weight: bold;
-      border-radius: 50%;
-      width: 18px;
+      border-radius: 999px;
+      min-width: 18px;
       height: 18px;
+      padding: 0 5px;
       display: flex;
       align-items: center;
       justify-content: center;
+      line-height: 18px;
+      z-index: 10;
+      pointer-events: none;
     }
 
     .notification-dropdown {
@@ -2119,7 +2125,7 @@
   <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
         class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin Dashboard</a><button type="button"
       title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
-      title="User Notifications"><i class="fa-regular fa-bell"></i> User Notifications</button><button type="button"
+      title="User Notifications" onclick="document.getElementById('notifDropdown').classList.toggle('active')"><i class="fa-regular fa-bell"></i> User Notifications</button><button type="button"
       title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
         class="fa-solid fa-right-from-bracket"></i> Log out</button></div>
   <header class="header">
@@ -2905,8 +2911,8 @@
           const dateStr = new Date(n.created_at).toLocaleDateString();
           const timeStr = new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
           html += '<div class="notification-item ' + unreadClass + '" onclick="showNotificationDetails(\'' + n.id + '\')">';
-          html += '<div class="notif-title">' + n.title + '</div>';
-          html += '<div class="notif-desc">' + n.message + '</div>';
+          html += '<div class="notif-title">' + escapeNotificationHtml(n.title) + '</div>';
+          html += '<div class="notif-desc">' + escapeNotificationHtml(n.message) + '</div>';
           html += '<div class="notif-time">' + dateStr + ' ' + timeStr + '</div>';
           html += '</div>';
         });
