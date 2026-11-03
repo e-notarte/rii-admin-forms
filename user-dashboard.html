@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - R-II Builders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e355f;
+      --accent: #fcae16;
+      --bg: #f5f8fc;
+      --border: #e2e8f0;
+      --sidebar-width: 274px;
+      --header-height: 64px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body { background: var(--bg); color: #334155; font-family: Poppins, sans-serif; }
+    .header {
+      align-items: center;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      height: var(--header-height);
+      justify-content: space-between;
+      left: 0;
+      padding: 0 24px;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 20;
+    }
+    .brand { align-items: center; display: flex; gap: 10px; font-weight: 700; }
+    .brand img { height: 34px; width: 42px; object-fit: contain; }
+    .header-title { font-size: 1rem; font-weight: 700; letter-spacing: .04em; }
+    .header-right { align-items: center; display: flex; gap: 18px; }
+    .user-badge { color: var(--accent); font-size: .85rem; font-weight: 600; }
+    .icon-btn, .mobile-menu-toggle {
+      background: transparent; border: 0; color: #fff; cursor: pointer; font-size: 1.1rem;
+    }
+    .mobile-menu-toggle { display: none; left: 14px; position: fixed; top: 22px; z-index: 30; }
+    .sidebar {
+      background: #fff; border-right: 1px solid var(--border); bottom: 0; left: 0;
+      overflow-y: auto; padding-top: 84px; position: fixed; top: 0; width: var(--sidebar-width); z-index: 10;
+    }
+    .nav-label { color: #94a3b8; font-size: .72rem; font-weight: 700; letter-spacing: .06em; padding: 20px 20px 8px; text-transform: uppercase; }
+    .nav-link, .nav-group-title, .sub-link {
+      align-items: center; border-left: 4px solid transparent; color: #334155; display: flex;
+      gap: 12px; text-decoration: none;
+    }
+    .nav-link, .nav-group-title { cursor: pointer; padding: 12px 20px; }
+    .nav-link:hover, .nav-group-title:hover, .sub-link:hover, .nav-link.active, .sub-link.active {
+      background: #fff9eb; border-left-color: var(--accent); color: #c88700;
+    }
+    .nav-icon-wrapper { width: 22px; text-align: center; }
+    .sub-links { display: grid; }
+    .sub-link { font-size: .86rem; padding: 9px 20px 9px 54px; }
+    .main { height: 100%; margin-left: var(--sidebar-width); padding-top: var(--header-height); }
+    .view-frame { border: 0; display: block; height: calc(100vh - var(--header-height)); width: 100%; }
+    @media (max-width: 900px) {
+      .header { padding-left: 58px; }
+      .mobile-menu-toggle { display: block; }
+      .header-title { display: none; }
+      .sidebar { box-shadow: 4px 0 18px rgba(0,0,0,.16); transform: translateX(-100%); transition: transform .18s ease; z-index: 25; }
+      body.nav-open .sidebar { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .user-badge { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="mobile-menu-toggle" type="button" aria-label="Open navigation"
+    onclick="document.body.classList.toggle('nav-open')"><i class="fa-solid fa-bars"></i></button>
+  <header class="header">
+    <div class="brand"><img src="RII_Logo.png" alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
+    <span class="header-title">USER DASHBOARD</span>
+    <div class="header-right">
+      <button class="icon-btn" type="button" title="Toggle dark mode" onclick="toggleDarkMode()"><i class="fa-regular fa-moon"></i></button>
+      <span class="user-badge" id="userBadge">User</span>
+    </div>
+  </header>
+
+  <aside class="sidebar" aria-label="User navigation">
+    <div class="nav-label">User Accounts</div>
+    <nav>
+      <a class="nav-link active" href="welcome.html" data-view="welcome.html"><span class="nav-icon-wrapper"><i class="fa-solid fa-chart-pie"></i></span><span>User Dashboard</span></a>
+    </nav>
+    <div class="nav-label">Navi Options</div>
+    <nav>
+      <a class="nav-link" href="vehicle-request.html" data-view="vehicle-request.html"><span class="nav-icon-wrapper"><i class="fa-solid fa-car"></i></span><span>Vehicle Request</span></a>
+      <a class="nav-link" href="driver-request.html" data-view="driver-request.html"><span class="nav-icon-wrapper"><i class="fa-solid fa-id-card"></i></span><span>Driver Request</span></a>
+      <div class="nav-group">
+        <div class="nav-group-title" onclick="this.parentElement.classList.toggle('open')"><span class="nav-icon-wrapper"><i class="fa-solid fa-building"></i></span><span>Facility Request</span><i class="fa-solid fa-chevron-down" style="margin-left:auto"></i></div>
+        <div class="sub-links">
+          <a class="sub-link" href="conference-request.html" data-view="conference-request.html">Conference Room</a>
+          <a class="sub-link" href="function-request.html" data-view="function-request.html">Function Hall</a>
+          <a class="sub-link" href="parking-request.html" data-view="parking-request.html">Parking Slot</a>
+          <a class="sub-link" href="zoom-request.html" data-view="zoom-request.html">Zoom Meeting</a>
+          <a class="sub-link" href="teams-request.html" data-view="teams-request.html">MS Teams</a>
+        </div>
+      </div>
+      <a class="nav-link" href="liaison-request.html" data-view="liaison-request.html"><span class="nav-icon-wrapper"><i class="fa-solid fa-person-walking-arrow-right"></i></span><span>Liaison</span></a>
+      <a class="nav-link" href="supplies-dashboard.html" data-view="supplies-dashboard.html"><span class="nav-icon-wrapper"><i class="fa-solid fa-boxes-stacked"></i></span><span>Supplies</span></a>
+      <a class="nav-link" href="user-profile.html" data-view="user-profile.html"><span class="nav-icon-wrapper"><i class="fa-regular fa-user"></i></span><span>Profile</span></a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <iframe class="view-frame" id="viewFrame" title="User dashboard content"></iframe>
+  </main>
+
+  <script>
+    if (sessionStorage.getItem('isAuthenticated') !== 'true') {
+      window.location.replace('index.html');
+    }
+
+    const frame = document.getElementById('viewFrame');
+    const links = [...document.querySelectorAll('[data-view]')];
+    const userBadge = document.getElementById('userBadge');
+    userBadge.textContent = sessionStorage.getItem('userFullName') || 'User';
+
+    function setActive(view) {
+      links.forEach(link => link.classList.toggle('active', link.dataset.view === view));
+    }
+
+    function loadView(view) {
+      setActive(view);
+      frame.src = view;
+      document.body.classList.remove('nav-open');
+    }
+
+    function toggleDarkMode() {
+      const dark = document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', dark);
+    }
+
+    links.forEach(link => link.addEventListener('click', event => {
+      event.preventDefault();
+      loadView(link.dataset.view);
+    }));
+
+    frame.addEventListener('load', () => {
+      try {
+        frame.contentDocument.querySelectorAll('a[href]').forEach(link => {
+          const target = new URL(link.href, window.location.href);
+          const allowed = target.origin === window.location.origin && links.some(item => item.dataset.view === target.pathname.split('/').pop());
+          if (allowed) {
+            link.addEventListener('click', event => {
+              event.preventDefault();
+              loadView(target.pathname.split('/').pop());
+            });
+          }
+        });
+      } catch (error) {
+        console.warn('Unable to connect user view navigation.', error);
+      }
+    });
+
+    const requestedView = new URLSearchParams(window.location.search).get('view');
+    const initialView = links.some(link => link.dataset.view === requestedView) ? requestedView : 'welcome.html';
+    loadView(initialView);
+  </script>
+</body>
+
+</html>
