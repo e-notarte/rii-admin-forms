@@ -146,7 +146,29 @@
 
     frame.addEventListener('load', () => {
       try {
-        frame.contentDocument.querySelectorAll('a[href]').forEach(link => {
+        const viewDocument = frame.contentDocument;
+        const viewStyle = viewDocument.createElement('style');
+        viewStyle.textContent = `
+          header, .header, .sidebar, .mobile-menu-toggle, .mobile-account-button,
+          .mobile-account-menu, .footer, .ai-bot-wrapper {
+            display: none !important;
+          }
+          body {
+            margin: 0 !important;
+            min-width: 0 !important;
+            overflow-x: hidden !important;
+          }
+          main, .main-content, .main-wrapper {
+            box-sizing: border-box !important;
+            margin: 0 !important;
+            min-height: 100vh !important;
+            padding: 32px !important;
+            width: 100% !important;
+          }
+        `;
+        viewDocument.head.appendChild(viewStyle);
+
+        viewDocument.querySelectorAll('a[href]').forEach(link => {
           const target = new URL(link.href, window.location.href);
           const allowed = target.origin === window.location.origin && links.some(item => item.dataset.view === target.pathname.split('/').pop());
           if (allowed) {
