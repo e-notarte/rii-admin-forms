@@ -1274,18 +1274,24 @@
 
     .notification-badge {
       position: absolute;
-      top: -5px;
-      right: -5px;
-      background: #ef4444;
-      color: white;
-      font-size: 0.65rem;
+      top: -7px;
+      right: -9px;
+      background: #ff3b30;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 4px rgba(255, 59, 48, 0.45);
+      font-size: 9px;
       font-weight: bold;
-      border-radius: 50%;
-      width: 18px;
+      border-radius: 999px;
+      min-width: 18px;
       height: 18px;
+      padding: 0 5px;
       display: flex;
       align-items: center;
       justify-content: center;
+      line-height: 18px;
+      z-index: 10;
+      pointer-events: none;
     }
 
     .notification-dropdown {
@@ -1742,7 +1748,7 @@
   <div class="mobile-account-menu" aria-label="Account menu"><a href="admin-dashboard.html"><i
         class="fa-solid fa-arrow-right-arrow-left"></i> Switch to Admin</a><button type="button"
       title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
-      title="User Notifications"><i class="fa-regular fa-bell"></i> User Notifications</button><button type="button"
+      title="User Notifications" onclick="document.getElementById('notifDropdown').classList.toggle('active')"><i class="fa-regular fa-bell"></i> User Notifications</button><button type="button"
       title="Log out" onclick="sessionStorage.clear(); window.location.href='index.html'"><i
         class="fa-solid fa-right-from-bracket"></i> Log out</button></div>
   <header class="header">
@@ -1971,6 +1977,57 @@
   <script type="module">
     import { supabase } from './supabase-client.js';
 
+    async function loadNotifications() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('id, title, message, created_at, is_read')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      if (error || !data) return;
+
+      const badge = document.getElementById('notifBadge');
+      const unreadCount = data.filter(notification => !notification.is_read).length;
+      badge.textContent = unreadCount;
+      badge.style.display = unreadCount > 0 ? 'flex' : 'none';
+
+      const list = document.getElementById('notificationList');
+      list.replaceChildren();
+      if (data.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'padding:15px;text-align:center;color:#64748b;font-size:.85rem;';
+        empty.textContent = 'No new notifications';
+        list.appendChild(empty);
+        return;
+      }
+
+      data.forEach(notification => {
+        const item = document.createElement('div');
+        item.className = `notification-item${notification.is_read ? '' : ' unread'}`;
+        item.addEventListener('click', async () => {
+          if (!notification.is_read) {
+            await supabase.from('notifications').update({ is_read: true }).eq('id', notification.id);
+          }
+          loadNotifications();
+        });
+
+        const title = document.createElement('div');
+        title.className = 'notif-title';
+        title.textContent = notification.title || 'Notification';
+        const message = document.createElement('div');
+        message.className = 'notif-desc';
+        message.textContent = notification.message || '';
+        const time = document.createElement('div');
+        time.className = 'notif-time';
+        time.textContent = new Date(notification.created_at).toLocaleString();
+        item.append(title, message, time);
+        list.appendChild(item);
+      });
+    }
+
     async function loadProfile() {
       try {
         const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -2006,6 +2063,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadProfile();
+      loadNotifications();
     });
   </script>
   <script>
