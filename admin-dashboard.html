@@ -4755,7 +4755,7 @@
                   <th style="width:70px; text-align:center;">UOM</th>
                   <th style="width:110px; text-align:right;">Unit Cost</th>
                   <th style="width:125px; text-align:right;">Total Amount</th>
-                  <th style="width:90px; text-align:center;">Actions</th>
+                  <th style="width:115px; text-align:center;">Actions</th>
                 </tr>
               </thead>
               <tbody id="purchaseOrdersTableBody">
@@ -10958,82 +10958,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     // ========================================================
     // PURCHASE ORDER (PO) ENGINE - INVENTORY & WAREHOUSE
     // ========================================================
-    const DEFAULT_PURCHASE_ORDERS = [
-      {
-        id: 'po_2026_001',
-        date: '2026-10-28',
-        po_no: 'PO-2026-0189',
-        prf_no: 'PRF-2026-0342',
-        department: 'ADMIN',
-        items: [
-          { desc: 'Logitech Wireless Keyboard & Mouse Combo MK270', qty: 5, uom: 'Set', unit_cost: 1450.00, total: 7250.00 },
-          { desc: 'A4 Multi-Purpose Copy Paper 80gsm (5 reams/box)', qty: 20, uom: 'Box', unit_cost: 1250.00, total: 25000.00 }
-        ],
-        total_amount: 32250.00,
-        status: 'Issued',
-        created_at: '2026-10-28T09:15:00Z',
-        created_by: 'System Admin'
-      },
-      {
-        id: 'po_2026_002',
-        date: '2026-10-24',
-        po_no: 'PO-2026-0188',
-        prf_no: 'PRF-2026-0338',
-        department: 'QCESNP2',
-        items: [
-          { desc: 'Heavy Duty Steel Toe Safety Shoes (Size 42)', qty: 15, uom: 'Pair', unit_cost: 1850.00, total: 27750.00 },
-          { desc: 'High Visibility Reflectorized Safety Vest (Orange)', qty: 30, uom: 'Pcs', unit_cost: 280.00, total: 8400.00 }
-        ],
-        total_amount: 36150.00,
-        status: 'Issued',
-        created_at: '2026-10-24T14:30:00Z',
-        created_by: 'System Admin'
-      },
-      {
-        id: 'po_2026_003',
-        date: '2026-10-18',
-        po_no: 'PO-2026-0187',
-        prf_no: 'PRF-2026-0329',
-        department: '180MLD',
-        items: [
-          { desc: 'Industrial Grade PVC Pipe 4-inch x 6m', qty: 50, uom: 'Pcs', unit_cost: 680.00, total: 34000.00 },
-          { desc: 'Solvent Cement Heavy Duty (500ml)', qty: 12, uom: 'Can', unit_cost: 320.00, total: 3840.00 }
-        ],
-        total_amount: 37840.00,
-        status: 'Issued',
-        created_at: '2026-10-18T11:00:00Z',
-        created_by: 'System Admin'
-      },
-      {
-        id: 'po_2026_004',
-        date: '2026-10-15',
-        po_no: 'PO-2026-0186',
-        prf_no: 'PRF-2026-0315',
-        department: 'ENGINEERING',
-        items: [
-          { desc: 'HP LaserJet Toner Cartridge 85A Black', qty: 6, uom: 'Pcs', unit_cost: 3100.00, total: 18600.00 },
-          { desc: 'Heavy Duty Stapler with 23/17 Staples', qty: 4, uom: 'Set', unit_cost: 750.00, total: 3000.00 }
-        ],
-        total_amount: 21600.00,
-        status: 'Issued',
-        created_at: '2026-10-15T16:20:00Z',
-        created_by: 'System Admin'
-      },
-      {
-        id: 'po_2026_005',
-        date: '2026-10-10',
-        po_no: 'PO-2026-0185',
-        prf_no: 'PRF-2026-0301',
-        department: 'PURCHASING',
-        items: [
-          { desc: 'Standard Office Ring Binder A4 3-inch Blue', qty: 100, uom: 'Pcs', unit_cost: 165.00, total: 16500.00 }
-        ],
-        total_amount: 16500.00,
-        status: 'Issued',
-        created_at: '2026-10-10T10:00:00Z',
-        created_by: 'System Admin'
-      }
-    ];
+    // Clean initial state: zero default examples (records added manually by users)
+    const DEFAULT_PURCHASE_ORDERS = [];
 
     let allPurchaseOrders = [];
     let poFilteredCache = [];
@@ -11046,12 +10972,23 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         dateEl.value = new Date().toISOString().slice(0, 10);
       }
 
+      // One-time cleanup to ensure old mock examples are wiped out and registry starts clean
+      const PO_CLEAN_FLAG = 'po_registry_cleaned_v2';
+      if (!localStorage.getItem(PO_CLEAN_FLAG)) {
+        localStorage.removeItem('purchase_orders_data');
+        localStorage.setItem(PO_CLEAN_FLAG, 'true');
+      }
+
       let localCache = [];
       try {
         localCache = JSON.parse(localStorage.getItem('purchase_orders_data') || '[]');
       } catch (e) {
         localCache = [];
       }
+
+      // Filter out any lingering legacy mock example records
+      const exampleIds = new Set(['po_2026_001', 'po_2026_002', 'po_2026_003', 'po_2026_004', 'po_2026_005', 'PO-2026-0189', 'PO-2026-0188', 'PO-2026-0187', 'PO-2026-0186', 'PO-2026-0185']);
+      localCache = localCache.filter(po => !exampleIds.has(po.id) && !exampleIds.has(po.po_no));
 
       let remotePOs = [];
       try {
@@ -11061,7 +10998,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             .select('*')
             .order('date', { ascending: false });
           if (!error && Array.isArray(data)) {
-            remotePOs = data;
+            remotePOs = data.filter(po => !exampleIds.has(po.id) && !exampleIds.has(po.po_no));
           }
         }
       } catch (err) {
@@ -11208,6 +11145,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const nextNum = (allPurchaseOrders?.length || 0) + 1;
       const poInput = document.getElementById('poNumber');
       if (poInput) poInput.value = `PO-2026-${String(nextNum).padStart(4, '0')}`;
+      const genBadge = document.getElementById('poGeneratedRefBadge');
+      if (genBadge) genBadge.textContent = `PO-2026-${String(nextNum).padStart(4, '0')}`;
 
       const tbody = document.getElementById('poItemsTbody');
       if (tbody) {
@@ -11332,6 +11271,14 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         }
       } catch (e) {}
 
+      const navBadge = document.getElementById('poNavCount');
+      if (navBadge) navBadge.textContent = allPurchaseOrders.length.toLocaleString();
+
+      const subtitle = document.getElementById('poRegistrySubtitle');
+      if (subtitle) {
+        subtitle.textContent = `Complete fiscal records of all ${allPurchaseOrders.length.toLocaleString()} registered purchase orders.`;
+      }
+
       if (typeof window.showSystemAlert === 'function') {
         window.showSystemAlert(
           'Purchase Order Recorded',
@@ -11398,6 +11345,19 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const nextBtn = document.getElementById('poBtnNext');
       if (nextBtn) nextBtn.disabled = (poCurrentPage >= maxPages);
 
+      if (allPurchaseOrders.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="10" style="text-align:center; padding:45px 20px; color:#64748b;">
+              <i class="fa-solid fa-folder-open" style="font-size:2.2rem; color:#cbd5e1; display:block; margin-bottom:12px;"></i>
+              <strong style="color:#334155; font-size:0.95rem; display:block; margin-bottom:4px;">No Purchase Orders in Registry</strong>
+              <span style="font-size:0.82rem; color:#94a3b8;">Use the Purchase Order form above to manually create and record official purchase orders.</span>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
       if (total === 0) {
         tbody.innerHTML = `
           <tr>
@@ -11446,13 +11406,57 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               ₱ ${(po.total_amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </td>
             <td style="text-align:center; white-space:nowrap;">
-              <button type="button" class="btn-primary" onclick="viewPoSlip('${escapeBmHtml(po.id || po.po_no)}')" style="padding:4px 9px; font-size:0.75rem; background:#1E355F; border-radius:4px;" title="View & Print Purchase Order Voucher">
+              <button type="button" class="btn-primary" onclick="viewPoSlip('${escapeBmHtml(po.id || po.po_no)}')" style="padding:4px 9px; font-size:0.75rem; background:#1E355F; border-radius:4px; margin-right:4px;" title="View & Print Purchase Order Voucher">
                 <i class="fa-solid fa-file-invoice"></i> Slip
+              </button>
+              <button type="button" class="btn-secondary trn-btn-delete" onclick="deletePurchaseOrder('${escapeBmHtml(po.id || po.po_no)}')" style="padding:4px 8px; font-size:0.75rem; color:#ef4444; border:1px solid #fecaca; background:white; border-radius:4px; cursor:pointer;" title="Delete Purchase Order">
+                <i class="fa-solid fa-trash-can"></i>
               </button>
             </td>
           </tr>
         `;
       }).join('');
+    };
+
+    window.deletePurchaseOrder = function (id) {
+      const po = allPurchaseOrders.find(p => (p.id === id || p.po_no === id));
+      if (!po) return;
+
+      if (typeof showAdminConfirmModal === 'function') {
+        showAdminConfirmModal({
+          title: 'Delete Purchase Order',
+          message: `Are you sure you want to delete Purchase Order ${po.po_no || id}? This action cannot be undone.`,
+          confirmText: 'Yes, Delete',
+          confirmColor: '#ef4444',
+          icon: 'fa-trash-can',
+          iconColor: '#ef4444',
+          iconBg: '#fee2e2',
+          onConfirm: () => {
+            allPurchaseOrders = allPurchaseOrders.filter(p => p.id !== id && p.po_no !== id);
+            try {
+              localStorage.setItem('purchase_orders_data', JSON.stringify(allPurchaseOrders));
+            } catch (e) {}
+            try {
+              if (supabase) {
+                supabase.from('purchase_orders').delete().or(`id.eq.${id},po_no.eq.${id}`).catch(err => console.warn(err));
+              }
+            } catch (e) {}
+
+            const navBadge = document.getElementById('poNavCount');
+            if (navBadge) navBadge.textContent = allPurchaseOrders.length.toLocaleString();
+
+            const subtitle = document.getElementById('poRegistrySubtitle');
+            if (subtitle) {
+              subtitle.textContent = `Complete fiscal records of all ${allPurchaseOrders.length.toLocaleString()} registered purchase orders.`;
+            }
+
+            filterPurchaseOrders();
+            if (typeof showSystemAlert === 'function') {
+              showSystemAlert('PO Deleted', `Purchase Order ${po.po_no || id} has been deleted.`, 'success');
+            }
+          }
+        });
+      }
     };
 
     window.viewPoSlip = function (poId) {
