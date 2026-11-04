@@ -4168,9 +4168,9 @@
       </a>
       <a href="#" class="nav-link" data-lessees onclick="return switchView('view-lessees', this)">
         <span class="nav-icon-wrapper">
-          <i class="fa-solid fa-users-rectangle"></i>
+          <i class="fa-solid fa-address-book"></i>
         </span>
-        <span class="nav-title">Lessee's</span>
+        <span class="nav-title">Directory Register</span>
       </a>
     </nav>
 
@@ -4806,15 +4806,6 @@
                 Official Material Receiving &amp; Warehouse Inspection Entry Form. Enter incoming shipment details, requisition tags, and line item quantities.
               </p>
             </div>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <button type="button" class="btn-primary" onclick="exportReceivingReportsCSV()" style="font-size:0.75rem; padding:6px 12px; background:#0284c7; border:none; border-radius:6px; cursor:pointer; color:white; font-weight:600; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-file-excel"></i> Export CSV
-              </button>
-              <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; padding:6px 12px; font-size:0.75rem; border-radius:6px; font-weight:600; display:inline-flex; align-items:center; gap:5px;">
-                <i class="fa-solid fa-warehouse"></i> Warehouse Intake
-              </span>
-              <span style="font-size:0.85rem; font-weight:700; color:var(--primary); background:#f8fafc; padding:6px 12px; border-radius:6px; border:1px solid var(--border);" id="rrGeneratedRefBadge">RR-2026-0407</span>
-            </div>
           </div>
 
           <form id="receivingReportForm" onsubmit="submitReceivingReport(event)">
@@ -4878,9 +4869,7 @@
                   <option value="050 • Software Subscriptions & Licenses">050 • Software Subscriptions &amp; Licenses</option>
                 </select>
               </label>
-            </div>
 
-            <div class="rr-form-grid">
               <label>
                 <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-car-side" style="color:var(--accent);"></i> Sub Account</span>
                 <input type="text" id="rrSubAccount" name="rrSubAccount" placeholder="e.g. 62.01 • Admin or Vehicle Plate NUO-799">
@@ -5006,6 +4995,9 @@
               <input type="text" id="rrSearchInput" placeholder="Search PRF, PO, MRR, item, plate, supplier..." oninput="filterReceivingReports()" style="width: 100%; box-sizing: border-box; padding: 9px 12px 9px 34px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; background: var(--bg-surface); outline: none;">
             </div>
             <input type="date" id="rrDateFilter" onchange="filterReceivingReports()" style="padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; background: white; outline: none; cursor: pointer; min-width: 150px;">
+            <button type="button" class="btn-primary" onclick="exportReceivingReportsCSV()" style="font-size:0.82rem; padding:9px 14px; background:#0284c7; border:none; border-radius:6px; cursor:pointer; color:white; font-weight:600; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;">
+              <i class="fa-solid fa-file-excel"></i> Export CSV
+            </button>
           </div>
 
           <div style="overflow-x: auto;">
@@ -5696,69 +5688,50 @@
         </div>
       </div>
 
-      <!-- BUILDING MAINTENANCE - LESSEES MANAGEMENT VIEW -->
+      <!-- DIRECTORY REGISTER VIEW -->
       <div id="view-lessees" class="view-section">
-        <!-- Top Action Card -->
         <div class="data-card" style="margin-bottom: 24px; padding: 24px;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
             <div>
               <h2 style="margin:0; font-size:1.35rem; color:var(--primary); display:flex; align-items:center; gap:10px;">
-                <i class="fa-solid fa-users-rectangle" style="color:var(--accent);"></i> Lessee's Directory &amp; Records
+                <i class="fa-solid fa-address-book" style="color:var(--accent);"></i> Directory Register
               </h2>
               <span style="font-size:0.82rem; color:var(--text-muted);">
-                Tenant corporate profiles, assigned facility spaces, and allocated utility submeter accounts.
+                Central register for lessees, accounting references, organizational units, assets, and suppliers.
               </span>
             </div>
             <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-              <button type="button" class="btn-primary" onclick="openBmAddLesseeModal()" style="font-size:0.82rem; padding:8px 16px; background:#16a34a; border-radius:6px; font-weight:700;">
-                <i class="fa-solid fa-user-plus"></i> Add Lessee
+              <button type="button" class="btn-primary" onclick="openDirectoryRegisterForm()" style="font-size:0.82rem; padding:8px 16px; background:#16a34a; border-radius:6px; font-weight:700;">
+                <i class="fa-solid fa-plus"></i> Add Directory Entry
               </button>
-              <button type="button" class="btn-primary" onclick="exportLesseesCSV()" style="font-size:0.82rem; padding:8px 16px; background:#0284c7; border-radius:6px; font-weight:700;">
+              <button type="button" class="btn-primary" onclick="exportDirectoryRegisterCSV()" style="font-size:0.82rem; padding:8px 16px; background:#0284c7; border-radius:6px; font-weight:700;">
                 <i class="fa-solid fa-file-excel"></i> Export CSV
               </button>
             </div>
           </div>
         </div>
 
-        <!-- KPI Summary Cards -->
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap:16px; margin-bottom:24px;">
-          <div class="data-card" style="padding:18px 20px; border-left:4px solid #6366f1;">
-            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Total Registered Lessees</div>
-            <div style="font-size:1.6rem; font-weight:800; color:var(--primary);" id="statLesseesCount">5 Companies</div>
-            <div style="font-size:0.75rem; color:#16a34a; margin-top:4px;"><i class="fa-solid fa-circle-check"></i> 100% Verified Tenants</div>
-          </div>
-
-          <div class="data-card" style="padding:18px 20px; border-left:4px solid #16a34a;">
-            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Active Lease Contracts</div>
-            <div style="font-size:1.6rem; font-weight:800; color:#16a34a;" id="statActiveLeases">5 Active</div>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><i class="fa-solid fa-file-signature"></i> Updated Commercial Terms</div>
-          </div>
-
-          <div class="data-card" style="padding:18px 20px; border-left:4px solid #0284c7;">
-            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Assigned Submeters</div>
-            <div style="font-size:1.6rem; font-weight:800; color:#0284c7;" id="statTotalSubmeters">24 Units</div>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><i class="fa-solid fa-bolt"></i> Power &amp; <i class="fa-solid fa-droplet"></i> Water Monitored</div>
-          </div>
-
-          <div class="data-card" style="padding:18px 20px; border-left:4px solid #f59e0b;">
-            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:6px;">Facility Properties</div>
-            <div style="font-size:1.3rem; font-weight:800; color:var(--primary);">R-II HQ &amp; Vitas</div>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;"><i class="fa-solid fa-building"></i> Commercial &amp; Industrial Yard</div>
-          </div>
+        <div class="data-card" id="directoryRegisterFormCard" style="display:none; margin-bottom:24px; padding:24px;">
+          <h3 style="margin:0 0 16px; color:var(--primary);">Register Directory Entry</h3>
+          <form onsubmit="submitDirectoryRegisterEntry(event)" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;">
+            <label><span>Directory Type *</span><select id="directoryType" required><option value="">Select type</option><option>Lessee</option><option>Item Code</option><option>Expense Account</option><option>Sub Account</option><option>Project</option><option>Department</option><option>Business Unit</option><option>Asset Code</option><option>Supplier</option></select></label>
+            <label><span>Code / Reference *</span><input id="directoryCode" required placeholder="e.g. SUP-001"></label>
+            <label><span>Name / Description *</span><input id="directoryName" required placeholder="Entry name or description"></label>
+            <label style="grid-column:span 2;"><span>Additional Details</span><input id="directoryDetails" placeholder="Optional notes, location, contact, or classification"></label>
+            <div style="display:flex; gap:8px; align-items:end;"><button type="submit" class="btn-primary" style="background:#16a34a;">Save Entry</button><button type="button" class="btn-secondary" onclick="closeDirectoryRegisterForm()">Cancel</button></div>
+          </form>
         </div>
 
-        <!-- Master Lessees Table Card -->
         <div class="data-card" style="padding: 24px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
             <div class="search-box" style="margin:0; width:100%; max-width:380px;">
               <i class="fa-solid fa-magnifying-glass"></i>
-              <input type="text" id="lesseeSearchInput" placeholder="Search company code, name, occupied space..." oninput="filterLessees()">
+              <input type="text" id="directorySearchInput" placeholder="Search code, name, or details..." oninput="renderDirectoryRegister()">
             </div>
             <div style="display:flex; gap:10px; align-items:center;">
-              <select id="lesseeStatusFilter" onchange="filterLessees()" style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
-                <option value="ALL">All Statuses (5)</option>
-                <option value="ACTIVE">Active (5)</option>
-                <option value="INACTIVE">Inactive (0)</option>
+              <select id="directoryTypeFilter" onchange="renderDirectoryRegister()" style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
+                <option value="ALL">All Directory Types</option>
+                <option>Lessee</option><option>Item Code</option><option>Expense Account</option><option>Sub Account</option><option>Project</option><option>Department</option><option>Business Unit</option><option>Asset Code</option><option>Supplier</option>
               </select>
             </div>
           </div>
@@ -5767,16 +5740,14 @@
             <table class="dispatch-table" style="min-width: 1050px;">
               <thead>
                 <tr>
-                  <th style="width:120px;">Lessee Code</th>
-                  <th style="min-width:240px;">Company / Tenant Full Name</th>
-                  <th style="min-width:220px;">Occupied Floor / Spaces</th>
-                  <th style="width:160px; text-align:center;">Assigned Submeters</th>
-                  <th style="min-width:200px;">Contact Person / Email</th>
-                  <th style="width:100px; text-align:center;">Status</th>
-                  <th style="text-align:center; width:170px;">Actions</th>
+                  <th style="width:170px;">Directory Type</th>
+                  <th style="width:180px;">Code / Reference</th>
+                  <th style="min-width:280px;">Name / Description</th>
+                  <th style="min-width:340px;">Additional Details</th>
+                  <th style="width:150px; text-align:center;">Registered</th>
                 </tr>
               </thead>
-              <tbody id="lesseesTableBody">
+              <tbody id="directoryRegisterTableBody">
                 <!-- Dynamically populated -->
               </tbody>
             </table>
@@ -6301,7 +6272,7 @@
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
       },
       'view-lessees': {
-        name: "Lessee's Records & Directory",
+        name: 'Directory Register',
         pin: '017',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
       },
@@ -14658,6 +14629,124 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    // ==========================================
+    // DIRECTORY REGISTER
+    // ==========================================
+    const DIRECTORY_TYPES = ['Lessee', 'Item Code', 'Expense Account', 'Sub Account', 'Project', 'Department', 'Business Unit', 'Asset Code', 'Supplier'];
+    let directoryRegisterRecords = [];
+
+    function initDirectoryRegister() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('directory_register_records') || '[]');
+        if (Array.isArray(stored)) directoryRegisterRecords = stored;
+      } catch (error) {
+        console.warn('Error reading directory register:', error);
+        directoryRegisterRecords = [];
+      }
+      if (directoryRegisterRecords.length === 0 && Array.isArray(allBuildingLessees)) {
+        directoryRegisterRecords = allBuildingLessees.map(lessee => ({
+          id: `lessee_${lessee.code}`,
+          type: 'Lessee',
+          code: lessee.code,
+          name: lessee.name,
+          details: `${lessee.spaces || ''}${lessee.contactPerson ? ` | Contact: ${lessee.contactPerson}` : ''}`,
+          created_at: new Date().toISOString()
+        }));
+        saveDirectoryRegister();
+      }
+    }
+
+    function saveDirectoryRegister() {
+      try {
+        localStorage.setItem('directory_register_records', JSON.stringify(directoryRegisterRecords));
+      } catch (error) {
+        console.warn('Error saving directory register:', error);
+      }
+    }
+
+    window.loadLesseesModule = function () {
+      initDirectoryRegister();
+      renderDirectoryRegister();
+    };
+
+    window.openDirectoryRegisterForm = function () {
+      const card = document.getElementById('directoryRegisterFormCard');
+      if (card) card.style.display = 'block';
+      document.getElementById('directoryType')?.focus();
+    };
+
+    window.closeDirectoryRegisterForm = function () {
+      const card = document.getElementById('directoryRegisterFormCard');
+      if (card) card.style.display = 'none';
+      document.querySelector('#directoryRegisterFormCard form')?.reset();
+    };
+
+    window.submitDirectoryRegisterEntry = function (event) {
+      event.preventDefault();
+      const type = document.getElementById('directoryType')?.value || '';
+      const code = (document.getElementById('directoryCode')?.value || '').trim();
+      const name = (document.getElementById('directoryName')?.value || '').trim();
+      const details = (document.getElementById('directoryDetails')?.value || '').trim();
+      if (!DIRECTORY_TYPES.includes(type) || !code || !name) {
+        alert('Please select a directory type and complete the code and name fields.');
+        return;
+      }
+      const duplicate = directoryRegisterRecords.some(record => record.type === type && record.code.toLowerCase() === code.toLowerCase());
+      if (duplicate) {
+        alert(`A ${type} entry with code "${code}" is already registered.`);
+        return;
+      }
+      directoryRegisterRecords.unshift({
+        id: `directory_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        type,
+        code,
+        name,
+        details,
+        created_at: new Date().toISOString()
+      });
+      saveDirectoryRegister();
+      closeDirectoryRegisterForm();
+      renderDirectoryRegister();
+    };
+
+    window.renderDirectoryRegister = function () {
+      const tbody = document.getElementById('directoryRegisterTableBody');
+      if (!tbody) return;
+      const search = (document.getElementById('directorySearchInput')?.value || '').toLowerCase().trim();
+      const typeFilter = document.getElementById('directoryTypeFilter')?.value || 'ALL';
+      const filtered = directoryRegisterRecords.filter(record => {
+        const matchesType = typeFilter === 'ALL' || record.type === typeFilter;
+        const text = `${record.type} ${record.code} ${record.name} ${record.details || ''}`.toLowerCase();
+        return matchesType && (!search || text.includes(search));
+      });
+      tbody.innerHTML = filtered.length ? filtered.map(record => `
+        <tr>
+          <td><span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-weight:700;">${escapeBmHtml(record.type)}</span></td>
+          <td style="font-family:monospace; font-weight:700; color:var(--primary);">${escapeBmHtml(record.code)}</td>
+          <td style="font-weight:700; color:var(--primary);">${escapeBmHtml(record.name)}</td>
+          <td style="color:var(--text-muted);">${escapeBmHtml(record.details || '—')}</td>
+          <td style="text-align:center; color:var(--text-muted); font-size:0.78rem;">${escapeBmHtml((record.created_at || '').slice(0, 10) || '—')}</td>
+        </tr>
+      `).join('') : '<tr><td colspan="5" style="text-align:center; padding:35px; color:#64748b;">No directory entries match your search.</td></tr>';
+    };
+
+    window.exportDirectoryRegisterCSV = function () {
+      if (!directoryRegisterRecords.length) {
+        alert('No directory entries to export.');
+        return;
+      }
+      const rows = directoryRegisterRecords.map(record => [
+        record.type, record.code, record.name, record.details || '', (record.created_at || '').slice(0, 10)
+      ].map(value => `"${String(value).replace(/"/g, '""')}"`).join(','));
+      const csv = ['Directory Type,Code / Reference,Name / Description,Additional Details,Registered', ...rows].join('\r\n');
+      const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `RII_Directory_Register_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
       URL.revokeObjectURL(url);
     };
 
