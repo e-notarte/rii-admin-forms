@@ -4565,7 +4565,7 @@
 
           <form id="purchaseOrderForm" onsubmit="event.preventDefault(); submitPurchaseOrder();">
             <!-- Top Controls Grid: Date, Project/Dept, PO No, PRF No -->
-            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:18px; margin-bottom:20px;">
+            <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:16px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:18px; margin-bottom:20px;">
               <div>
                 <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
                   <i class="fa-solid fa-calendar-day" style="color:var(--accent); margin-right:4px;"></i> Date <span style="color:#ef4444;">*</span>
@@ -4575,10 +4575,28 @@
 
               <div>
                 <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-building" style="color:var(--accent); margin-right:4px;"></i> Project / Department <span style="color:#ef4444;">*</span>
+                  <i class="fa-solid fa-building" style="color:var(--accent); margin-right:4px;"></i> Project <span style="color:#ef4444;">*</span>
+                </label>
+                <select id="poProject" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                  <option value="" disabled selected>-- Select Project --</option>
+                  <option value="180MLD">180MLD Project</option>
+                  <option value="QCESNP2">QCESNP2 Project</option>
+                  <option value="CATMON">CATMON Project</option>
+                  <option value="BSP ILO ILO">BSP ILO ILO Project</option>
+                  <option value="NKTI">NKTI Project</option>
+                  <option value="Operations (Head Office)">Operations (Head Office)</option>
+                  <option value="Operations (Project Site)">Operations (Project Site)</option>
+                  <option value="Business Unit">Business Unit</option>
+                  <option value="N/A">N/A</option>
+                </select>
+              </div>
+
+              <div>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-users" style="color:var(--accent); margin-right:4px;"></i> Department <span style="color:#ef4444;">*</span>
                 </label>
                 <select id="poDepartment" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
-                  <option value="" disabled selected>-- Select Department / Project --</option>
+                  <option value="" disabled selected>-- Select Department --</option>
                   <option value="ADMIN">ADMIN</option>
                   <option value="HR">HR</option>
                   <option value="ENGINEERING">ENGINEERING</option>
@@ -4588,14 +4606,6 @@
                   <option value="PURCHASING">PURCHASING</option>
                   <option value="ESSH">ESSH</option>
                   <option value="CRMD">CRMD</option>
-                  <option value="180MLD">180MLD Project</option>
-                  <option value="QCESNP2">QCESNP2 Project</option>
-                  <option value="CATMON">CATMON Project</option>
-                  <option value="BSP ILO ILO">BSP ILO ILO Project</option>
-                  <option value="NKTI">NKTI Project</option>
-                  <option value="Operations (Head Office)">Operations (Head Office)</option>
-                  <option value="Operations (Project Site)">Operations (Project Site)</option>
-                  <option value="Business Unit">Business Unit</option>
                 </select>
               </div>
 
@@ -4611,6 +4621,13 @@
                   <i class="fa-solid fa-receipt" style="color:var(--accent); margin-right:4px;"></i> PRF NO <span style="color:#ef4444;">*</span>
                 </label>
                 <input type="text" id="poPrfNumber" placeholder="e.g. PRF-2026-0045" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; font-family:monospace; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <div>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-truck-field" style="color:var(--accent); margin-right:4px;"></i> Supplier Name <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="poSupplier" placeholder="Supplier name" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
             </div>
 
@@ -4801,72 +4818,46 @@
           </div>
 
           <form id="receivingReportForm" onsubmit="submitReceivingReport(event)">
-            <!-- Form Grid: Row 1 (Date & Department) -->
+            <input type="hidden" id="rrPrfNo" name="rrPrfNo">
+            <input type="hidden" id="rrBudgetFrom" name="rrBudgetFrom">
             <div class="rr-form-grid">
               <label>
-                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-regular fa-calendar" style="color:var(--accent);"></i> Delivery Date <span style="color:#ef4444;">*</span></span>
-                <input type="date" id="rrDate" name="rrDate" required>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-hashtag" style="color:var(--accent);"></i> RR No. <span style="color:#ef4444;">*</span></span>
+                <input type="text" id="rrNo" name="rrNo" placeholder="e.g. RR-2026-0001" required>
               </label>
 
               <label>
-                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Department <span style="color:#ef4444;">*</span></span>
-                <select id="rrDepartment" name="rrDepartment" required>
-                  <option value="">Select Department</option>
-                  <option value="Admin">Admin (ADM)</option>
-                  <option value="Operations">Operations (OTC)</option>
-                  <option value="HR">HR / HRD</option>
-                  <option value="Purchasing">Purchasing (PUR)</option>
-                  <option value="BDG">BDG - Budget &amp; Finance</option>
-                  <option value="Engineering">Engineering (ENG)</option>
-                  <option value="C&C">C&amp;C</option>
-                  <option value="Accounting">Accounting</option>
-                  <option value="CRMD">CRMD</option>
-                  <option value="ESSH">ESSH - Safety &amp; Health</option>
-                  <option value="OTP">OTP</option>
-                  <option value="Finance">Finance</option>
-                  <option value="CEWD">CEWD</option>
-                  <option value="180MLD">180MLD Project</option>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-contract" style="color:var(--accent);"></i> PO No. <span style="color:#ef4444;">*</span></span>
+                <select id="rrPoNo" name="rrPoNo" required onchange="populateReceivingReportFromPo()">
+                  <option value="">Select a Purchase Order</option>
                 </select>
               </label>
             </div>
 
-            <!-- Form Grid: Row 2 (PRF No. & PO No.) -->
+            <!-- PO details are read-only and loaded from the selected PO -->
             <div class="rr-form-grid">
               <label>
-                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-hashtag" style="color:var(--accent);"></i> PRF No. (Purchase Requisition) <span style="color:#ef4444;">*</span></span>
-                <input type="text" id="rrPrfNo" name="rrPrfNo" placeholder="e.g. HO-PRF NO. 16366" required>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-regular fa-calendar" style="color:var(--accent);"></i> PO Date</span>
+                <input type="date" id="rrDate" name="rrDate" readonly>
               </label>
 
               <label>
-                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-file-contract" style="color:var(--accent);"></i> PO No. (Purchase Order) <span style="color:#ef4444;">*</span></span>
-                <input type="text" id="rrPoNo" name="rrPoNo" placeholder="e.g. HO-PO 15395" required>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-building" style="color:var(--accent);"></i> Project</span>
+                <input type="text" id="rrProject" name="rrProject" readonly>
+              </label>
+
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-building-user" style="color:var(--accent);"></i> Department</span>
+                <input type="text" id="rrDepartment" name="rrDepartment" readonly>
+              </label>
+
+              <label>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-truck-field" style="color:var(--accent);"></i> Supplier Name</span>
+                <input type="text" id="rrSupplier" name="rrSupplier" readonly>
               </label>
             </div>
 
-            <!-- Form Grid: Row 3 (Supplier Name & Expense Account) -->
             <div class="rr-form-grid">
-              <label>
-                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-truck-field" style="color:var(--accent);"></i> Supplier Name <span style="color:#ef4444;">*</span></span>
-                <input type="text" id="rrSupplier" name="rrSupplier" list="rrSuppliersList" placeholder="e.g. TIMOG TIREHAUS CORPORATION" required autocomplete="off">
-                <datalist id="rrSuppliersList">
-                  <option value="TIMOG TIREHAUS CORPORATION">
-                  <option value="PAPERLINE ENTERPRISES INC">
-                  <option value="BREW MASTER INTERNATIONAL INC">
-                  <option value="PUREGOLD JR. KALAYAAN">
-                  <option value="TOYOTA COMMONWEALTH, INC.">
-                  <option value="ASHER-CHESKA'S PRINTING CORP">
-                  <option value="GATEWAY MOTORS CEBU INC">
-                  <option value="C3 ENGINEERING PILIPINAS CO.">
-                  <option value="PHILCOPY CORPORATION">
-                  <option value="GOLDEN STATE OFFICE SUPPLIES TRADING">
-                  <option value="BEST CHOICE ENTERPRISES">
-                  <option value="JOULE TECH CONSUMER GOODS TRADING">
-                  <option value="METRO DRUG INC">
-                  <option value="POWERSTEEL SPECIALIST TRADING">
-                  <option value="MICRO VALLEY COMPUTER SYSTEM">
-                </datalist>
-              </label>
-
               <label>
                 <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> Expense Account</span>
                 <select id="rrExpenseAccount" name="rrExpenseAccount">
@@ -4889,16 +4880,10 @@
               </label>
             </div>
 
-            <!-- Form Grid: Row 4 (Sub-Account & Budget Source) -->
             <div class="rr-form-grid">
               <label>
-                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-car-side" style="color:var(--accent);"></i> Sub-Account / Vehicle Plate / Ref</span>
+                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-car-side" style="color:var(--accent);"></i> Sub Account</span>
                 <input type="text" id="rrSubAccount" name="rrSubAccount" placeholder="e.g. 62.01 • Admin or Vehicle Plate NUO-799">
-              </label>
-
-              <label>
-                <span style="display:flex; align-items:center; gap:6px;"><i class="fa-solid fa-wallet" style="color:var(--accent);"></i> Budget Source / Charged To</span>
-                <input type="text" id="rrBudgetFrom" name="rrBudgetFrom" placeholder="e.g. ADM or Head Office">
               </label>
             </div>
 
@@ -4908,9 +4893,7 @@
                 <label style="font-size:0.85rem; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:8px;">
                   <i class="fa-solid fa-list-check" style="color:var(--accent);"></i> Received Line Items (Item Description, Qty, UOM, Unit Cost &amp; Total)
                 </label>
-                <button type="button" class="btn-primary" onclick="addRrLineItem()" style="font-size:0.75rem; padding:6px 14px; background:#10b981; border:none; border-radius:6px; font-weight:600; cursor:pointer; color:white; display:inline-flex; align-items:center; gap:6px;">
-                  <i class="fa-solid fa-plus"></i> Add Line Item
-                </button>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Items and descriptions come from the selected PO.</span>
               </div>
 
               <div class="rr-items-table-wrap">
@@ -4931,7 +4914,7 @@
                     <tr class="rr-item-row">
                       <td style="text-align: center; font-weight: 700; color: var(--text-muted);" class="row-num">1</td>
                       <td>
-                        <input type="text" class="rr-item-desc" placeholder="e.g. A4 Copy Paper 80gsm (Hard Copy)" required>
+                        <input type="text" class="rr-item-desc" placeholder="Select a PO to load item descriptions" readonly required>
                       </td>
                       <td>
                         <input type="number" class="rr-item-qty" min="0.01" step="any" value="1" oninput="calcRrTotals()" required>
@@ -4973,7 +4956,6 @@
             <!-- Summary Bar & Submissions -->
             <div class="rr-summary-bar">
               <div style="display:flex; flex-direction:column; gap:8px; flex:1; max-width:480px;">
-                <input type="text" id="rrRemarks" placeholder="Remarks / Delivery Receipt (DR) No. / Invoice No. (Optional)" style="padding:10px 12px; border:1px solid var(--border); border-radius:7px; font-size:0.85rem;">
                 <div style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
                   <i class="fa-solid fa-user-check" style="color:var(--accent);"></i>
                   <span>Inspected &amp; Received by: <strong id="rrReceiverLabel">Inventory Staff</strong></span>
@@ -10487,8 +10469,10 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     window.resetRrForm = function () {
       const form = document.getElementById('receivingReportForm');
       if (form) form.reset();
+      const rrNoInput = document.getElementById('rrNo');
+      if (rrNoInput) rrNoInput.value = `RR-${new Date().getFullYear()}-${String((receivingReportsData || []).length + 1).padStart(4, '0')}`;
       const dateInput = document.getElementById('rrDate');
-      if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+      if (dateInput) dateInput.value = '';
       const receiverLbl = document.getElementById('rrReceiverLabel');
       if (receiverLbl) receiverLbl.textContent = sessionStorage.getItem('userFullName') || 'Inventory Staff';
       const tbody = document.getElementById('rrItemsTbody');
@@ -10497,29 +10481,13 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           <tr class="rr-item-row">
             <td style="text-align: center; font-weight: 700; color: var(--text-muted);" class="row-num">1</td>
             <td>
-              <input type="text" class="rr-item-desc" placeholder="e.g. A4 Copy Paper 80gsm (Hard Copy)" required>
+              <input type="text" class="rr-item-desc" placeholder="Select a PO to load item descriptions" readonly required>
             </td>
             <td>
               <input type="number" class="rr-item-qty" min="0.01" step="any" value="1" oninput="calcRrTotals()" required>
             </td>
             <td>
-              <select class="rr-item-uom" required>
-                <option value="Reams">Reams</option>
-                <option value="Boxes">Boxes</option>
-                <option value="Pcs">Pcs</option>
-                <option value="Rolls">Rolls</option>
-                <option value="Packs">Packs</option>
-                <option value="Sets">Sets</option>
-                <option value="Units">Units</option>
-                <option value="Cartons">Cartons</option>
-                <option value="Bundles">Bundles</option>
-                <option value="Meters">Meters</option>
-                <option value="Kg">Kg</option>
-                <option value="Liters">Liters</option>
-                <option value="Gallons">Gallons</option>
-                <option value="Tubes">Tubes</option>
-                <option value="Bags">Bags</option>
-              </select>
+              <input type="text" class="rr-item-uom" placeholder="Enter UOM" required>
             </td>
             <td>
               <input type="number" class="rr-item-cost" min="0" step="0.01" placeholder="0.00" oninput="calcRrTotals()" required>
@@ -10535,6 +10503,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
       calcRrTotals();
       updateRrNextNumberBadge();
+      populateReceivingPoOptions();
     };
 
     function updateRrNextNumberBadge() {
@@ -10543,46 +10512,39 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const refNo = `RR-${year}-${String(count).padStart(4, '0')}`;
       const badge = document.getElementById('rrGeneratedRefBadge');
       if (badge) badge.textContent = refNo;
+      const rrNoInput = document.getElementById('rrNo');
+      if (rrNoInput && !rrNoInput.value) rrNoInput.value = refNo;
       return refNo;
     }
 
     window.submitReceivingReport = async function (event) {
       if (event) event.preventDefault();
 
-      const dateVal = document.getElementById('rrDate')?.value || '';
-      const deptVal = document.getElementById('rrDepartment')?.value || '';
+      const rrNoVal = (document.getElementById('rrNo')?.value || '').trim();
       const prfVal = (document.getElementById('rrPrfNo')?.value || '').trim();
       const poVal = (document.getElementById('rrPoNo')?.value || '').trim();
       const supplierVal = (document.getElementById('rrSupplier')?.value || '').trim();
+      const dateVal = document.getElementById('rrDate')?.value || '';
+      const deptVal = document.getElementById('rrDepartment')?.value || '';
       const expenseAccVal = document.getElementById('rrExpenseAccount')?.value || '';
       const subAccVal = (document.getElementById('rrSubAccount')?.value || '').trim();
       const budgetFromVal = (document.getElementById('rrBudgetFrom')?.value || '').trim();
       const remarksVal = (document.getElementById('rrRemarks')?.value || '').trim();
       const receiverVal = sessionStorage.getItem('userFullName') || 'Inventory Staff';
 
-      if (!dateVal) {
-        alert('Please specify the Delivery Date.');
-        document.getElementById('rrDate')?.focus();
-        return;
-      }
-      if (!deptVal) {
-        alert('Please select a Department.');
-        document.getElementById('rrDepartment')?.focus();
-        return;
-      }
-      if (!prfVal) {
-        alert('Please enter the PRF No.');
-        document.getElementById('rrPrfNo')?.focus();
+      if (!rrNoVal) {
+        alert('Please enter the RR No.');
+        document.getElementById('rrNo')?.focus();
         return;
       }
       if (!poVal) {
-        alert('Please enter the PO No.');
+        alert('Please select a PO No. Existing PO records are required.');
         document.getElementById('rrPoNo')?.focus();
         return;
       }
-      if (!supplierVal) {
-        alert('Please enter or select the Supplier Name.');
-        document.getElementById('rrSupplier')?.focus();
+      const selectedPo = allPurchaseOrders.find(record => (record.po_no || record.id) === poVal);
+      if (!selectedPo) {
+        alert('The selected PO could not be found. Please select an existing PO.');
         return;
       }
 
@@ -10639,11 +10601,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         icon: "fa-truck-ramp-box",
         iconColor: "#16a34a",
         iconBg: "#dcfce7",
-        onConfirm: () => executeSubmitRr(dateVal, deptVal, prfVal, poVal, supplierVal, expenseAccVal, subAccVal, budgetFromVal, remarksVal, receiverVal, items, grandTotal)
+        onConfirm: () => executeSubmitRr(rrNoVal, dateVal, deptVal, prfVal, poVal, supplierVal, expenseAccVal, subAccVal, budgetFromVal, remarksVal, receiverVal, items, grandTotal)
       });
     };
 
-    async function executeSubmitRr(dateVal, deptVal, prfVal, poVal, supplierVal, expenseAccVal, subAccVal, budgetFromVal, remarksVal, receiverVal, items, grandTotal) {
+    async function executeSubmitRr(rrNoVal, dateVal, deptVal, prfVal, poVal, supplierVal, expenseAccVal, subAccVal, budgetFromVal, remarksVal, receiverVal, items, grandTotal) {
       const submitBtn = document.getElementById('btnSubmitRr');
       const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
@@ -10652,9 +10614,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
 
       try {
-        const year = new Date(dateVal).getFullYear() || 2026;
-        const seqNum = (receivingReportsData || []).length + 1;
-        const rrNo = `RR-${year}-${String(seqNum).padStart(4, '0')}`;
+        const rrNo = rrNoVal;
         const newId = `rr_WEB_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 
         const newRecord = {
@@ -10966,6 +10926,63 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     let poCurrentPage = 1;
     const poPageSize = 10;
 
+    function getPoProject(po) {
+      return po.project || (po.department && ['180MLD', 'QCESNP2', 'CATMON', 'BSP ILO ILO', 'NKTI'].includes(po.department) ? po.department : 'N/A');
+    }
+
+    window.populateReceivingPoOptions = function () {
+      const select = document.getElementById('rrPoNo');
+      if (!select) return;
+      const currentValue = select.value;
+      select.innerHTML = '<option value="">Select a Purchase Order</option>';
+      allPurchaseOrders.forEach(po => {
+        const option = document.createElement('option');
+        option.value = po.po_no || po.id;
+        option.textContent = `${po.po_no || po.id} — ${po.supplier_name || 'Supplier not specified'}`;
+        option.dataset.poId = po.id || '';
+        select.appendChild(option);
+      });
+      if (currentValue && allPurchaseOrders.some(po => (po.po_no || po.id) === currentValue)) {
+        select.value = currentValue;
+      }
+    };
+
+    window.populateReceivingReportFromPo = function () {
+      const poNo = document.getElementById('rrPoNo')?.value || '';
+      const po = allPurchaseOrders.find(record => (record.po_no || record.id) === poNo);
+      if (!po) return;
+
+      const setValue = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) element.value = value || '';
+      };
+      setValue('rrDate', po.date);
+      setValue('rrPrfNo', po.prf_no);
+      setValue('rrProject', getPoProject(po));
+      setValue('rrDepartment', po.department);
+      setValue('rrSupplier', po.supplier_name);
+      setValue('rrBudgetFrom', getPoProject(po));
+
+      const poItems = Array.isArray(po.items) ? po.items : [];
+      const tbody = document.getElementById('rrItemsTbody');
+      if (!tbody) return;
+      tbody.innerHTML = poItems.map((item, index) => `
+        <tr class="rr-item-row">
+          <td style="text-align: center; font-weight: 700; color: var(--text-muted);" class="row-num">${index + 1}</td>
+          <td><input type="text" class="rr-item-desc" value="${escapeRrHtml(item.desc || item.description || '')}" readonly required></td>
+          <td><input type="number" class="rr-item-qty" min="0.01" step="any" placeholder="Enter received qty" oninput="calcRrTotals()" required></td>
+          <td><input type="text" class="rr-item-uom" value="${escapeRrHtml(item.uom || '')}" placeholder="Enter UOM" required></td>
+          <td><input type="number" class="rr-item-cost" min="0" step="0.01" placeholder="Enter unit cost" oninput="calcRrTotals()" required></td>
+          <td><input type="text" class="rr-item-total" readonly placeholder="₱ 0.00" style="background:#f8fafc; font-weight:700; color:#16a34a;"></td>
+          <td></td>
+        </tr>
+      `).join('');
+      if (poItems.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="padding:18px; text-align:center; color:#64748b;">The selected PO has no item lines.</td></tr>';
+      }
+      calcRrTotals();
+    };
+
     window.loadPurchaseOrders = async function () {
       const dateEl = document.getElementById('poDate');
       if (dateEl && !dateEl.value) {
@@ -11036,6 +11053,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         subtitle.textContent = `Complete fiscal records of all ${allPurchaseOrders.length.toLocaleString()} registered purchase orders.`;
       }
 
+      populateReceivingPoOptions();
       filterPurchaseOrders();
     };
 
@@ -11195,12 +11213,14 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
     window.submitPurchaseOrder = async function () {
       const dateVal = document.getElementById('poDate')?.value;
+      const projectVal = document.getElementById('poProject')?.value;
       const deptVal = document.getElementById('poDepartment')?.value;
       const poNoVal = (document.getElementById('poNumber')?.value || '').trim();
       const prfNoVal = (document.getElementById('poPrfNumber')?.value || '').trim();
+      const supplierVal = (document.getElementById('poSupplier')?.value || '').trim();
 
-      if (!dateVal || !deptVal || !poNoVal || !prfNoVal) {
-        alert('Please fill in Date, Project/Department, PO NO, and PRF NO.');
+      if (!dateVal || !projectVal || !deptVal || !poNoVal || !prfNoVal || !supplierVal) {
+        alert('Please fill in Date, Project, Department, PO NO, PRF NO, and Supplier Name.');
         return;
       }
 
@@ -11240,18 +11260,20 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         icon: "fa-file-circle-check",
         iconColor: "#16a34a",
         iconBg: "#dcfce7",
-        onConfirm: () => executeSubmitPo(dateVal, deptVal, poNoVal, prfNoVal, items, grandTotal)
+        onConfirm: () => executeSubmitPo(dateVal, projectVal, deptVal, poNoVal, prfNoVal, supplierVal, items, grandTotal)
       });
     };
 
-    function executeSubmitPo(dateVal, deptVal, poNoVal, prfNoVal, items, grandTotal) {
+    function executeSubmitPo(dateVal, projectVal, deptVal, poNoVal, prfNoVal, supplierVal, items, grandTotal) {
       const recId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'po_' + Date.now();
       const newPo = {
         id: recId,
         date: dateVal,
+        project: projectVal,
         po_no: poNoVal,
         prf_no: prfNoVal,
         department: deptVal,
+        supplier_name: supplierVal,
         items: items,
         total_amount: grandTotal,
         status: 'Issued',
@@ -11289,6 +11311,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
       viewPoSlip(newPo.id);
       resetPoForm();
+      populateReceivingPoOptions();
       filterPurchaseOrders();
     };
 
@@ -11302,7 +11325,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         if (dateFilter && po.date !== dateFilter) return false;
         if (searchTerm) {
           const itemsStr = (po.items || []).map(it => `${it.desc} ${it.uom}`).join(' ');
-          const str = `${po.po_no || ''} ${po.prf_no || ''} ${po.department || ''} ${itemsStr}`.toLowerCase();
+          const str = `${po.po_no || ''} ${po.prf_no || ''} ${po.project || ''} ${po.department || ''} ${po.supplier_name || ''} ${itemsStr}`.toLowerCase();
           if (!str.includes(searchTerm)) return false;
         }
         return true;
@@ -11516,10 +11539,10 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return;
       }
 
-      let csv = 'Date,PO Number,PRF Number,Project / Department,Description,QTY,Unit of Measure,Unit Cost,Total Amount,Status\n';
+      let csv = 'Date,PO Number,PRF Number,Project,Department,Supplier Name,Description,QTY,Unit of Measure,Unit Cost,Total Amount,Status\n';
       allPurchaseOrders.forEach(po => {
         (po.items || []).forEach(it => {
-          csv += `"${po.date || ''}","${po.po_no || ''}","${po.prf_no || ''}","${po.department || ''}","${(it.desc || '').replace(/"/g, '""')}","${it.qty || 0}","${it.uom || ''}","${it.unit_cost || 0}","${it.total || 0}","${po.status || 'Issued'}"\n`;
+          csv += `"${po.date || ''}","${po.po_no || ''}","${po.prf_no || ''}","${po.project || ''}","${po.department || ''}","${(po.supplier_name || '').replace(/"/g, '""')}","${(it.desc || '').replace(/"/g, '""')}","${it.qty || 0}","${it.uom || ''}","${it.unit_cost || 0}","${it.total || 0}","${po.status || 'Issued'}"\n`;
         });
       });
 
@@ -15243,9 +15266,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
     function initDashboard() {
       const rrDateInput = document.getElementById('rrDate');
-      if (rrDateInput && !rrDateInput.value) {
-        rrDateInput.value = new Date().toISOString().slice(0, 10);
-      }
+      if (rrDateInput) rrDateInput.value = '';
+      updateRrNextNumberBadge();
+      populateReceivingPoOptions();
       const rrRecLbl = document.getElementById('rrReceiverLabel');
       if (rrRecLbl) {
         rrRecLbl.textContent = sessionStorage.getItem('userFullName') || 'Inventory Staff';
