@@ -4563,9 +4563,9 @@
             </div>
           </div>
 
-          <form id="purchaseOrderForm" onsubmit="event.preventDefault(); submitPurchaseOrder();">
-            <!-- Top Controls Grid: Date, Project/Dept, PO No, PRF No -->
-            <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:16px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:18px; margin-bottom:20px;">
+          <form id="purchaseOrderForm" novalidate onsubmit="event.preventDefault(); submitPurchaseOrder();">
+            <!-- Top Controls Grid: Date, Project/Dept, PO No, PRF No, Supplier -->
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:18px; margin-bottom:20px;">
               <div>
                 <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
                   <i class="fa-solid fa-calendar-day" style="color:var(--accent); margin-right:4px;"></i> Date <span style="color:#ef4444;">*</span>
@@ -4715,7 +4715,7 @@
                   <button type="button" class="btn-primary" onclick="resetPoForm()" style="background:#64748b; padding:10px 18px; font-size:0.85rem; border-radius:6px;">
                     <i class="fa-solid fa-rotate-left"></i> Reset
                   </button>
-                  <button type="submit" class="btn-primary" id="btnSubmitPo" style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a; border-radius:6px;">
+                  <button type="button" class="btn-primary" id="btnSubmitPo" onclick="submitPurchaseOrder()" style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a; border-radius:6px; cursor:pointer;">
                     <i class="fa-solid fa-file-circle-check"></i> Record
                   </button>
                 </div>
@@ -6116,6 +6116,12 @@
     // ========================================================
     let pendingAdminConfirmCallback = null;
 
+    window.confirmAdminProceed = function () {
+      const cb = pendingAdminConfirmCallback;
+      window.closeAdminConfirmModal();
+      if (typeof cb === 'function') cb();
+    };
+
     window.showAdminConfirmModal = function (options) {
       const {
         title = "Confirm Submission",
@@ -6159,11 +6165,15 @@
 
       pendingAdminConfirmCallback = onConfirm;
       modal.style.display = 'grid';
+      modal.classList.add('show');
     };
 
     window.closeAdminConfirmModal = function () {
       const modal = document.getElementById('adminConfirmModal');
-      if (modal) modal.style.display = 'none';
+      if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+      }
       pendingAdminConfirmCallback = null;
     };
 
@@ -11182,16 +11192,51 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       calcPoTotals();
     };
 
-    window.submitPurchaseOrder = async function () {
-      const dateVal = document.getElementById('poDate')?.value;
-      const projectVal = document.getElementById('poProject')?.value;
-      const deptVal = document.getElementById('poDepartment')?.value;
-      const poNoVal = (document.getElementById('poNumber')?.value || '').trim();
-      const prfNoVal = (document.getElementById('poPrfNumber')?.value || '').trim();
-      const supplierVal = (document.getElementById('poSupplier')?.value || '').trim();
+    window.submitPurchaseOrder = async function (e) {
+      if (e && e.preventDefault) e.preventDefault();
 
-      if (!dateVal || !projectVal || !deptVal || !poNoVal || !prfNoVal || !supplierVal) {
-        alert('Please fill in Date, Project, Department, PO NO, PRF NO, and Supplier Name.');
+      const dateEl = document.getElementById('poDate');
+      const projectEl = document.getElementById('poProject');
+      const deptEl = document.getElementById('poDepartment');
+      const poNumEl = document.getElementById('poNumber');
+      const prfEl = document.getElementById('poPrfNumber');
+      const suppEl = document.getElementById('poSupplier');
+
+      const dateVal = dateEl?.value?.trim() || '';
+      const projectVal = projectEl?.value?.trim() || '';
+      const deptVal = deptEl?.value?.trim() || '';
+      const poNoVal = poNumEl?.value?.trim() || '';
+      const prfNoVal = prfEl?.value?.trim() || '';
+      const supplierVal = suppEl?.value?.trim() || '';
+
+      if (!dateVal) {
+        alert('Please enter or select the PO Date.');
+        if (dateEl) { dateEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); dateEl.focus(); }
+        return;
+      }
+      if (!projectVal) {
+        alert('Please select a Project.');
+        if (projectEl) { projectEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); projectEl.focus(); }
+        return;
+      }
+      if (!deptVal) {
+        alert('Please select a Department.');
+        if (deptEl) { deptEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); deptEl.focus(); }
+        return;
+      }
+      if (!poNoVal) {
+        alert('Please enter the PO Number.');
+        if (poNumEl) { poNumEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); poNumEl.focus(); }
+        return;
+      }
+      if (!prfNoVal) {
+        alert('Please enter the PRF Number (e.g. PRF-2026-0045).');
+        if (prfEl) { prfEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); prfEl.focus(); }
+        return;
+      }
+      if (!supplierVal) {
+        alert('Please enter the Supplier Name.');
+        if (suppEl) { suppEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); suppEl.focus(); }
         return;
       }
 
@@ -11219,20 +11264,30 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       });
 
       if (items.length === 0) {
-        alert('Please provide at least one valid item line with description and quantity.');
+        alert('Please provide at least one valid item line with description, quantity, and unit cost.');
+        const firstInput = document.querySelector('#poItemsTbody .po-item-desc');
+        if (firstInput) { firstInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); firstInput.focus(); }
         return;
       }
 
-      window.showAdminConfirmModal({
-        title: "Confirm Purchase Order",
-        message: `Are you sure you want to record Purchase Order ${poNoVal} for ${deptVal} totaling ₱ ${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}?`,
-        confirmText: "Yes, Record",
-        confirmColor: "#16a34a",
-        icon: "fa-file-circle-check",
-        iconColor: "#16a34a",
-        iconBg: "#dcfce7",
-        onConfirm: () => executeSubmitPo(dateVal, projectVal, deptVal, poNoVal, prfNoVal, supplierVal, items, grandTotal)
-      });
+      const confirmMessage = `Are you sure you want to record Purchase Order ${poNoVal} for ${deptVal} totaling ₱ ${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}?`;
+
+      if (typeof window.showAdminConfirmModal === 'function') {
+        window.showAdminConfirmModal({
+          title: "Confirm Purchase Order",
+          message: confirmMessage,
+          confirmText: "Yes, Record",
+          confirmColor: "#16a34a",
+          icon: "fa-file-circle-check",
+          iconColor: "#16a34a",
+          iconBg: "#dcfce7",
+          onConfirm: () => executeSubmitPo(dateVal, projectVal, deptVal, poNoVal, prfNoVal, supplierVal, items, grandTotal)
+        });
+      } else {
+        if (confirm(confirmMessage)) {
+          executeSubmitPo(dateVal, projectVal, deptVal, poNoVal, prfNoVal, supplierVal, items, grandTotal);
+        }
+      }
     };
 
     function executeSubmitPo(dateVal, projectVal, deptVal, poNoVal, prfNoVal, supplierVal, items, grandTotal) {
@@ -17134,8 +17189,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       <h2 style="margin: 0 0 10px; font-size: 1.35rem; color: var(--primary, #1E355F); font-weight: 800;" id="adminConfirmTitle">Confirm Submission</h2>
       <p style="margin: 0 0 24px; font-size: 0.9rem; color: #64748b; line-height: 1.55;" id="adminConfirmMessage">Are you sure you want to proceed with this submission?</p>
       <div style="display: flex; gap: 12px; justify-content: center;">
-        <button type="button" id="adminConfirmCancelBtn" style="flex: 1; padding: 10px 16px; border: 1px solid var(--border, #cbd5e1); background: #fff; color: #475569; border-radius: 7px; font-weight: 700; cursor: pointer; transition: background 0.2s;">Cancel</button>
-        <button type="button" id="adminConfirmProceedBtn" style="flex: 1; padding: 10px 16px; border: none; background: #1E355F; color: #fff; border-radius: 7px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 3px 10px rgba(30, 53, 95, 0.25);">Yes, Submit</button>
+        <button type="button" id="adminConfirmCancelBtn" onclick="closeAdminConfirmModal()" style="flex: 1; padding: 10px 16px; border: 1px solid var(--border, #cbd5e1); background: #fff; color: #475569; border-radius: 7px; font-weight: 700; cursor: pointer; transition: background 0.2s;">Cancel</button>
+        <button type="button" id="adminConfirmProceedBtn" onclick="confirmAdminProceed()" style="flex: 1; padding: 10px 16px; border: none; background: #1E355F; color: #fff; border-radius: 7px; font-weight: 700; cursor: pointer; transition: opacity 0.2s; box-shadow: 0 3px 10px rgba(30, 53, 95, 0.25);">Yes, Submit</button>
       </div>
     </div>
   </div>
