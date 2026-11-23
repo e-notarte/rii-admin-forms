@@ -7021,6 +7021,7 @@
 
   <script type="module">
 
+
     // ========================================================
     // UNIVERSAL ADMIN CONFIRMATION MODAL ENGINE (LIKE USER SUPPLIES)
     // ========================================================
@@ -7647,7 +7648,6 @@
       try {
         localStorage.setItem('account_approval_overrides', JSON.stringify(overrides));
       } catch (e) { }
-      } catch (e) {}
     }
 
     let accountApprovalFilter = 'pending';
@@ -7798,7 +7798,6 @@
           const userRes = await supabase.auth.getUser();
           reviewerId = userRes?.data?.user?.id || null;
         } catch (e) { }
-        } catch (e) {}
 
         const updatePayload = {
           approval_status: approvalStatus,
@@ -7900,7 +7899,6 @@
     function getVehicleDispatchOverrides() {
       try {
         return JSON.parse(localStorage.getItem('vehicle_dispatch_overrides') || '{}');
-      } catch (e) {
       } catch(e) {
         return {};
       }
@@ -7916,7 +7914,6 @@
         };
         localStorage.setItem('vehicle_dispatch_overrides', JSON.stringify(overrides));
       } catch (e) { }
-      } catch(e) {}
     }
 
     // Switch between Live Dispatch and KPI Evaluation (routes to dedicated views)
@@ -8595,8 +8592,7 @@
     function getDepartmentBudgets() {
       const cached = localStorage.getItem('cached_department_budgets');
       if (cached && !cached.includes('51988')) {
-        try { return JSON.parse(cached); } catch (e) { }
-        try { return JSON.parse(cached); } catch(e) {}
+        try { return JSON.parse(cached); } catch (e) {}
       }
       return null;
     }
@@ -8608,7 +8604,6 @@
     function getSupplyStatusOverrides() {
       try {
         return JSON.parse(localStorage.getItem('supplies_status_overrides') || '{}');
-      } catch (e) {
       } catch(e) {
         return {};
       }
@@ -8620,13 +8615,11 @@
         overrides[String(requestId)] = status;
         localStorage.setItem('supplies_status_overrides', JSON.stringify(overrides));
       } catch (e) { }
-      } catch(e) {}
     }
 
     function getSuppliesIssuances() {
       try {
         return JSON.parse(localStorage.getItem('supplies_issuances') || '{}');
-      } catch (e) {
       } catch(e) {
         return {};
       }
@@ -8653,10 +8646,6 @@
           if (supplyRequestFilter === 'Issued') return request.status === 'Issued';
           return request.status === supplyRequestFilter;
         });
-            if (supplyRequestFilter === 'Approved') return request.status === 'Approved';
-            if (supplyRequestFilter === 'Issued') return request.status === 'Issued';
-            return request.status === supplyRequestFilter;
-          });
 
       if (filtered.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 25px; color: #64748b;">No supply requests found in this view.</td></tr>';
@@ -8761,7 +8750,6 @@
       try {
         localSupplies = JSON.parse(localStorage.getItem('user_supplies_requests') || '[]');
       } catch (e) { }
-      } catch(e) {}
 
       const requestMap = new Map();
       localSupplies.forEach(r => {
@@ -9166,10 +9154,8 @@ Your request could not be approved at this time. Please coordinate with the Admi
         try {
           const { error: reqError } = await supabase
             .from('supplies_requests')
-            .update({
             .update({ 
               status: 'Issued',
-              issuance_details: issuanceRecord
               issuance_details: issuanceRecord 
             })
             .eq('id', request.id);
@@ -9181,7 +9167,6 @@ Your request could not be approved at this time. Please coordinate with the Admi
               .update({ status: 'Issued' })
               .eq('id', request.id);
           }
-        } catch (e) {
         } catch(e) {
           console.warn('Supabase issuance update notice:', e);
         }
@@ -9202,7 +9187,6 @@ Your request could not be approved at this time. Please coordinate with the Admi
             const resp = await fetch('./department_budgets.json');
             const data = await resp.json();
             budgets = data.departments || data;
-          } catch (e) {
           } catch(e) {
             budgets = {};
           }
@@ -9219,7 +9203,6 @@ Your request could not be approved at this time. Please coordinate with the Admi
         try {
           txns = JSON.parse(localStorage.getItem('budget_transactions') || '[]');
         } catch (e) { }
-        } catch(e) {}
         txns.unshift({
           id: `TXN-${Date.now()}`,
           reference: refNo,
@@ -9233,13 +9216,10 @@ Your request could not be approved at this time. Please coordinate with the Admi
 
         // 5. Send complete copy of issuance form (RIS) to the requestor
         if (request.user_id) {
-          const itemizedSlipText = issuedItemsList.map(it =>
           const itemizedSlipText = issuedItemsList.map(it => 
             `  • ${it.description}: ${it.issued_quantity} pc(s) @ ${formatPHP(it.unit_price)} = ${formatPHP(it.line_total)}`
           ).join('\n');
 
-          const officialCopyMessage =
-            `==============================================
           const officialCopyMessage = 
 `==============================================
 R-II BUILDERS, INC.
@@ -9269,7 +9249,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               request_type: 'Supplies',
               is_read: false
             }]);
-          } catch (e) {
           } catch(e) {
             console.warn('Notice: Error dispatching requestor issuance copy notification', e);
           }
@@ -9391,7 +9370,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     try {
       storedBudgetItems = JSON.parse(localStorage.getItem('admin_budget_items_custom') || 'null');
     } catch (e) { }
-    } catch (e) {}
 
     let allBudgetItems = (storedBudgetItems && Array.isArray(storedBudgetItems) && storedBudgetItems.length > 0)
       ? storedBudgetItems
@@ -9628,7 +9606,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
     let budgetLedgerViewMode = 'STANDARD'; // 'STANDARD' or 'MOVEMENT'
 
-    window.toggleBudgetMovementMode = function () {
     window.toggleBudgetMovementMode = function() {
       budgetLedgerViewMode = budgetLedgerViewMode === 'STANDARD' ? 'MOVEMENT' : 'STANDARD';
       filterBudgetAccounts();
@@ -10665,7 +10642,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
                 .eq('id', requestId);
             }
           }
-        } catch (e) {
         } catch(e) {
           console.warn('Supabase notice', e);
         }
@@ -10785,7 +10761,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             await supabase.from('vehicle_requests').update({ status: 'Rejected' }).eq('id', requestId);
           }
         } catch (e) { }
-        } catch(e) {}
 
         if (request.user_id) {
           try {
@@ -10797,7 +10772,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               is_read: false
             }]);
           } catch (e) { }
-          } catch (e) {}
         }
 
         renderVehicleDispatchTable();
@@ -10933,7 +10907,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             is_read: false
           }]);
         } catch (e) { }
-        } catch (e) {}
       }
 
       // 4. Automatically switch view filter to 'Approved' tab so the trip stays visible on the Confirmed schedule
@@ -10986,7 +10959,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           await supabase.from('vehicle_requests').update({ status: 'Cancelled' }).eq('id', requestId);
         }
       } catch (e) { }
-      } catch(e) {}
 
       if (request.user_id) {
         try {
@@ -10998,7 +10970,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             is_read: false
           }]);
         } catch (e) { }
-        } catch (e) {}
       }
 
       renderVehicleDispatchTable();
@@ -12738,14 +12709,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       try {
         localStorage.setItem('purchase_orders_data', JSON.stringify(allPurchaseOrders));
       } catch (e) { }
-      } catch (e) {}
 
       try {
         if (supabase) {
           supabase.from('purchase_orders').insert([newPo]).catch(err => console.warn('Supabase PO insert notice:', err));
         }
       } catch (e) { }
-      } catch (e) {}
 
       const navBadge = document.getElementById('poNavCount');
       if (navBadge) navBadge.textContent = allPurchaseOrders.length.toLocaleString();
@@ -12913,13 +12882,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             try {
               localStorage.setItem('purchase_orders_data', JSON.stringify(allPurchaseOrders));
             } catch (e) { }
-            } catch (e) {}
             try {
               if (supabase) {
                 supabase.from('purchase_orders').delete().or(`id.eq.${id},po_no.eq.${id}`).catch(err => console.warn(err));
               }
             } catch (e) { }
-            } catch (e) {}
 
             const navBadge = document.getElementById('poNavCount');
             if (navBadge) navBadge.textContent = allPurchaseOrders.length.toLocaleString();
@@ -13566,7 +13533,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       'Document for Signature': 'Office of the President'
     };
 
-    window.onTransmittalTypeChanged = function (selectEl) {
     window.onTransmittalTypeChanged = function(selectEl) {
       const type = selectEl.value;
       const hint = document.getElementById('trnApprovalTriggerHint');
@@ -13644,8 +13610,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const numEl = row.querySelector('.row-num');
         if (numEl) numEl.textContent = idx + 1;
       });
-      calcTransmit
-... [truncated for diff preview]
       calcTransmittalTotals();
     };
 
@@ -16977,6 +16941,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     } else {
       initDashboard();
     }
+  
   </script>
 
   <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span><span style="color:var(--accent, #f59e0b); font-weight:700;">developed by leo worksuite</span></span>
