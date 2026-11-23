@@ -3421,8 +3421,7 @@
                 csvRows.push(row.join(','));
             });
 
-            const blob = new Blob([csvRows.join('
-')], { type: 'text/csv;charset=utf-8;' });
+            const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
             link.setAttribute('download', `RII_Warehouse_On_Hand_Inventory_${new Date().toISOString().slice(0, 10)}.csv`);
