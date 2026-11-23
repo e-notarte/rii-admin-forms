@@ -3638,7 +3638,6 @@
 
     .bm-field-group input,
     .bm-field-group select {
-    .bm-field-group input, .bm-field-group select {
       padding: 8px 12px;
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -3781,7 +3780,6 @@
 
     body.dark-mode .bm-master-grid input,
     body.dark-mode .bm-master-grid select {
-    body.dark-mode .bm-master-grid input, body.dark-mode .bm-master-grid select {
       background: #1e293b;
       color: #f8fafc;
       border-color: var(--border);
@@ -4290,12 +4288,9 @@
         transform: translateY(0) scale(1);
         opacity: 1;
       }
-      from { transform: translateY(20px) scale(0.96); opacity: 0; }
-      to { transform: translateY(0) scale(1); opacity: 1; }
     }
   </style>
   <style>
-<style>
     /* UNIVERSAL ADMIN CONFIRM MODAL STYLES & DARK MODE */
     #adminConfirmModal.show {
       display: grid !important;
@@ -4321,7 +4316,6 @@
       border-color: #475569 !important;
     }
   </style>
-</style>
 </head>
 
 <body>
@@ -17857,7 +17851,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
   </div>
 
   <!-- 8.5.1. Purchase Order (PO) Printable Slip Modal -->
-  <div class="bm-slip-modal-backdrop" id="poSlipModal" onclick="if(event.target === this) closePoSlipModal()">
+  <div class="bm-slip-modal-backdrop" id="poSlipModal" style="display: none;" onclick="if(event.target === this) closePoSlipModal()">
     <div class="bm-slip-paper" style="max-width: 780px; padding: 32px 36px; background: white; border-radius: 8px;">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:14px; margin-bottom:18px;">
         <div style="display:flex; align-items:center; gap:14px;">
@@ -17929,7 +17923,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
   </div>
 
   <!-- 8.5.5. Warehouse - Material Issuance Slip (MIS) Printable Modal (SOA Aesthetic) -->
-  <div class="bm-slip-modal-backdrop" id="misSlipModal" onclick="if(event.target === this) closeMisSlipModal()">
+  <div class="bm-slip-modal-backdrop" id="misSlipModal" style="display: none;" onclick="if(event.target === this) closeMisSlipModal()">
     <div class="bm-slip-paper" id="misSlipContent">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:15px; margin-bottom:20px;">
         <div style="display:flex; align-items:center; gap:15px;">
@@ -18014,7 +18008,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
   </div>
 
   <!-- 8.6. Building Maintenance - Tenant Electricity Billing Statement Slip Modal -->
-  <div class="bm-slip-modal-backdrop" id="bmSlipModal" onclick="if(event.target === this) closeBmSlipModal()">
+  <div class="bm-slip-modal-backdrop" id="bmSlipModal" style="display: none;" onclick="if(event.target === this) closeBmSlipModal()">
     <div class="bm-slip-paper" id="bmSlipContent">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid var(--primary); padding-bottom:15px; margin-bottom:20px;">
         <div style="display:flex; align-items:center; gap:15px;">
@@ -18117,7 +18111,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
   </div>
 
   <!-- 8.6.1. Add New Lessee Modal -->
-  <div class="bm-slip-modal-backdrop" id="bmAddLesseeModal" onclick="if(event.target === this) closeBmAddLesseeModal()">
+  <div class="bm-slip-modal-backdrop" id="bmAddLesseeModal" style="display: none;" onclick="if(event.target === this) closeBmAddLesseeModal()">
     <div class="bm-slip-paper" style="max-width: 580px; padding: 28px 32px;">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:12px; margin-bottom:18px;">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -18201,7 +18195,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
   </div>
 
   <!-- 8.6.1.1. Lessee Profile & Submeters Detail Modal -->
-  <div class="bm-slip-modal-backdrop" id="lesseeDetailsModal" onclick="if(event.target === this) closeLesseeDetailsModal()">
+  <div class="bm-slip-modal-backdrop" id="lesseeDetailsModal" style="display: none;" onclick="if(event.target === this) closeLesseeDetailsModal()">
     <div class="bm-slip-paper" style="max-width: 720px; padding: 28px 32px;">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:12px; margin-bottom:18px;">
         <div style="display:flex; align-items:center; gap:12px;">
@@ -18256,7 +18250,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
   </div>
 
   <!-- 8.6.2. Add Monthly Reading Modal -->
-  <div class="bm-slip-modal-backdrop" id="bmMonthlyReadingModal" onclick="if(event.target === this) closeBmMonthlyReadingModal()">
+  <div class="bm-slip-modal-backdrop" id="bmMonthlyReadingModal" style="display: none;" onclick="if(event.target === this) closeBmMonthlyReadingModal()">
     <div class="bm-slip-paper" style="max-width: 620px; padding: 28px 32px;">
       <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--primary); padding-bottom:12px; margin-bottom:18px;">
         <div style="display:flex; align-items:center; gap:10px;">
