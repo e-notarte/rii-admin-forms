@@ -384,57 +384,63 @@
         .hidden-field {
             display: none;
         }
-    
-  
-    .sidebar {
-      display: flex !important;
-      flex-direction: column !important;
-    }
-    .sidebar-footer {
-      padding: 16px 18px;
-      border-top: 1px solid var(--border, #e2e8f0);
-      background: var(--bg-surface, #ffffff);
-      font-size: 0.74rem;
-      color: var(--text-muted, #64748b);
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      line-height: 1.35;
-      margin-top: auto;
-      flex-shrink: 0;
-    }
-    .sidebar-footer strong {
-      color: var(--text-main, #334155);
-      font-size: 0.78rem;
-      font-weight: 700;
-      display: block;
-    }
-    .sidebar-footer span {
-      color: var(--text-muted, #64748b);
-      font-size: 0.72rem;
-      display: block;
-    }
-    .sidebar-footer .sidebar-footer-dev {
-      font-size: 0.72rem;
-      color: var(--accent, #f59e0b);
-      font-weight: 700;
-      display: block;
-      letter-spacing: 0.2px;
-      margin-top: 2px;
-    }
-    body.dark-mode .sidebar-footer {
-      background: var(--bg-surface, #1e293b);
-      border-color: var(--border, #334155);
-      color: #94a3b8;
-    }
-    body.dark-mode .sidebar-footer strong {
-      color: #f8fafc;
-    }
-    body.dark-mode .sidebar-footer span {
-      color: #94a3b8;
-    }
 
-  </style>
+
+        .sidebar {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .sidebar-footer {
+            padding: 16px 18px;
+            border-top: 1px solid var(--border, #e2e8f0);
+            background: var(--bg-surface, #ffffff);
+            font-size: 0.74rem;
+            color: var(--text-muted, #64748b);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            line-height: 1.35;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer strong {
+            color: var(--text-main, #334155);
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .sidebar-footer span {
+            color: var(--text-muted, #64748b);
+            font-size: 0.72rem;
+            display: block;
+        }
+
+        .sidebar-footer .sidebar-footer-dev {
+            font-size: 0.72rem;
+            color: var(--accent, #f59e0b);
+            font-weight: 700;
+            display: block;
+            letter-spacing: 0.2px;
+            margin-top: 2px;
+        }
+
+        body.dark-mode .sidebar-footer {
+            background: var(--bg-surface, #1e293b);
+            border-color: var(--border, #334155);
+            color: #94a3b8;
+        }
+
+        body.dark-mode .sidebar-footer strong {
+            color: #f8fafc;
+        }
+
+        body.dark-mode .sidebar-footer span {
+            color: #94a3b8;
+        }
+    </style>
     <style>
         body.dark-mode {
             --bg: #0f172a;
@@ -506,8 +512,7 @@
         body.dark-mode .icon-btn {
             color: var(--text-main);
         }
-    
-  </style>
+    </style>
     <style>
         .ai-chat-window {
             position: absolute;
@@ -634,133 +639,141 @@
             background: transparent;
             color: var(--text-main);
         }
-    
-  </style>
-  <style id="pretty-active-design">
-    .nav-link.active,
-    .sub-link.active {
-      color: var(--accent) !important;
-      font-weight: 600 !important;
-      background: rgba(252, 174, 22, 0.05) !important;
-      border-left: 3px solid var(--accent) !important;
-    }
-    .nav-link.active i,
-    .sub-link.active i {
-      color: var(--accent) !important;
-    }
-    .sub-link.active {
-      padding-left: 30px !important;
-    }
-  </style>
-  <style id="ai-bot-fix">
-    .ai-chat-window {
-        display: none;
-        flex-direction: column;
-        width: 320px;
-        height: 400px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        margin-right: 15px;
-        margin-bottom: 20px;
-        border: 1px solid #e2e8f0;
-    }
-    
-    .ai-chat-window.open {
-        display: flex;
-        animation: chatSlideIn 0.3s ease forwards;
-    }
-    
-    @keyframes chatSlideIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .ai-chat-header {
-        background: #1E355F;
-        color: white;
-        padding: 12px 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
-    
-    .ai-chat-header img {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        object-fit: cover;
-        background: white;
-        padding: 2px;
-    }
-    
-    .ai-chat-body {
-        flex: 1;
-        padding: 15px;
-        background: #f8fafc;
-        overflow-y: auto;
-        font-size: 0.85rem;
-        color: #2d3748;
-    }
-    
-    .ai-chat-body p {
-        background: white;
-        padding: 10px 15px;
-        border-radius: 15px;
-        border-bottom-left-radius: 4px;
-        display: inline-block;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        margin: 0;
-        max-width: 85%;
-        line-height: 1.4;
-    }
-    
-    .ai-chat-body strong {
-        color: #1E355F;
-        display: block;
-        margin-bottom: 3px;
-    }
-    
-    .ai-chat-footer {
-        padding: 12px 15px;
-        background: white;
-        border-top: 1px solid #e2e8f0;
-        display: flex;
-        gap: 8px;
-    }
-    
-    .ai-chat-footer input {
-        flex: 1;
-        padding: 8px 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 20px;
-        outline: none;
-        font-size: 0.85rem;
-    }
-    
-    .ai-chat-footer input:focus {
-        border-color: #FCAE16;
-    }
-    
-    .ai-chat-footer button {
-        background: #FCAE16;
-        color: #1E355F;
-        border: none;
-        border-radius: 20px;
-        padding: 0 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s;
-        font-size: 0.85rem;
-    }
-    
-    .ai-chat-footer button:hover {
-        background: #e59c11;
-    }
-  </style>
+    </style>
+    <style id="pretty-active-design">
+        .nav-link.active,
+        .sub-link.active {
+            color: var(--accent) !important;
+            font-weight: 600 !important;
+            background: rgba(252, 174, 22, 0.05) !important;
+            border-left: 3px solid var(--accent) !important;
+        }
+
+        .nav-link.active i,
+        .sub-link.active i {
+            color: var(--accent) !important;
+        }
+
+        .sub-link.active {
+            padding-left: 30px !important;
+        }
+    </style>
+    <style id="ai-bot-fix">
+        .ai-chat-window {
+            display: none;
+            flex-direction: column;
+            width: 320px;
+            height: 400px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            margin-right: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .ai-chat-window.open {
+            display: flex;
+            animation: chatSlideIn 0.3s ease forwards;
+        }
+
+        @keyframes chatSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-chat-header {
+            background: #1E355F;
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .ai-chat-header img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: white;
+            padding: 2px;
+        }
+
+        .ai-chat-body {
+            flex: 1;
+            padding: 15px;
+            background: #f8fafc;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: #2d3748;
+        }
+
+        .ai-chat-body p {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 15px;
+            border-bottom-left-radius: 4px;
+            display: inline-block;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin: 0;
+            max-width: 85%;
+            line-height: 1.4;
+        }
+
+        .ai-chat-body strong {
+            color: #1E355F;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .ai-chat-footer {
+            padding: 12px 15px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-chat-footer input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            outline: none;
+            font-size: 0.85rem;
+        }
+
+        .ai-chat-footer input:focus {
+            border-color: #FCAE16;
+        }
+
+        .ai-chat-footer button {
+            background: #FCAE16;
+            color: #1E355F;
+            border: none;
+            border-radius: 20px;
+            padding: 0 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .ai-chat-footer button:hover {
+            background: #e59c11;
+        }
+    </style>
 </head>
 
 <body>
@@ -770,8 +783,7 @@
 
     <div class="login-container">
         <div class="brand-header">
-            <img src="RII_Logo.png"
-                alt="R-II Builders Logo">
+            <img src="RII_Logo.png" alt="R-II Builders Logo">
             <h1>Welcome Back</h1>
             <p>Admin Request Management System</p>
         </div>
@@ -834,12 +846,14 @@
 
     <aside class="cookie-banner" id="cookieBanner" role="region" aria-label="Cookie settings">
         <h2>Cookie settings</h2>
-        <p>We use essential storage to keep you signed in. Optional storage remembers your email and display preferences.</p>
+        <p>We use essential storage to keep you signed in. Optional storage remembers your email and display
+            preferences.</p>
         <div class="cookie-actions">
             <button type="button" class="cookie-primary" id="acceptOptionalCookies">Accept optional</button>
             <button type="button" class="cookie-secondary" id="rejectOptionalCookies">Reject optional</button>
             <button type="button" class="cookie-settings-link" id="openCookieSettings">Settings</button>
         </div>
+        c
     </aside>
 
     <div class="cookie-dialog-backdrop" id="cookieDialogBackdrop" role="dialog" aria-modal="true"
@@ -1032,7 +1046,7 @@
                             effectiveStatus = over.approval_status;
                             effectiveDept = over.department || '';
                         }
-                    } catch (e) {}
+                    } catch (e) { }
 
                     if (effectiveStatus !== 'approved') {
                         await supabase.auth.signOut();
@@ -1046,7 +1060,7 @@
                     if (profile.approval_status !== 'approved') {
                         try {
                             await supabase.from('profiles').update({ approval_status: 'approved' }).eq('id', data.user.id);
-                        } catch (e) {}
+                        } catch (e) { }
                     }
 
                     if (effectiveDept) {
@@ -1134,58 +1148,64 @@
             }
         });
     </script>
-  <!-- AI Bot Logic and Styles -->
-  <style id="ai-bot-logic-style">
-    .ai-chat-body {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-    .ai-msg-bot {
-        align-self: flex-start;
-        background: white;
-        padding: 10px 15px;
-        border-radius: 15px;
-        border-bottom-left-radius: 4px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        max-width: 85%;
-        font-size: 0.85rem;
-        color: #2d3748;
-        line-height: 1.4;
-    }
-    .ai-msg-bot strong {
-        color: #1E355F;
-        display: block;
-        margin-bottom: 3px;
-    }
-    .ai-msg-user {
-        align-self: flex-end;
-        background: #1E355F;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 15px;
-        border-bottom-right-radius: 4px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        max-width: 85%;
-        font-size: 0.85rem;
-        line-height: 1.4;
-    }
-    .typing-indicator {
-        align-self: flex-start;
-        font-size: 0.8rem;
-        color: #94a3b8;
-        font-style: italic;
-        padding: 5px 15px;
-    }
-    body.dark-mode .ai-msg-bot {
-        background: #334155;
-        color: #f8fafc;
-    }
-    body.dark-mode .ai-msg-bot strong {
-        color: #FCAE16;
-    }
-  </style>
-  <script type="module" src="ai-bot.js" id="ai-bot-logic-script"></script>
+    <!-- AI Bot Logic and Styles -->
+    <style id="ai-bot-logic-style">
+        .ai-chat-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ai-msg-bot {
+            align-self: flex-start;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 15px;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            max-width: 85%;
+            font-size: 0.85rem;
+            color: #2d3748;
+            line-height: 1.4;
+        }
+
+        .ai-msg-bot strong {
+            color: #1E355F;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .ai-msg-user {
+            align-self: flex-end;
+            background: #1E355F;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 15px;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 85%;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-style: italic;
+            padding: 5px 15px;
+        }
+
+        body.dark-mode .ai-msg-bot {
+            background: #334155;
+            color: #f8fafc;
+        }
+
+        body.dark-mode .ai-msg-bot strong {
+            color: #FCAE16;
+        }
+    </style>
+    <script type="module" src="ai-bot.js" id="ai-bot-logic-script"></script>
 </body>
 
 </html>
