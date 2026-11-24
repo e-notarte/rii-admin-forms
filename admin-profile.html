@@ -808,16 +808,20 @@
             </a>
           </nav>
 
-          <div className="nav-label">FINANCE</div>
+          <div className="nav-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>FINANCE</span>
+            <span style={{ fontSize: '0.6rem', padding: '1px 6px', borderRadius: '4px', background: '#fee2e2', color: '#b91c1c', fontWeight: '700', letterSpacing: '0.5px' }}>UNAVAILABLE</span>
+          </div>
           <nav>
-            <a href="admin-dashboard.html?view=view-statement" className="nav-link">
+            <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Finance Panel (Statement of Accounts & Budget Monitoring) is currently unavailable and disabled for maintenance.'); }} title="Statement of Accounts is currently unavailable">
               <i className="fa-solid fa-file-invoice-dollar"></i>
               <span>Statement of Accounts</span>
+              <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
             </a>
-            <a href="admin-dashboard.html?view=view-budget" className="nav-link">
+            <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Finance Panel (Statement of Accounts & Budget Monitoring) is currently unavailable and disabled for maintenance.'); }} title="Budget Monitoring is currently unavailable">
               <i className="fa-solid fa-chart-line"></i>
               <span>Budget Monitoring</span>
-              <span className="nav-count" style={{ background: '#0284c7', color: 'white' }}>2026</span>
+              <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
             </a>
           </nav>
 
