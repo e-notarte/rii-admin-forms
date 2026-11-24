@@ -1999,8 +1999,7 @@
                 <option>RBI</option>
                 <option>PESC</option>
                 <option>RLAND</option>
-              </select></label></div>
-          <label>Department<select name="department" required>
+              </select></label></div><label>Department<select name="department" required>
               <option value="">Select Department</option>
               <option>Admin</option>
               <option>HR</option>
@@ -2088,26 +2087,24 @@
 
       try {
         const { data, error } = await supabase
-          .from('teams_requests')
-          .insert([
-            {
+        .from('teams_requests')
+        .insert([
+          {
+            requestor_name: f.get('requestor'),
+            company: f.get('company'),
+            department: f.get('department'),
+            title: f.get('title'),
+            participants: parseInt(f.get('participants')),
+            request_date: f.get('date'),
+            start_time: f.get('startTime') + ':00',
+            end_time: f.get('endTime') + ':00',
+            access_details: f.get('accessDetails'),
+            notes: f.get('notes')
+          }
+        ])
+        .select();
 
-              requestor_name: f.get('requestor'),
-              company: f.get('company'),
-              department: f.get('department'),
-              title: f.get('title'),
-              participants: parseInt(f.get('participants')),
-              request_date: f.get('date'),
-              start_time: f.get('startTime') + ':00',
-              end_time: f.get('endTime') + ':00',
-              access_details: f.get('accessDetails'),
-              notes: f.get('notes')
-
-            }
-          ])
-          .select();
-
-        if (error) throw error;
+      if (error) throw error;
 
         // Insert notification
         try {
