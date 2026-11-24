@@ -7553,6 +7553,26 @@
     import { budgetReconciliationData } from './budget_reconciliation_data.js';
     import { transmittalMasterData } from './transmittal_data.js';
 
+    async function sendApprovalEmail({ to, userId, subject, title, message }) {
+      if (!to && !userId) return { skipped: true };
+
+      try {
+        const { data, error } = await supabase.functions.invoke('send-request-email', {
+          body: { to, userId, subject, title, message }
+        });
+
+        if (error) {
+          console.warn('Email dispatch failed:', error);
+          return { skipped: false, error };
+        }
+
+        return data || { success: true };
+      } catch (error) {
+        console.warn('Email dispatch failed:', error);
+        return { skipped: false, error };
+      }
+    }
+
     window.adminSupabase = supabase;
     window.transmittalMasterData = transmittalMasterData;
     window.companyVehiclesData = companyVehiclesData;
@@ -8281,6 +8301,21 @@
         await supabase.from('profiles').update(updatePayload).eq('id', profileId);
       } catch (err) {
         console.warn('Supabase profiles update notice:', err);
+      }
+
+      if (email) {
+        await sendApprovalEmail({
+          to: email,
+          subject: approvalStatus === 'approved'
+            ? 'R-II Builders Account Approved'
+            : 'R-II Builders Account Registration Update',
+          title: approvalStatus === 'approved'
+            ? 'Account Approved'
+            : 'Account Registration Rejected',
+          message: approvalStatus === 'approved'
+            ? `Hello ${name},\n\nYour R-II Builders account has been approved and assigned to the ${selectedDept} department. You may now sign in and use the system.\n\nThank you.`
+            : `Hello ${name},\n\nYour R-II Builders account registration was rejected. Please contact the Administrative Department for assistance.`
+        });
       }
 
       // 3. Show notification
@@ -9386,6 +9421,15 @@ Your request could not be approved at this time. Please coordinate with the Admi
         } else {
           notifTitle = `Supplies Request Status: ${nextStatus} (${refNo})`;
           notifMessage = `Reference No.: ${refNo}\nDepartment: ${deptName}\nYour request status has been updated to: ${nextStatus}.`;
+        }
+
+        if (nextStatus === 'Approved' || nextStatus === 'Rejected') {
+          await sendApprovalEmail({
+            userId: request.user_id,
+            subject: notifTitle,
+            title: notifTitle,
+            message: notifMessage
+          });
         }
 
         try {
@@ -11776,13 +11820,29 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           <td>
             <div class="dispatch-actions">
               <button type="button" class="dispatch-action approve"
-                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Approved')">Approve</button>
+                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Approved')"
+                title="Approve request" aria-label="Approve request"
+                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i class="fa-solid fa-check"></i>
+              </button>
               <button type="button" class="dispatch-action reject"
-                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Rejected')">Reject</button>
+                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Rejected')"
+                title="Reject request" aria-label="Reject request"
+                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
               <button type="button" class="dispatch-action cancel"
-                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Cancelled')">Cancel</button>
+                onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Cancelled')"
+                title="Cancel request" aria-label="Cancel request"
+                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i class="fa-solid fa-ban"></i>
+              </button>
               <button type="button" class="dispatch-action delete"
-                onclick="deleteFacilityRequest('${req.id}', '${req.source_table}')" title="Permanently delete request">Delete</button>
+                onclick="deleteFacilityRequest('${req.id}', '${req.source_table}')"
+                title="Delete request permanently" aria-label="Delete request permanently"
+                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
             </div>
           </td>
         </tr>`;
