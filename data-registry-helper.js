@@ -77,14 +77,17 @@
   }
 
   function syncFormDropdowns() {
-    // Find all company selects in user forms or admin forms
-    const companySelects = document.querySelectorAll('select[name="company"], select#fbCompany, select#company');
-    const departmentSelects = document.querySelectorAll('select[name="department"], select#fbDepartment, select#department');
+    const pairs = [
+      { comp: document.getElementById('fbCompany'), dept: document.getElementById('fbDepartment') },
+      { comp: document.getElementById('pcCompany'), dept: document.getElementById('pcDepartment') },
+      { comp: document.getElementById('company'), dept: document.getElementById('department') },
+      { comp: document.querySelector('select[name="company"]'), dept: document.querySelector('select[name="department"]') }
+    ];
 
     const companies = getCompanies();
 
-    companySelects.forEach((compSelect, idx) => {
-      const deptSelect = departmentSelects[idx] || departmentSelects[0];
+    pairs.forEach(({ comp: compSelect, dept: deptSelect }) => {
+      if (!compSelect) return;
       const currentCompVal = compSelect.value;
 
       // Build company options
@@ -124,6 +127,19 @@
         compSelect.dataset.registryBound = 'true';
       }
     });
+
+    // Also sync pcDeptFilter if present
+    const pcDeptFilter = document.getElementById('pcDeptFilter');
+    if (pcDeptFilter) {
+      const curFilter = pcDeptFilter.value || 'ALL';
+      const allDepts = getDepartments();
+      let fHtml = '<option value="ALL">All Departments</option>';
+      allDepts.forEach(d => {
+        fHtml += `<option value="${escapeHtml(d.name)}">${escapeHtml(d.name)}</option>`;
+      });
+      pcDeptFilter.innerHTML = fHtml;
+      pcDeptFilter.value = curFilter;
+    }
   }
 
   function escapeHtml(str) {
