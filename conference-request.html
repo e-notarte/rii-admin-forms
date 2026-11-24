@@ -1980,13 +1980,14 @@
       <p class="intro">Submit a request to reserve a conference room.</p>
       <form id="requestForm">
         <div class="grid"><label>Requestor Name<input name="requestor" type="text" required
-              placeholder="Enter your name"></label><label>Company<select name="company" required>
+              placeholder="Enter your name"></label><label>Email Address<input name="email" type="email" required
+              placeholder="Enter your email"></label></div><div class="grid"><label>Company<select name="company" required>
               <option value="">Select Company</option>
               <option>RMRCI</option>
               <option>RBI</option>
               <option>PESC</option>
               <option>RLAND</option>
-            </select></label></div><label>Department<select name="department" required>
+            </select></label><label>Department<select name="department" required>
             <option value="">Select Department</option>
             <option>Admin</option>
             <option>HR</option>
@@ -1996,7 +1997,7 @@
             <option>C&amp;C</option>
             <option>Accounting</option>
             <option>Finance</option>
-          </select></label><label>Event Name<input name="title" required placeholder="Enter Event title"></label>
+          </select></label></div><label>Event Name<input name="title" required placeholder="Enter Event title"></label>
         <div class="grid"><label>No. of Participants<input name="participants" type="number" min="1"
               required></label><label>Date<input name="date" type="date" required></label></div>
         <div class="grid"><label>Start Time<input name="startTime" type="time" required></label><label>Est. End
@@ -2061,26 +2062,37 @@
       btn.textContent = 'Submitting...';
       btn.disabled = true;
 
+      const basePayload = {
+        requestor_name: f.get('requestor'),
+        company: f.get('company'),
+        department: f.get('department'),
+        title: f.get('title'),
+        participants: parseInt(f.get('participants')),
+        request_date: f.get('date'),
+        start_time: f.get('startTime') + ':00',
+        end_time: f.get('endTime') + ':00'
+      };
+
       try {
-        const { data, error } = await supabase
-          .from('conference_requests')
-          .insert([
-            {
+        let insertRes;
+        try {
+          insertRes = await supabase
+            .from('conference_requests')
+            .insert([{ ...basePayload, email: f.get('email') }])
+            .select();
+        } catch (e) {
+          insertRes = { error: e };
+        }
 
-              requestor_name: f.get('requestor'),
-              company: f.get('company'),
-              department: f.get('department'),
-              title: f.get('title'),
-              participants: parseInt(f.get('participants')),
-              request_date: f.get('date'),
-              start_time: f.get('startTime') + ':00',
-              end_time: f.get('endTime') + ':00'
+        if (insertRes.error && (insertRes.error.code === 'PGRST204' || String(insertRes.error.message || '').includes('email'))) {
+          insertRes = await supabase
+            .from('conference_requests')
+            .insert([basePayload])
+            .select();
+        }
 
-            }
-          ])
-          .select();
-
-        if (error) throw error;
+        if (insertRes.error) throw insertRes.error;
+        const data = insertRes.data;
 
         // Insert notification
         try {
