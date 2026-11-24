@@ -4141,19 +4141,24 @@
       </a>
     </nav>
 
-    <div class="nav-label">FINANCE</div>
+    <div class="nav-label" style="display:flex; justify-content:space-between; align-items:center;">
+      <span>FINANCE</span>
+      <span style="font-size:0.6rem; padding:1px 6px; border-radius:4px; background:#fee2e2; color:#b91c1c; font-weight:700; letter-spacing:0.5px;">UNAVAILABLE</span>
+    </div>
     <nav>
-      <a href="#" class="nav-link" onclick="return switchView('view-statement', this)">
+      <a href="#" class="nav-link disabled-finance-link" onclick="return showFinanceUnavailableAlert('Statement of Accounts');" style="opacity:0.55; cursor:not-allowed;" title="Statement of Accounts is currently unavailable">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-file-invoice-dollar"></i>
         </span>
         <span class="nav-title">Statement of Accounts</span>
+        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
       </a>
-      <a href="#" class="nav-link" onclick="return switchView('view-budget', this)">
+      <a href="#" class="nav-link disabled-finance-link" onclick="return showFinanceUnavailableAlert('Budget Monitoring');" style="opacity:0.55; cursor:not-allowed;" title="Budget Monitoring is currently unavailable">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-chart-line"></i>
         </span>
         <span class="nav-title">Budget Monitoring</span>
+        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
       </a>
     </nav>
 
@@ -4430,20 +4435,44 @@
         </div>
       </div>
 
-      <!-- STATEMENT OF ACCOUNTS VIEW -->
+      <!-- STATEMENT OF ACCOUNTS VIEW (FINANCE - UNAVAILABLE) -->
       <div id="view-statement" class="view-section">
         <div class="page-header">
           <h1><i class="fa-solid fa-file-invoice-dollar"></i> Statement of Accounts</h1>
         </div>
-        <div class="data-card" style="padding: 50px; text-align: center;">
-          <i class="fa-solid fa-person-digging" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
-          <h2 style="color: var(--primary); margin-bottom: 10px;">Under Development</h2>
-          <p style="color: var(--text-muted);">This page is currently under development. Please check back later.</p>
+        <div class="data-card" style="padding: 60px 30px; text-align: center;">
+          <div style="width: 72px; height: 72px; background: #fee2e2; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+            <i class="fa-solid fa-ban"></i>
+          </div>
+          <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 1.4rem;">Finance Panel Unavailable</h2>
+          <p style="color: var(--text-muted); max-width: 540px; margin: 0 auto 24px; font-size: 0.92rem; line-height: 1.6;">
+            The Finance module (Statement of Accounts &amp; Budget Monitoring) is temporarily disabled and unavailable for maintenance. Please check back later or coordinate with the Finance Department.
+          </p>
+          <button type="button" class="btn-primary" onclick="switchView('view-dashboard')" style="background: var(--primary); padding: 10px 24px; font-size: 0.85rem; font-weight: 600;">
+            <i class="fa-solid fa-arrow-left"></i> Return to Admin Dashboard
+          </button>
         </div>
       </div>
 
-      <!-- BUDGET MONITORING VIEW - FY 2026 APPROVED BUDGET -->
+      <!-- BUDGET MONITORING VIEW - FY 2026 APPROVED BUDGET (FINANCE - UNAVAILABLE) -->
       <div id="view-budget" class="view-section">
+        <div class="page-header">
+          <h1><i class="fa-solid fa-chart-line"></i> Budget Monitoring</h1>
+        </div>
+        <div class="data-card" style="padding: 60px 30px; text-align: center; margin-bottom: 24px;">
+          <div style="width: 72px; height: 72px; background: #fee2e2; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+            <i class="fa-solid fa-ban"></i>
+          </div>
+          <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 1.4rem;">Finance Panel Unavailable</h2>
+          <p style="color: var(--text-muted); max-width: 540px; margin: 0 auto 24px; font-size: 0.92rem; line-height: 1.6;">
+            The Finance module (Statement of Accounts &amp; Budget Monitoring) is temporarily disabled and unavailable for maintenance. Please check back later or coordinate with the Finance Department.
+          </p>
+          <button type="button" class="btn-primary" onclick="switchView('view-dashboard')" style="background: var(--primary); padding: 10px 24px; font-size: 0.85rem; font-weight: 600;">
+            <i class="fa-solid fa-arrow-left"></i> Return to Admin Dashboard
+          </button>
+        </div>
+
+        <div style="display: none;" aria-hidden="true">
         <!-- Master Budget Ledger Table Card -->
         <div class="data-card" style="margin-bottom: 24px; padding: 22px;">
           <!-- Search & Filter Bar -->
@@ -4553,6 +4582,7 @@
             <div style="border-top:1px solid #1e293b; text-align:center; padding-top:5px; font-weight:700;">Ms. Regina Therese R. Lava</div>
             <p style="margin:2px 0 0; text-align:center; color:var(--text-muted); font-size:0.75rem;">RMR Chief Financial Officer (CFO)</p>
           </div>
+        </div>
         </div>
       </div>
 
@@ -6409,8 +6439,22 @@
       getCurrentAccountName
     };
 
+    window.showFinanceUnavailableAlert = function (panelName) {
+      const msg = `${panelName || 'The Finance Panel'} (Statement of Accounts & Budget Monitoring) is currently disabled and unavailable for maintenance.`;
+      if (typeof window.showSystemAlert === 'function') {
+        window.showSystemAlert('Finance Panel Unavailable', msg, 'info');
+      } else {
+        alert(msg);
+      }
+      return false;
+    };
+
     // Make switchView globally accessible since it's a module
     window.switchView = function (viewId, menuItem) {
+      if (viewId === 'view-statement' || viewId === 'view-budget') {
+        window.showFinanceUnavailableAlert(viewId === 'view-budget' ? 'Budget Monitoring' : 'Statement of Accounts');
+        return false;
+      }
       if (!requestPanelAccess(viewId)) return false;
 
       const targetView = document.getElementById(viewId);
