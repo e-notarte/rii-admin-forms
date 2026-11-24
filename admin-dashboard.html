@@ -7503,7 +7503,6 @@
           supabase.from('conference_requests').select('*').then(res => ({ ...res, type: 'Conference Room', table: 'conference_requests' })),
           supabase.from('function_requests').select('*').then(res => ({ ...res, type: 'Function Hall', table: 'function_requests' })),
           supabase.from('parking_requests').select('*').then(res => ({ ...res, type: 'Parking Slot', table: 'parking_requests' })),
-          supabase.from('vehicle_requests').select('*').then(res => ({ ...res, type: 'Service Vehicle', table: 'vehicle_requests' })),
           supabase.from('zoom_requests').select('*').then(res => ({ ...res, type: 'Zoom Meeting', table: 'zoom_requests' })),
           supabase.from('teams_requests').select('*').then(res => ({ ...res, type: 'MS Teams', table: 'teams_requests' }))
         ];
@@ -11829,27 +11828,61 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           };
         }
 
-        if (!window._allRequests) window._allRequests = [];
-        window._allRequests.unshift(normalizedItem);
+        if (isVehicle) {
+          // Send to Vehicle Dispatch Board
+          alert('Service Vehicle reservation directly recorded and sent to Vehicle Dispatch Board!');
+          window.resetAdminFacilityBookingForm();
 
-        // Update schedule date filter to this date so user can see it right away
-        const scheduleDateInput = document.getElementById('facilityScheduleDate');
-        if (scheduleDateInput) {
-          scheduleDateInput.value = dateVal;
-        }
+          if (typeof loadVehicleDispatchBoard === 'function') {
+            await loadVehicleDispatchBoard();
+          }
 
-        // Re-render table and schedule
-        if (typeof window.renderFacilityTable === 'function') {
-          window.renderFacilityTable();
-        }
-        if (typeof window.renderFacilitySchedule === 'function') {
-          window.renderFacilitySchedule(dateVal);
-        }
+          const dispatchDateInput = document.getElementById('dispatchScheduleDate');
+          if (dispatchDateInput) {
+            dispatchDateInput.value = dateVal;
+            if (typeof renderVehicleSchedule === 'function') {
+              renderVehicleSchedule(dateVal);
+            }
+          }
 
-        alert(`${facilityName} reservation directly recorded and scheduled for ${dateVal}!`);
-        window.resetAdminFacilityBookingForm();
-        if (typeof window.switchView === 'function') {
-          window.switchView('view-calendar');
+          const vehDateFilter = document.getElementById('vehicleDispatchDateFilter');
+          if (vehDateFilter) {
+            vehDateFilter.value = dateVal;
+            if (typeof filterVehicleDispatchByDate === 'function') {
+              filterVehicleDispatchByDate(dateVal);
+            }
+          }
+
+          if (typeof window.switchView === 'function') {
+            window.switchView('view-vehicle');
+          }
+        } else {
+          // Send to Facility Reservation Panel (Conference Room, Function Hall, Parking, MS Teams, Zoom)
+          if (!window._allRequests) window._allRequests = [];
+          window._allRequests.unshift(normalizedItem);
+
+          // Update schedule date filter to this date so user can see it right away
+          const scheduleDateInput = document.getElementById('facilityScheduleDate');
+          if (scheduleDateInput) {
+            scheduleDateInput.value = dateVal;
+          }
+
+          // Re-render table and schedule
+          if (typeof window.renderFacilityTable === 'function') {
+            window.renderFacilityTable();
+          }
+          if (typeof window.renderFacilitySchedule === 'function') {
+            window.renderFacilitySchedule(dateVal);
+          }
+          if (typeof loadFacilityRequests === 'function') {
+            loadFacilityRequests();
+          }
+
+          alert(`${facilityName} reservation directly recorded and sent to Facility Reservation Panel!`);
+          window.resetAdminFacilityBookingForm();
+          if (typeof window.switchView === 'function') {
+            window.switchView('view-calendar');
+          }
         }
       } catch (err) {
         console.error('Error inserting admin facility booking:', err);
