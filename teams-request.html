@@ -2021,8 +2021,6 @@
                 required></label><label>Date<input name="date" type="date" required></label></div>
           <div class="grid"><label>Start Time<input name="startTime" type="time" required></label><label>End Time<input
                 name="endTime" type="time" required></label></div>
-          <label>Teams Link or Meeting ID<textarea name="accessDetails" required
-              placeholder="Enter the MS Teams link or meeting ID"></textarea></label>
           <label>Additional Notes<textarea name="notes" placeholder="Optional notes"></textarea></label>
           <div class="req-submit-row">
           <button type="submit" class="btn-submit">Submit MS Teams Request</button>
@@ -2266,9 +2264,6 @@
 
     loadApprovedEvents();
   </script>
-
-  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span><span style="color:var(--accent, #f59e0b); font-weight:700;">developed by leo worksuite</span></span>
-  </footer>
 
   <!-- AI Bot Wrapper -->
   <div class="ai-bot-wrapper" id="aiBotWrapper">
@@ -2515,6 +2510,7 @@
     }
   </style>
   <script type="module" src="ai-bot.js" id="ai-bot-logic-script"></script>
+  <script src="data-registry-helper.js"></script>
 </body>
 
 </html>
