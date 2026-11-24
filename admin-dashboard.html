@@ -4349,6 +4349,12 @@
         </span>
         <span class="nav-title">Account Approvals</span>
       </a>
+      <a href="#" class="nav-link" data-facility-form onclick="return switchView('view-facility-form', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-file-circle-plus"></i>
+        </span>
+        <span class="nav-title">Facility Request Form</span>
+      </a>
       <a href="#" class="nav-link" data-facility-requests onclick="return switchView('view-calendar', this)">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-calendar-days"></i>
@@ -6824,10 +6830,14 @@
         </div>
       </div>
 
-      <!-- FACILITY RESERVATION APPROVAL VIEW -->
-      <div id="view-calendar" class="view-section">
-        <div class="page-header">
-          <h1><i class="fa-solid fa-building-circle-check"></i> Facility Requests Approval</h1>
+      <!-- FACILITY REQUEST FORM VIEW (DIRECT ADMIN ENTRY PANE) -->
+      <div id="view-facility-form" class="view-section">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <h1><i class="fa-solid fa-file-circle-plus"></i> Facility Request Form</h1>
+          <button type="button" class="btn-primary" onclick="switchView('view-calendar')"
+            style="background: var(--primary); padding: 8px 16px; font-size: 0.85rem; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-calendar-check"></i> View Approvals &amp; Schedule
+          </button>
         </div>
 
         <!-- ADMIN DIRECT ENTRY CARD FOR FACILITY RESERVATION -->
@@ -6988,6 +6998,17 @@
               </div>
             </div>
           </form>
+        </div>
+      </div>
+
+      <!-- FACILITY RESERVATION APPROVAL VIEW -->
+      <div id="view-calendar" class="view-section">
+        <div class="page-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <h1><i class="fa-solid fa-building-circle-check"></i> Facility Requests Approval</h1>
+          <button type="button" class="btn-primary" onclick="switchView('view-facility-form')"
+            style="background: var(--accent); color:#1E355F; font-weight:700; padding: 8px 16px; font-size: 0.85rem; display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-plus-circle"></i> New Facility Request (Admin Entry)
+          </button>
         </div>
 
         <div class="dispatch-layout">
@@ -7173,6 +7194,11 @@
         name: 'Account Approvals',
         pin: null,
         editors: []
+      },
+      'view-facility-form': {
+        name: 'Facility Request Form',
+        pin: '011',
+        editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
       },
       'view-calendar': {
         name: 'Facility Reservation',
@@ -7386,7 +7412,7 @@
           }
           renderDriverKpiBoard();
         }
-      } else if (viewId === 'view-calendar' && typeof loadFacilityRequests === 'function') {
+      } else if ((viewId === 'view-calendar' || viewId === 'view-facility-form') && typeof loadFacilityRequests === 'function') {
         loadFacilityRequests();
       } else if (viewId === 'view-liaison' && typeof loadLiaisonTasks === 'function') {
         loadLiaisonTasks();
@@ -11484,6 +11510,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
         alert(`Facility Reservation directly recorded and scheduled for ${facilityName} on ${dateVal}!`);
         window.resetAdminFacilityBookingForm();
+        if (typeof window.switchView === 'function') {
+          window.switchView('view-calendar');
+        }
       } catch (err) {
         console.error('Error inserting admin facility booking:', err);
         alert('Failed to record facility booking: ' + (err.message || 'Unknown error'));
