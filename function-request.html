@@ -116,11 +116,12 @@
     main {
       padding-bottom: 60px !important;
     }
-  
+
     .sidebar {
       display: flex !important;
       flex-direction: column !important;
     }
+
     .sidebar-footer {
       padding: 16px 18px;
       border-top: 1px solid var(--border, #e2e8f0);
@@ -134,17 +135,20 @@
       margin-top: auto;
       flex-shrink: 0;
     }
+
     .sidebar-footer strong {
       color: var(--text-main, #334155);
       font-size: 0.78rem;
       font-weight: 700;
       display: block;
     }
+
     .sidebar-footer span {
       color: var(--text-muted, #64748b);
       font-size: 0.72rem;
       display: block;
     }
+
     .sidebar-footer .sidebar-footer-dev {
       font-size: 0.72rem;
       color: var(--accent, #f59e0b);
@@ -153,18 +157,20 @@
       letter-spacing: 0.2px;
       margin-top: 2px;
     }
+
     body.dark-mode .sidebar-footer {
       background: var(--bg-surface, #1e293b);
       border-color: var(--border, #334155);
       color: #94a3b8;
     }
+
     body.dark-mode .sidebar-footer strong {
       color: #f8fafc;
     }
+
     body.dark-mode .sidebar-footer span {
       color: #94a3b8;
     }
-
   </style>
   </style>
   <style>
@@ -337,7 +343,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Function Hall Request - R-II Builders</title>
-    <link rel="icon" type="image/png" href="RII_Logo.png">
+  <link rel="icon" type="image/png" href="RII_Logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="user-nav-panel.css">
@@ -1791,7 +1797,7 @@
       }
     }
   </style>
-<style>
+  <style>
     /* CLEAN & NEAT SUBMIT BUTTON (MATCHING SUPPLIES DASHBOARD) */
     .req-submit-row {
       padding: 14px 0 0 0;
@@ -1851,11 +1857,16 @@
       background: #FCAE16 !important;
       color: #0f172a !important;
     }
-</style>
+  </style>
   <style>
-    @view-transition { navigation: auto; }
+    @view-transition {
+      navigation: auto;
+    }
+
     ::view-transition-old(root),
-    ::view-transition-new(root) { animation-duration: 0s; }
+    ::view-transition-new(root) {
+      animation-duration: 0s;
+    }
   </style>
 </head>
 
@@ -1866,15 +1877,13 @@
   <button class="mobile-account-button" type="button" aria-label="Open account menu"
     onclick="document.body.classList.toggle('account-open'); document.body.classList.remove('nav-open')"><i
       class="fa-solid fa-user"></i><span>Account</span></button>
-  <div class="mobile-account-menu" aria-label="Account menu"><button type="button"
-      title="Toggle dark mode"><i class="fa-regular fa-moon"></i> Dark Mode</button><button type="button"
-      title="Notifications"><i class="fa-regular fa-bell"></i> Notifications</button></div>
+  <div class="mobile-account-menu" aria-label="Account menu"><button type="button" title="Toggle dark mode"><i
+        class="fa-regular fa-moon"></i> Dark Mode</button><button type="button" title="Notifications"><i
+        class="fa-regular fa-bell"></i> Notifications</button></div>
   <header class="header">
-    <div class="brand"><img
-        src="RII_Logo.png"
-        alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
-    <div class="header-right"><button class="icon-btn" type="button"
-        title="Toggle dark mode"><i class="fa-regular fa-moon"></i></button>
+    <div class="brand"><img src="RII_Logo.png" alt="RII Logo"><span>R-II BUILDERS, INC.</span></div>
+    <div class="header-right"><button class="icon-btn" type="button" title="Toggle dark mode"><i
+          class="fa-regular fa-moon"></i></button>
       <div class="notification-container" style="position: relative;">
         <button class="icon-btn notification-btn" type="button" title="Notifications"
           onclick="document.getElementById('notifDropdown').classList.toggle('active')">
@@ -1900,10 +1909,11 @@
       </div>
     </div>
   </header>
-    <aside class="sidebar" aria-label="User navigation">
+  <aside class="sidebar" aria-label="User navigation">
     <div class="sidebar-brand-mobile">
       <div class="brand"><img src="RII_Logo.png" alt="RII Logo"><span>R-II BUILDERS</span></div>
-      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i class="fa-solid fa-xmark"></i></button>
+      <button class="close-sidebar" onclick="document.body.classList.remove('nav-open')"><i
+          class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="nav-label">User Accounts</div>
     <nav>
@@ -1923,10 +1933,12 @@
         <span class="nav-title">Driver Request</span>
       </a>
       <div class="nav-group open">
-        <div class="nav-group-title" onclick="this.parentElement.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
+        <div class="nav-group-title"
+          onclick="this.parentElement.classList.toggle('open'); this.nextElementSibling.classList.toggle('open')">
           <span class="nav-icon-wrapper"><i class="fa-solid fa-building"></i></span>
           <span class="nav-title">Facility Request</span>
-          <i class="fa-solid fa-chevron-down nav-chevron" style="margin-left:auto; font-size:0.75rem; transition:transform 0.2s;"></i>
+          <i class="fa-solid fa-chevron-down nav-chevron"
+            style="margin-left:auto; font-size:0.75rem; transition:transform 0.2s;"></i>
         </div>
         <div class="sub-links open">
           <a class="sub-link " href="conference-request.html">Conference Room</a>
@@ -1945,14 +1957,14 @@
         <span class="nav-title">Supplies</span>
       </a>
     </nav>
-  
-      <!-- SIDEBAR FOOTER -->
-      <div class="sidebar-footer">
-        <strong>Admin Request Management System</strong>
-        <span>R-II Builders, Inc. &copy; 2026</span>
-        <div class="sidebar-footer-dev">developed by leo worksuite</div>
-      </div>
-    </aside>
+
+    <!-- SIDEBAR FOOTER -->
+    <div class="sidebar-footer">
+      <strong>Admin Request Management System</strong>
+      <span>R-II Builders, Inc. &copy; 2026</span>
+      <div class="sidebar-footer-dev">developed by leo worksuite</div>
+    </div>
+  </aside>
   <main>
     <div class="facility-layout">
       <div class="calendar-card">
@@ -1998,37 +2010,45 @@
                 <option>PESC</option>
                 <option>RLAND</option>
               </select></label></div><label>Department<select name="department" required>
-              <option value="">Select Department</option>
-              <option>Admin</option>
-              <option>HR</option>
-              <option>Purchasing</option>
-              <option>BDG</option>
-              <option>Engineering</option>
-              <option>C&amp;C</option>
-              <option>Accounting</option>
-              <option>Finance</option>
-            </select></label><label>Event Name<input name="title" required placeholder="Enter Event title"></label>
+                <option value="">Select Department</option>
+                <option>Admin</option>
+                <option>HR</option>
+                <option>Purchasing</option>
+                <option>BDG</option>
+                <option>Engineering</option>
+                <option>C&amp;C</option>
+                <option>Accounting</option>
+                <option>Finance</option>
+              </select></label><label>Event Name<input name="title" required
+              placeholder="Enter Event title"></label>
           <div class="grid"><label>No. of Participants<input name="participants" type="number" min="1"
                 required></label><label>Date<input name="date" type="date" required></label></div>
           <div class="grid"><label>Start Time<input name="startTime" type="time" required></label><label>Est. End
-              Time<input name="endTime" type="time" required></label></div><div class="req-submit-row">
-          <button type="submit" class="btn-submit">Submit Function Hall Request</button>
-        </div>
+              Time<input name="endTime" type="time" required></label></div>
+          <div class="req-submit-row">
+            <button type="submit" class="btn-submit">Submit Function Hall Request</button>
+          </div>
         </form>
       </section>
     </div>
   </main>
   <!-- CONFIRM SUBMISSION MODAL -->
   <div class="modal" id="confirmModal" style="z-index: 2100;">
-    <div class="modal-box" style="max-width: 400px; padding: 28px; text-align: center; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-      <div style="width: 54px; height: 54px; border-radius: 50%; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.6rem;">
+    <div class="modal-box"
+      style="max-width: 400px; padding: 28px; text-align: center; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+      <div
+        style="width: 54px; height: 54px; border-radius: 50%; background: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.6rem;">
         <i class="fa-solid fa-circle-question"></i>
       </div>
       <h2 style="margin: 0 0 10px; font-size: 1.35rem; color: #1E355F; font-weight: 700;">Confirm Submission</h2>
-      <p style="margin: 0 0 24px; font-size: 0.9rem; color: #64748b; line-height: 1.5;">Are you sure you want to submit this request? Please ensure all details entered are correct before proceeding.</p>
+      <p style="margin: 0 0 24px; font-size: 0.9rem; color: #64748b; line-height: 1.5;">Are you sure you want to submit
+        this request? Please ensure all details entered are correct before proceeding.</p>
       <div style="display: flex; gap: 12px; justify-content: center;">
-        <button type="button" id="confirmCancelBtn" style="flex: 1; padding: 10px 16px; border: 1px solid #cbd5e1; background: #fff; color: #475569; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Cancel</button>
-        <button type="button" id="confirmProceedBtn" style="flex: 1; padding: 10px 16px; border: none; background: #1E355F; color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Yes, Submit</button>
+        <button type="button" id="confirmCancelBtn"
+          style="flex: 1; padding: 10px 16px; border: 1px solid #cbd5e1; background: #fff; color: #475569; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Cancel</button>
+        <button type="button" id="confirmProceedBtn"
+          style="flex: 1; padding: 10px 16px; border: none; background: #1E355F; color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background 0.2s;">Yes,
+          Submit</button>
       </div>
     </div>
   </div>
@@ -2074,24 +2094,22 @@
 
       try {
         const { data, error } = await supabase
-          .from('function_requests')
-          .insert([
-            {
+        .from('function_requests')
+        .insert([
+          {
+            requestor_name: f.get('requestor'),
+            company: f.get('company'),
+            department: f.get('department'),
+            title: f.get('title'),
+            participants: parseInt(f.get('participants')),
+            request_date: f.get('date'),
+            start_time: f.get('startTime') + ':00',
+            end_time: f.get('endTime') + ':00'
+          }
+        ])
+        .select();
 
-              requestor_name: f.get('requestor'),
-              company: f.get('company'),
-              department: f.get('department'),
-              title: f.get('title'),
-              participants: parseInt(f.get('participants')),
-              request_date: f.get('date'),
-              start_time: f.get('startTime') + ':00',
-              end_time: f.get('endTime') + ':00'
-
-            }
-          ])
-          .select();
-
-        if (error) throw error;
+      if (error) throw error;
 
         // Insert notification
         try {
@@ -2196,15 +2214,15 @@
       if (dayEvents.length === 0) return;
 
       let html = `<h3 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom:1px solid #e2e8f0; padding-bottom:10px; margin-bottom:15px;">Reservations for ${dateStr}</h3><ul style="text-align:left; padding-left:20px; list-style-type:none; margin:0; padding:0;">`;
-        dayEvents.forEach(e => {
-            const start = e.start_time ? e.start_time.substring(0,5) : '';
-            const end = e.end_time ? e.end_time.substring(0,5) : '';
-            html += `<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
+      dayEvents.forEach(e => {
+        const start = e.start_time ? e.start_time.substring(0, 5) : '';
+        const end = e.end_time ? e.end_time.substring(0, 5) : '';
+        html += `<li style="margin-bottom:12px; background:#f8fafc; padding:12px; border-radius:6px; border-left:4px solid var(--accent);">
                 <div style="font-size:0.85rem; color:#64748b; font-weight:600; margin-bottom:4px;"><i class="fa-regular fa-clock"></i> ${start} - ${end}</div>
                 <div style="color:var(--primary); font-weight:600;">${e.title || 'Reserved'}</div>
             </li>`;
-        });
-        html += '</ul>';
+      });
+      html += '</ul>';
 
       let popup = document.getElementById('dayDetailsPopup');
       if (!popup) {
@@ -2254,7 +2272,8 @@
     loadApprovedEvents();
   </script>
 
-  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span><span style="color:var(--accent, #f59e0b); font-weight:700;">developed by leo worksuite</span></span>
+  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span><span
+        style="color:var(--accent, #f59e0b); font-weight:700;">developed by leo worksuite</span></span>
   </footer>
 
   <!-- AI Bot Wrapper -->
