@@ -808,39 +808,45 @@
             </a>
           </nav>
 
-          <div className="nav-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>FINANCE</span>
-            <span style={{ fontSize: '0.6rem', padding: '1px 6px', borderRadius: '4px', background: '#fee2e2', color: '#b91c1c', fontWeight: '700', letterSpacing: '0.5px' }}>UNAVAILABLE</span>
+          {/* FINANCE (HIDDEN) */}
+          <div style={{ display: 'none' }}>
+            <div className="nav-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>FINANCE</span>
+              <span style={{ fontSize: '0.6rem', padding: '1px 6px', borderRadius: '4px', background: '#fee2e2', color: '#b91c1c', fontWeight: '700', letterSpacing: '0.5px' }}>UNAVAILABLE</span>
+            </div>
+            <nav>
+              <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Finance Panel (Statement of Accounts & Budget Monitoring) is currently unavailable and disabled for maintenance.'); }} title="Statement of Accounts is currently unavailable">
+                <i className="fa-solid fa-file-invoice-dollar"></i>
+                <span>Statement of Accounts</span>
+                <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
+              </a>
+              <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Finance Panel (Statement of Accounts & Budget Monitoring) is currently unavailable and disabled for maintenance.'); }} title="Budget Monitoring is currently unavailable">
+                <i className="fa-solid fa-chart-line"></i>
+                <span>Budget Monitoring</span>
+                <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
+              </a>
+            </nav>
           </div>
-          <nav>
-            <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Finance Panel (Statement of Accounts & Budget Monitoring) is currently unavailable and disabled for maintenance.'); }} title="Statement of Accounts is currently unavailable">
-              <i className="fa-solid fa-file-invoice-dollar"></i>
-              <span>Statement of Accounts</span>
-              <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
-            </a>
-            <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Finance Panel (Statement of Accounts & Budget Monitoring) is currently unavailable and disabled for maintenance.'); }} title="Budget Monitoring is currently unavailable">
-              <i className="fa-solid fa-chart-line"></i>
-              <span>Budget Monitoring</span>
-              <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
-            </a>
-          </nav>
 
-          <div className="nav-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>INVENTORY</span>
-            <span style={{ fontSize: '0.6rem', padding: '1px 6px', borderRadius: '4px', background: '#fee2e2', color: '#b91c1c', fontWeight: '700', letterSpacing: '0.5px' }}>UNAVAILABLE</span>
+          {/* INVENTORY (HIDDEN) */}
+          <div style={{ display: 'none' }}>
+            <div className="nav-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>INVENTORY</span>
+              <span style={{ fontSize: '0.6rem', padding: '1px 6px', borderRadius: '4px', background: '#fee2e2', color: '#b91c1c', fontWeight: '700', letterSpacing: '0.5px' }}>UNAVAILABLE</span>
+            </div>
+            <nav>
+              <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Inventory & Warehouse Panel is currently unavailable and disabled for maintenance.'); }} title="Supplies Request is currently unavailable">
+                <i className="fa-solid fa-boxes-stacked"></i>
+                <span>Supplies Request</span>
+                <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
+              </a>
+              <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Inventory & Warehouse Panel is currently unavailable and disabled for maintenance.'); }} title="Receiving Report is currently unavailable">
+                <i className="fa-solid fa-file-invoice"></i>
+                <span>Receiving Report</span>
+                <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
+              </a>
+            </nav>
           </div>
-          <nav>
-            <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Inventory & Warehouse Panel is currently unavailable and disabled for maintenance.'); }} title="Supplies Request is currently unavailable">
-              <i className="fa-solid fa-boxes-stacked"></i>
-              <span>Supplies Request</span>
-              <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
-            </a>
-            <a href="#" className="nav-link" style={{ opacity: 0.55, cursor: 'not-allowed' }} onClick={(e) => { e.preventDefault(); alert('The Inventory & Warehouse Panel is currently unavailable and disabled for maintenance.'); }} title="Receiving Report is currently unavailable">
-              <i className="fa-solid fa-file-invoice"></i>
-              <span>Receiving Report</span>
-              <i className="fa-solid fa-lock" style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 'auto' }}></i>
-            </a>
-          </nav>
 
           <div className="nav-label">FLEET MANAGEMENT</div>
           <nav>
