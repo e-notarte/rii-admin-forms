@@ -6848,7 +6848,7 @@
               <div
                 style="font-size:0.75rem; font-weight:800; color:var(--accent); letter-spacing:1px; text-transform:uppercase;">
                 R-II BUILDERS, INC.</div>
-              <h3
+              <h3 id="fbCardTitle"
                 style="margin:2px 0 6px; font-size:1.25rem; color:var(--primary); font-weight:800; display:flex; align-items:center; gap:10px;">
                 <i class="fa-solid fa-building-circle-check" style="color:var(--accent);"></i> Facility Reservation
               </h3>
@@ -6862,6 +6862,7 @@
             <!-- 3-Column Input Grid -->
             <div
               style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:18px; margin-bottom:20px;">
+              <!-- Row 1: Shared -->
               <div>
                 <label
                   style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
@@ -6875,13 +6876,14 @@
               <div>
                 <label
                   style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-door-open" style="color:var(--accent); margin-right:4px;"></i> Facility / Room <span
+                  <i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:4px;"></i> Request Type / Facility <span
                     style="color:#ef4444;">*</span>
                 </label>
-                <select id="fbFacilityType" required
+                <select id="fbFacilityType" required onchange="handleFacilityTypeChange()"
                   style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
                   <option value="conference_requests" selected>Conference Room</option>
                   <option value="function_requests">Function Hall</option>
+                  <option value="parking_requests">Parking Slot</option>
                 </select>
               </div>
 
@@ -6902,6 +6904,7 @@
                 </select>
               </div>
 
+              <!-- Row 2: Shared -->
               <div>
                 <label
                   style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
@@ -6921,6 +6924,9 @@
                   <option value="Finance">Finance</option>
                   <option value="Executive">Executive</option>
                   <option value="Operations">Operations</option>
+                  <option value="CRMD">CRMD</option>
+                  <option value="ESSH">ESSH</option>
+                  <option value="OTP">OTP</option>
                 </select>
               </div>
 
@@ -6937,14 +6943,15 @@
               <div>
                 <label
                   style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-users" style="color:var(--accent); margin-right:4px;"></i> No. of Participants <span
+                  <i class="fa-regular fa-clock" style="color:var(--accent); margin-right:4px;"></i> Start Time <span
                     style="color:#ef4444;">*</span>
                 </label>
-                <input type="number" id="fbParticipants" min="1" placeholder="e.g. 10" required
+                <input type="time" id="fbStartTime" required
                   style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
-              <div>
+              <!-- Row 3 Option A: Room Fields (Conference Room / Function Hall) -->
+              <div class="fb-room-field">
                 <label
                   style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
                   <i class="fa-solid fa-heading" style="color:var(--accent); margin-right:4px;"></i> Event Name <span
@@ -6954,23 +6961,54 @@
                   style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
-              <div>
+              <div class="fb-room-field">
                 <label
                   style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-regular fa-clock" style="color:var(--accent); margin-right:4px;"></i> Start Time <span
+                  <i class="fa-solid fa-users" style="color:var(--accent); margin-right:4px;"></i> No. of Participants <span
                     style="color:#ef4444;">*</span>
                 </label>
-                <input type="time" id="fbStartTime" required
+                <input type="number" id="fbParticipants" min="1" placeholder="e.g. 10" required
                   style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
-              <div>
+              <div class="fb-room-field">
                 <label
                   style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
                   <i class="fa-solid fa-hourglass-end" style="color:var(--accent); margin-right:4px;"></i> Est. End Time <span
                     style="color:#ef4444;">*</span>
                 </label>
                 <input type="time" id="fbEndTime" required
+                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <!-- Row 3 Option B: Parking Fields (Parking Slot) -->
+              <div class="fb-park-field" style="display: none;">
+                <label
+                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-id-card-clip" style="color:var(--accent); margin-right:4px;"></i> Visitor Name <span
+                    style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbVisitor" placeholder="Enter visitor name"
+                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <div class="fb-park-field" style="display: none;">
+                <label
+                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-car-side" style="color:var(--accent); margin-right:4px;"></i> Plate Number <span
+                    style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbPlate" placeholder="e.g. ABC-1234"
+                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <div class="fb-park-field" style="display: none;">
+                <label
+                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-user-check" style="color:var(--accent); margin-right:4px;"></i> Person to Visit <span
+                    style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbPersonToVisit" placeholder="Enter person to visit"
                   style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
             </div>
@@ -6982,7 +7020,7 @@
                 <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-weight:700;">
                   <i class="fa-solid fa-bolt" style="margin-right:4px;"></i> Direct Admin Entry
                 </span>
-                <span style="font-size:0.78rem; color:var(--text-muted);">
+                <span id="fbBadgeNote" style="font-size:0.78rem; color:var(--text-muted);">
                   Directly reserves room, updates calendar vacancy, and marks status as Approved.
                 </span>
               </div>
@@ -6993,6 +7031,12 @@
                 </button>
                 <button type="button" class="btn-primary" id="btnRecordFacilityBooking" onclick="submitAdminFacilityBooking(event)"
                   style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a; border-radius:6px; cursor:pointer;">
+                  <i class="fa-solid fa-floppy-disk"></i> Record
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
                   <i class="fa-solid fa-floppy-disk"></i> Record
                 </button>
               </div>
@@ -11402,8 +11446,42 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     };
 
     // ==========================================
-    // ADMIN FACILITY RESERVATION DIRECT ENTRY
+    // ADMIN FACILITY & PARKING RESERVATION DIRECT ENTRY
     // ==========================================
+    window.handleFacilityTypeChange = function () {
+      const typeSelect = document.getElementById('fbFacilityType');
+      const isParking = typeSelect && typeSelect.value === 'parking_requests';
+
+      const roomFields = document.querySelectorAll('.fb-room-field');
+      const parkFields = document.querySelectorAll('.fb-park-field');
+
+      roomFields.forEach(el => {
+        el.style.display = isParking ? 'none' : 'block';
+        const input = el.querySelector('input, select');
+        if (input) input.required = !isParking;
+      });
+
+      parkFields.forEach(el => {
+        el.style.display = isParking ? 'block' : 'none';
+        const input = el.querySelector('input, select');
+        if (input) input.required = isParking;
+      });
+
+      // Update card title and description
+      const headerTitle = document.getElementById('fbCardTitle');
+      const badgeNote = document.getElementById('fbBadgeNote');
+      if (headerTitle) {
+        headerTitle.innerHTML = isParking
+          ? '<i class="fa-solid fa-square-parking" style="color:var(--accent);"></i> Parking Slot Reservation'
+          : '<i class="fa-solid fa-building-circle-check" style="color:var(--accent);"></i> Facility Reservation';
+      }
+      if (badgeNote) {
+        badgeNote.textContent = isParking
+          ? 'Directly reserves parking slot, logs visitor & vehicle, and marks status as Approved.'
+          : 'Directly reserves room, updates calendar vacancy, and marks status as Approved.';
+      }
+    };
+
     window.resetAdminFacilityBookingForm = function () {
       const form = document.getElementById('adminFacilityBookingForm');
       if (form) {
@@ -11411,6 +11489,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const fbDate = document.getElementById('fbDate');
         if (fbDate) {
           fbDate.value = new Date().toISOString().slice(0, 10);
+        }
+        if (typeof window.handleFacilityTypeChange === 'function') {
+          window.handleFacilityTypeChange();
         }
       }
     };
@@ -11423,10 +11504,18 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const companyEl = document.getElementById('fbCompany');
       const deptEl = document.getElementById('fbDepartment');
       const reqEl = document.getElementById('fbRequestor');
+      const startEl = document.getElementById('fbStartTime');
+
+      // Room specific elements
       const paxEl = document.getElementById('fbParticipants');
       const titleEl = document.getElementById('fbTitle');
-      const startEl = document.getElementById('fbStartTime');
       const endEl = document.getElementById('fbEndTime');
+
+      // Parking specific elements
+      const visitorEl = document.getElementById('fbVisitor');
+      const plateEl = document.getElementById('fbPlate');
+      const visitEl = document.getElementById('fbPersonToVisit');
+
       const submitBtn = document.getElementById('btnRecordFacilityBooking');
 
       const dateVal = dateEl ? dateEl.value.trim() : '';
@@ -11434,19 +11523,72 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const companyVal = companyEl ? companyEl.value.trim() : '';
       const deptVal = deptEl ? deptEl.value.trim() : '';
       const reqVal = reqEl ? reqEl.value.trim() : '';
-      const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
-      const titleVal = titleEl ? titleEl.value.trim() : '';
       const startVal = startEl ? startEl.value.trim() : '';
-      const endVal = endEl ? endEl.value.trim() : '';
 
-      if (!dateVal || !facilityVal || !companyVal || !deptVal || !reqVal || !titleVal || !startVal || !endVal || isNaN(paxVal) || paxVal < 1) {
-        alert('Please fill out all required fields marked with * (including valid number of participants).');
+      const isParking = facilityVal === 'parking_requests';
+
+      if (!dateVal || !facilityVal || !companyVal || !deptVal || !reqVal || !startVal) {
+        alert('Please fill out all required general fields marked with *.');
         return;
       }
 
-      if (startVal >= endVal) {
-        alert('Estimated End Time must be later than Start Time.');
-        return;
+      let recordPayload = {};
+      let targetTable = facilityVal;
+      let facilityName = '';
+      let normalizedItem = {};
+      const formattedStart = startVal.length === 5 ? (startVal + ':00') : startVal;
+
+      if (isParking) {
+        const visitorVal = visitorEl ? visitorEl.value.trim() : '';
+        const plateVal = plateEl ? plateEl.value.trim() : '';
+        const visitVal = visitEl ? visitEl.value.trim() : '';
+
+        if (!visitorVal || !plateVal || !visitVal) {
+          alert('Please fill out all required parking fields (Visitor Name, Plate Number, Person to Visit).');
+          return;
+        }
+
+        facilityName = 'Parking Slot';
+        recordPayload = {
+          requestor_name: reqVal,
+          company: companyVal,
+          department: deptVal,
+          visitor: visitorVal,
+          plate: plateVal,
+          request_date: dateVal,
+          request_time: formattedStart,
+          visit: visitVal,
+          status: 'Approved'
+        };
+      } else {
+        const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
+        const titleVal = titleEl ? titleEl.value.trim() : '';
+        const endVal = endEl ? endEl.value.trim() : '';
+
+        if (!titleVal || !endVal || isNaN(paxVal) || paxVal < 1) {
+          alert('Please fill out all required facility fields (Event Name, End Time, valid Participants).');
+          return;
+        }
+
+        if (startVal >= endVal) {
+          alert('Estimated End Time must be later than Start Time.');
+          return;
+        }
+
+        const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
+        facilityName = targetTable === 'function_requests' ? 'Function Hall' : 'Conference Room';
+
+        recordPayload = {
+          requestor_name: reqVal,
+          company: companyVal,
+          department: deptVal,
+          title: titleVal,
+          participants: paxVal,
+          request_date: dateVal,
+          start_time: formattedStart,
+          end_time: formattedEnd,
+          status: 'Approved'
+        };
       }
 
       const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
@@ -11454,23 +11596,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recording...';
       }
-
-      const formattedStart = startVal.length === 5 ? (startVal + ':00') : startVal;
-      const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
-      const targetTable = facilityVal; // 'conference_requests' or 'function_requests'
-      const facilityName = targetTable === 'function_requests' ? 'Function Hall' : 'Conference Room';
-
-      const recordPayload = {
-        requestor_name: reqVal,
-        company: companyVal,
-        department: deptVal,
-        title: titleVal,
-        participants: paxVal,
-        request_date: dateVal,
-        start_time: formattedStart,
-        end_time: formattedEnd,
-        status: 'Approved'
-      };
 
       try {
         const { data, error } = await supabase
@@ -11480,16 +11605,27 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
         if (error) throw error;
 
-        // Create normalized item to immediately reflect in local arrays and UI
         const insertedItem = (data && data[0]) ? data[0] : { id: 'admin-' + Date.now(), ...recordPayload };
-        const normalizedItem = {
-          ...insertedItem,
-          display_title: insertedItem.title || titleVal,
-          display_time: `${insertedItem.start_time || formattedStart} - ${insertedItem.end_time || formattedEnd}`,
-          display_pax: `${insertedItem.participants || paxVal} pax`,
-          request_type: facilityName,
-          source_table: targetTable
-        };
+
+        if (isParking) {
+          normalizedItem = {
+            ...insertedItem,
+            display_title: `Visitor: ${insertedItem.visitor || recordPayload.visitor} (${insertedItem.plate || recordPayload.plate})`,
+            display_time: insertedItem.request_time || recordPayload.request_time,
+            display_pax: insertedItem.visit || recordPayload.visit || '-',
+            request_type: 'Parking Slot',
+            source_table: 'parking_requests'
+          };
+        } else {
+          normalizedItem = {
+            ...insertedItem,
+            display_title: insertedItem.title || recordPayload.title,
+            display_time: `${insertedItem.start_time || recordPayload.start_time} - ${insertedItem.end_time || recordPayload.end_time}`,
+            display_pax: `${insertedItem.participants || recordPayload.participants} pax`,
+            request_type: facilityName,
+            source_table: targetTable
+          };
+        }
 
         if (!window._allRequests) window._allRequests = [];
         window._allRequests.unshift(normalizedItem);
@@ -11508,14 +11644,14 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           window.renderFacilitySchedule(dateVal);
         }
 
-        alert(`Facility Reservation directly recorded and scheduled for ${facilityName} on ${dateVal}!`);
+        alert(`${facilityName} reservation directly recorded and scheduled for ${dateVal}!`);
         window.resetAdminFacilityBookingForm();
         if (typeof window.switchView === 'function') {
           window.switchView('view-calendar');
         }
       } catch (err) {
         console.error('Error inserting admin facility booking:', err);
-        alert('Failed to record facility booking: ' + (err.message || 'Unknown error'));
+        alert('Failed to record reservation: ' + (err.message || 'Unknown error'));
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
@@ -16393,6 +16529,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const fbDateInput = document.getElementById('fbDate');
       if (fbDateInput && !fbDateInput.value) {
         fbDateInput.value = new Date().toISOString().slice(0, 10);
+      }
+      if (typeof window.handleFacilityTypeChange === 'function') {
+        window.handleFacilityTypeChange();
       }
 
       // Support direct URL view parameter (e.g. ?view=view-vehicle)
