@@ -6878,6 +6878,9 @@
                   <option value="conference_requests" selected>Conference Room</option>
                   <option value="function_requests">Function Hall</option>
                   <option value="parking_requests">Parking Slot</option>
+                  <option value="vehicle_requests">Service Vehicle</option>
+                  <option value="zoom_requests">Zoom Meeting</option>
+                  <option value="teams_requests">MS Teams Meeting</option>
                 </select>
               </div>
 
@@ -6957,7 +6960,7 @@
 
               <div class="fb-room-field" style="grid-column: 1 / -1;">
                 <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-heading" style="color:var(--accent); margin-right:4px;"></i> Event Name <span style="color:#ef4444;">*</span>
+                  <i class="fa-solid fa-heading" style="color:var(--accent); margin-right:4px;"></i> <span id="fbTitleLabelText">Event Name</span> <span style="color:#ef4444;">*</span>
                 </label>
                 <input type="text" id="fbTitle" placeholder="Enter Event title" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
@@ -6982,6 +6985,43 @@
                   <i class="fa-solid fa-user-check" style="color:var(--accent); margin-right:4px;"></i> Person to Visit <span style="color:#ef4444;">*</span>
                 </label>
                 <input type="text" id="fbPersonToVisit" placeholder="Enter person to visit" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <!-- Vehicle Fields (Vehicle Request) -->
+              <div class="fb-veh-field" style="display: none;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-hourglass-end" style="color:var(--accent); margin-right:4px;"></i> Est. End Time <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="time" id="fbVehEndTime" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <div class="fb-veh-field" style="display: none;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-users" style="color:var(--accent); margin-right:4px;"></i> Number of Passengers <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="number" id="fbPassengers" min="1" placeholder="e.g. 4" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <div class="fb-veh-field" style="display: none;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-location-dot" style="color:var(--accent); margin-right:4px;"></i> Destination <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbDestination" placeholder="Enter destination" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <div class="fb-veh-field" style="display: none; grid-column: span 2;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-bullseye" style="color:var(--accent); margin-right:4px;"></i> Purpose <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbPurpose" placeholder="Enter purpose of trip" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+
+              <!-- MS Teams Specific Field -->
+              <div class="fb-teams-field" style="display: none; grid-column: 1 / -1;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-link" style="color:var(--accent); margin-right:4px;"></i> Teams Link or Meeting ID <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbTeamsLink" placeholder="Enter MS Teams link or meeting ID" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
             </div>
 
@@ -7463,6 +7503,7 @@
           supabase.from('conference_requests').select('*').then(res => ({ ...res, type: 'Conference Room', table: 'conference_requests' })),
           supabase.from('function_requests').select('*').then(res => ({ ...res, type: 'Function Hall', table: 'function_requests' })),
           supabase.from('parking_requests').select('*').then(res => ({ ...res, type: 'Parking Slot', table: 'parking_requests' })),
+          supabase.from('vehicle_requests').select('*').then(res => ({ ...res, type: 'Service Vehicle', table: 'vehicle_requests' })),
           supabase.from('zoom_requests').select('*').then(res => ({ ...res, type: 'Zoom Meeting', table: 'zoom_requests' })),
           supabase.from('teams_requests').select('*').then(res => ({ ...res, type: 'MS Teams', table: 'teams_requests' }))
         ];
@@ -11417,15 +11458,24 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     // ==========================================
     window.handleFacilityTypeChange = function () {
       const typeSelect = document.getElementById('fbFacilityType');
-      const isParking = typeSelect && typeSelect.value === 'parking_requests';
+      const val = typeSelect ? typeSelect.value : 'conference_requests';
+      const isParking = val === 'parking_requests';
+      const isVehicle = val === 'vehicle_requests';
+      const isZoom = val === 'zoom_requests';
+      const isTeams = val === 'teams_requests';
+      const isMeeting = isZoom || isTeams;
+      const isRoom = val === 'conference_requests' || val === 'function_requests';
+      const showRoomOrMeeting = isRoom || isMeeting;
 
       const roomFields = document.querySelectorAll('.fb-room-field');
       const parkFields = document.querySelectorAll('.fb-park-field');
+      const vehFields = document.querySelectorAll('.fb-veh-field');
+      const teamsFields = document.querySelectorAll('.fb-teams-field');
 
       roomFields.forEach(el => {
-        el.style.display = isParking ? 'none' : 'block';
+        el.style.display = showRoomOrMeeting ? 'block' : 'none';
         const input = el.querySelector('input, select');
-        if (input) input.required = !isParking;
+        if (input) input.required = showRoomOrMeeting;
       });
 
       parkFields.forEach(el => {
@@ -11434,18 +11484,56 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         if (input) input.required = isParking;
       });
 
+      vehFields.forEach(el => {
+        el.style.display = isVehicle ? 'block' : 'none';
+        const input = el.querySelector('input, select');
+        if (input) input.required = isVehicle;
+      });
+
+      teamsFields.forEach(el => {
+        el.style.display = isTeams ? 'block' : 'none';
+        const input = el.querySelector('input, select');
+        if (input) input.required = isTeams;
+      });
+
+      // Update title label and placeholder
+      const titleLabelText = document.getElementById('fbTitleLabelText');
+      const titleInput = document.getElementById('fbTitle');
+      if (titleLabelText) {
+        titleLabelText.textContent = isMeeting ? 'Meeting Title' : 'Event Name';
+      }
+      if (titleInput) {
+        titleInput.placeholder = isMeeting ? 'Enter meeting title' : 'Enter Event title';
+      }
+
       // Update card title and description
       const headerTitle = document.getElementById('fbCardTitle');
       const badgeNote = document.getElementById('fbBadgeNote');
       if (headerTitle) {
-        headerTitle.innerHTML = isParking
-          ? '<i class="fa-solid fa-square-parking" style="color:var(--accent);"></i> Parking Slot Reservation'
-          : '<i class="fa-solid fa-building-circle-check" style="color:var(--accent);"></i> Facility Reservation';
+        if (isParking) {
+          headerTitle.innerHTML = '<i class="fa-solid fa-square-parking" style="color:var(--accent);"></i> Parking Slot Reservation';
+        } else if (isVehicle) {
+          headerTitle.innerHTML = '<i class="fa-solid fa-car-side" style="color:var(--accent);"></i> Vehicle Reservation';
+        } else if (isZoom) {
+          headerTitle.innerHTML = '<i class="fa-solid fa-video" style="color:var(--accent);"></i> Zoom Meeting Reservation';
+        } else if (isTeams) {
+          headerTitle.innerHTML = '<i class="fa-solid fa-video" style="color:var(--accent);"></i> MS Teams Meeting Reservation';
+        } else {
+          headerTitle.innerHTML = '<i class="fa-solid fa-building-circle-check" style="color:var(--accent);"></i> Facility Reservation';
+        }
       }
       if (badgeNote) {
-        badgeNote.textContent = isParking
-          ? 'Directly reserves parking slot, logs visitor & vehicle, and marks status as Approved.'
-          : 'Directly reserves room, updates calendar vacancy, and marks status as Approved.';
+        if (isParking) {
+          badgeNote.textContent = 'Directly reserves parking slot, logs visitor & vehicle, and marks status as Approved.';
+        } else if (isVehicle) {
+          badgeNote.textContent = 'Directly reserves vehicle dispatch, logs destination & purpose, and marks status as Approved.';
+        } else if (isZoom) {
+          badgeNote.textContent = 'Directly reserves Zoom meeting, updates calendar schedule, and marks status as Approved.';
+        } else if (isTeams) {
+          badgeNote.textContent = 'Directly reserves MS Teams meeting, logs meeting link, and marks status as Approved.';
+        } else {
+          badgeNote.textContent = 'Directly reserves room, updates calendar vacancy, and marks status as Approved.';
+        }
       }
     };
 
@@ -11474,7 +11562,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const emailEl = document.getElementById('fbEmail');
       const startEl = document.getElementById('fbStartTime');
 
-      // Room specific elements
+      // Room & Meeting specific elements
       const paxEl = document.getElementById('fbParticipants');
       const titleEl = document.getElementById('fbTitle');
       const endEl = document.getElementById('fbEndTime');
@@ -11483,6 +11571,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const visitorEl = document.getElementById('fbVisitor');
       const plateEl = document.getElementById('fbPlate');
       const visitEl = document.getElementById('fbPersonToVisit');
+
+      // Vehicle specific elements
+      const destEl = document.getElementById('fbDestination');
+      const purpEl = document.getElementById('fbPurpose');
+      const passEl = document.getElementById('fbPassengers');
+      const vehEndEl = document.getElementById('fbVehEndTime');
+
+      // Teams specific element
+      const teamsLinkEl = document.getElementById('fbTeamsLink');
 
       const submitBtn = document.getElementById('btnRecordFacilityBooking');
 
@@ -11495,6 +11592,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const startVal = startEl ? startEl.value.trim() : '';
 
       const isParking = facilityVal === 'parking_requests';
+      const isVehicle = facilityVal === 'vehicle_requests';
+      const isZoom = facilityVal === 'zoom_requests';
+      const isTeams = facilityVal === 'teams_requests';
 
       if (!dateVal || !facilityVal || !companyVal || !deptVal || !reqVal || !emailVal || !startVal) {
         alert('Please fill out all required general fields marked with * (including Email Address).');
@@ -11527,6 +11627,100 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           request_date: dateVal,
           request_time: formattedStart,
           visit: visitVal,
+          status: 'Approved'
+        };
+      } else if (isVehicle) {
+        const destVal = destEl ? destEl.value.trim() : '';
+        const purpVal = purpEl ? purpEl.value.trim() : '';
+        const passVal = passEl ? parseInt(passEl.value, 10) : NaN;
+        const endVal = vehEndEl ? vehEndEl.value.trim() : '';
+
+        if (!destVal || !purpVal || !endVal || isNaN(passVal) || passVal < 1) {
+          alert('Please fill out all required vehicle fields (Destination, Purpose, End Time, valid Passengers).');
+          return;
+        }
+
+        if (startVal >= endVal) {
+          alert('Estimated End Time must be later than Start Time.');
+          return;
+        }
+
+        const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
+        facilityName = 'Vehicle Service';
+
+        recordPayload = {
+          requestor_name: reqVal,
+          company: companyVal,
+          department: deptVal,
+          destination: destVal,
+          purpose: purpVal,
+          passengers: passVal,
+          request_date: dateVal,
+          start_time: formattedStart,
+          end_time: formattedEnd,
+          status: 'Approved'
+        };
+      } else if (isZoom) {
+        const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
+        const titleVal = titleEl ? titleEl.value.trim() : '';
+        const endVal = endEl ? endEl.value.trim() : '';
+
+        if (!titleVal || !endVal || isNaN(paxVal) || paxVal < 1) {
+          alert('Please fill out all required meeting fields (Meeting Title, End Time, valid Participants).');
+          return;
+        }
+
+        if (startVal >= endVal) {
+          alert('Estimated End Time must be later than Start Time.');
+          return;
+        }
+
+        const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
+        facilityName = 'Zoom Meeting';
+
+        recordPayload = {
+          requestor_name: reqVal,
+          company: companyVal,
+          department: deptVal,
+          title: titleVal,
+          participants: paxVal,
+          request_date: dateVal,
+          start_time: formattedStart,
+          end_time: formattedEnd,
+          access_details: null,
+          notes: null,
+          status: 'Approved'
+        };
+      } else if (isTeams) {
+        const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
+        const titleVal = titleEl ? titleEl.value.trim() : '';
+        const endVal = endEl ? endEl.value.trim() : '';
+        const teamsLinkVal = teamsLinkEl ? teamsLinkEl.value.trim() : '';
+
+        if (!titleVal || !endVal || !teamsLinkVal || isNaN(paxVal) || paxVal < 1) {
+          alert('Please fill out all required meeting fields (Meeting Title, End Time, valid Participants, Teams Link/ID).');
+          return;
+        }
+
+        if (startVal >= endVal) {
+          alert('Estimated End Time must be later than Start Time.');
+          return;
+        }
+
+        const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
+        facilityName = 'MS Teams Meeting';
+
+        recordPayload = {
+          requestor_name: reqVal,
+          company: companyVal,
+          department: deptVal,
+          title: titleVal,
+          participants: paxVal,
+          request_date: dateVal,
+          start_time: formattedStart,
+          end_time: formattedEnd,
+          access_details: teamsLinkVal,
+          notes: null,
           status: 'Approved'
         };
       } else {
@@ -11599,6 +11793,28 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             requestor_email: emailVal,
             request_type: 'Parking Slot',
             source_table: 'parking_requests'
+          };
+        } else if (isVehicle) {
+          normalizedItem = {
+            ...insertedItem,
+            display_title: `${insertedItem.destination || recordPayload.destination} (${insertedItem.purpose || recordPayload.purpose})`,
+            display_time: `${insertedItem.start_time || recordPayload.start_time} - ${insertedItem.end_time || recordPayload.end_time}`,
+            display_pax: `${insertedItem.passengers || recordPayload.passengers} passengers`,
+            email: emailVal,
+            requestor_email: emailVal,
+            request_type: 'Vehicle Service',
+            source_table: 'vehicle_requests'
+          };
+        } else if (isZoom || isTeams) {
+          normalizedItem = {
+            ...insertedItem,
+            display_title: insertedItem.title || recordPayload.title,
+            display_time: `${insertedItem.start_time || recordPayload.start_time} - ${insertedItem.end_time || recordPayload.end_time}`,
+            display_pax: `${insertedItem.participants || recordPayload.participants} participants`,
+            email: emailVal,
+            requestor_email: emailVal,
+            request_type: facilityName,
+            source_table: targetTable
           };
         } else {
           normalizedItem = {
