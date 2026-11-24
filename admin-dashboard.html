@@ -2588,7 +2588,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
-      min-width: 210px;
+      min-width: 250px; flex-wrap: wrap;
     }
 
     .dispatch-action {
@@ -2612,6 +2612,14 @@
 
     .dispatch-action.cancel {
       background: #d97706;
+    }
+
+    .dispatch-action.delete {
+      background: #dc2626;
+    }
+
+    .dispatch-action.delete:hover {
+      background: #991b1b;
     }
 
     .dispatch-action.update {
@@ -4353,7 +4361,7 @@
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-file-circle-plus"></i>
         </span>
-        <span class="nav-title">Facility Request Form</span>
+        <span class="nav-title">Request Form</span>
       </a>
       <a href="#" class="nav-link" data-facility-requests onclick="return switchView('view-calendar', this)">
         <span class="nav-icon-wrapper">
@@ -6470,6 +6478,11 @@
                 <option value="Asset Code">Asset Code</option>
               </select>
             </label>
+            <label id="lblDirectoryCompanyWrapper" style="display:none;"><span>Associated Company</span>
+              <select id="directoryCompany">
+                <option value="ALL">All Companies</option>
+              </select>
+            </label>
             <label><span id="lblDirectoryCode">Code / Acronym *</span><input id="directoryCode" required placeholder="e.g. RBI, ADMIN, SUP-001"></label>
             <label><span id="lblDirectoryName">Name / Full Title *</span><input id="directoryName" required placeholder="e.g. R-II Builders, Inc."></label>
             <label style="grid-column:span 2;"><span id="lblDirectoryDetails">Additional Details / Notes</span><input id="directoryDetails" placeholder="Optional notes, division, location, contact or email"></label>
@@ -6885,7 +6898,7 @@
       <div id="view-facility-form" class="view-section">
         <div class="page-header"
           style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-          <h1><i class="fa-solid fa-file-circle-plus"></i> Facility Request Form</h1>
+          <h1><i class="fa-solid fa-file-circle-plus"></i> Request Form</h1>
           <button type="button" class="btn-primary" onclick="switchView('view-calendar')"
             style="background: var(--primary); padding: 8px 16px; font-size: 0.85rem; display:flex; align-items:center; gap:8px;">
             <i class="fa-solid fa-calendar-check"></i> View Approvals &amp; Schedule
@@ -6939,7 +6952,7 @@
                 <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
                   <i class="fa-solid fa-landmark" style="color:var(--accent); margin-right:4px;"></i> Company <span style="color:#ef4444;">*</span>
                 </label>
-                <select id="fbCompany" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <select id="fbCompany" required onchange="handleFacilityCompanyChange()" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
                   <option value="" disabled selected>-- Select Company --</option>
                   <option value="RBI">R-II Builders, Inc. (RBI)</option>
                   <option value="RMRCI">R-II Metro Rail Transport Services, Inc. (RMRCI)</option>
@@ -7065,14 +7078,6 @@
                   <i class="fa-solid fa-bullseye" style="color:var(--accent); margin-right:4px;"></i> Purpose <span style="color:#ef4444;">*</span>
                 </label>
                 <input type="text" id="fbPurpose" placeholder="Enter purpose of trip" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
-              </div>
-
-              <!-- MS Teams Specific Field -->
-              <div class="fb-teams-field" style="display: none; grid-column: 1 / -1;">
-                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-link" style="color:var(--accent); margin-right:4px;"></i> Teams Link or Meeting ID <span style="color:#ef4444;">*</span>
-                </label>
-                <input type="text" id="fbTeamsLink" placeholder="Enter MS Teams link or meeting ID" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
             </div>
 
@@ -7298,7 +7303,7 @@
         editors: []
       },
       'view-facility-form': {
-        name: 'Facility Request Form',
+        name: 'Request Form',
         pin: '011',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
       },
@@ -7516,6 +7521,9 @@
         }
       } else if ((viewId === 'view-calendar' || viewId === 'view-facility-form') && typeof loadFacilityRequests === 'function') {
         loadFacilityRequests();
+        if (typeof window.syncDataRegistryDropdowns === 'function') {
+          window.syncDataRegistryDropdowns();
+        }
       } else if (viewId === 'view-liaison' && typeof loadLiaisonTasks === 'function') {
         loadLiaisonTasks();
       } else if (viewId === 'view-supplies' && typeof loadSupplyRequests === 'function') {
@@ -11269,6 +11277,85 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     };
 
 
+    window.handleDeleteVehicleRequest = async function (id) {
+      if (!confirm('Are you sure you want to permanently delete this vehicle request?')) {
+        return;
+      }
+
+      try {
+        const { error } = await supabase
+          .from('vehicle_requests')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        if (Array.isArray(vehicleRequests)) {
+          vehicleRequests = vehicleRequests.filter(req => req.id != id);
+        }
+
+        renderVehicleDispatchTable();
+        if (typeof loadVehicleDispatchBoard === 'function') {
+          loadVehicleDispatchBoard();
+        }
+      } catch (err) {
+        console.error('Error deleting vehicle request:', err);
+        alert('Error deleting vehicle request: ' + (err.message || err));
+      }
+    };
+
+    window.deleteFacilityRequest = function (id, table) {
+      const request = (typeof window._allRequests !== "undefined")
+        ? window._allRequests.find(req => String(req.id) === String(id))
+        : null;
+      const type = request ? (request.display_title || request.request_type || 'Facility Request') : 'Facility Request';
+      const requestor = request ? (request.requestor_name || 'Requester') : 'Requester';
+
+      if (typeof window.showAdminConfirmModal === 'function') {
+        window.showAdminConfirmModal({
+          title: "Confirm Request Deletion",
+          message: `Are you sure you want to permanently delete the ${type} reservation for ${requestor}? This action cannot be undone.`,
+          confirmText: "Yes, Delete",
+          confirmColor: "#dc2626",
+          icon: "fa-trash-can",
+          iconColor: "#dc2626",
+          iconBg: "#fee2e2",
+          onConfirm: () => executeDeleteFacilityRequest(id, table)
+        });
+      } else {
+        if (confirm(`Are you sure you want to permanently delete this request for ${requestor}?`)) {
+          executeDeleteFacilityRequest(id, table);
+        }
+      }
+    };
+
+    async function executeDeleteFacilityRequest(id, table) {
+      try {
+        const { error } = await supabase
+          .from(table)
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        if (Array.isArray(window._allRequests)) {
+          window._allRequests = window._allRequests.filter(req => !(req.id == id && req.source_table === table));
+        }
+
+        if (typeof window.renderFacilityTable === 'function') {
+          window.renderFacilityTable();
+        }
+        if (typeof window.renderFacilitySchedule === 'function') {
+          window.renderFacilitySchedule();
+        }
+
+        loadFacilityRequests();
+      } catch (err) {
+        console.error('Error deleting facility request:', err);
+        alert('Error deleting request: ' + (err.message || err));
+      }
+    };
+
     window.updateRequestStatus = async function (id, table, newStatus) {
       const request = (typeof window._allRequests !== "undefined")
         ? window._allRequests.find(req => String(req.id) === String(id))
@@ -11415,6 +11502,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
                 onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Rejected')">Reject</button>
               <button type="button" class="dispatch-action cancel"
                 onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Cancelled')">Cancel</button>
+              <button type="button" class="dispatch-action delete"
+                onclick="deleteFacilityRequest('${req.id}', '${req.source_table}')" title="Permanently delete request">Delete</button>
             </div>
           </td>
         </tr>`;
@@ -11520,7 +11609,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       const roomFields = document.querySelectorAll('.fb-room-field');
       const parkFields = document.querySelectorAll('.fb-park-field');
       const vehFields = document.querySelectorAll('.fb-veh-field');
-      const teamsFields = document.querySelectorAll('.fb-teams-field');
 
       roomFields.forEach(el => {
         el.style.display = showRoomOrMeeting ? 'block' : 'none';
@@ -11538,12 +11626,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         el.style.display = isVehicle ? 'block' : 'none';
         const input = el.querySelector('input, select');
         if (input) input.required = isVehicle;
-      });
-
-      teamsFields.forEach(el => {
-        el.style.display = isTeams ? 'block' : 'none';
-        const input = el.querySelector('input, select');
-        if (input) input.required = isTeams;
       });
 
       // Update title label and placeholder
@@ -11567,197 +11649,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         } else if (isZoom) {
           headerTitle.innerHTML = '<i class="fa-solid fa-video" style="color:var(--accent);"></i> Zoom Meeting Reservation';
         } else if (isTeams) {
-          headerTitle.innerHTML = '<i class="fa-solid fa-video" style="color:var(--accent);"></i> MS Teams Meeting Reservation';
-        } else {
-          headerTitle.innerHTML = '<i class="fa-solid fa-building-circle-check" style="color:var(--accent);"></i> Facility Reservation';
-        }
-      }
-      if (badgeNote) {
-        if (isParking) {
-          badgeNote.textContent = 'Submits parking slot request to Pending table for dispatcher review.';
-        } else if (isVehicle) {
-          badgeNote.textContent = 'Submits vehicle request to Vehicle Dispatch Board (Pending) for driver and car assignment.';
-        } else if (isZoom) {
-          badgeNote.textContent = 'Submits Zoom meeting request to Pending table for dispatcher review.';
-        } else if (isTeams) {
-          badgeNote.textContent = 'Submits MS Teams meeting request to Pending table for dispatcher review.';
-        } else {
-          badgeNote.textContent = 'Submits room reservation to Pending table for dispatcher review.';
-        }
-      }
-    };
-
-    window.resetAdminFacilityBookingForm = function () {
-      const form = document.getElementById('adminFacilityBookingForm');
-      if (form) {
-        form.reset();
-        const fbDate = document.getElementById('fbDate');
-        if (fbDate) {
-          fbDate.value = new Date().toISOString().slice(0, 10);
-        }
-        if (typeof window.handleFacilityTypeChange === 'function') {
-          window.handleFacilityTypeChange();
-        }
-      }
-    };
-
-    window.submitAdminFacilityBooking = async function (e) {
-      if (e && e.preventDefault) e.preventDefault();
-
-      let user = null;
-      try {
-        const authRes = await supabase.auth.getUser();
-        user = authRes?.data?.user || null;
-      } catch (authErr) {
-        console.warn('Could not retrieve auth user:', authErr);
-      }
-
-      const dateEl = document.getElementById('fbDate');
-      const facilityEl = document.getElementById('fbFacilityType');
-      const companyEl = document.getElementById('fbCompany');
-      const deptEl = document.getElementById('fbDepartment');
-      const reqEl = document.getElementById('fbRequestor');
-      const emailEl = document.getElementById('fbEmail');
-      const startEl = document.getElementById('fbStartTime');
-
-      // Room & Meeting specific elements
-      const paxEl = document.getElementById('fbParticipants');
-      const titleEl = document.getElementById('fbTitle');
-      const endEl = document.getElementById('fbEndTime');
-
-      // Parking specific elements
-      const visitorEl = document.getElementById('fbVisitor');
-      const plateEl = document.getElementById('fbPlate');
-      const visitEl = document.getElementById('fbPersonToVisit');
-
-      // Vehicle specific elements
-      const destEl = document.getElementById('fbDestination');
-      const purpEl = document.getElementById('fbPurpose');
-      const passEl = document.getElementById('fbPassengers');
-      const vehEndEl = document.getElementById('fbVehEndTime');
-
-      // Teams specific element
-      const teamsLinkEl = document.getElementById('fbTeamsLink');
-
-      const submitBtn = document.getElementById('btnRecordFacilityBooking');
-
-      const dateVal = dateEl ? dateEl.value.trim() : '';
-      const facilityVal = facilityEl ? facilityEl.value.trim() : '';
-      const companyVal = companyEl ? companyEl.value.trim() : '';
-      const deptVal = deptEl ? deptEl.value.trim() : '';
-      const reqVal = reqEl ? reqEl.value.trim() : '';
-      const emailVal = emailEl ? emailEl.value.trim() : '';
-      const startVal = startEl ? startEl.value.trim() : '';
-
-      const isParking = facilityVal === 'parking_requests';
-      const isVehicle = facilityVal === 'vehicle_requests';
-      const isZoom = facilityVal === 'zoom_requests';
-      const isTeams = facilityVal === 'teams_requests';
-
-      if (!dateVal || !facilityVal || !companyVal || !deptVal || !reqVal || !emailVal || !startVal) {
-        alert('Please fill out all required general fields marked with * (including Email Address).');
-        return;
-      }
-
-      let recordPayload = {};
-      let targetTable = facilityVal;
-      let facilityName = '';
-      let normalizedItem = {};
-      const formattedStart = startVal.length === 5 ? (startVal + ':00') : startVal;
-
-      if (isParking) {
-        const visitorVal = visitorEl ? visitorEl.value.trim() : '';
-        const plateVal = plateEl ? plateEl.value.trim() : '';
-        const visitVal = visitEl ? visitEl.value.trim() : '';
-
-        if (!visitorVal || !plateVal || !visitVal) {
-          alert('Please fill out all required parking fields (Visitor Name, Plate Number, Person to Visit).');
-          return;
-        }
-
-        facilityName = 'Parking Slot';
-        recordPayload = {
-          requestor_name: reqVal,
-          company: companyVal,
-          department: deptVal,
-          visitor: visitorVal,
-          plate: plateVal,
-          request_date: dateVal,
-          request_time: formattedStart,
-          visit: visitVal,
-          status: 'Pending'
-        };
-      } else if (isVehicle) {
-        const destVal = destEl ? destEl.value.trim() : '';
-        const purpVal = purpEl ? purpEl.value.trim() : '';
-        const passVal = passEl ? parseInt(passEl.value, 10) : NaN;
-        const endVal = vehEndEl ? vehEndEl.value.trim() : '';
-
-        if (!destVal || !purpVal || !endVal || isNaN(passVal) || passVal < 1) {
-          alert('Please fill out all required vehicle fields (Destination, Purpose, End Time, valid Passengers).');
-          return;
-        }
-
-        if (startVal >= endVal) {
-          alert('Estimated End Time must be later than Start Time.');
-          return;
-        }
-
-        const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
-        facilityName = 'Service Vehicle';
-
-        recordPayload = {
-          user_id: user?.id || null,
-          requestor_name: reqVal,
-          company: companyVal,
-          department: deptVal,
-          destination: destVal,
-          purpose: purpVal,
-          passengers: passVal,
-          request_date: dateVal,
-          start_time: formattedStart,
-          end_time: formattedEnd,
-          status: 'Pending'
-        };
-      } else if (isZoom) {
         const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
         const titleVal = titleEl ? titleEl.value.trim() : '';
         const endVal = endEl ? endEl.value.trim() : '';
 
         if (!titleVal || !endVal || isNaN(paxVal) || paxVal < 1) {
           alert('Please fill out all required meeting fields (Meeting Title, End Time, valid Participants).');
-          return;
-        }
-
-        if (startVal >= endVal) {
-          alert('Estimated End Time must be later than Start Time.');
-          return;
-        }
-
-        const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
-        facilityName = 'Zoom Meeting';
-
-        recordPayload = {
-          requestor_name: reqVal,
-          company: companyVal,
-          department: deptVal,
-          title: titleVal,
-          participants: paxVal,
-          request_date: dateVal,
-          start_time: formattedStart,
-          end_time: formattedEnd,
-          access_details: null,
-          notes: null,
-          status: 'Pending'
-        };
-      } else if (isTeams) {
-        const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
-        const titleVal = titleEl ? titleEl.value.trim() : '';
-        const endVal = endEl ? endEl.value.trim() : '';
-        const teamsLinkVal = teamsLinkEl ? teamsLinkEl.value.trim() : '';
-
-        if (!titleVal || !endVal || !teamsLinkVal || isNaN(paxVal) || paxVal < 1) {
-          alert('Please fill out all required meeting fields (Meeting Title, End Time, valid Participants, Teams Link/ID).');
           return;
         }
 
@@ -11778,7 +11675,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           request_date: dateVal,
           start_time: formattedStart,
           end_time: formattedEnd,
-          access_details: teamsLinkVal,
+          access_details: null,
           notes: null,
           status: 'Pending'
         };
@@ -16029,19 +15926,19 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         { type: 'Company', code: 'FRHI', name: 'First R-II Holdings Inc.', details: 'Holding & Investment Management' },
 
         // Departments
-        { type: 'Department', code: 'ADMIN', name: 'Admin', details: 'General Administration & Facilities Management' },
-        { type: 'Department', code: 'HR', name: 'HR', details: 'Human Resources & Talent Management' },
-        { type: 'Department', code: 'PURCHASING', name: 'Purchasing', details: 'Procurement & Logistics' },
-        { type: 'Department', code: 'BDG', name: 'BDG', details: 'Business Development Group' },
-        { type: 'Department', code: 'ENGINEERING', name: 'Engineering', details: 'Technical & Engineering Services' },
-        { type: 'Department', code: 'C&C', name: 'C&C', details: 'Contracts & Compliance' },
-        { type: 'Department', code: 'ACCOUNTING', name: 'Accounting', details: 'Financial Records & Reporting' },
-        { type: 'Department', code: 'FINANCE', name: 'Finance', details: 'Treasury & Financial Planning' },
-        { type: 'Department', code: 'EXECUTIVE', name: 'Executive', details: 'Office of the Executives' },
-        { type: 'Department', code: 'OPERATIONS', name: 'Operations', details: 'Field & Project Operations' },
-        { type: 'Department', code: 'CRMD', name: 'CRMD', details: 'Customer Relations Management Department' },
-        { type: 'Department', code: 'ESSH', name: 'ESSH', details: 'Environmental Safety & Health' },
-        { type: 'Department', code: 'OTP', name: 'OTP', details: 'Operations, Tracking & Planning' }
+        { type: 'Department', code: 'ADMIN', name: 'Admin', company: 'ALL', details: 'General Administration & Facilities Management' },
+        { type: 'Department', code: 'HR', name: 'HR', company: 'ALL', details: 'Human Resources & Talent Management' },
+        { type: 'Department', code: 'PURCHASING', name: 'Purchasing', company: 'ALL', details: 'Procurement & Logistics' },
+        { type: 'Department', code: 'BDG', name: 'BDG', company: 'ALL', details: 'Business Development Group' },
+        { type: 'Department', code: 'ENGINEERING', name: 'Engineering', company: 'ALL', details: 'Technical & Engineering Services' },
+        { type: 'Department', code: 'C&C', name: 'C&C', company: 'ALL', details: 'Contracts & Compliance' },
+        { type: 'Department', code: 'ACCOUNTING', name: 'Accounting', company: 'ALL', details: 'Financial Records & Reporting' },
+        { type: 'Department', code: 'FINANCE', name: 'Finance', company: 'ALL', details: 'Treasury & Financial Planning' },
+        { type: 'Department', code: 'EXECUTIVE', name: 'Executive', company: 'ALL', details: 'Office of the Executives' },
+        { type: 'Department', code: 'OPERATIONS', name: 'Operations', company: 'ALL', details: 'Field & Project Operations' },
+        { type: 'Department', code: 'CRMD', name: 'CRMD', company: 'ALL', details: 'Customer Relations Management Department' },
+        { type: 'Department', code: 'ESSH', name: 'ESSH', company: 'ALL', details: 'Environmental Safety & Health' },
+        { type: 'Department', code: 'OTP', name: 'OTP', company: 'ALL', details: 'Operations, Tracking & Planning' }
       ];
 
       function initDirectoryRegister() {
@@ -16066,6 +15963,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               type: seed.type,
               code: seed.code,
               name: seed.name,
+              company: seed.company || 'ALL',
               details: seed.details,
               created_at: new Date().toISOString()
             });
@@ -16107,8 +16005,13 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         syncDataRegistryDropdowns();
       }
 
+      window.handleFacilityCompanyChange = function () {
+        const companyVal = document.getElementById('fbCompany')?.value || '';
+        syncDataRegistryDropdowns(companyVal);
+      };
+
       // Synchronize registered Companies and Departments into facility booking and transmittal dropdowns
-      function syncDataRegistryDropdowns() {
+      function syncDataRegistryDropdowns(filterCompany) {
         try {
           const companies = directoryRegisterRecords.filter(r => r.type === 'Company');
           const departments = directoryRegisterRecords.filter(r => r.type === 'Department');
@@ -16116,31 +16019,57 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           // 1. Sync fbCompany dropdown
           const fbCompany = document.getElementById('fbCompany');
           if (fbCompany && companies.length) {
-            const currentVal = fbCompany.value;
-            let optHtml = '<option value="" disabled selected>-- Select Company --</option>';
+            const currentVal = filterCompany || fbCompany.value;
+            let optHtml = '<option value="" disabled ' + (!currentVal ? 'selected' : '') + '>-- Select Company --</option>';
             companies.forEach(c => {
               const label = c.name.includes(c.code) ? c.name : `${c.name} (${c.code})`;
-              optHtml += `<option value="${escapeBmHtml(c.code)}">${escapeBmHtml(label)}</option>`;
+              const isSel = currentVal && currentVal.toUpperCase() === c.code.toUpperCase();
+              optHtml += `<option value="${escapeBmHtml(c.code)}" ${isSel ? 'selected' : ''}>${escapeBmHtml(label)}</option>`;
             });
             fbCompany.innerHTML = optHtml;
-            if (currentVal) fbCompany.value = currentVal;
           }
 
-          // 2. Sync fbDepartment dropdown
+          // 2. Sync fbDepartment dropdown based on selected company
           const fbDept = document.getElementById('fbDepartment');
           if (fbDept && departments.length) {
+            const activeCompany = filterCompany || fbCompany?.value || '';
             const currentDeptVal = fbDept.value;
+
+            // Filter departments for the selected company, or show all if company is not selected
+            const matchingDepts = departments.filter(d => {
+              if (!activeCompany) return true;
+              const deptComp = (d.company || (d.details && d.details.includes('Company:') ? d.details.split('Company:')[1].trim() : 'ALL')).toUpperCase();
+              return deptComp === 'ALL' || deptComp === activeCompany.toUpperCase();
+            });
+
+            const displayDepts = matchingDepts.length > 0 ? matchingDepts : departments;
+
             let deptHtml = '<option value="" disabled selected>-- Select Department --</option>';
-            departments.forEach(d => {
-              deptHtml += `<option value="${escapeBmHtml(d.name || d.code)}">${escapeBmHtml(d.name || d.code)}</option>`;
+            displayDepts.forEach(d => {
+              const deptName = d.name || d.code;
+              const isSel = currentDeptVal && currentDeptVal.toLowerCase() === deptName.toLowerCase();
+              deptHtml += `<option value="${escapeBmHtml(deptName)}" ${isSel ? 'selected' : ''}>${escapeBmHtml(deptName)}</option>`;
             });
             fbDept.innerHTML = deptHtml;
-            if (currentDeptVal) fbDept.value = currentDeptVal;
+          }
+
+          // 3. Sync directoryCompany dropdown inside the Add Entry modal if present
+          const dirCompSelect = document.getElementById('directoryCompany');
+          if (dirCompSelect && companies.length) {
+            const cur = dirCompSelect.value;
+            let dirCompHtml = '<option value="ALL">All Companies</option>';
+            companies.forEach(c => {
+              dirCompHtml += `<option value="${escapeBmHtml(c.code)}">${escapeBmHtml(c.name)} (${escapeBmHtml(c.code)})</option>`;
+            });
+            dirCompSelect.innerHTML = dirCompHtml;
+            if (cur) dirCompSelect.value = cur;
           }
         } catch (err) {
           console.warn('Error synchronizing registry dropdowns:', err);
         }
       }
+
+      window.syncDataRegistryDropdowns = syncDataRegistryDropdowns;
 
       window.loadLesseesModule = function () {
         initDirectoryRegister();
@@ -16191,6 +16120,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const lblName = document.getElementById('lblDirectoryName');
         const codeInput = document.getElementById('directoryCode');
         const nameInput = document.getElementById('directoryName');
+        const compWrapper = document.getElementById('lblDirectoryCompanyWrapper');
+
+        if (compWrapper) {
+          compWrapper.style.display = type === 'Department' ? 'block' : 'none';
+        }
 
         if (type === 'Company') {
           if (lblCode) lblCode.textContent = 'Company Acronym / Code *';
@@ -16298,6 +16232,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const code = (document.getElementById('directoryCode')?.value || '').trim();
         const name = (document.getElementById('directoryName')?.value || '').trim();
         const details = (document.getElementById('directoryDetails')?.value || '').trim();
+        const company = (document.getElementById('directoryCompany')?.value || 'ALL').trim();
 
         if (!DIRECTORY_TYPES.includes(type) || !code || !name) {
           alert('Please select a registry type and complete the code and name fields.');
@@ -16313,6 +16248,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               code,
               name,
               details,
+              company,
               updated_at: new Date().toISOString()
             };
           }
@@ -16329,6 +16265,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             code,
             name,
             details,
+            company,
             created_at: new Date().toISOString()
           });
         }
@@ -17103,10 +17040,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         initDashboard();
       }
   </script>
-
-  <footer class="footer"><span>© 2026 RII Builders, Inc. All Rights Reserved.</span><span><span
-        style="color:var(--accent, #f59e0b); font-weight:700;">developed by leo worksuite</span></span>
-  </footer>
 
   <!-- AI Bot Wrapper -->
   <div class="ai-bot-wrapper" id="aiBotWrapper">
