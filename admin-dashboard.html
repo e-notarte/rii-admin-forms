@@ -8,6 +8,7 @@
   <link rel="icon" type="image/png" href="RII_Logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 
   <style>
     .sidebar {
@@ -2620,6 +2621,30 @@
 
     .dispatch-action.delete:hover {
       background: #991b1b;
+    }
+
+    .dispatch-actions .dispatch-action {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(15, 23, 42, 0.14);
+      transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .dispatch-actions .dispatch-action svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.25;
+    }
+
+    .dispatch-actions .dispatch-action:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+      box-shadow: 0 4px 8px rgba(15, 23, 42, 0.18);
     }
 
     .dispatch-action.update {
@@ -11822,31 +11847,38 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               <button type="button" class="dispatch-action approve"
                 onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Approved')"
                 title="Approve request" aria-label="Approve request"
-                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
-                <i class="fa-solid fa-check"></i>
+                style="width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i data-lucide="circle-check"></i>
               </button>
               <button type="button" class="dispatch-action reject"
                 onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Rejected')"
                 title="Reject request" aria-label="Reject request"
-                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
-                <i class="fa-solid fa-xmark"></i>
+                style="width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i data-lucide="circle-x"></i>
               </button>
               <button type="button" class="dispatch-action cancel"
                 onclick="updateRequestStatus('${req.id}', '${req.source_table}', 'Cancelled')"
                 title="Cancel request" aria-label="Cancel request"
-                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
-                <i class="fa-solid fa-ban"></i>
+                style="width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i data-lucide="circle-minus"></i>
               </button>
               <button type="button" class="dispatch-action delete"
                 onclick="deleteFacilityRequest('${req.id}', '${req.source_table}')"
                 title="Delete request permanently" aria-label="Delete request permanently"
-                style="width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
-                <i class="fa-solid fa-trash-can"></i>
+                style="width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;">
+                <i data-lucide="trash-2"></i>
               </button>
             </div>
           </td>
         </tr>`;
       }).join('');
+      if (window.lucide) {
+        window.lucide.createIcons({
+          attrs: {
+            'aria-hidden': 'true'
+          }
+        });
+      }
     };
 
     window.filterFacilityRequests = function (filter, element) {
