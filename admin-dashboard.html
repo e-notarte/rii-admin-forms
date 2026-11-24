@@ -11557,163 +11557,155 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
       const isParking = facilityVal === 'parking_requests';
 
-      if (!dateVal || !facilityVal || !companyVal || !deptVal || !reqVal || !startVal) {
-        alert('Please fill out all required general fields marked with *.');
-        if (!dateVal || !facilityVal || !companyVal || !deptVal || !reqVal || !emailVal || !startVal) {
-          alert('Please fill out all required general fields marked with * (including Email Address).');
+      if (!dateVal || !facilityVal || !companyVal || !deptVal || !reqVal || !emailVal || !startVal) {
+        alert('Please fill out all required general fields marked with * (including Email Address).');
+        return;
+      }
+
+      let recordPayload = {};
+      let targetTable = facilityVal;
+      let facilityName = '';
+      let normalizedItem = {};
+      const formattedStart = startVal.length === 5 ? (startVal + ':00') : startVal;
+
+      if (isParking) {
+        const visitorVal = visitorEl ? visitorEl.value.trim() : '';
+        const plateVal = plateEl ? plateEl.value.trim() : '';
+        const visitVal = visitEl ? visitEl.value.trim() : '';
+
+        if (!visitorVal || !plateVal || !visitVal) {
+          alert('Please fill out all required parking fields (Visitor Name, Plate Number, Person to Visit).');
           return;
         }
 
-        let recordPayload = {};
-        let targetTable = facilityVal;
-        let facilityName = '';
-        let normalizedItem = {};
-        const formattedStart = startVal.length === 5 ? (startVal + ':00') : startVal;
+        facilityName = 'Parking Slot';
+        recordPayload = {
+          requestor_name: reqVal,
+          company: companyVal,
+          department: deptVal,
+          visitor: visitorVal,
+          plate: plateVal,
+          request_date: dateVal,
+          request_time: formattedStart,
+          visit: visitVal,
+          status: 'Approved'
+        };
+      } else {
+        const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
+        const titleVal = titleEl ? titleEl.value.trim() : '';
+        const endVal = endEl ? endEl.value.trim() : '';
 
-        if (isParking) {
-          const visitorVal = visitorEl ? visitorEl.value.trim() : '';
-          const plateVal = plateEl ? plateEl.value.trim() : '';
-          const visitVal = visitEl ? visitEl.value.trim() : '';
-
-          if (!visitorVal || !plateVal || !visitVal) {
-            alert('Please fill out all required parking fields (Visitor Name, Plate Number, Person to Visit).');
-            return;
-          }
-
-          facilityName = 'Parking Slot';
-          recordPayload = {
-            requestor_name: reqVal,
-            company: companyVal,
-            department: deptVal,
-            visitor: visitorVal,
-            plate: plateVal,
-            request_date: dateVal,
-            request_time: formattedStart,
-            visit: visitVal,
-            status: 'Approved'
-          };
-        } else {
-          const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
-          const titleVal = titleEl ? titleEl.value.trim() : '';
-          const endEl = document.getElementById('fbEndTime');
-          const endVal = endEl ? endEl.value.trim() : '';
-
-          if (!titleVal || !endVal || isNaN(paxVal) || paxVal < 1) {
-            alert('Please fill out all required facility fields (Event Name, End Time, valid Participants).');
-            return;
-          }
-
-          if (startVal >= endVal) {
-            alert('Estimated End Time must be later than Start Time.');
-            return;
-          }
-
-          const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
-          facilityName = targetTable === 'function_requests' ? 'Function Hall' : 'Conference Room';
-
-          recordPayload = {
-            requestor_name: reqVal,
-            company: companyVal,
-            department: deptVal,
-            title: titleVal,
-            participants: paxVal,
-            request_date: dateVal,
-            start_time: formattedStart,
-            end_time: formattedEnd,
-            status: 'Approved'
-          };
+        if (!titleVal || !endVal || isNaN(paxVal) || paxVal < 1) {
+          alert('Please fill out all required facility fields (Event Name, End Time, valid Participants).');
+          return;
         }
 
-        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recording...';
+        if (startVal >= endVal) {
+          alert('Estimated End Time must be later than Start Time.');
+          return;
         }
 
+        const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
+        facilityName = targetTable === 'function_requests' ? 'Function Hall' : 'Conference Room';
+
+        recordPayload = {
+          requestor_name: reqVal,
+          company: companyVal,
+          department: deptVal,
+          title: titleVal,
+          participants: paxVal,
+          request_date: dateVal,
+          start_time: formattedStart,
+          end_time: formattedEnd,
+          status: 'Approved'
+        };
+      }
+
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recording...';
+      }
+
+      try {
+        let insertRes;
         try {
-          const { data, error } = await supabase
+          insertRes = await supabase
+            .from(targetTable)
+            .insert([{ ...recordPayload, email: emailVal }])
+            .select();
+        } catch (subErr) {
+          insertRes = { error: subErr };
+        }
+
+        if (insertRes.error && (insertRes.error.code === 'PGRST204' || String(insertRes.error.message || '').includes('email'))) {
+          insertRes = await supabase
             .from(targetTable)
             .insert([recordPayload])
             .select();
-          let insertRes;
-          try {
-            insertRes = await supabase
-              .from(targetTable)
-              .insert([{ ...recordPayload, email: emailVal }])
-              .select();
-          } catch (subErr) {
-            insertRes = { error: subErr };
-          }
-
-          if (error) throw error;
-          if (insertRes.error && (insertRes.error.code === 'PGRST204' || String(insertRes.error.message || '').includes('email'))) {
-            insertRes = await supabase
-              .from(targetTable)
-              .insert([recordPayload])
-              .select();
-          }
-
-          if (insertRes.error) throw insertRes.error;
-          const data = insertRes.data;
-
-          const insertedItem = (data && data[0]) ? data[0] : { id: 'admin-' + Date.now(), ...recordPayload };
-
-          if (isParking) {
-            normalizedItem = {
-              ...insertedItem,
-              display_title: `Visitor: ${insertedItem.visitor || recordPayload.visitor} (${insertedItem.plate || recordPayload.plate})`,
-              display_time: insertedItem.request_time || recordPayload.request_time,
-              display_pax: insertedItem.visit || recordPayload.visit || '-',
-              email: emailVal,
-              requestor_email: emailVal,
-              request_type: 'Parking Slot',
-              source_table: 'parking_requests'
-            };
-          } else {
-            normalizedItem = {
-              ...insertedItem,
-              display_title: insertedItem.title || recordPayload.title,
-              display_time: `${insertedItem.start_time || recordPayload.start_time} - ${insertedItem.end_time || recordPayload.end_time}`,
-              display_pax: `${insertedItem.participants || recordPayload.participants} pax`,
-              email: emailVal,
-              requestor_email: emailVal,
-              request_type: facilityName,
-              source_table: targetTable
-            };
-          }
-
-          if (!window._allRequests) window._allRequests = [];
-          window._allRequests.unshift(normalizedItem);
-
-          // Update schedule date filter to this date so user can see it right away
-          const scheduleDateInput = document.getElementById('facilityScheduleDate');
-          if (scheduleDateInput) {
-            scheduleDateInput.value = dateVal;
-          }
-
-          // Re-render table and schedule
-          if (typeof window.renderFacilityTable === 'function') {
-            window.renderFacilityTable();
-          }
-          if (typeof window.renderFacilitySchedule === 'function') {
-            window.renderFacilitySchedule(dateVal);
-          }
-
-          alert(`${facilityName} reservation directly recorded and scheduled for ${dateVal}!`);
-          window.resetAdminFacilityBookingForm();
-          if (typeof window.switchView === 'function') {
-            window.switchView('view-calendar');
-          }
-        } catch (err) {
-          console.error('Error inserting admin facility booking:', err);
-          alert('Failed to record reservation: ' + (err.message || 'Unknown error'));
-        } finally {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalBtnHtml || '<i class="fa-solid fa-floppy-disk"></i> Record';
-          }
         }
-      };
+
+        if (insertRes.error) throw insertRes.error;
+        const insertedData = insertRes.data;
+
+        const insertedItem = (insertedData && insertedData[0]) ? insertedData[0] : { id: 'admin-' + Date.now(), ...recordPayload };
+
+        if (isParking) {
+          normalizedItem = {
+            ...insertedItem,
+            display_title: `Visitor: ${insertedItem.visitor || recordPayload.visitor} (${insertedItem.plate || recordPayload.plate})`,
+            display_time: insertedItem.request_time || recordPayload.request_time,
+            display_pax: insertedItem.visit || recordPayload.visit || '-',
+            email: emailVal,
+            requestor_email: emailVal,
+            request_type: 'Parking Slot',
+            source_table: 'parking_requests'
+          };
+        } else {
+          normalizedItem = {
+            ...insertedItem,
+            display_title: insertedItem.title || recordPayload.title,
+            display_time: `${insertedItem.start_time || recordPayload.start_time} - ${insertedItem.end_time || recordPayload.end_time}`,
+            display_pax: `${insertedItem.participants || recordPayload.participants} pax`,
+            email: emailVal,
+            requestor_email: emailVal,
+            request_type: facilityName,
+            source_table: targetTable
+          };
+        }
+
+        if (!window._allRequests) window._allRequests = [];
+        window._allRequests.unshift(normalizedItem);
+
+        // Update schedule date filter to this date so user can see it right away
+        const scheduleDateInput = document.getElementById('facilityScheduleDate');
+        if (scheduleDateInput) {
+          scheduleDateInput.value = dateVal;
+        }
+
+        // Re-render table and schedule
+        if (typeof window.renderFacilityTable === 'function') {
+          window.renderFacilityTable();
+        }
+        if (typeof window.renderFacilitySchedule === 'function') {
+          window.renderFacilitySchedule(dateVal);
+        }
+
+        alert(`${facilityName} reservation directly recorded and scheduled for ${dateVal}!`);
+        window.resetAdminFacilityBookingForm();
+        if (typeof window.switchView === 'function') {
+          window.switchView('view-calendar');
+        }
+      } catch (err) {
+        console.error('Error inserting admin facility booking:', err);
+        alert('Failed to record reservation: ' + (err.message || 'Unknown error'));
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml || '<i class="fa-solid fa-floppy-disk"></i> Record';
+        }
+      }
+    };
 
       // ==========================================
       // RECEIVING REPORT (RR) MANAGEMENT ENGINE
