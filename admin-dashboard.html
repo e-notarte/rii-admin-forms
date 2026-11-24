@@ -4162,38 +4162,45 @@
       </a>
     </nav>
 
-    <div class="nav-label">INVENTORY &amp; WAREHOUSE</div>
+    <div class="nav-label" style="display:flex; justify-content:space-between; align-items:center;">
+      <span>INVENTORY &amp; WAREHOUSE</span>
+      <span style="font-size:0.6rem; padding:1px 6px; border-radius:4px; background:#fee2e2; color:#b91c1c; font-weight:700; letter-spacing:0.5px;">UNAVAILABLE</span>
+    </div>
     <nav>
-      <a href="#" class="nav-link" data-supplies-requests onclick="return switchView('view-supplies', this)">
+      <a href="#" class="nav-link disabled-inventory-link" onclick="return showInventoryUnavailableAlert('Supplies Request');" style="opacity:0.55; cursor:not-allowed;" title="Supplies Request is currently unavailable">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-boxes-stacked"></i>
-          <span class="nav-count" id="pendingSuppliesNavCount"></span>
         </span>
         <span class="nav-title">Supplies Request</span>
+        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
       </a>
-      <a href="#" class="nav-link" data-purchase-order onclick="return switchView('view-purchase-order', this)">
+      <a href="#" class="nav-link disabled-inventory-link" onclick="return showInventoryUnavailableAlert('Purchase Order');" style="opacity:0.55; cursor:not-allowed;" title="Purchase Order is currently unavailable">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-file-invoice"></i>
         </span>
         <span class="nav-title">Purchase Order</span>
+        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
       </a>
-      <a href="#" class="nav-link" data-receiving-report onclick="return switchView('view-receiving-report', this)">
+      <a href="#" class="nav-link disabled-inventory-link" onclick="return showInventoryUnavailableAlert('Receiving Report');" style="opacity:0.55; cursor:not-allowed;" title="Receiving Report is currently unavailable">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-truck-ramp-box"></i>
         </span>
         <span class="nav-title">Receiving Report</span>
+        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
       </a>
-      <a href="#" class="nav-link" data-material-issuance onclick="return switchView('view-issuance', this)">
+      <a href="#" class="nav-link disabled-inventory-link" onclick="return showInventoryUnavailableAlert('Material Issuance');" style="opacity:0.55; cursor:not-allowed;" title="Material Issuance is currently unavailable">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-hand-holding-hand"></i>
         </span>
         <span class="nav-title">Material Issuance</span>
+        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
       </a>
-      <a href="#" class="nav-link" data-on-hand-inventory onclick="return switchView('view-on-hand-inventory', this)">
+      <a href="#" class="nav-link disabled-inventory-link" onclick="return showInventoryUnavailableAlert('On-Hand Inventory');" style="opacity:0.55; cursor:not-allowed;" title="On-Hand Inventory is currently unavailable">
         <span class="nav-icon-wrapper">
           <i class="fa-solid fa-warehouse"></i>
         </span>
         <span class="nav-title">On-Hand Inventory</span>
+        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
       </a>
     </nav>
 
@@ -4586,14 +4593,25 @@
         </div>
       </div>
 
-      <!-- SUPPLIES REQUEST VIEW -->
+      <!-- SUPPLIES REQUEST VIEW (INVENTORY & WAREHOUSE - UNAVAILABLE) -->
       <div id="view-supplies" class="view-section">
         <div class="page-header">
-          <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Request &amp; Warehouse Issuance</h1>
-          <p style="margin: 4px 0 0; color: var(--text-muted); font-size: 0.85rem;">
-            Approve requests, record warehouse issuances, and automatically update department budgets.
-          </p>
+          <h1><i class="fa-solid fa-boxes-stacked"></i> Supplies Request</h1>
         </div>
+        <div class="data-card" style="padding: 60px 30px; text-align: center; margin-bottom: 24px;">
+          <div style="width: 72px; height: 72px; background: #fee2e2; color: #dc2626; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem;">
+            <i class="fa-solid fa-ban"></i>
+          </div>
+          <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 1.4rem;">Inventory &amp; Warehouse Panel Unavailable</h2>
+          <p style="color: var(--text-muted); max-width: 540px; margin: 0 auto 24px; font-size: 0.92rem; line-height: 1.6;">
+            The Inventory &amp; Warehouse module (Supplies Request) is temporarily disabled and unavailable for maintenance.
+          </p>
+          <button type="button" class="btn-primary" onclick="switchView('view-dashboard')" style="background: var(--primary); padding: 10px 24px; font-size: 0.85rem; font-weight: 600;">
+            <i class="fa-solid fa-arrow-left"></i> Return to Admin Dashboard
+          </button>
+        </div>
+
+        <div style="display: none;" aria-hidden="true">
         <div class="data-card">
           <div class="toolbar">
             <div class="filter-pills" id="suppliesFilterPills">
@@ -4623,6 +4641,7 @@
               </tbody>
             </table>
           </div>
+        </div>
         </div>
       </div>
 
@@ -6449,10 +6468,32 @@
       return false;
     };
 
+    window.showInventoryUnavailableAlert = function (panelName) {
+      const msg = `${panelName || 'The Inventory & Warehouse Panel'} is currently disabled and unavailable for maintenance.`;
+      if (typeof window.showSystemAlert === 'function') {
+        window.showSystemAlert('Inventory & Warehouse Unavailable', msg, 'info');
+      } else {
+        alert(msg);
+      }
+      return false;
+    };
+
     // Make switchView globally accessible since it's a module
     window.switchView = function (viewId, menuItem) {
       if (viewId === 'view-statement' || viewId === 'view-budget') {
         window.showFinanceUnavailableAlert(viewId === 'view-budget' ? 'Budget Monitoring' : 'Statement of Accounts');
+        return false;
+      }
+      const inventoryViews = ['view-supplies', 'view-purchase-order', 'view-receiving-report', 'view-issuance', 'view-on-hand-inventory'];
+      if (inventoryViews.includes(viewId)) {
+        const nameMap = {
+          'view-supplies': 'Supplies Request',
+          'view-purchase-order': 'Purchase Order',
+          'view-receiving-report': 'Receiving Report',
+          'view-issuance': 'Material Issuance',
+          'view-on-hand-inventory': 'On-Hand Inventory'
+        };
+        window.showInventoryUnavailableAlert(nameMap[viewId] || 'Inventory & Warehouse');
         return false;
       }
       if (!requestPanelAccess(viewId)) return false;
