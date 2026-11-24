@@ -1810,25 +1810,23 @@
 
       try {
         const { data, error } = await supabase
-          .from('driver_requests')
-          .insert([
-            {
+        .from('driver_requests')
+        .insert([
+          {
+            requestor_name: f.get('requestor'),
+            company: f.get('company'),
+            department: f.get('department'),
+            destination: f.get('destination'),
+            purpose: f.get('purpose'),
+            request_date: f.get('date'),
+            passengers: parseInt(f.get('passengers')),
+            start_time: f.get('startTime') + ':00',
+            end_time: f.get('endTime') + ':00'
+          }
+        ])
+        .select();
 
-              requestor_name: f.get('requestor'),
-              company: f.get('company'),
-              department: f.get('department'),
-              destination: f.get('destination'),
-              purpose: f.get('purpose'),
-              request_date: f.get('date'),
-              passengers: parseInt(f.get('passengers')),
-              start_time: f.get('startTime') + ':00',
-              end_time: f.get('endTime') + ':00'
-
-            }
-          ])
-          .select();
-
-        if (error) throw error;
+      if (error) throw error;
 
         // Insert notification
         try {
