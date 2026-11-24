@@ -6859,30 +6859,22 @@
             </div>
           </div>
 
-          <form id="adminFacilityBookingForm" novalidate
-            onsubmit="event.preventDefault(); submitAdminFacilityBooking(event);">
+          <form id="adminFacilityBookingForm" novalidate onsubmit="event.preventDefault(); submitAdminFacilityBooking(event);">
             <!-- 3-Column Input Grid -->
-            <div
-              style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:18px; margin-bottom:20px;">
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:18px; margin-bottom:20px;">
               <!-- Row 1: Shared -->
               <div>
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-calendar-day" style="color:var(--accent); margin-right:4px;"></i> Date <span
-                    style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-calendar-day" style="color:var(--accent); margin-right:4px;"></i> Date <span style="color:#ef4444;">*</span>
                 </label>
-                <input type="date" id="fbDate" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <input type="date" id="fbDate" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
               <div>
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:4px;"></i> Request Type /
-                  Facility <span style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-layer-group" style="color:var(--accent); margin-right:4px;"></i> Request Type / Facility <span style="color:#ef4444;">*</span>
                 </label>
-                <select id="fbFacilityType" required onchange="handleFacilityTypeChange()"
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <select id="fbFacilityType" required onchange="handleFacilityTypeChange()" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
                   <option value="conference_requests" selected>Conference Room</option>
                   <option value="function_requests">Function Hall</option>
                   <option value="parking_requests">Parking Slot</option>
@@ -6890,13 +6882,10 @@
               </div>
 
               <div>
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-landmark" style="color:var(--accent); margin-right:4px;"></i> Company <span
-                    style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-landmark" style="color:var(--accent); margin-right:4px;"></i> Company <span style="color:#ef4444;">*</span>
                 </label>
-                <select id="fbCompany" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <select id="fbCompany" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
                   <option value="" disabled selected>-- Select Company --</option>
                   <option value="RBI">R-II Builders, Inc. (RBI)</option>
                   <option value="RMRCI">R-II Metro Rail Transport Services, Inc. (RMRCI)</option>
@@ -6908,13 +6897,10 @@
 
               <!-- Row 2: Shared -->
               <div>
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-users-gear" style="color:var(--accent); margin-right:4px;"></i> Department <span
-                    style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-users-gear" style="color:var(--accent); margin-right:4px;"></i> Department <span style="color:#ef4444;">*</span>
                 </label>
-                <select id="fbDepartment" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <select id="fbDepartment" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
                   <option value="" disabled selected>-- Select Department --</option>
                   <option value="Admin">Admin</option>
                   <option value="HR">HR</option>
@@ -6933,144 +6919,97 @@
               </div>
 
               <div>
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-user-tie" style="color:var(--accent); margin-right:4px;"></i> Requestor Name
-                  <span style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-user-tie" style="color:var(--accent); margin-right:4px;"></i> Requestor Name <span style="color:#ef4444;">*</span>
                 </label>
-                <input type="text" id="fbRequestor" placeholder="Enter your name" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <input type="text" id="fbRequestor" placeholder="Enter your name" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
               <div>
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-envelope" style="color:var(--accent); margin-right:4px;"></i> Email Address
-                  <span style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-envelope" style="color:var(--accent); margin-right:4px;"></i> Email Address <span style="color:#ef4444;">*</span>
                 </label>
-                <input type="email" id="fbEmail" placeholder="Enter email address" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <input type="email" id="fbEmail" placeholder="Enter email address" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
-              <!-- Row 3 Col 1: Shared Start Time -->
+              <!-- Row 3: Column 1 - Shared Start Time -->
               <div>
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-regular fa-clock" style="color:var(--accent); margin-right:4px;"></i> Start Time <span
-                    style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-regular fa-clock" style="color:var(--accent); margin-right:4px;"></i> Start Time <span style="color:#ef4444;">*</span>
                 </label>
-                <input type="time" id="fbStartTime" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <input type="time" id="fbStartTime" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
-              <!-- Row 3 Option A: Room Fields (Conference Room / Function Hall) -->
+              <!-- Room Fields (Conference Room / Function Hall) -->
               <div class="fb-room-field">
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-heading" style="color:var(--accent); margin-right:4px;"></i> Event Name <span <i
-                    class="fa-solid fa-hourglass-end" style="color:var(--accent); margin-right:4px;"></i> Est. End Time
-                    <span style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-hourglass-end" style="color:var(--accent); margin-right:4px;"></i> Est. End Time <span style="color:#ef4444;">*</span>
                 </label>
-                <input type="text" id="fbTitle" placeholder="Enter Event title" required <input type="time"
-                  id="fbEndTime" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <input type="time" id="fbEndTime" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
               <div class="fb-room-field">
-                <label
-                  style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                  <i class="fa-solid fa-users" style="color:var(--accent); margin-right:4px;"></i> No. of Participants
-                  <span style="color:#ef4444;">*</span>
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-users" style="color:var(--accent); margin-right:4px;"></i> No. of Participants <span style="color:#ef4444;">*</span>
                 </label>
-                <input type="number" id="fbParticipants" min="1" placeholder="e.g. 10" required
-                  style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+                <input type="number" id="fbParticipants" min="1" placeholder="e.g. 10" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
               </div>
 
-              <div class="fb-room-field">
-                <div class="fb-room-field" style="grid-column: 1 / -1;">
-                  <label
-                    style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                    <i class="fa-solid fa-hourglass-end" style="color:var(--accent); margin-right:4px;"></i> Est. End
-                    Time <span <i class="fa-solid fa-heading" style="color:var(--accent); margin-right:4px;"></i> Event
-                      Name <span style="color:#ef4444;">*</span>
-                  </label>
-                  <input type="time" id="fbEndTime" required <input type="text" id="fbTitle"
-                    placeholder="Enter Event title" required
-                    style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
-                </div>
+              <div class="fb-room-field" style="grid-column: 1 / -1;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-heading" style="color:var(--accent); margin-right:4px;"></i> Event Name <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbTitle" placeholder="Enter Event title" required style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
 
-                <!-- Row 3 Option B: Parking Fields (Parking Slot) -->
-                <div class="fb-park-field" style="display: none;">
-                  <label
-                    style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                    <i class="fa-solid fa-id-card-clip" style="color:var(--accent); margin-right:4px;"></i> Visitor Name
-                    <span <i class="fa-solid fa-car-side" style="color:var(--accent); margin-right:4px;"></i> Plate
-                      Number <span style="color:#ef4444;">*</span>
-                  </label>
-                  <input type="text" id="fbVisitor" placeholder="Enter visitor name" <input type="text" id="fbPlate"
-                    placeholder="e.g. ABC-1234"
-                    style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
-                </div>
+              <!-- Parking Fields (Parking Slot) -->
+              <div class="fb-park-field" style="display: none;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-car-side" style="color:var(--accent); margin-right:4px;"></i> Plate Number <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbPlate" placeholder="e.g. ABC-1234" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
 
-                <div class="fb-park-field" style="display: none;">
-                  <label
-                    style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                    <i class="fa-solid fa-car-side" style="color:var(--accent); margin-right:4px;"></i> Plate Number
-                    <span <i class="fa-solid fa-user-check" style="color:var(--accent); margin-right:4px;"></i> Person
-                      to Visit <span style="color:#ef4444;">*</span>
-                  </label>
-                  <input type="text" id="fbPlate" placeholder="e.g. ABC-1234" <input type="text" id="fbPersonToVisit"
-                    placeholder="Enter person to visit"
-                    style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
-                </div>
+              <div class="fb-park-field" style="display: none;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-id-card-clip" style="color:var(--accent); margin-right:4px;"></i> Visitor Name <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbVisitor" placeholder="Enter visitor name" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
 
-                <div class="fb-park-field" style="display: none;">
-                  <div class="fb-park-field" style="display: none; grid-column: 1 / -1;">
-                    <label
-                      style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
-                      <i class="fa-solid fa-user-check" style="color:var(--accent); margin-right:4px;"></i> Person to
-                      Visit <span <i class="fa-solid fa-id-card-clip"
-                        style="color:var(--accent); margin-right:4px;"></i> Visitor Name <span
-                          style="color:#ef4444;">*</span>
-                    </label>
-                    <input type="text" id="fbPersonToVisit" placeholder="Enter person to visit" <input type="text"
-                      id="fbVisitor" placeholder="Enter visitor name"
-                      style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
-                  </div>
-                </div>
+              <div class="fb-park-field" style="display: none; grid-column: 1 / -1;">
+                <label style="display:block; font-size:0.78rem; font-weight:800; color:#334155; margin-bottom:5px; text-transform:uppercase;">
+                  <i class="fa-solid fa-user-check" style="color:var(--accent); margin-right:4px;"></i> Person to Visit <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="text" id="fbPersonToVisit" placeholder="Enter person to visit" style="width:100%; padding:9px 12px; border-radius:6px; border:1px solid var(--border); font-size:0.85rem; font-weight:700; color:var(--primary); background:white; box-sizing:border-box;">
+              </div>
+            </div>
 
-                <!-- Bottom Summary / Action Bar -->
-                <div class="rr-summary-bar"
-                  style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:16px 20px; flex-wrap:wrap; gap:16px;">
-                  <div style="display:flex; align-items:center; gap:12px;">
-                    <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-weight:700;">
-                      <i class="fa-solid fa-bolt" style="margin-right:4px;"></i> Direct Admin Entry
-                    </span>
-                    <span id="fbBadgeNote" style="font-size:0.78rem; color:var(--text-muted);">
-                      Directly reserves room, updates calendar vacancy, and marks status as Approved.
-                    </span>
-                  </div>
-                  <div style="display:flex; gap:10px;">
-                    <button type="button" class="btn-primary" onclick="resetAdminFacilityBookingForm()"
-                      style="background:#64748b; padding:10px 18px; font-size:0.85rem; border-radius:6px; cursor:pointer;">
-                      <i class="fa-solid fa-rotate-left"></i> Reset
-                    </button>
-                    <button type="button" class="btn-primary" id="btnRecordFacilityBooking"
-                      onclick="submitAdminFacilityBooking(event)"
-                      style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a; border-radius:6px; cursor:pointer;">
-                      <i class="fa-solid fa-floppy-disk"></i> Record
-                    </button>
-                  </div>
-                </div>
+            <!-- Bottom Summary / Action Bar -->
+            <div class="rr-summary-bar" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:16px 20px; flex-wrap:wrap; gap:16px;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-weight:700;">
+                  <i class="fa-solid fa-bolt" style="margin-right:4px;"></i> Direct Admin Entry
+                </span>
+                <span id="fbBadgeNote" style="font-size:0.78rem; color:var(--text-muted);">
+                  Directly reserves room, updates calendar vacancy, and marks status as Approved.
+                </span>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-primary" onclick="resetAdminFacilityBookingForm()"
+                  style="background:#64748b; padding:10px 18px; font-size:0.85rem; border-radius:6px; cursor:pointer;">
+                  <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+                <button type="button" class="btn-primary" id="btnRecordFacilityBooking"
+                  onclick="submitAdminFacilityBooking(event)"
+                  style="padding:10px 24px; font-size:0.85rem; font-weight:700; background:#16a34a; border-radius:6px; cursor:pointer;">
+                  <i class="fa-solid fa-floppy-disk"></i> Record
+                </button>
+              </div>
+            </div>
           </form>
         </div>
-        <i class="fa-solid fa-floppy-disk"></i> Record
-        </button>
       </div>
-    </div>
-    </form>
-    </div>
-    </div>
 
     <!-- FACILITY RESERVATION APPROVAL VIEW -->
     <div id="view-calendar" class="view-section">
