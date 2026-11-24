@@ -7032,7 +7032,7 @@
                   <i class="fa-solid fa-bolt" style="margin-right:4px;"></i> Direct Admin Entry
                 </span>
                 <span id="fbBadgeNote" style="font-size:0.78rem; color:var(--text-muted);">
-                  Directly reserves room, updates calendar vacancy, and marks status as Approved.
+                  Submits request directly to Pending queue for dispatcher review.
                 </span>
               </div>
               <div style="display:flex; gap:10px;">
@@ -10378,7 +10378,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           car,
           priority_level,
           change_reason,
-          status: 'Approved',
+          status: 'Pending',
           updated_at: new Date().toISOString()
         };
 
@@ -10397,12 +10397,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             console.warn('Supabase update warning, trying fallback', error);
             const { error: fbErr } = await supabase
               .from('vehicle_requests')
-              .update({ driver, car, status: 'Approved', updated_at: new Date().toISOString() })
+              .update({ driver, car, status: 'Pending', updated_at: new Date().toISOString() })
               .eq('id', requestId);
             if (fbErr) {
               await supabase
                 .from('vehicle_requests')
-                .update({ status: 'Approved' })
+                .update({ status: 'Pending' })
                 .eq('id', requestId);
             }
           }
@@ -10618,7 +10618,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         driver,
         car,
         priority_level: priority || 'Normal',
-        status: 'Approved',
+        status: 'Pending',
         updated_at: new Date().toISOString()
       };
 
@@ -10636,7 +10636,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         if (error) {
           console.warn('Vehicle update error, attempting fallback update:', error);
           const fallbackUpdates = {
-            status: 'Approved',
+            status: 'Pending',
             driver,
             car,
             updated_at: new Date().toISOString()
@@ -10649,7 +10649,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           if (fbErr) {
             await supabase
               .from('vehicle_requests')
-              .update({ status: 'Approved' })
+              .update({ status: 'Pending' })
               .eq('id', requestId);
           }
         }
@@ -11523,15 +11523,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
       if (badgeNote) {
         if (isParking) {
-          badgeNote.textContent = 'Directly reserves parking slot, logs visitor & vehicle, and marks status as Approved.';
+          badgeNote.textContent = 'Submits parking slot request to Pending table for dispatcher review.';
         } else if (isVehicle) {
-          badgeNote.textContent = 'Directly reserves vehicle dispatch, logs destination & purpose, and marks status as Approved.';
+          badgeNote.textContent = 'Submits vehicle request to Vehicle Dispatch Board (Pending) for driver and car assignment.';
         } else if (isZoom) {
-          badgeNote.textContent = 'Directly reserves Zoom meeting, updates calendar schedule, and marks status as Approved.';
+          badgeNote.textContent = 'Submits Zoom meeting request to Pending table for dispatcher review.';
         } else if (isTeams) {
-          badgeNote.textContent = 'Directly reserves MS Teams meeting, logs meeting link, and marks status as Approved.';
+          badgeNote.textContent = 'Submits MS Teams meeting request to Pending table for dispatcher review.';
         } else {
-          badgeNote.textContent = 'Directly reserves room, updates calendar vacancy, and marks status as Approved.';
+          badgeNote.textContent = 'Submits room reservation to Pending table for dispatcher review.';
         }
       }
     };
@@ -11552,6 +11552,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
     window.submitAdminFacilityBooking = async function (e) {
       if (e && e.preventDefault) e.preventDefault();
+
+      const { data: { user } } = await supabase.auth.getUser();
 
       const dateEl = document.getElementById('fbDate');
       const facilityEl = document.getElementById('fbFacilityType');
@@ -11618,6 +11620,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
         facilityName = 'Parking Slot';
         recordPayload = {
+          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11626,7 +11629,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           request_date: dateVal,
           request_time: formattedStart,
           visit: visitVal,
-          status: 'Approved'
+          status: 'Pending'
         };
       } else if (isVehicle) {
         const destVal = destEl ? destEl.value.trim() : '';
@@ -11648,6 +11651,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         facilityName = 'Vehicle Service';
 
         recordPayload = {
+          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11657,7 +11661,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           request_date: dateVal,
           start_time: formattedStart,
           end_time: formattedEnd,
-          status: 'Approved'
+          status: 'Pending'
         };
       } else if (isZoom) {
         const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
@@ -11678,6 +11682,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         facilityName = 'Zoom Meeting';
 
         recordPayload = {
+          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11688,7 +11693,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           end_time: formattedEnd,
           access_details: null,
           notes: null,
-          status: 'Approved'
+          status: 'Pending'
         };
       } else if (isTeams) {
         const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
@@ -11710,6 +11715,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         facilityName = 'MS Teams Meeting';
 
         recordPayload = {
+          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11720,7 +11726,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           end_time: formattedEnd,
           access_details: teamsLinkVal,
           notes: null,
-          status: 'Approved'
+          status: 'Pending'
         };
       } else {
         const paxVal = paxEl ? parseInt(paxEl.value, 10) : NaN;
@@ -11741,6 +11747,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         facilityName = targetTable === 'function_requests' ? 'Function Hall' : 'Conference Room';
 
         recordPayload = {
+          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11749,7 +11756,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           request_date: dateVal,
           start_time: formattedStart,
           end_time: formattedEnd,
-          status: 'Approved'
+          status: 'Pending'
         };
       }
 
@@ -11829,10 +11836,17 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         }
 
         if (isVehicle) {
-          // Send to Vehicle Dispatch Board
-          alert('Service Vehicle reservation directly recorded and sent to Vehicle Dispatch Board!');
-          window.resetAdminFacilityBookingForm();
-
+          // Send to Vehicle Dispatch Board (Pending panel)
+          if (typeof window.filterVehicleDispatch === 'function') {
+            window.filterVehicleDispatch('Pending');
+          }
+          const vehDateFilter = document.getElementById('vehicleDispatchDateFilter');
+          if (vehDateFilter) {
+            vehDateFilter.value = '';
+          }
+          if (typeof vehicleDispatchDateFilter !== 'undefined') {
+            vehicleDispatchDateFilter = '';
+          }
           if (typeof loadVehicleDispatchBoard === 'function') {
             await loadVehicleDispatchBoard();
           }
@@ -11845,13 +11859,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             }
           }
 
-          const vehDateFilter = document.getElementById('vehicleDispatchDateFilter');
-          if (vehDateFilter) {
-            vehDateFilter.value = dateVal;
-            if (typeof filterVehicleDispatchByDate === 'function') {
-              filterVehicleDispatchByDate(dateVal);
-            }
-          }
+          alert('Service Vehicle request submitted and sent to Vehicle Dispatch Board (Pending)! Dispatcher will review and assign driver/vehicle.');
+          window.resetAdminFacilityBookingForm();
 
           if (typeof window.switchView === 'function') {
             window.switchView('view-vehicle');
@@ -11860,6 +11869,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           // Send to Facility Reservation Panel (Conference Room, Function Hall, Parking, MS Teams, Zoom)
           if (!window._allRequests) window._allRequests = [];
           window._allRequests.unshift(normalizedItem);
+
+          // Switch filter pill to Pending so dispatcher sees the new request right away
+          if (typeof window.filterFacilityRequests === 'function') {
+            window.filterFacilityRequests('Pending');
+          }
 
           // Update schedule date filter to this date so user can see it right away
           const scheduleDateInput = document.getElementById('facilityScheduleDate');
@@ -11878,8 +11892,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             loadFacilityRequests();
           }
 
-          alert(`${facilityName} reservation directly recorded and sent to Facility Reservation Panel!`);
+          alert(`${facilityName} request submitted and sent to Facility Pending table! Dispatcher will review and approve.`);
           window.resetAdminFacilityBookingForm();
+
           if (typeof window.switchView === 'function') {
             window.switchView('view-calendar');
           }
@@ -11895,8 +11910,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
     };
 
-      // ==========================================
-      // RECEIVING REPORT (RR) MANAGEMENT ENGINE
+    // ==========================================
+    // RECEIVING REPORT (RR) MANAGEMENT ENGINE
       // ==========================================
       let receivingReportsData = [];
 
