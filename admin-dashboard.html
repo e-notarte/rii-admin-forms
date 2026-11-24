@@ -4371,40 +4371,43 @@
       </a>
     </nav>
 
-    <div class="nav-label" style="display:flex; justify-content:space-between; align-items:center;">
-      <span>FINANCE</span>
-      <span
-        style="font-size:0.6rem; padding:1px 6px; border-radius:4px; background:#fee2e2; color:#b91c1c; font-weight:700; letter-spacing:0.5px;">UNAVAILABLE</span>
+    <!-- FINANCE PANEL (HIDDEN) -->
+    <div id="sidebar-section-finance" style="display: none;">
+      <div class="nav-label" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>FINANCE</span>
+        <span
+          style="font-size:0.6rem; padding:1px 6px; border-radius:4px; background:#fee2e2; color:#b91c1c; font-weight:700; letter-spacing:0.5px;">UNAVAILABLE</span>
+      </div>
+      <nav>
+        <a href="#" class="nav-link disabled-finance-link"
+          onclick="return showFinanceUnavailableAlert('Statement of Accounts');" style="opacity:0.55; cursor:not-allowed;"
+          title="Statement of Accounts is currently unavailable">
+          <span class="nav-icon-wrapper">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+          </span>
+          <span class="nav-title">Statement of Accounts</span>
+          <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
+        </a>
+        <a href="#" class="nav-link disabled-finance-link"
+          onclick="return showFinanceUnavailableAlert('Budget Monitoring');" style="opacity:0.55; cursor:not-allowed;"
+          title="Budget Monitoring is currently unavailable">
+          <span class="nav-icon-wrapper">
+            <i class="fa-solid fa-chart-line"></i>
+          </span>
+          <span class="nav-title">Budget Monitoring</span>
+          <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
+        </a>
+      </nav>
     </div>
-    <nav>
-      <a href="#" class="nav-link disabled-finance-link"
-        onclick="return showFinanceUnavailableAlert('Statement of Accounts');" style="opacity:0.55; cursor:not-allowed;"
-        title="Statement of Accounts is currently unavailable">
-        <span class="nav-icon-wrapper">
-          <i class="fa-solid fa-file-invoice-dollar"></i>
-        </span>
-        <span class="nav-title">Statement of Accounts</span>
-        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
-      </a>
-      <a href="#" class="nav-link disabled-finance-link"
-        onclick="return showFinanceUnavailableAlert('Budget Monitoring');" style="opacity:0.55; cursor:not-allowed;"
-        title="Budget Monitoring is currently unavailable">
-        <span class="nav-icon-wrapper">
-          <i class="fa-solid fa-chart-line"></i>
-        </span>
-        <span class="nav-title">Budget Monitoring</span>
-        <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
-      </a>
-    </nav>
 
-    <div class="nav-label">INVENTORY &amp; WAREHOUSE</div>
-    <div class="nav-label" style="display:flex; justify-content:space-between; align-items:center;">
-      <span>INVENTORY &amp; WAREHOUSE</span>
-      <span
-        style="font-size:0.6rem; padding:1px 6px; border-radius:4px; background:#fee2e2; color:#b91c1c; font-weight:700; letter-spacing:0.5px;">UNAVAILABLE</span>
-    </div>
-    <nav>
-      <a href="#" class="nav-link" data-supplies-requests onclick="return switchView('view-supplies', this)">
+    <!-- INVENTORY & WAREHOUSE PANEL (HIDDEN) -->
+    <div id="sidebar-section-inventory" style="display: none;">
+      <div class="nav-label" style="display:flex; justify-content:space-between; align-items:center;">
+        <span>INVENTORY &amp; WAREHOUSE</span>
+        <span
+          style="font-size:0.6rem; padding:1px 6px; border-radius:4px; background:#fee2e2; color:#b91c1c; font-weight:700; letter-spacing:0.5px;">UNAVAILABLE</span>
+      </div>
+      <nav>
         <a href="#" class="nav-link disabled-inventory-link"
           onclick="return showInventoryUnavailableAlert('Supplies Request');" style="opacity:0.55; cursor:not-allowed;"
           title="Supplies Request is currently unavailable">
@@ -4415,48 +4418,44 @@
           <span class="nav-title">Supplies Request</span>
           <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
         </a>
-        <a href="#" class="nav-link" data-purchase-order onclick="return switchView('view-purchase-order', this)">
-          <a href="#" class="nav-link disabled-inventory-link"
-            onclick="return showInventoryUnavailableAlert('Purchase Order');" style="opacity:0.55; cursor:not-allowed;"
-            title="Purchase Order is currently unavailable">
-            <span class="nav-icon-wrapper">
-              <i class="fa-solid fa-file-invoice"></i>
-            </span>
-            <span class="nav-title">Purchase Order</span>
-            <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
-          </a>
-          <a href="#" class="nav-link" data-receiving-report onclick="return switchView('view-receiving-report', this)">
-            <a href="#" class="nav-link disabled-inventory-link"
-              onclick="return showInventoryUnavailableAlert('Receiving Report');"
-              style="opacity:0.55; cursor:not-allowed;" title="Receiving Report is currently unavailable">
-              <span class="nav-icon-wrapper">
-                <i class="fa-solid fa-truck-ramp-box"></i>
-              </span>
-              <span class="nav-title">Receiving Report</span>
-              <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
-            </a>
-            <a href="#" class="nav-link" data-material-issuance onclick="return switchView('view-issuance', this)">
-              <a href="#" class="nav-link disabled-inventory-link"
-                onclick="return showInventoryUnavailableAlert('Material Issuance');"
-                style="opacity:0.55; cursor:not-allowed;" title="Material Issuance is currently unavailable">
-                <span class="nav-icon-wrapper">
-                  <i class="fa-solid fa-hand-holding-hand"></i>
-                </span>
-                <span class="nav-title">Material Issuance</span>
-                <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
-              </a>
-              <a href="#" class="nav-link" data-on-hand-inventory
-                onclick="return switchView('view-on-hand-inventory', this)">
-                <a href="#" class="nav-link disabled-inventory-link"
-                  onclick="return showInventoryUnavailableAlert('On-Hand Inventory');"
-                  style="opacity:0.55; cursor:not-allowed;" title="On-Hand Inventory is currently unavailable">
-                  <span class="nav-icon-wrapper">
-                    <i class="fa-solid fa-warehouse"></i>
-                  </span>
-                  <span class="nav-title">On-Hand Inventory</span>
-                  <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
-                </a>
-    </nav>
+        <a href="#" class="nav-link disabled-inventory-link"
+          onclick="return showInventoryUnavailableAlert('Purchase Order');" style="opacity:0.55; cursor:not-allowed;"
+          title="Purchase Order is currently unavailable">
+          <span class="nav-icon-wrapper">
+            <i class="fa-solid fa-file-invoice"></i>
+          </span>
+          <span class="nav-title">Purchase Order</span>
+          <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
+        </a>
+        <a href="#" class="nav-link disabled-inventory-link"
+          onclick="return showInventoryUnavailableAlert('Receiving Report');"
+          style="opacity:0.55; cursor:not-allowed;" title="Receiving Report is currently unavailable">
+          <span class="nav-icon-wrapper">
+            <i class="fa-solid fa-truck-ramp-box"></i>
+          </span>
+          <span class="nav-title">Receiving Report</span>
+          <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
+        </a>
+        <a href="#" class="nav-link disabled-inventory-link"
+          onclick="return showInventoryUnavailableAlert('Material Issuance');"
+          style="opacity:0.55; cursor:not-allowed;" title="Material Issuance is currently unavailable">
+          <span class="nav-icon-wrapper">
+            <i class="fa-solid fa-hand-holding-hand"></i>
+          </span>
+          <span class="nav-title">Material Issuance</span>
+          <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
+        </a>
+        <a href="#" class="nav-link disabled-inventory-link"
+          onclick="return showInventoryUnavailableAlert('On-Hand Inventory');"
+          style="opacity:0.55; cursor:not-allowed;" title="On-Hand Inventory is currently unavailable">
+          <span class="nav-icon-wrapper">
+            <i class="fa-solid fa-warehouse"></i>
+          </span>
+          <span class="nav-title">On-Hand Inventory</span>
+          <i class="fa-solid fa-lock" style="font-size:0.7rem; color:#94a3b8; margin-left:auto;"></i>
+        </a>
+      </nav>
+    </div>
 
     <div class="nav-label">FLEET MANAGEMENT</div>
     <nav>
