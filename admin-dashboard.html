@@ -4371,9 +4371,9 @@
       </a>
       <a href="#" class="nav-link" data-lessees onclick="return switchView('view-lessees', this)">
         <span class="nav-icon-wrapper">
-          <i class="fa-solid fa-address-book"></i>
+          <i class="fa-solid fa-database"></i>
         </span>
-        <span class="nav-title">Directory Register</span>
+        <span class="nav-title">Data Registry</span>
       </a>
     </nav>
 
@@ -6408,23 +6408,32 @@
         </div>
       </div>
 
-      <!-- DIRECTORY REGISTER VIEW -->
+      <!-- DATA REGISTRY VIEW -->
       <div id="view-lessees" class="view-section">
+        <!-- Header Banner -->
         <div class="data-card" style="margin-bottom: 24px; padding: 24px;">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
             <div>
               <h2
                 style="margin:0; font-size:1.35rem; color:var(--primary); display:flex; align-items:center; gap:10px;">
-                <i class="fa-solid fa-address-book" style="color:var(--accent);"></i> Directory Register
+                <i class="fa-solid fa-database" style="color:var(--accent);"></i> Data Registry
               </h2>
               <span style="font-size:0.82rem; color:var(--text-muted);">
-                Central register for lessees, accounting references, organizational units, assets, and suppliers.
+                Central master registry for Companies, Departments, Lessees, Projects, Suppliers, and reference codes.
               </span>
             </div>
             <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <button type="button" class="btn-primary" onclick="openDirectoryRegisterForm('Company')"
+                style="font-size:0.82rem; padding:8px 16px; background:#d97706; border-radius:6px; font-weight:700;">
+                <i class="fa-solid fa-landmark"></i> Add Company
+              </button>
+              <button type="button" class="btn-primary" onclick="openDirectoryRegisterForm('Department')"
+                style="font-size:0.82rem; padding:8px 16px; background:#4f46e5; border-radius:6px; font-weight:700;">
+                <i class="fa-solid fa-building"></i> Add Department
+              </button>
               <button type="button" class="btn-primary" onclick="openDirectoryRegisterForm()"
                 style="font-size:0.82rem; padding:8px 16px; background:#16a34a; border-radius:6px; font-weight:700;">
-                <i class="fa-solid fa-plus"></i> Add Directory Entry
+                <i class="fa-solid fa-plus"></i> Add Entry
               </button>
               <button type="button" class="btn-primary" onclick="exportDirectoryRegisterCSV()"
                 style="font-size:0.82rem; padding:8px 16px; background:#0284c7; border-radius:6px; font-weight:700;">
@@ -6434,34 +6443,75 @@
           </div>
         </div>
 
-        <div class="data-card" id="directoryRegisterFormCard" style="display:none; margin-bottom:24px; padding:24px;">
-          <h3 style="margin:0 0 16px; color:var(--primary);">Register Directory Entry</h3>
+        <!-- Add/Edit Entry Form Card -->
+        <div class="data-card" id="directoryRegisterFormCard" style="display:none; margin-bottom:24px; padding:24px; border:2px solid #e2e8f0;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <h3 id="directoryFormTitle" style="margin:0; color:var(--primary); font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+              <i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Register Data Entry
+            </h3>
+            <button type="button" onclick="closeDirectoryRegisterForm()" style="background:none; border:none; color:#64748b; font-size:1.1rem; cursor:pointer;" title="Close form">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
           <form onsubmit="submitDirectoryRegisterEntry(event)"
             style="display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;">
-            <label><span>Directory Type *</span><select id="directoryType" required>
+            <label><span>Registry Type *</span>
+              <select id="directoryType" required onchange="handleDirectoryTypeFormChange()">
                 <option value="">Select type</option>
-                <option>Lessee</option>
-                <option>Item Code</option>
-                <option>Expense Account</option>
-                <option>Sub Account</option>
-                <option>Project</option>
-                <option>Department</option>
-                <option>Business Unit</option>
-                <option>Asset Code</option>
-                <option>Supplier</option>
-              </select></label>
-            <label><span>Code / Reference *</span><input id="directoryCode" required placeholder="e.g. SUP-001"></label>
-            <label><span>Name / Description *</span><input id="directoryName" required
-                placeholder="Entry name or description"></label>
-            <label style="grid-column:span 2;"><span>Additional Details</span><input id="directoryDetails"
-                placeholder="Optional notes, location, contact, or classification"></label>
-            <div style="display:flex; gap:8px; align-items:end;"><button type="submit" class="btn-primary"
-                id="btnSaveDirectoryEntry" style="background:#16a34a;">Save Entry</button><button type="button"
-                class="btn-secondary" onclick="closeDirectoryRegisterForm()">Cancel</button></div>
+                <option value="Company">Company</option>
+                <option value="Department">Department</option>
+                <option value="Lessee">Lessee</option>
+                <option value="Project">Project</option>
+                <option value="Supplier">Supplier</option>
+                <option value="Item Code">Item Code</option>
+                <option value="Expense Account">Expense Account</option>
+                <option value="Sub Account">Sub Account</option>
+                <option value="Business Unit">Business Unit</option>
+                <option value="Asset Code">Asset Code</option>
+              </select>
+            </label>
+            <label><span id="lblDirectoryCode">Code / Acronym *</span><input id="directoryCode" required placeholder="e.g. RBI, ADMIN, SUP-001"></label>
+            <label><span id="lblDirectoryName">Name / Full Title *</span><input id="directoryName" required placeholder="e.g. R-II Builders, Inc."></label>
+            <label style="grid-column:span 2;"><span id="lblDirectoryDetails">Additional Details / Notes</span><input id="directoryDetails" placeholder="Optional notes, division, location, contact or email"></label>
+            <div style="display:flex; gap:8px; align-items:end;">
+              <button type="submit" class="btn-primary" id="btnSaveDirectoryEntry" style="background:#16a34a; font-weight:700;">
+                <i class="fa-solid fa-floppy-disk"></i> Save Entry
+              </button>
+              <button type="button" class="btn-secondary" onclick="closeDirectoryRegisterForm()">Cancel</button>
+            </div>
           </form>
         </div>
 
+        <!-- Master Registry Table & Filter Card -->
         <div class="data-card" style="padding: 24px;">
+          <!-- Quick Filter Tabs -->
+          <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; border-bottom:1px solid var(--border); padding-bottom:14px;">
+            <button type="button" class="registry-filter-tab active" data-type="ALL" onclick="setRegistryFilter('ALL', this)"
+              style="padding:6px 14px; border-radius:6px; border:1px solid #cbd5e1; background:var(--primary); color:white; font-size:0.8rem; font-weight:700; cursor:pointer;">
+              All Records <span id="regCountAll" style="background:rgba(255,255,255,0.25); padding:1px 6px; border-radius:10px; font-size:0.75rem; margin-left:4px;">0</span>
+            </button>
+            <button type="button" class="registry-filter-tab" data-type="Company" onclick="setRegistryFilter('Company', this)"
+              style="padding:6px 14px; border-radius:6px; border:1px solid #cbd5e1; background:white; color:#92400e; font-size:0.8rem; font-weight:700; cursor:pointer;">
+              <i class="fa-solid fa-landmark" style="margin-right:4px;"></i> Company <span id="regCountCompany" style="background:#fef3c7; color:#92400e; padding:1px 6px; border-radius:10px; font-size:0.75rem; margin-left:4px;">0</span>
+            </button>
+            <button type="button" class="registry-filter-tab" data-type="Department" onclick="setRegistryFilter('Department', this)"
+              style="padding:6px 14px; border-radius:6px; border:1px solid #cbd5e1; background:white; color:#3730a3; font-size:0.8rem; font-weight:700; cursor:pointer;">
+              <i class="fa-solid fa-building" style="margin-right:4px;"></i> Department <span id="regCountDepartment" style="background:#e0e7ff; color:#3730a3; padding:1px 6px; border-radius:10px; font-size:0.75rem; margin-left:4px;">0</span>
+            </button>
+            <button type="button" class="registry-filter-tab" data-type="Lessee" onclick="setRegistryFilter('Lessee', this)"
+              style="padding:6px 14px; border-radius:6px; border:1px solid #cbd5e1; background:white; color:#0369a1; font-size:0.8rem; font-weight:700; cursor:pointer;">
+              <i class="fa-solid fa-user-group" style="margin-right:4px;"></i> Lessee <span id="regCountLessee" style="background:#e0f2fe; color:#0369a1; padding:1px 6px; border-radius:10px; font-size:0.75rem; margin-left:4px;">0</span>
+            </button>
+            <button type="button" class="registry-filter-tab" data-type="Project" onclick="setRegistryFilter('Project', this)"
+              style="padding:6px 14px; border-radius:6px; border:1px solid #cbd5e1; background:white; color:#166534; font-size:0.8rem; font-weight:700; cursor:pointer;">
+              <i class="fa-solid fa-diagram-project" style="margin-right:4px;"></i> Project <span id="regCountProject" style="background:#dcfce7; color:#166534; padding:1px 6px; border-radius:10px; font-size:0.75rem; margin-left:4px;">0</span>
+            </button>
+            <button type="button" class="registry-filter-tab" data-type="Supplier" onclick="setRegistryFilter('Supplier', this)"
+              style="padding:6px 14px; border-radius:6px; border:1px solid #cbd5e1; background:white; color:#6b21a8; font-size:0.8rem; font-weight:700; cursor:pointer;">
+              <i class="fa-solid fa-truck" style="margin-right:4px;"></i> Supplier <span id="regCountSupplier" style="background:#f3e8ff; color:#6b21a8; padding:1px 6px; border-radius:10px; font-size:0.75rem; margin-left:4px;">0</span>
+            </button>
+          </div>
+
           <div
             style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
             <div class="search-box" style="margin:0; width:100%; max-width:380px;">
@@ -6470,18 +6520,19 @@
                 oninput="renderDirectoryRegister()">
             </div>
             <div style="display:flex; gap:10px; align-items:center;">
-              <select id="directoryTypeFilter" onchange="renderDirectoryRegister()"
+              <select id="directoryTypeFilter" onchange="handleTypeFilterDropdownChange()"
                 style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--primary); background:white;">
-                <option value="ALL">All Directory Types</option>
-                <option>Lessee</option>
-                <option>Item Code</option>
-                <option>Expense Account</option>
-                <option>Sub Account</option>
-                <option>Project</option>
-                <option>Department</option>
-                <option>Business Unit</option>
-                <option>Asset Code</option>
-                <option>Supplier</option>
+                <option value="ALL">All Registry Types</option>
+                <option value="Company">Company</option>
+                <option value="Department">Department</option>
+                <option value="Lessee">Lessee</option>
+                <option value="Project">Project</option>
+                <option value="Supplier">Supplier</option>
+                <option value="Item Code">Item Code</option>
+                <option value="Expense Account">Expense Account</option>
+                <option value="Sub Account">Sub Account</option>
+                <option value="Business Unit">Business Unit</option>
+                <option value="Asset Code">Asset Code</option>
               </select>
             </div>
           </div>
@@ -6490,7 +6541,7 @@
             <table class="dispatch-table" style="min-width: 1050px;">
               <thead>
                 <tr>
-                  <th style="width:170px;">Directory Type</th>
+                  <th style="width:170px;">Registry Type</th>
                   <th style="width:180px;">Code / Reference</th>
                   <th style="min-width:280px;">Name / Description</th>
                   <th style="min-width:340px;">Additional Details</th>
@@ -7307,7 +7358,7 @@
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
       },
       'view-lessees': {
-        name: 'Directory Register',
+        name: 'Data Registry',
         pin: '017',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Mark Edgar Tomagan', 'Building Maintenance Staff']
       },
@@ -11553,7 +11604,13 @@ This serves as your official electronic copy of the posted Requisition & Issue S
     window.submitAdminFacilityBooking = async function (e) {
       if (e && e.preventDefault) e.preventDefault();
 
-      const { data: { user } } = await supabase.auth.getUser();
+      let user = null;
+      try {
+        const authRes = await supabase.auth.getUser();
+        user = authRes?.data?.user || null;
+      } catch (authErr) {
+        console.warn('Could not retrieve auth user:', authErr);
+      }
 
       const dateEl = document.getElementById('fbDate');
       const facilityEl = document.getElementById('fbFacilityType');
@@ -11620,7 +11677,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
         facilityName = 'Parking Slot';
         recordPayload = {
-          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11648,7 +11704,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         }
 
         const formattedEnd = endVal.length === 5 ? (endVal + ':00') : endVal;
-        facilityName = 'Vehicle Service';
+        facilityName = 'Service Vehicle';
 
         recordPayload = {
           user_id: user?.id || null,
@@ -11682,7 +11738,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         facilityName = 'Zoom Meeting';
 
         recordPayload = {
-          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11715,7 +11770,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         facilityName = 'MS Teams Meeting';
 
         recordPayload = {
-          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11747,7 +11801,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         facilityName = targetTable === 'function_requests' ? 'Function Hall' : 'Conference Room';
 
         recordPayload = {
-          user_id: user?.id || null,
           requestor_name: reqVal,
           company: companyVal,
           department: deptVal,
@@ -11767,21 +11820,43 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       }
 
       try {
+        let insertPayload = { ...recordPayload };
+        if (emailVal) insertPayload.email = emailVal;
+
         let insertRes;
         try {
           insertRes = await supabase
             .from(targetTable)
-            .insert([{ ...recordPayload, email: emailVal }])
+            .insert([insertPayload])
             .select();
         } catch (subErr) {
           insertRes = { error: subErr };
         }
 
+        // If table doesn't have email column (PGRST204), retry without email
         if (insertRes.error && (insertRes.error.code === 'PGRST204' || String(insertRes.error.message || '').includes('email'))) {
-          insertRes = await supabase
-            .from(targetTable)
-            .insert([recordPayload])
-            .select();
+          delete insertPayload.email;
+          try {
+            insertRes = await supabase
+              .from(targetTable)
+              .insert([insertPayload])
+              .select();
+          } catch (retryErr) {
+            insertRes = { error: retryErr };
+          }
+        }
+
+        // If table doesn't have user_id column (PGRST204), retry without user_id
+        if (insertRes.error && (insertRes.error.code === 'PGRST204' || String(insertRes.error.message || '').includes('user_id'))) {
+          delete insertPayload.user_id;
+          try {
+            insertRes = await supabase
+              .from(targetTable)
+              .insert([insertPayload])
+              .select();
+          } catch (retryErr2) {
+            insertRes = { error: retryErr2 };
+          }
         }
 
         if (insertRes.error) throw insertRes.error;
@@ -15938,37 +16013,132 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       };
 
       // ==========================================
-      // DIRECTORY REGISTER
+      // DATA REGISTRY (DEPARTMENTS, COMPANIES, LESSEES, REFERENCES)
       // ==========================================
-      const DIRECTORY_TYPES = ['Lessee', 'Item Code', 'Expense Account', 'Sub Account', 'Project', 'Department', 'Business Unit', 'Asset Code', 'Supplier'];
+      const DIRECTORY_TYPES = ['Company', 'Department', 'Lessee', 'Project', 'Supplier', 'Item Code', 'Expense Account', 'Sub Account', 'Business Unit', 'Asset Code'];
       let directoryRegisterRecords = [];
+      let currentRegistryActiveFilter = 'ALL';
+
+      // Default master dataset seeds for immediate out-of-the-box availability
+      const DEFAULT_DATA_REGISTRY_ENTRIES = [
+        // Companies
+        { type: 'Company', code: 'RBI', name: 'R-II Builders, Inc.', details: 'Principal Construction & Infrastructure' },
+        { type: 'Company', code: 'RMRCI', name: 'R-II Metro Rail Transport Services, Inc.', details: 'Rail Transit & Transportation' },
+        { type: 'Company', code: 'PESC', name: 'Philippine Ecology Systems Corp.', details: 'Environmental & Waste Management' },
+        { type: 'Company', code: 'RLAND', name: 'R-Land Development Inc.', details: 'Real Estate & Property Development' },
+        { type: 'Company', code: 'FRHI', name: 'First R-II Holdings Inc.', details: 'Holding & Investment Management' },
+
+        // Departments
+        { type: 'Department', code: 'ADMIN', name: 'Admin', details: 'General Administration & Facilities Management' },
+        { type: 'Department', code: 'HR', name: 'HR', details: 'Human Resources & Talent Management' },
+        { type: 'Department', code: 'PURCHASING', name: 'Purchasing', details: 'Procurement & Logistics' },
+        { type: 'Department', code: 'BDG', name: 'BDG', details: 'Business Development Group' },
+        { type: 'Department', code: 'ENGINEERING', name: 'Engineering', details: 'Technical & Engineering Services' },
+        { type: 'Department', code: 'C&C', name: 'C&C', details: 'Contracts & Compliance' },
+        { type: 'Department', code: 'ACCOUNTING', name: 'Accounting', details: 'Financial Records & Reporting' },
+        { type: 'Department', code: 'FINANCE', name: 'Finance', details: 'Treasury & Financial Planning' },
+        { type: 'Department', code: 'EXECUTIVE', name: 'Executive', details: 'Office of the Executives' },
+        { type: 'Department', code: 'OPERATIONS', name: 'Operations', details: 'Field & Project Operations' },
+        { type: 'Department', code: 'CRMD', name: 'CRMD', details: 'Customer Relations Management Department' },
+        { type: 'Department', code: 'ESSH', name: 'ESSH', details: 'Environmental Safety & Health' },
+        { type: 'Department', code: 'OTP', name: 'OTP', details: 'Operations, Tracking & Planning' }
+      ];
 
       function initDirectoryRegister() {
         try {
           const stored = JSON.parse(localStorage.getItem('directory_register_records') || '[]');
           if (Array.isArray(stored)) directoryRegisterRecords = stored;
         } catch (error) {
-          console.warn('Error reading directory register:', error);
+          console.warn('Error reading data registry:', error);
           directoryRegisterRecords = [];
         }
-        if (directoryRegisterRecords.length === 0 && Array.isArray(allBuildingLessees)) {
-          directoryRegisterRecords = allBuildingLessees.map(lessee => ({
-            id: `lessee_${lessee.code}`,
-            type: 'Lessee',
-            code: lessee.code,
-            name: lessee.name,
-            details: `${lessee.spaces || ''}${lessee.contactPerson ? ` | Contact: ${lessee.contactPerson}` : ''}`,
-            created_at: new Date().toISOString()
-          }));
+
+        // Ensure default Companies and Departments exist
+        let changed = false;
+        DEFAULT_DATA_REGISTRY_ENTRIES.forEach(seed => {
+          const exists = directoryRegisterRecords.some(r => 
+            r.type.toLowerCase() === seed.type.toLowerCase() && 
+            (r.code.toLowerCase() === seed.code.toLowerCase() || r.name.toLowerCase() === seed.name.toLowerCase())
+          );
+          if (!exists) {
+            directoryRegisterRecords.push({
+              id: `reg_${seed.type.toLowerCase()}_${seed.code.toLowerCase()}_${Date.now()}`,
+              type: seed.type,
+              code: seed.code,
+              name: seed.name,
+              details: seed.details,
+              created_at: new Date().toISOString()
+            });
+            changed = true;
+          }
+        });
+
+        // Add lessees from building lessees if not present
+        if (Array.isArray(window.allBuildingLessees)) {
+          window.allBuildingLessees.forEach(lessee => {
+            const exists = directoryRegisterRecords.some(r => r.type === 'Lessee' && r.code.toLowerCase() === lessee.code.toLowerCase());
+            if (!exists) {
+              directoryRegisterRecords.push({
+                id: `lessee_${lessee.code}`,
+                type: 'Lessee',
+                code: lessee.code,
+                name: lessee.name,
+                details: `${lessee.spaces || ''}${lessee.contactPerson ? ` | Contact: ${lessee.contactPerson}` : ''}`,
+                created_at: new Date().toISOString()
+              });
+              changed = true;
+            }
+          });
+        }
+
+        if (changed) {
           saveDirectoryRegister();
         }
+
+        syncDataRegistryDropdowns();
       }
 
       function saveDirectoryRegister() {
         try {
           localStorage.setItem('directory_register_records', JSON.stringify(directoryRegisterRecords));
         } catch (error) {
-          console.warn('Error saving directory register:', error);
+          console.warn('Error saving data registry:', error);
+        }
+        syncDataRegistryDropdowns();
+      }
+
+      // Synchronize registered Companies and Departments into facility booking and transmittal dropdowns
+      function syncDataRegistryDropdowns() {
+        try {
+          const companies = directoryRegisterRecords.filter(r => r.type === 'Company');
+          const departments = directoryRegisterRecords.filter(r => r.type === 'Department');
+
+          // 1. Sync fbCompany dropdown
+          const fbCompany = document.getElementById('fbCompany');
+          if (fbCompany && companies.length) {
+            const currentVal = fbCompany.value;
+            let optHtml = '<option value="" disabled selected>-- Select Company --</option>';
+            companies.forEach(c => {
+              const label = c.name.includes(c.code) ? c.name : `${c.name} (${c.code})`;
+              optHtml += `<option value="${escapeBmHtml(c.code)}">${escapeBmHtml(label)}</option>`;
+            });
+            fbCompany.innerHTML = optHtml;
+            if (currentVal) fbCompany.value = currentVal;
+          }
+
+          // 2. Sync fbDepartment dropdown
+          const fbDept = document.getElementById('fbDepartment');
+          if (fbDept && departments.length) {
+            const currentDeptVal = fbDept.value;
+            let deptHtml = '<option value="" disabled selected>-- Select Department --</option>';
+            departments.forEach(d => {
+              deptHtml += `<option value="${escapeBmHtml(d.name || d.code)}">${escapeBmHtml(d.name || d.code)}</option>`;
+            });
+            fbDept.innerHTML = deptHtml;
+            if (currentDeptVal) fbDept.value = currentDeptVal;
+          }
+        } catch (err) {
+          console.warn('Error synchronizing registry dropdowns:', err);
         }
       }
 
@@ -15977,14 +16147,33 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         renderDirectoryRegister();
       };
 
+      document.addEventListener('DOMContentLoaded', () => {
+        initDirectoryRegister();
+      });
+
       let editingDirectoryId = null;
 
-      window.openDirectoryRegisterForm = function () {
+      window.openDirectoryRegisterForm = function (preselectedType) {
         const card = document.getElementById('directoryRegisterFormCard');
         if (card) card.style.display = 'block';
         const submitBtn = document.getElementById('btnSaveDirectoryEntry');
-        if (submitBtn) submitBtn.textContent = editingDirectoryId ? 'Update Entry' : 'Save Entry';
-        document.getElementById('directoryType')?.focus();
+        if (submitBtn) submitBtn.innerHTML = editingDirectoryId ? '<i class="fa-solid fa-floppy-disk"></i> Update Entry' : '<i class="fa-solid fa-plus"></i> Save Entry';
+        
+        const typeEl = document.getElementById('directoryType');
+        if (typeEl && preselectedType && !editingDirectoryId) {
+          typeEl.value = preselectedType;
+          handleDirectoryTypeFormChange();
+        }
+        
+        const formTitle = document.getElementById('directoryFormTitle');
+        if (formTitle) {
+          formTitle.innerHTML = editingDirectoryId 
+            ? '<i class="fa-solid fa-pen-to-square" style="color:var(--accent);"></i> Update Registry Entry' 
+            : `<i class="fa-solid fa-plus-circle" style="color:var(--accent);"></i> Register New ${preselectedType || 'Data'} Entry`;
+        }
+
+        document.getElementById('directoryCode')?.focus();
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       };
 
       window.closeDirectoryRegisterForm = function () {
@@ -15993,14 +16182,88 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         editingDirectoryId = null;
         document.querySelector('#directoryRegisterFormCard form')?.reset();
         const submitBtn = document.getElementById('btnSaveDirectoryEntry');
-        if (submitBtn) submitBtn.textContent = 'Save Entry';
+        if (submitBtn) submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Entry';
+      };
+
+      window.handleDirectoryTypeFormChange = function () {
+        const type = document.getElementById('directoryType')?.value || '';
+        const lblCode = document.getElementById('lblDirectoryCode');
+        const lblName = document.getElementById('lblDirectoryName');
+        const codeInput = document.getElementById('directoryCode');
+        const nameInput = document.getElementById('directoryName');
+
+        if (type === 'Company') {
+          if (lblCode) lblCode.textContent = 'Company Acronym / Code *';
+          if (lblName) lblName.textContent = 'Full Company Name *';
+          if (codeInput) codeInput.placeholder = 'e.g. RBI, RMRCI, PESC';
+          if (nameInput) nameInput.placeholder = 'e.g. R-II Builders, Inc.';
+        } else if (type === 'Department') {
+          if (lblCode) lblCode.textContent = 'Department Code *';
+          if (lblName) lblName.textContent = 'Department Name *';
+          if (codeInput) codeInput.placeholder = 'e.g. ADMIN, HR, PURCHASING';
+          if (nameInput) nameInput.placeholder = 'e.g. Administration, Human Resources';
+        } else {
+          if (lblCode) lblCode.textContent = 'Code / Reference *';
+          if (lblName) lblName.textContent = 'Name / Description *';
+          if (codeInput) codeInput.placeholder = 'e.g. SUP-001, PRJ-01';
+          if (nameInput) nameInput.placeholder = 'Entry name or description';
+        }
+      };
+
+      window.setRegistryFilter = function (type, btnEl) {
+        currentRegistryActiveFilter = type || 'ALL';
+        const filterSelect = document.getElementById('directoryTypeFilter');
+        if (filterSelect) filterSelect.value = currentRegistryActiveFilter;
+
+        document.querySelectorAll('.registry-filter-tab').forEach(tab => {
+          tab.classList.remove('active');
+          tab.style.background = 'white';
+          if (tab.dataset.type === 'Company') tab.style.color = '#92400e';
+          else if (tab.dataset.type === 'Department') tab.style.color = '#3730a3';
+          else if (tab.dataset.type === 'Lessee') tab.style.color = '#0369a1';
+          else if (tab.dataset.type === 'Project') tab.style.color = '#166534';
+          else if (tab.dataset.type === 'Supplier') tab.style.color = '#6b21a8';
+          else tab.style.color = 'var(--primary)';
+        });
+
+        if (btnEl) {
+          btnEl.classList.add('active');
+          btnEl.style.background = 'var(--primary)';
+          btnEl.style.color = 'white';
+        }
+
+        renderDirectoryRegister();
+      };
+
+      window.handleTypeFilterDropdownChange = function () {
+        const filterVal = document.getElementById('directoryTypeFilter')?.value || 'ALL';
+        currentRegistryActiveFilter = filterVal;
+        
+        document.querySelectorAll('.registry-filter-tab').forEach(tab => {
+          if (tab.dataset.type === filterVal) {
+            tab.classList.add('active');
+            tab.style.background = 'var(--primary)';
+            tab.style.color = 'white';
+          } else {
+            tab.classList.remove('active');
+            tab.style.background = 'white';
+            if (tab.dataset.type === 'Company') tab.style.color = '#92400e';
+            else if (tab.dataset.type === 'Department') tab.style.color = '#3730a3';
+            else if (tab.dataset.type === 'Lessee') tab.style.color = '#0369a1';
+            else if (tab.dataset.type === 'Project') tab.style.color = '#166534';
+            else if (tab.dataset.type === 'Supplier') tab.style.color = '#6b21a8';
+            else tab.style.color = 'var(--primary)';
+          }
+        });
+
+        renderDirectoryRegister();
       };
 
       window.editDirectoryEntry = function (id) {
         const record = directoryRegisterRecords.find(r => r.id === id);
         if (!record) return;
         editingDirectoryId = id;
-        openDirectoryRegisterForm();
+        openDirectoryRegisterForm(record.type);
         const typeEl = document.getElementById('directoryType');
         const codeEl = document.getElementById('directoryCode');
         const nameEl = document.getElementById('directoryName');
@@ -16008,10 +16271,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const submitBtn = document.getElementById('btnSaveDirectoryEntry');
 
         if (typeEl) typeEl.value = record.type;
+        handleDirectoryTypeFormChange();
         if (codeEl) codeEl.value = record.code;
         if (nameEl) nameEl.value = record.name;
         if (detailsEl) detailsEl.value = record.details || '';
-        if (submitBtn) submitBtn.textContent = 'Update Entry';
+        if (submitBtn) submitBtn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update Entry';
 
         const card = document.getElementById('directoryRegisterFormCard');
         if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -16020,7 +16284,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       window.deleteDirectoryEntry = function (id) {
         const record = directoryRegisterRecords.find(r => r.id === id);
         if (!record) return;
-        if (!confirm(`Are you sure you want to remove ${record.type} entry "${record.code} - ${record.name}" from the directory register?`)) {
+        if (!confirm(`Are you sure you want to remove ${record.type} entry "${record.code} - ${record.name}" from the Data Registry?`)) {
           return;
         }
         directoryRegisterRecords = directoryRegisterRecords.filter(r => r.id !== id);
@@ -16036,7 +16300,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const details = (document.getElementById('directoryDetails')?.value || '').trim();
 
         if (!DIRECTORY_TYPES.includes(type) || !code || !name) {
-          alert('Please select a directory type and complete the code and name fields.');
+          alert('Please select a registry type and complete the code and name fields.');
           return;
         }
 
@@ -16077,32 +16341,75 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       window.renderDirectoryRegister = function () {
         const tbody = document.getElementById('directoryRegisterTableBody');
         if (!tbody) return;
+
+        // Update counts on filter tabs
+        const countAll = directoryRegisterRecords.length;
+        const countCompany = directoryRegisterRecords.filter(r => r.type === 'Company').length;
+        const countDept = directoryRegisterRecords.filter(r => r.type === 'Department').length;
+        const countLessee = directoryRegisterRecords.filter(r => r.type === 'Lessee').length;
+        const countProject = directoryRegisterRecords.filter(r => r.type === 'Project').length;
+        const countSupplier = directoryRegisterRecords.filter(r => r.type === 'Supplier').length;
+
+        const elAll = document.getElementById('regCountAll');
+        const elComp = document.getElementById('regCountCompany');
+        const elDept = document.getElementById('regCountDepartment');
+        const elLes = document.getElementById('regCountLessee');
+        const elPrj = document.getElementById('regCountProject');
+        const elSup = document.getElementById('regCountSupplier');
+
+        if (elAll) elAll.textContent = countAll;
+        if (elComp) elComp.textContent = countCompany;
+        if (elDept) elDept.textContent = countDept;
+        if (elLes) elLes.textContent = countLessee;
+        if (elPrj) elPrj.textContent = countProject;
+        if (elSup) elSup.textContent = countSupplier;
+
         const search = (document.getElementById('directorySearchInput')?.value || '').toLowerCase().trim();
-        const typeFilter = document.getElementById('directoryTypeFilter')?.value || 'ALL';
+        const typeFilter = currentRegistryActiveFilter;
+        
         const filtered = directoryRegisterRecords.filter(record => {
           const matchesType = typeFilter === 'ALL' || record.type === typeFilter;
           const text = `${record.type} ${record.code} ${record.name} ${record.details || ''}`.toLowerCase();
           return matchesType && (!search || text.includes(search));
         });
+
+        // Type badge generator
+        function getRegistryTypeBadge(type) {
+          switch (type) {
+            case 'Company':
+              return `<span class="rr-badge" style="background:#fef3c7; color:#92400e; font-weight:700;"><i class="fa-solid fa-landmark" style="margin-right:4px;"></i>Company</span>`;
+            case 'Department':
+              return `<span class="rr-badge" style="background:#e0e7ff; color:#3730a3; font-weight:700;"><i class="fa-solid fa-building" style="margin-right:4px;"></i>Department</span>`;
+            case 'Lessee':
+              return `<span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-weight:700;"><i class="fa-solid fa-user-group" style="margin-right:4px;"></i>Lessee</span>`;
+            case 'Project':
+              return `<span class="rr-badge" style="background:#dcfce7; color:#166534; font-weight:700;"><i class="fa-solid fa-diagram-project" style="margin-right:4px;"></i>Project</span>`;
+            case 'Supplier':
+              return `<span class="rr-badge" style="background:#f3e8ff; color:#6b21a8; font-weight:700;"><i class="fa-solid fa-truck" style="margin-right:4px;"></i>Supplier</span>`;
+            default:
+              return `<span class="rr-badge" style="background:#f1f5f9; color:#475569; font-weight:700;">${escapeBmHtml(type)}</span>`;
+          }
+        }
+
         tbody.innerHTML = filtered.length ? filtered.map(record => `
         <tr>
-          <td><span class="rr-badge" style="background:#e0f2fe; color:#0369a1; font-weight:700;">${escapeBmHtml(record.type)}</span></td>
-          <td style="font-family:monospace; font-weight:700; color:var(--primary);">${escapeBmHtml(record.code)}</td>
+          <td>${getRegistryTypeBadge(record.type)}</td>
+          <td style="font-family:monospace; font-weight:800; color:var(--primary); font-size:0.88rem;">${escapeBmHtml(record.code)}</td>
           <td style="font-weight:700; color:var(--primary);">${escapeBmHtml(record.name)}</td>
           <td style="color:var(--text-muted);">${escapeBmHtml(record.details || '—')}</td>
           <td style="text-align:center; color:var(--text-muted); font-size:0.78rem;">${escapeBmHtml((record.created_at || '').slice(0, 10) || '—')}</td>
           <td style="text-align:center; white-space:nowrap;">
             <div style="display:inline-flex; gap:6px;">
-              <button type="button" class="btn-primary" style="padding:4px 8px; font-size:0.75rem; background:#0284c7; border-radius:4px; cursor:pointer;" onclick="editDirectoryEntry('${record.id}')">
-                <i class="fa-solid fa-pen-to-square"></i> Update
+              <button type="button" class="btn-primary" style="padding:4px 8px; font-size:0.75rem; background:#0284c7; border-radius:4px; cursor:pointer;" onclick="editDirectoryEntry('${record.id}')" title="Edit entry">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
               </button>
-              <button type="button" class="btn-primary" style="padding:4px 8px; font-size:0.75rem; background:#ef4444; border-radius:4px; cursor:pointer;" onclick="deleteDirectoryEntry('${record.id}')">
+              <button type="button" class="btn-primary" style="padding:4px 8px; font-size:0.75rem; background:#ef4444; border-radius:4px; cursor:pointer;" onclick="deleteDirectoryEntry('${record.id}')" title="Delete entry">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>
           </td>
         </tr>
-      `).join('') : '<tr><td colspan="6" style="text-align:center; padding:35px; color:#64748b;">No directory entries match your search.</td></tr>';
+      `).join('') : `<tr><td colspan="6" style="text-align:center; padding:35px; color:#64748b;">No ${typeFilter === 'ALL' ? '' : typeFilter} entries found matching your search.</td></tr>`;
       };
 
       window.exportDirectoryRegisterCSV = function () {
@@ -16113,16 +16420,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const rows = directoryRegisterRecords.map(record => [
           record.type, record.code, record.name, record.details || '', (record.created_at || '').slice(0, 10)
         ].map(value => `"${String(value).replace(/"/g, '""')}"`).join(','));
-        const csv = ['Directory Type,Code / Reference,Name / Description,Additional Details,Registered', ...rows].join('\r\n');
+        const csv = ['Registry Type,Code / Reference,Name / Description,Additional Details,Registered', ...rows].join('\r\n');
         const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
         const link = document.createElement('a');
         link.href = url;
-        link.download = `RII_Directory_Register_${new Date().toISOString().slice(0, 10)}.csv`;
+        link.download = `RII_Data_Registry_${new Date().toISOString().slice(0, 10)}.csv`;
         link.click();
         URL.revokeObjectURL(url);
       };
 
-      // ==========================================
       // FLEET MANAGEMENT - COMPANY VEHICLES MODULE
       // ==========================================
       let allCompanyVehicles = Array.isArray(companyVehiclesData) ? [...companyVehiclesData] : [];
