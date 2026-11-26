@@ -6186,6 +6186,77 @@
           </div>
         </div>
 
+        <div class="data-card" style="padding:24px; margin-bottom:24px;">
+          <div style="margin-bottom:16px;">
+            <h3 style="margin:0; color:var(--primary); font-size:1.05rem;">
+              <i class="fa-solid fa-triangle-exclamation" style="color:#d97706;"></i> Vehicle Breakdown &amp; Downtime Reports
+            </h3>
+            <p style="margin:5px 0 0; color:var(--text-muted); font-size:0.8rem;">
+              Record each breakdown and its return-to-service time for the three admin fleet units.
+            </p>
+          </div>
+          <form id="fleetBreakdownForm" onsubmit="saveFleetBreakdownReport(event)">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; align-items:end;">
+              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
+                Date Reported
+                <input type="date" id="fleetBreakdownReportedDate" required
+                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
+                Vehicle
+                <select id="fleetBreakdownVehicle" required
+                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                  <option value="">Select a vehicle</option>
+                  <option value="veh_110">Toyota Innova | NHM-3386</option>
+                  <option value="veh_124">Nissan Urvan | NKI-9501</option>
+                  <option value="veh_114">Honda PCX | 903XHK</option>
+                </select>
+              </label>
+              <label style="grid-column:1 / -1; display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
+                Reason/Details
+                <textarea id="fleetBreakdownReason" rows="2" maxlength="2000" required
+                  placeholder="Describe the breakdown, repair, or issue"
+                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main); resize:vertical;"></textarea>
+              </label>
+              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
+                Breakdown Date/Time
+                <input type="datetime-local" id="fleetBreakdownAt" required
+                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
+                Return-to-service Date/Time
+                <input type="datetime-local" id="fleetBreakdownReturnedAt"
+                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+              </label>
+              <div style="grid-column:1 / -1; display:flex; justify-content:flex-end;">
+                <button type="submit" class="btn-primary" id="fleetBreakdownSaveButton" style="padding:8px 14px; font-size:0.82rem;">
+                  <i class="fa-solid fa-plus"></i> Add Breakdown Report
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div style="overflow-x:auto; margin-top:18px;">
+            <table class="dispatch-table" style="min-width:850px;">
+              <thead>
+                <tr>
+                  <th>Date Reported</th>
+                  <th>Vehicle</th>
+                  <th>Reason/Details</th>
+                  <th>Breakdown Date/Time</th>
+                  <th>Return-to-service Date/Time</th>
+                </tr>
+              </thead>
+              <tbody id="fleetBreakdownReportsBody">
+                <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Loading breakdown reports…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="fleetBreakdownMessage" role="status" aria-live="polite" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);">
+            Breakdown reports are shared through Supabase.
+          </div>
+        </div>
+
         <!-- Master Registry Table Card -->
         <div class="data-card" style="padding: 24px;">
           <!-- Search & Filter Controls -->
@@ -17595,6 +17666,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       let fleetMonthlyKpiSaved = false;
       let fleetMonthlyKpiDirty = false;
       let fleetKpiLoadRequest = 0;
+      let fleetBreakdownLoadRequest = 0;
 
       function escapeVehHtml(str) {
         if (str === null || str === undefined) return '';
@@ -17643,6 +17715,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         renderCompanyVehiclesTable();
         updateCompanyVehiclesStats();
         if (typeof window.loadFleetMonthlyKpi === 'function') window.loadFleetMonthlyKpi();
+        if (typeof window.loadFleetBreakdownReports === 'function') window.loadFleetBreakdownReports();
       };
 
       function getFleetKpiWeekdays(monthYear) {
@@ -17872,6 +17945,126 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           if (saveButton) {
             saveButton.disabled = false;
             saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Monthly KPI';
+          }
+        }
+      };
+
+      function formatFleetReportDate(value) {
+        const [year, month, day] = String(value || '').split('-').map(Number);
+        if (!year || !month || !day) return '—';
+        return new Date(year, month - 1, day).toLocaleDateString();
+      }
+
+      function formatFleetReportDateTime(value) {
+        if (!value) return 'Not returned to service';
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? '—' : date.toLocaleString();
+      }
+
+      function getFleetBreakdownVehicleLabel(vehicleId) {
+        const unit = fleetKpiUnits.find(item => item.id === vehicleId);
+        return unit ? `${unit.name} | ${unit.plate}` : 'Unknown vehicle';
+      }
+
+      window.loadFleetBreakdownReports = async function () {
+        const tbody = document.getElementById('fleetBreakdownReportsBody');
+        const message = document.getElementById('fleetBreakdownMessage');
+        const requestId = ++fleetBreakdownLoadRequest;
+        if (!tbody) return;
+        if (!supabase) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Reports are unavailable.</td></tr>';
+          if (message) message.textContent = 'Could not load breakdown reports: Supabase is not configured.';
+          return;
+        }
+
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Loading breakdown reports…</td></tr>';
+        if (message) message.textContent = 'Loading shared breakdown reports…';
+        try {
+          const { data, error } = await supabase.from('fleet_breakdown_reports')
+            .select('reported_date, vehicle_id, reason_details, breakdown_at, returned_to_service_at, created_at')
+            .order('reported_date', { ascending: false })
+            .order('created_at', { ascending: false });
+          if (error) throw error;
+          if (requestId !== fleetBreakdownLoadRequest) return;
+          const reports = Array.isArray(data) ? data : [];
+          tbody.innerHTML = reports.length ? reports.map(report => `
+            <tr>
+              <td>${escapeVehHtml(formatFleetReportDate(report.reported_date))}</td>
+              <td>${escapeVehHtml(getFleetBreakdownVehicleLabel(report.vehicle_id))}</td>
+              <td style="white-space:pre-wrap;">${escapeVehHtml(report.reason_details)}</td>
+              <td>${escapeVehHtml(formatFleetReportDateTime(report.breakdown_at))}</td>
+              <td>${escapeVehHtml(formatFleetReportDateTime(report.returned_to_service_at))}</td>
+            </tr>
+          `).join('') : '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No breakdown reports recorded.</td></tr>';
+          if (message) message.textContent = `${reports.length} shared breakdown report${reports.length === 1 ? '' : 's'} loaded.`;
+        } catch (error) {
+          if (requestId !== fleetBreakdownLoadRequest) return;
+          console.error('Unable to load fleet breakdown reports:', error);
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#dc2626;">Could not load breakdown reports.</td></tr>';
+          if (message) message.textContent = `Could not load shared reports: ${error.message || error}. Apply supabase_fleet_monthly_kpi_schema.sql and try again.`;
+        }
+      };
+
+      window.saveFleetBreakdownReport = async function (event) {
+        if (event && event.preventDefault) event.preventDefault();
+        const reportedDate = document.getElementById('fleetBreakdownReportedDate')?.value || '';
+        const vehicleId = document.getElementById('fleetBreakdownVehicle')?.value || '';
+        const reasonDetails = document.getElementById('fleetBreakdownReason')?.value.trim() || '';
+        const breakdownValue = document.getElementById('fleetBreakdownAt')?.value || '';
+        const returnedValue = document.getElementById('fleetBreakdownReturnedAt')?.value || '';
+        const message = document.getElementById('fleetBreakdownMessage');
+        const saveButton = document.getElementById('fleetBreakdownSaveButton');
+        const reportedDateParsed = /^\d{4}-\d{2}-\d{2}$/.test(reportedDate)
+          ? new Date(`${reportedDate}T00:00:00Z`)
+          : null;
+        const reportedDateIsValid = reportedDateParsed
+          && !Number.isNaN(reportedDateParsed.getTime())
+          && reportedDateParsed.toISOString().slice(0, 10) === reportedDate;
+        const breakdownAt = new Date(breakdownValue);
+        const returnedAt = returnedValue ? new Date(returnedValue) : null;
+
+        if (!supabase) {
+          if (message) message.textContent = 'Could not save report: Supabase is not configured.';
+          return;
+        }
+        if (!reportedDateIsValid || !fleetKpiUnits.some(unit => unit.id === vehicleId)
+          || !reasonDetails || Number.isNaN(breakdownAt.getTime())) {
+          if (message) message.textContent = 'Complete Date Reported, Vehicle, Reason/Details, and Breakdown Date/Time.';
+          return;
+        }
+        if (returnedAt && (Number.isNaN(returnedAt.getTime()) || returnedAt < breakdownAt)) {
+          if (message) message.textContent = 'Return-to-service Date/Time must be later than or equal to Breakdown Date/Time.';
+          return;
+        }
+
+        if (saveButton) {
+          saveButton.disabled = true;
+          saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+        }
+        try {
+          const { error } = await supabase.from('fleet_breakdown_reports').insert([{
+            reported_date: reportedDate,
+            vehicle_id: vehicleId,
+            reason_details: reasonDetails,
+            breakdown_at: breakdownAt.toISOString(),
+            returned_to_service_at: returnedAt ? returnedAt.toISOString() : null
+          }]);
+          if (error) throw error;
+          document.getElementById('fleetBreakdownForm')?.reset();
+          const reportedDateInput = document.getElementById('fleetBreakdownReportedDate');
+          if (reportedDateInput) {
+            const now = new Date();
+            reportedDateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+          }
+          if (message) message.textContent = 'Breakdown report saved and shared successfully.';
+          await window.loadFleetBreakdownReports();
+        } catch (error) {
+          console.error('Unable to save fleet breakdown report:', error);
+          if (message) message.textContent = `Could not save shared report: ${error.message || error}. Check the Supabase schema and access policy.`;
+        } finally {
+          if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.innerHTML = '<i class="fa-solid fa-plus"></i> Add Breakdown Report';
           }
         }
       };
