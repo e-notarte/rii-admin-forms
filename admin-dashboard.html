@@ -17735,6 +17735,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       let fleetKpiLoadRequest = 0;
       let fleetBreakdownLoadRequest = 0;
       let fleetBreakdownReports = [];
+      let fleetBreakdownReportsLoaded = false;
       let fleetEditingBreakdownReportId = null;
 
       function escapeVehHtml(str) {
@@ -17783,8 +17784,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         populateCompanyVehiclesDropdowns();
         renderCompanyVehiclesTable();
         updateCompanyVehiclesStats();
-        if (typeof window.loadFleetMonthlyKpi === 'function') window.loadFleetMonthlyKpi();
-        if (typeof window.loadFleetBreakdownReports === 'function') window.loadFleetBreakdownReports();
       };
 
       function getFleetKpiWeekdays(monthYear) {
@@ -17939,30 +17938,19 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         }
 
         try {
-          const [selectedYear, selectedMonth] = monthYear.split('-').map(Number);
-          const selectedMonthStart = new Date(selectedYear, selectedMonth - 1, 1);
-          const nextMonthStart = new Date(selectedYear, selectedMonth, 1);
-          const [kpiResult, reportsResult] = await Promise.all([
-            supabase.from('fleet_monthly_kpis')
-              .select('total_trips')
-              .eq('month_year', monthYear)
-              .maybeSingle(),
-            supabase.from('fleet_breakdown_reports')
-              .select('vehicle_id, downtime_category, breakdown_at, returned_to_service_at')
-              .lt('breakdown_at', nextMonthStart.toISOString())
-              .or(`returned_to_service_at.is.null,returned_to_service_at.gte.${selectedMonthStart.toISOString()}`)
-              .in('vehicle_id', fleetKpiUnits.map(unit => unit.id))
-          ]);
-          if (kpiResult.error) throw kpiResult.error;
-          if (reportsResult.error) throw reportsResult.error;
+          const { data, error } = await supabase.from('fleet_monthly_kpis')
+            .select('total_trips')
+            .eq('month_year', monthYear)
+            .maybeSingle();
+          if (error) throw error;
           if (requestId !== fleetKpiLoadRequest) return;
 
-          if (kpiResult.data) {
-            fleetMonthlyKpiRecord = { total_trips: Number(kpiResult.data.total_trips || 0) };
+          if (data) {
+            fleetMonthlyKpiRecord = { total_trips: Number(data.total_trips || 0) };
             fleetMonthlyKpiSaved = true;
           }
-          fleetMonthlyDowntime = calculateFleetMonthlyDowntime(monthYear, reportsResult.data);
-          fleetMonthlyDowntimeLoaded = true;
+          fleetMonthlyDowntime = calculateFleetMonthlyDowntime(monthYear, fleetBreakdownReports);
+          fleetMonthlyDowntimeLoaded = fleetBreakdownReportsLoaded;
           window.renderFleetAvailabilityKpiSummary();
         } catch (error) {
           if (requestId !== fleetKpiLoadRequest) return;
@@ -18054,6 +18042,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         if (!tbody) return;
         if (!supabase) {
           fleetBreakdownReports = [];
+          fleetBreakdownReportsLoaded = false;
+          fleetMonthlyDowntimeLoaded = false;
           tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Reports are unavailable.</td></tr>';
           if (message) message.textContent = 'Could not load breakdown reports: Supabase is not configured.';
           return;
@@ -18070,6 +18060,11 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           if (requestId !== fleetBreakdownLoadRequest) return;
           const reports = Array.isArray(data) ? data : [];
           fleetBreakdownReports = reports;
+          fleetBreakdownReportsLoaded = true;
+          const monthYear = document.getElementById('fleetKpiMonth')?.value || '';
+          fleetMonthlyDowntime = calculateFleetMonthlyDowntime(monthYear, reports);
+          fleetMonthlyDowntimeLoaded = true;
+          window.renderFleetAvailabilityKpiSummary();
           tbody.innerHTML = reports.length ? reports.map(report => `
             <tr>
               <td>${escapeVehHtml(formatFleetReportDate(report.reported_date))}</td>
@@ -18090,6 +18085,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           if (requestId !== fleetBreakdownLoadRequest) return;
           console.error('Unable to load fleet breakdown reports:', error);
           fleetBreakdownReports = [];
+          fleetBreakdownReportsLoaded = false;
+          fleetMonthlyDowntimeLoaded = false;
+          window.renderFleetAvailabilityKpiSummary();
           tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#dc2626;">Could not load breakdown reports.</td></tr>';
           if (message) message.textContent = `Could not load shared reports: ${error.message || error}. Apply supabase_fleet_monthly_kpi_schema.sql and try again.`;
         }
@@ -18160,7 +18158,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             ? 'Breakdown report updated and shared successfully.'
             : 'Breakdown report saved and shared successfully.';
           await window.loadFleetBreakdownReports();
-          await window.loadFleetMonthlyKpi();
         } catch (error) {
           console.error(editingReportId ? 'Unable to update fleet breakdown report:' : 'Unable to save fleet breakdown report:', error);
           if (message) message.textContent = `Could not ${editingReportId ? 'update' : 'save'} shared report: ${error.message || error}. Check the Supabase schema and access policy.`;
@@ -18739,6 +18736,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         loadBudgetMonitoringBoard();
         loadBuildingMaintenanceModule();
         loadDocumentTransmittals();
+        window.loadFleetMonthlyKpi();
+        window.loadFleetBreakdownReports();
         refreshDashboardData();
         subscribeToDashboardChanges();
         dashboardPollingTimer = setInterval(() => {
