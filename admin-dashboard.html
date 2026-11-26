@@ -6236,37 +6236,6 @@
             </div>
           </div>
 
-          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px;">
-            <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.8rem; font-weight:600;">
-              Dispatcher: total trips for the month
-              <input type="number" id="fleetKpiTripTotal" min="0" step="1" value="0" oninput="markFleetMonthlyKpiDirty(); renderFleetAvailabilityKpiSummary()"
-                style="width:220px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
-            </label>
-            <button type="button" class="btn-primary" id="fleetKpiSaveButton" onclick="saveFleetMonthlyKpi()"
-              style="padding:8px 14px; font-size:0.82rem;">
-              <i class="fa-solid fa-floppy-disk"></i> Save Monthly KPI
-            </button>
-          </div>
-
-          <div style="overflow-x:auto;">
-            <table class="dispatch-table" style="min-width:650px;">
-              <thead>
-                <tr>
-                  <th>Admin fleet unit</th>
-                  <th>Operating weekdays</th>
-                  <th>For maintenance (days)</th>
-                  <th>Out of service (days)</th>
-                  <th>Operational (days)</th>
-                </tr>
-              </thead>
-              <tbody id="fleetKpiVehicleRows">
-                <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Loading monthly fleet KPI…</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div id="fleetKpiMessage" role="status" aria-live="polite" style="margin-top:12px; font-size:0.8rem; color:var(--text-muted);">
-            Monthly data is shared through Supabase.
-          </div>
         </div>
 
         <div class="data-card" style="padding:24px; margin-bottom:24px;">
@@ -17749,9 +17718,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         { id: 'veh_124', name: 'Nissan Urvan', plate: 'NKI-9501' },
         { id: 'veh_114', name: 'Honda PCX', plate: '903XHK' }
       ];
-      let fleetMonthlyKpiRecord = { total_trips: 0, vehicle_days: {} };
+      let fleetMonthlyKpiRecord = { total_trips: null };
       let fleetMonthlyDowntime = {
-        vehicle_days: {},
         maintenance_days: 0,
         out_of_service_days: 0,
         operational_days: 0,
@@ -17759,7 +17727,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       };
       let fleetMonthlyDowntimeLoaded = false;
       let fleetMonthlyKpiSaved = false;
-      let fleetMonthlyKpiDirty = false;
       let fleetKpiLoadRequest = 0;
       let fleetBreakdownLoadRequest = 0;
 
@@ -17825,15 +17792,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return weekdays;
       }
 
-      function getFleetKpiUnitRecord(unit) {
-        return allCompanyVehicles.find(vehicle => String(vehicle.id) === unit.id)
-          || (Array.isArray(companyVehiclesData) ? companyVehiclesData.find(vehicle => String(vehicle.id) === unit.id) : null);
-      }
-
       function calculateFleetMonthlyDowntime(monthYear, reports) {
         const [year, month] = String(monthYear || '').split('-').map(Number);
         const weekdays = getFleetKpiWeekdays(monthYear);
-        const vehicleDays = {};
         const maintenanceDates = new Map();
         const outOfServiceDates = new Map();
         fleetKpiUnits.forEach(unit => {
@@ -17841,7 +17802,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           outOfServiceDates.set(unit.id, new Set());
         });
         if (!year || !month || !weekdays) {
-          return { vehicle_days: vehicleDays, maintenance_days: 0, out_of_service_days: 0, operational_days: 0, report_count: 0 };
+          return { maintenance_days: 0, out_of_service_days: 0, operational_days: 0, report_count: 0 };
         }
 
         const monthStart = new Date(year, month - 1, 1);
@@ -17888,14 +17849,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           const maintenanceDays = maintenance.size;
           const outOfServiceDays = outOfService.size;
           const operationalDays = Math.max(0, weekdays - maintenanceDays - outOfServiceDays);
-          vehicleDays[unit.id] = { maintenance_days: maintenanceDays, out_of_service_days: outOfServiceDays, operational_days: operationalDays };
           totalMaintenanceDays += maintenanceDays;
           totalOutOfServiceDays += outOfServiceDays;
           totalOperationalDays += operationalDays;
         });
 
         return {
-          vehicle_days: vehicleDays,
           maintenance_days: totalMaintenanceDays,
           out_of_service_days: totalOutOfServiceDays,
           operational_days: totalOperationalDays,
@@ -17903,36 +17862,12 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         };
       }
 
-      function renderFleetKpiRows(weekdays, vehicleDays) {
-        const tbody = document.getElementById('fleetKpiVehicleRows');
-        if (!tbody) return;
-        tbody.innerHTML = fleetKpiUnits.map(unit => {
-          const vehicle = getFleetKpiUnitRecord(unit);
-          const unitDays = vehicleDays?.[unit.id] || {};
-          const maintenanceDays = Number(unitDays.maintenance_days || 0);
-          const outOfServiceDays = Number(unitDays.out_of_service_days || 0);
-          const operationalDays = Number(unitDays.operational_days ?? Math.max(0, weekdays - maintenanceDays - outOfServiceDays));
-          const name = vehicle ? (vehicle.model_description || unit.name) : unit.name;
-          const plate = vehicle ? (vehicle.plate_no || unit.plate) : unit.plate;
-          return `<tr>
-            <td><strong>${escapeVehHtml(name)}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${escapeVehHtml(plate)}</span></td>
-            <td>${weekdays}</td>
-            <td id="fleetKpi_maintenance_days_${unit.id}">${maintenanceDays}</td>
-            <td id="fleetKpi_out_of_service_days_${unit.id}">${outOfServiceDays}</td>
-            <td id="fleetKpi_operational_days_${unit.id}">${operationalDays}</td>
-          </tr>`;
-        }).join('');
-      }
-
       window.renderFleetAvailabilityKpiSummary = function () {
         const monthInput = document.getElementById('fleetKpiMonth');
         const monthYear = monthInput?.value || '';
         const weekdays = getFleetKpiWeekdays(monthYear);
         const maxUnitDays = weekdays * fleetKpiUnits.length;
-        const tripInput = document.getElementById('fleetKpiTripTotal');
-        const trips = tripInput && tripInput.value.trim()
-          ? Number(tripInput.value)
-          : (tripInput ? NaN : Number(fleetMonthlyKpiRecord.total_trips || 0));
+        const trips = fleetMonthlyKpiSaved ? Number(fleetMonthlyKpiRecord.total_trips) : NaN;
         const operationalDays = fleetMonthlyDowntime.operational_days;
         const maintenanceDays = fleetMonthlyDowntime.maintenance_days;
         const outOfServiceDays = fleetMonthlyDowntime.out_of_service_days;
@@ -17951,7 +17886,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         setText('fleetKpiOutOfServiceDays', availabilityLoaded ? String(outOfServiceDays) : '—');
         setText('fleetKpiAvailableUnitDays', availabilityLoaded ? String(operationalDays) : '—');
         setText('fleetKpiPotentialUnitDays', `of ${maxUnitDays} possible`);
-        setText('fleetKpiTrips', Number.isInteger(trips) && trips >= 0 ? String(trips) : '—');
+        setText('fleetKpiTrips', validTrips ? String(trips) : '—');
         setText('fleetKpiTripsPerUnitDay', availabilityLoaded && validTrips && operationalDays
           ? `${(trips / operationalDays).toFixed(2)} trips per operational unit-day`
           : '— trips per operational unit-day');
@@ -17961,38 +17896,20 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           if (!fleetMonthlyDowntimeLoaded) {
             status.textContent = 'Availability report data is loading or unavailable';
             status.style.color = '#dc2626';
-          } else if (!validTrips) {
-            status.textContent = 'Enter a whole-number monthly trip total';
-            status.style.color = '#dc2626';
-          } else if (fleetMonthlyKpiDirty) {
-            status.textContent = 'Unsaved monthly trip total';
-            status.style.color = '#d97706';
           } else if (!fleetMonthlyKpiSaved) {
             status.textContent = fleetMonthlyDowntime.report_count
-              ? `Availability includes ${fleetMonthlyDowntime.report_count} breakdown report${fleetMonthlyDowntime.report_count === 1 ? '' : 's'} · trips not saved`
-              : 'No trip total saved · no breakdown reports for this month';
+              ? `Availability includes ${fleetMonthlyDowntime.report_count} breakdown report${fleetMonthlyDowntime.report_count === 1 ? '' : 's'} · monthly trips not saved`
+              : 'No monthly trip total or breakdown reports saved';
             status.style.color = '#d97706';
           } else {
             status.textContent = availability >= 95 ? 'Target met · monthly trips saved' : 'Below 95% target · monthly trips saved';
             status.style.color = availability >= 95 ? '#059669' : '#dc2626';
           }
         }
-        const message = document.getElementById('fleetKpiMessage');
-        if (message && availabilityLoaded) {
-          const reportMessage = fleetMonthlyDowntime.report_count
-            ? `Availability includes ${fleetMonthlyDowntime.report_count} overlapping breakdown report${fleetMonthlyDowntime.report_count === 1 ? '' : 's'}.`
-            : 'No overlapping breakdown reports; zero downtime is provisional until verified.';
-          message.textContent = `${reportMessage} ${fleetKpiUnits.length} units × ${weekdays} weekdays = ${maxUnitDays} possible vehicle-days.`;
-        }
       };
 
-      window.markFleetMonthlyKpiDirty = function () {
-        fleetMonthlyKpiDirty = true;
-      };
-
-      window.loadFleetMonthlyKpi = async function (preserveTripDraft) {
+      window.loadFleetMonthlyKpi = async function () {
         const monthInput = document.getElementById('fleetKpiMonth');
-        const message = document.getElementById('fleetKpiMessage');
         if (!monthInput) return;
         if (!monthInput.value) {
           const now = new Date();
@@ -18000,23 +17917,18 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         }
         const monthYear = monthInput.value;
         const requestId = ++fleetKpiLoadRequest;
-        const tripInput = document.getElementById('fleetKpiTripTotal');
-        const hasTripDraft = Boolean(preserveTripDraft && fleetMonthlyKpiDirty && tripInput);
-        const tripDraft = hasTripDraft ? tripInput.value : '';
-        fleetMonthlyKpiRecord = { total_trips: 0, vehicle_days: {} };
+        fleetMonthlyKpiRecord = { total_trips: null };
         fleetMonthlyDowntime = calculateFleetMonthlyDowntime(monthYear, []);
         fleetMonthlyDowntimeLoaded = false;
         fleetMonthlyKpiSaved = false;
-        fleetMonthlyKpiDirty = false;
-
-        const weekdays = getFleetKpiWeekdays(monthYear);
-        renderFleetKpiRows(weekdays, fleetMonthlyDowntime.vehicle_days);
-        if (tripInput) tripInput.value = '0';
-        if (message) message.textContent = `Loading shared KPI record for ${monthYear}…`;
         window.renderFleetAvailabilityKpiSummary();
 
         if (!supabase) {
-          if (message) message.textContent = 'Unable to load KPI data: Supabase is not configured.';
+          const status = document.getElementById('fleetKpiTargetStatus');
+          if (status) {
+            status.textContent = 'Could not load fleet KPI data: Supabase is not configured.';
+            status.style.color = '#dc2626';
+          }
           return;
         }
 
@@ -18045,65 +17957,14 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           }
           fleetMonthlyDowntime = calculateFleetMonthlyDowntime(monthYear, reportsResult.data);
           fleetMonthlyDowntimeLoaded = true;
-          if (tripInput) tripInput.value = hasTripDraft ? tripDraft : String(fleetMonthlyKpiRecord.total_trips);
-          fleetMonthlyKpiDirty = hasTripDraft;
-          renderFleetKpiRows(weekdays, fleetMonthlyDowntime.vehicle_days);
           window.renderFleetAvailabilityKpiSummary();
-          if (message) {
-            if (kpiResult.data) {
-              message.textContent = `Monthly trip total loaded for ${monthYear}. Availability is calculated from ${fleetMonthlyDowntime.report_count} overlapping breakdown report${fleetMonthlyDowntime.report_count === 1 ? '' : 's'}.`;
-            } else if (fleetMonthlyDowntime.report_count) {
-              message.textContent = `Availability calculated from ${fleetMonthlyDowntime.report_count} overlapping breakdown report${fleetMonthlyDowntime.report_count === 1 ? '' : 's'}; monthly trips are not saved yet.`;
-            } else {
-              message.textContent = `No monthly trip total or breakdown reports found for ${monthYear}; availability is provisional until downtime is reported or verified.`;
-            }
-          }
         } catch (error) {
           if (requestId !== fleetKpiLoadRequest) return;
           console.error('Unable to load fleet monthly KPI:', error);
-          if (message) message.textContent = `Could not load shared KPI data: ${error.message || error}. Apply supabase_fleet_monthly_kpi_schema.sql and try again.`;
-        }
-      };
-
-      window.saveFleetMonthlyKpi = async function () {
-        const monthYear = document.getElementById('fleetKpiMonth')?.value || '';
-        const tripInput = document.getElementById('fleetKpiTripTotal');
-        const totalTrips = tripInput && tripInput.value.trim() ? Number(tripInput.value) : NaN;
-        const message = document.getElementById('fleetKpiMessage');
-        const saveButton = document.getElementById('fleetKpiSaveButton');
-
-        if (!supabase) {
-          if (message) message.textContent = 'Could not save monthly KPI data: Supabase is not configured.';
-          return;
-        }
-        if (!/^\d{4}-\d{2}$/.test(monthYear) || getFleetKpiWeekdays(monthYear) < 1 || !Number.isInteger(totalTrips) || totalTrips < 0) {
-          if (message) message.textContent = 'Enter a valid month and a whole-number trip total of zero or more.';
-          return;
-        }
-
-        if (saveButton) {
-          saveButton.disabled = true;
-          saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
-        }
-        try {
-          const { error } = await supabase.from('fleet_monthly_kpis').upsert([{
-            month_year: monthYear,
-            total_trips: totalTrips,
-            updated_at: new Date().toISOString()
-          }], { onConflict: 'month_year' });
-          if (error) throw error;
-          fleetMonthlyKpiRecord = { total_trips: totalTrips };
-          fleetMonthlyKpiSaved = true;
-          fleetMonthlyKpiDirty = false;
-          window.renderFleetAvailabilityKpiSummary();
-          if (message) message.textContent = `Monthly KPI data for ${monthYear} saved and shared successfully.`;
-        } catch (error) {
-          console.error('Unable to save fleet monthly KPI:', error);
-          if (message) message.textContent = `Could not save shared KPI data: ${error.message || error}. Check the Supabase schema and access policy.`;
-        } finally {
-          if (saveButton) {
-            saveButton.disabled = false;
-            saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Monthly KPI';
+          const status = document.getElementById('fleetKpiTargetStatus');
+          if (status) {
+            status.textContent = `Could not load shared KPI data: ${error.message || error}. Apply supabase_fleet_monthly_kpi_schema.sql and try again.`;
+            status.style.color = '#dc2626';
           }
         }
       };
@@ -18221,7 +18082,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           }
           if (message) message.textContent = 'Breakdown report saved and shared successfully.';
           await window.loadFleetBreakdownReports();
-          await window.loadFleetMonthlyKpi(true);
+          await window.loadFleetMonthlyKpi();
         } catch (error) {
           console.error('Unable to save fleet breakdown report:', error);
           if (message) message.textContent = `Could not save shared report: ${error.message || error}. Check the Supabase schema and access policy.`;
