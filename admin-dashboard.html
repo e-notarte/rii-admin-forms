@@ -17901,8 +17901,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const status = document.getElementById('fleetKpiTargetStatus');
         if (status) {
           if (!fleetMonthlyDowntimeLoaded) {
-            status.textContent = 'Availability report data is loading or unavailable';
-            status.style.color = '#dc2626';
+            status.textContent = '';
           } else if (!fleetMonthlyKpiSaved) {
             status.textContent = fleetMonthlyDowntime.report_count
               ? `Availability includes ${fleetMonthlyDowntime.report_count} breakdown report${fleetMonthlyDowntime.report_count === 1 ? '' : 's'} · monthly trips not saved`
@@ -18061,7 +18060,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         }
 
         tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Loading breakdown reports…</td></tr>';
-        if (message) message.textContent = 'Loading shared breakdown reports…';
+        if (message) message.textContent = '';
         try {
           const { data, error } = await supabase.from('fleet_breakdown_reports')
             .select('id, reported_date, vehicle_id, downtime_category, reason_details, breakdown_at, returned_to_service_at, created_at')
@@ -18737,7 +18736,6 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           bmStaff.value = sessionStorage.getItem('userFullName') || 'Building Maintenance Custodian';
         }
 
-        loadCompanyVehicles();
         loadBudgetMonitoringBoard();
         loadBuildingMaintenanceModule();
         loadDocumentTransmittals();
