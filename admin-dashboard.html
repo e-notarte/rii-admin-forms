@@ -6098,6 +6098,94 @@
 
       <!-- FLEET MANAGEMENT - LIST OF COMPANY VEHICLES MASTER VIEW -->
       <div id="view-company-vehicles" class="view-section">
+        <div class="data-card" style="padding:24px; margin-bottom:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:18px;">
+            <div>
+              <h3 style="margin:0; color:var(--primary); font-size:1.1rem;">
+                <i class="fa-solid fa-gauge-high" style="color:var(--accent);"></i> Fleet Availability &amp; Dispatch KPI
+              </h3>
+              <p style="margin:6px 0 0; color:var(--text-muted); font-size:0.82rem;">
+                Target: maintain at least 95% availability. Count weekdays only; availability is operational vehicle-days divided by 3 vehicles × operating weekdays.
+              </p>
+            </div>
+            <label style="display:flex; align-items:center; gap:8px; color:var(--text-muted); font-size:0.82rem; font-weight:600;">
+              Monitoring month
+              <input type="month" id="fleetKpiMonth" onchange="loadFleetMonthlyKpi()"
+                style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main); font:inherit;">
+            </label>
+          </div>
+
+          <div id="fleetKpiSummary" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(145px, 1fr)); gap:12px; margin-bottom:20px;">
+            <div style="padding:14px; border:1px solid var(--border); border-radius:10px;">
+              <div style="font-size:0.72rem; color:var(--text-muted);">Availability (Target 95%)</div>
+              <strong id="fleetKpiAvailability" style="display:block; margin-top:5px; font-size:1.45rem; color:var(--primary);">—</strong>
+              <span id="fleetKpiTargetStatus" style="font-size:0.72rem; color:var(--text-muted);">Loading monthly record</span>
+            </div>
+            <div style="padding:14px; border:1px solid var(--border); border-radius:10px;">
+              <div style="font-size:0.72rem; color:var(--text-muted);">Operating weekdays</div>
+              <strong id="fleetKpiWeekdays" style="display:block; margin-top:5px; font-size:1.25rem; color:var(--primary);">—</strong>
+              <span style="font-size:0.72rem; color:var(--text-muted);">Monday–Friday</span>
+            </div>
+            <div style="padding:14px; border:1px solid var(--border); border-radius:10px;">
+              <div style="font-size:0.72rem; color:var(--text-muted);">Operational</div>
+              <strong id="fleetKpiOperationalDays" style="display:block; margin-top:5px; font-size:1.25rem; color:#059669;">—</strong>
+              <span style="font-size:0.72rem; color:var(--text-muted);">vehicle-days</span>
+            </div>
+            <div style="padding:14px; border:1px solid var(--border); border-radius:10px;">
+              <div style="font-size:0.72rem; color:var(--text-muted);">For maintenance</div>
+              <strong id="fleetKpiMaintenanceDays" style="display:block; margin-top:5px; font-size:1.25rem; color:#d97706;">—</strong>
+              <span style="font-size:0.72rem; color:var(--text-muted);">vehicle-days</span>
+            </div>
+            <div style="padding:14px; border:1px solid var(--border); border-radius:10px;">
+              <div style="font-size:0.72rem; color:var(--text-muted);">Out of service</div>
+              <strong id="fleetKpiOutOfServiceDays" style="display:block; margin-top:5px; font-size:1.25rem; color:#dc2626;">—</strong>
+              <span style="font-size:0.72rem; color:var(--text-muted);">vehicle-days</span>
+            </div>
+            <div style="padding:14px; border:1px solid var(--border); border-radius:10px;">
+              <div style="font-size:0.72rem; color:var(--text-muted);">Available unit-days</div>
+              <strong id="fleetKpiAvailableUnitDays" style="display:block; margin-top:5px; font-size:1.25rem; color:var(--primary);">—</strong>
+              <span id="fleetKpiPotentialUnitDays" style="font-size:0.72rem; color:var(--text-muted);">of — possible</span>
+            </div>
+            <div style="padding:14px; border:1px solid var(--border); border-radius:10px;">
+              <div style="font-size:0.72rem; color:var(--text-muted);">Trips this month</div>
+              <strong id="fleetKpiTrips" style="display:block; margin-top:5px; font-size:1.25rem; color:var(--primary);">—</strong>
+              <span id="fleetKpiTripsPerUnitDay" style="font-size:0.72rem; color:var(--text-muted);">— trips per operational unit-day</span>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px;">
+            <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.8rem; font-weight:600;">
+              Dispatcher: total trips for the month
+              <input type="number" id="fleetKpiTripTotal" min="0" step="1" value="0" oninput="markFleetMonthlyKpiDirty(); renderFleetAvailabilityKpiSummary()"
+                style="width:220px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+            </label>
+            <button type="button" class="btn-primary" id="fleetKpiSaveButton" onclick="saveFleetMonthlyKpi()"
+              style="padding:8px 14px; font-size:0.82rem;">
+              <i class="fa-solid fa-floppy-disk"></i> Save Monthly KPI
+            </button>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="dispatch-table" style="min-width:650px;">
+              <thead>
+                <tr>
+                  <th>Admin fleet unit</th>
+                  <th>Operating weekdays</th>
+                  <th>For maintenance (days)</th>
+                  <th>Out of service (days)</th>
+                  <th>Operational (days)</th>
+                </tr>
+              </thead>
+              <tbody id="fleetKpiVehicleRows">
+                <tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Loading monthly fleet KPI…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="fleetKpiMessage" role="status" aria-live="polite" style="margin-top:12px; font-size:0.8rem; color:var(--text-muted);">
+            Monthly data is shared through Supabase.
+          </div>
+        </div>
+
         <!-- Master Registry Table Card -->
         <div class="data-card" style="padding: 24px;">
           <!-- Search & Filter Controls -->
@@ -17498,6 +17586,15 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       // ==========================================
       let allCompanyVehicles = Array.isArray(companyVehiclesData) ? [...companyVehiclesData] : [];
       let companyVehiclesFilter = 'ALL';
+      const fleetKpiUnits = [
+        { id: 'veh_110', name: 'Toyota Innova', plate: 'NHM-3386' },
+        { id: 'veh_124', name: 'Nissan Urvan', plate: 'NKI-9501' },
+        { id: 'veh_114', name: 'Honda PCX', plate: '903XHK' }
+      ];
+      let fleetMonthlyKpiRecord = { total_trips: 0, vehicle_days: {} };
+      let fleetMonthlyKpiSaved = false;
+      let fleetMonthlyKpiDirty = false;
+      let fleetKpiLoadRequest = 0;
 
       function escapeVehHtml(str) {
         if (str === null || str === undefined) return '';
@@ -17545,6 +17642,238 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         populateCompanyVehiclesDropdowns();
         renderCompanyVehiclesTable();
         updateCompanyVehiclesStats();
+        if (typeof window.loadFleetMonthlyKpi === 'function') window.loadFleetMonthlyKpi();
+      };
+
+      function getFleetKpiWeekdays(monthYear) {
+        const parts = String(monthYear || '').split('-').map(Number);
+        if (parts.length !== 2 || !parts[0] || parts[1] < 1 || parts[1] > 12) return 0;
+        const daysInMonth = new Date(Date.UTC(parts[0], parts[1], 0)).getUTCDate();
+        let weekdays = 0;
+        for (let day = 1; day <= daysInMonth; day++) {
+          const weekday = new Date(Date.UTC(parts[0], parts[1] - 1, day)).getUTCDay();
+          if (weekday !== 0 && weekday !== 6) weekdays++;
+        }
+        return weekdays;
+      }
+
+      function getFleetKpiUnitRecord(unit) {
+        return allCompanyVehicles.find(vehicle => String(vehicle.id) === unit.id)
+          || (Array.isArray(companyVehiclesData) ? companyVehiclesData.find(vehicle => String(vehicle.id) === unit.id) : null);
+      }
+
+      function getFleetKpiDowntime(unitId, field) {
+        const input = document.getElementById(`fleetKpi_${field}_${unitId}`);
+        const rawValue = input ? input.value.trim() : String(fleetMonthlyKpiRecord.vehicle_days[unitId]?.[field] ?? 0);
+        if (!rawValue) return NaN;
+        const value = Number(rawValue);
+        return Number.isInteger(value) ? value : NaN;
+      }
+
+      function renderFleetKpiRows(weekdays) {
+        const tbody = document.getElementById('fleetKpiVehicleRows');
+        if (!tbody) return;
+        tbody.innerHTML = fleetKpiUnits.map(unit => {
+          const vehicle = getFleetKpiUnitRecord(unit);
+          const maintenanceDays = Number(fleetMonthlyKpiRecord.vehicle_days[unit.id]?.maintenance_days || 0);
+          const outOfServiceDays = Number(fleetMonthlyKpiRecord.vehicle_days[unit.id]?.out_of_service_days || 0);
+          const name = vehicle ? (vehicle.model_description || unit.name) : unit.name;
+          const plate = vehicle ? (vehicle.plate_no || unit.plate) : unit.plate;
+          return `<tr>
+            <td><strong>${escapeVehHtml(name)}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${escapeVehHtml(plate)}</span></td>
+            <td>${weekdays}</td>
+            <td><input type="number" id="fleetKpi_maintenance_days_${unit.id}" min="0" max="${weekdays}" step="1" value="${maintenanceDays}"
+              aria-label="${escapeVehHtml(unit.name)} maintenance weekdays" oninput="markFleetMonthlyKpiDirty(); renderFleetAvailabilityKpiSummary()"
+              style="width:100px; padding:6px 8px; border:1px solid var(--border); border-radius:5px; background:var(--bg-surface); color:var(--text-main);"></td>
+            <td><input type="number" id="fleetKpi_out_of_service_days_${unit.id}" min="0" max="${weekdays}" step="1" value="${outOfServiceDays}"
+              aria-label="${escapeVehHtml(unit.name)} out-of-service weekdays" oninput="markFleetMonthlyKpiDirty(); renderFleetAvailabilityKpiSummary()"
+              style="width:100px; padding:6px 8px; border:1px solid var(--border); border-radius:5px; background:var(--bg-surface); color:var(--text-main);"></td>
+            <td id="fleetKpi_operational_days_${unit.id}">${Math.max(0, weekdays - maintenanceDays - outOfServiceDays)}</td>
+          </tr>`;
+        }).join('');
+      }
+
+      window.renderFleetAvailabilityKpiSummary = function () {
+        const monthInput = document.getElementById('fleetKpiMonth');
+        const monthYear = monthInput?.value || '';
+        const weekdays = getFleetKpiWeekdays(monthYear);
+        const maxUnitDays = weekdays * fleetKpiUnits.length;
+        const tripInput = document.getElementById('fleetKpiTripTotal');
+        const trips = tripInput && tripInput.value.trim()
+          ? Number(tripInput.value)
+          : (tripInput ? NaN : Number(fleetMonthlyKpiRecord.total_trips || 0));
+        let operationalDays = 0;
+        let maintenanceDays = 0;
+        let outOfServiceDays = 0;
+        let valid = Number.isInteger(trips) && trips >= 0;
+
+        fleetKpiUnits.forEach(unit => {
+          const maintenance = getFleetKpiDowntime(unit.id, 'maintenance_days');
+          const outOfService = getFleetKpiDowntime(unit.id, 'out_of_service_days');
+          const isValid = Number.isInteger(maintenance) && Number.isInteger(outOfService)
+            && maintenance >= 0 && outOfService >= 0 && maintenance + outOfService <= weekdays;
+          if (!isValid) {
+            valid = false;
+            const operationalCell = document.getElementById(`fleetKpi_operational_days_${unit.id}`);
+            if (operationalCell) operationalCell.textContent = '—';
+            return;
+          }
+          maintenanceDays += maintenance;
+          outOfServiceDays += outOfService;
+          operationalDays += weekdays - maintenance - outOfService;
+          const operationalCell = document.getElementById(`fleetKpi_operational_days_${unit.id}`);
+          if (operationalCell) operationalCell.textContent = String(weekdays - maintenance - outOfService);
+        });
+
+        const availability = maxUnitDays ? (operationalDays / maxUnitDays) * 100 : 0;
+        const setText = (id, value) => {
+          const element = document.getElementById(id);
+          if (element) element.textContent = value;
+        };
+        setText('fleetKpiAvailability', valid ? `${availability.toFixed(1)}%` : '—');
+        setText('fleetKpiWeekdays', String(weekdays));
+        setText('fleetKpiOperationalDays', valid ? String(operationalDays) : '—');
+        setText('fleetKpiMaintenanceDays', valid ? String(maintenanceDays) : '—');
+        setText('fleetKpiOutOfServiceDays', valid ? String(outOfServiceDays) : '—');
+        setText('fleetKpiAvailableUnitDays', valid ? String(operationalDays) : '—');
+        setText('fleetKpiPotentialUnitDays', `of ${maxUnitDays} possible`);
+        setText('fleetKpiTrips', Number.isInteger(trips) && trips >= 0 ? String(trips) : '—');
+        setText('fleetKpiTripsPerUnitDay', valid && operationalDays
+          ? `${(trips / operationalDays).toFixed(2)} trips per operational unit-day`
+          : '— trips per operational unit-day');
+
+        const status = document.getElementById('fleetKpiTargetStatus');
+        if (status) {
+          if (!valid) {
+            status.textContent = `Enter whole numbers; each unit’s downtime must not exceed ${weekdays} weekdays.`;
+            status.style.color = '#dc2626';
+          } else if (fleetMonthlyKpiDirty) {
+            status.textContent = 'Unsaved changes';
+            status.style.color = '#d97706';
+          } else if (!fleetMonthlyKpiSaved) {
+            status.textContent = 'Not yet reported · zero downtime assumed';
+            status.style.color = '#d97706';
+          } else {
+            status.textContent = availability >= 95 ? 'Target met · saved' : 'Below 95% target · saved';
+            status.style.color = availability >= 95 ? '#059669' : '#dc2626';
+          }
+        }
+        const message = document.getElementById('fleetKpiMessage');
+        if (message && valid) message.textContent = `Monthly data is shared through Supabase. ${fleetKpiUnits.length} units × ${weekdays} weekdays = ${maxUnitDays} possible vehicle-days.`;
+      };
+
+      window.markFleetMonthlyKpiDirty = function () {
+        fleetMonthlyKpiDirty = true;
+      };
+
+      window.loadFleetMonthlyKpi = async function () {
+        const monthInput = document.getElementById('fleetKpiMonth');
+        const message = document.getElementById('fleetKpiMessage');
+        if (!monthInput) return;
+        if (!monthInput.value) {
+          const now = new Date();
+          monthInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        }
+        const monthYear = monthInput.value;
+        const requestId = ++fleetKpiLoadRequest;
+        fleetMonthlyKpiRecord = { total_trips: 0, vehicle_days: {} };
+        fleetMonthlyKpiSaved = false;
+        fleetMonthlyKpiDirty = false;
+
+        const weekdays = getFleetKpiWeekdays(monthYear);
+        renderFleetKpiRows(weekdays);
+        const tripInput = document.getElementById('fleetKpiTripTotal');
+        if (tripInput) tripInput.value = '0';
+        if (message) message.textContent = `Loading shared KPI record for ${monthYear}…`;
+        window.renderFleetAvailabilityKpiSummary();
+
+        if (!supabase) {
+          if (message) message.textContent = 'Unable to load KPI data: Supabase is not configured.';
+          return;
+        }
+
+        try {
+          const { data, error } = await supabase.from('fleet_monthly_kpis')
+            .select('total_trips, vehicle_days')
+            .eq('month_year', monthYear)
+            .maybeSingle();
+          if (error) throw error;
+          if (requestId !== fleetKpiLoadRequest) return;
+
+          if (data) {
+            fleetMonthlyKpiRecord = {
+              total_trips: Number(data.total_trips || 0),
+              vehicle_days: data.vehicle_days && typeof data.vehicle_days === 'object' ? data.vehicle_days : {}
+            };
+            fleetMonthlyKpiSaved = true;
+          }
+          if (tripInput) tripInput.value = String(fleetMonthlyKpiRecord.total_trips);
+          renderFleetKpiRows(weekdays);
+          window.renderFleetAvailabilityKpiSummary();
+          if (message) message.textContent = data
+            ? `Loaded shared KPI record for ${monthYear}.`
+            : `No KPI record saved for ${monthYear}; record downtime and trips before relying on the provisional figures.`;
+        } catch (error) {
+          if (requestId !== fleetKpiLoadRequest) return;
+          console.error('Unable to load fleet monthly KPI:', error);
+          if (message) message.textContent = `Could not load shared KPI data: ${error.message || error}. Apply supabase_fleet_monthly_kpi_schema.sql and try again.`;
+        }
+      };
+
+      window.saveFleetMonthlyKpi = async function () {
+        const monthYear = document.getElementById('fleetKpiMonth')?.value || '';
+        const weekdays = getFleetKpiWeekdays(monthYear);
+        const tripInput = document.getElementById('fleetKpiTripTotal');
+        const totalTrips = tripInput && tripInput.value.trim() ? Number(tripInput.value) : NaN;
+        const vehicleDays = {};
+        const message = document.getElementById('fleetKpiMessage');
+        const saveButton = document.getElementById('fleetKpiSaveButton');
+
+        if (!supabase) {
+          if (message) message.textContent = 'Could not save monthly KPI data: Supabase is not configured.';
+          return;
+        }
+        if (!/^\d{4}-\d{2}$/.test(monthYear) || weekdays < 1 || !Number.isInteger(totalTrips) || totalTrips < 0) {
+          if (message) message.textContent = 'Enter a valid month and a whole-number trip total of zero or more.';
+          return;
+        }
+        for (const unit of fleetKpiUnits) {
+          const maintenanceDays = getFleetKpiDowntime(unit.id, 'maintenance_days');
+          const outOfServiceDays = getFleetKpiDowntime(unit.id, 'out_of_service_days');
+          if (!Number.isInteger(maintenanceDays) || !Number.isInteger(outOfServiceDays)
+            || maintenanceDays < 0 || outOfServiceDays < 0 || maintenanceDays + outOfServiceDays > weekdays) {
+            if (message) message.textContent = `${unit.name}: enter whole-number downtime values whose total does not exceed ${weekdays} weekdays.`;
+            return;
+          }
+          vehicleDays[unit.id] = { maintenance_days: maintenanceDays, out_of_service_days: outOfServiceDays };
+        }
+
+        if (saveButton) {
+          saveButton.disabled = true;
+          saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+        }
+        try {
+          const { error } = await supabase.from('fleet_monthly_kpis').upsert([{
+            month_year: monthYear,
+            total_trips: totalTrips,
+            vehicle_days: vehicleDays,
+            updated_at: new Date().toISOString()
+          }], { onConflict: 'month_year' });
+          if (error) throw error;
+          fleetMonthlyKpiRecord = { total_trips: totalTrips, vehicle_days: vehicleDays };
+          fleetMonthlyKpiSaved = true;
+          fleetMonthlyKpiDirty = false;
+          window.renderFleetAvailabilityKpiSummary();
+          if (message) message.textContent = `Monthly KPI data for ${monthYear} saved and shared successfully.`;
+        } catch (error) {
+          console.error('Unable to save fleet monthly KPI:', error);
+          if (message) message.textContent = `Could not save shared KPI data: ${error.message || error}. Check the Supabase schema and access policy.`;
+        } finally {
+          if (saveButton) {
+            saveButton.disabled = false;
+            saveButton.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Monthly KPI';
+          }
+        }
       };
 
       function updateCompanyVehiclesStats() {
