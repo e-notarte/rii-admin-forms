@@ -6098,6 +6098,89 @@
 
       <!-- FLEET MANAGEMENT - LIST OF COMPANY VEHICLES MASTER VIEW -->
       <div id="view-company-vehicles" class="view-section">
+        <style>
+          #fleetBreakdownForm .fleet-breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px 16px;
+          }
+
+          #fleetBreakdownForm .fleet-breakdown-field {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            gap: 6px;
+            color: var(--text-main);
+            font-size: 0.78rem;
+            font-weight: 700;
+          }
+
+          #fleetBreakdownForm .fleet-breakdown-field > span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+          }
+
+          #fleetBreakdownForm .fleet-breakdown-field i {
+            color: #f59e0b;
+          }
+
+          #fleetBreakdownForm .fleet-breakdown-required {
+            color: #ef4444;
+          }
+
+          #fleetBreakdownForm input,
+          #fleetBreakdownForm select,
+          #fleetBreakdownForm textarea {
+            width: 100%;
+            min-width: 0;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: var(--bg-surface);
+            color: var(--text-main);
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 400;
+          }
+
+          #fleetBreakdownForm input,
+          #fleetBreakdownForm select {
+            height: 38px;
+          }
+
+          #fleetBreakdownForm textarea {
+            min-height: 76px;
+            resize: vertical;
+          }
+
+          #fleetBreakdownForm .fleet-breakdown-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-top: 2px;
+          }
+
+          body.dark-mode #fleetBreakdownForm input,
+          body.dark-mode #fleetBreakdownForm select,
+          body.dark-mode #fleetBreakdownForm textarea {
+            border-color: var(--border);
+          }
+
+          @media (max-width: 700px) {
+            #fleetBreakdownForm .fleet-breakdown-grid {
+              grid-template-columns: minmax(0, 1fr);
+            }
+
+            #fleetBreakdownForm .fleet-breakdown-actions {
+              grid-column: auto;
+              align-items: stretch;
+              flex-direction: column;
+            }
+          }
+        </style>
         <div class="data-card" style="padding:24px; margin-bottom:24px;">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:18px;">
             <div>
@@ -6196,47 +6279,42 @@
             </p>
           </div>
           <form id="fleetBreakdownForm" onsubmit="saveFleetBreakdownReport(event)">
-            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; align-items:end;">
-              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
-                Date Reported
-                <input type="date" id="fleetBreakdownReportedDate" required
-                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+            <div class="fleet-breakdown-grid">
+              <label class="fleet-breakdown-field">
+                <span><i class="fa-regular fa-calendar"></i> Date Reported <b class="fleet-breakdown-required">*</b></span>
+                <input type="date" id="fleetBreakdownReportedDate" required>
               </label>
-              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
-                Vehicle
-                <select id="fleetBreakdownVehicle" required
-                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+              <label class="fleet-breakdown-field">
+                <span><i class="fa-solid fa-car-side"></i> Vehicle <b class="fleet-breakdown-required">*</b></span>
+                <select id="fleetBreakdownVehicle" required>
                   <option value="">Select a vehicle</option>
                   <option value="veh_110">Toyota Innova | NHM-3386</option>
                   <option value="veh_124">Nissan Urvan | NKI-9501</option>
                   <option value="veh_114">Honda PCX | 903XHK</option>
                 </select>
               </label>
-              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
-                Downtime Category
-                <select id="fleetBreakdownCategory" required
-                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+              <label class="fleet-breakdown-field">
+                <span><i class="fa-solid fa-screwdriver-wrench"></i> Downtime Category <b class="fleet-breakdown-required">*</b></span>
+                <select id="fleetBreakdownCategory" required>
                   <option value="MAINTENANCE">For maintenance</option>
                   <option value="OUT_OF_SERVICE">Out of service</option>
                 </select>
               </label>
-              <label style="grid-column:1 / -1; display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
-                Reason/Details
+              <label class="fleet-breakdown-field">
+                <span><i class="fa-solid fa-triangle-exclamation"></i> Breakdown Date/Time <b class="fleet-breakdown-required">*</b></span>
+                <input type="datetime-local" id="fleetBreakdownAt" required>
+              </label>
+              <label class="fleet-breakdown-field">
+                <span><i class="fa-solid fa-list-check"></i> Reason/Details <b class="fleet-breakdown-required">*</b></span>
                 <textarea id="fleetBreakdownReason" rows="2" maxlength="2000" required
-                  placeholder="Describe the breakdown, repair, or issue"
-                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main); resize:vertical;"></textarea>
+                  placeholder="Describe the breakdown, repair, or issue"></textarea>
               </label>
-              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
-                Breakdown Date/Time
-                <input type="datetime-local" id="fleetBreakdownAt" required
-                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+              <label class="fleet-breakdown-field">
+                <span><i class="fa-solid fa-arrow-right-to-bracket"></i> Return-to-service Date/Time</span>
+                <input type="datetime-local" id="fleetBreakdownReturnedAt">
               </label>
-              <label style="display:flex; flex-direction:column; gap:5px; color:var(--text-main); font-size:0.78rem; font-weight:600;">
-                Return-to-service Date/Time
-                <input type="datetime-local" id="fleetBreakdownReturnedAt"
-                  style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
-              </label>
-              <div style="grid-column:1 / -1; display:flex; justify-content:flex-end;">
+              <div class="fleet-breakdown-actions">
+                <span style="font-size:0.76rem; color:var(--text-muted);">Leave return time blank while the unit is still out of service.</span>
                 <button type="submit" class="btn-primary" id="fleetBreakdownSaveButton" style="padding:8px 14px; font-size:0.82rem;">
                   <i class="fa-solid fa-plus"></i> Add Breakdown Report
                 </button>
