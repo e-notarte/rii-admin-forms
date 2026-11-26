@@ -6285,7 +6285,11 @@
               <div class="fleet-breakdown-actions">
                 <span style="font-size:0.76rem; color:var(--text-muted);">Leave return time blank while the unit is still out of service.</span>
                 <button type="submit" class="btn-primary" id="fleetBreakdownSaveButton" style="padding:8px 14px; font-size:0.82rem;">
-                  <i class="fa-solid fa-plus"></i> Add Breakdown Report
+                  <i class="fa-solid fa-plus"></i> Record
+                </button>
+                <button type="button" class="btn-primary" id="fleetBreakdownCancelEditButton" onclick="cancelFleetBreakdownEdit()"
+                  style="display:none; padding:8px 14px; font-size:0.82rem; background:var(--bg-surface); color:var(--text-main); border:1px solid var(--border);">
+                  Cancel
                 </button>
               </div>
             </div>
@@ -6301,10 +6305,11 @@
                   <th>Reason/Details</th>
                   <th>Breakdown Date/Time</th>
                   <th>Return-to-service Date/Time</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody id="fleetBreakdownReportsBody">
-                <tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Loading breakdown reports…</td></tr>
+                <tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Loading breakdown reports…</td></tr>
               </tbody>
             </table>
           </div>
@@ -17729,6 +17734,8 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       let fleetMonthlyKpiSaved = false;
       let fleetKpiLoadRequest = 0;
       let fleetBreakdownLoadRequest = 0;
+      let fleetBreakdownReports = [];
+      let fleetEditingBreakdownReportId = null;
 
       function escapeVehHtml(str) {
         if (str === null || str === undefined) return '';
@@ -17981,6 +17988,61 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         return Number.isNaN(date.getTime()) ? '—' : date.toLocaleString();
       }
 
+      function formatFleetInputDateTime(value) {
+        if (!value) return '';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        return new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      }
+
+      function setFleetBreakdownFormMode() {
+        const saveButton = document.getElementById('fleetBreakdownSaveButton');
+        const cancelButton = document.getElementById('fleetBreakdownCancelEditButton');
+        if (saveButton) {
+          saveButton.innerHTML = fleetEditingBreakdownReportId
+            ? '<i class="fa-solid fa-floppy-disk"></i> Update Breakdown Report'
+            : '<i class="fa-solid fa-plus"></i> Record';
+        }
+        if (cancelButton) cancelButton.style.display = fleetEditingBreakdownReportId ? 'inline-flex' : 'none';
+      }
+
+      window.editFleetBreakdownReport = function (reportId) {
+        const report = fleetBreakdownReports.find(item => String(item.id) === String(reportId));
+        const message = document.getElementById('fleetBreakdownMessage');
+        if (!report) {
+          if (message) message.textContent = 'Could not open this report for editing. Reload the breakdown reports and try again.';
+          return;
+        }
+
+        document.getElementById('fleetBreakdownReportedDate').value = report.reported_date || '';
+        document.getElementById('fleetBreakdownVehicle').value = report.vehicle_id || '';
+        document.getElementById('fleetBreakdownCategory').value = report.downtime_category || 'OUT_OF_SERVICE';
+        document.getElementById('fleetBreakdownReason').value = report.reason_details || '';
+        document.getElementById('fleetBreakdownAt').value = formatFleetInputDateTime(report.breakdown_at);
+        document.getElementById('fleetBreakdownReturnedAt').value = formatFleetInputDateTime(report.returned_to_service_at);
+        fleetEditingBreakdownReportId = String(report.id);
+        setFleetBreakdownFormMode();
+        if (message) message.textContent = `Editing breakdown report for ${getFleetBreakdownVehicleLabel(report.vehicle_id)}.`;
+        document.getElementById('fleetBreakdownForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      };
+
+      function resetFleetBreakdownForm() {
+        fleetEditingBreakdownReportId = null;
+        document.getElementById('fleetBreakdownForm')?.reset();
+        const reportedDateInput = document.getElementById('fleetBreakdownReportedDate');
+        if (reportedDateInput) {
+          const now = new Date();
+          reportedDateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        }
+        setFleetBreakdownFormMode();
+      }
+
+      window.cancelFleetBreakdownEdit = function () {
+        resetFleetBreakdownForm();
+        const message = document.getElementById('fleetBreakdownMessage');
+        if (message) message.textContent = 'Report editing canceled.';
+      };
+
       function getFleetBreakdownVehicleLabel(vehicleId) {
         const unit = fleetKpiUnits.find(item => item.id === vehicleId);
         return unit ? `${unit.name} | ${unit.plate}` : 'Unknown vehicle';
@@ -17992,21 +18054,23 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const requestId = ++fleetBreakdownLoadRequest;
         if (!tbody) return;
         if (!supabase) {
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Reports are unavailable.</td></tr>';
+          fleetBreakdownReports = [];
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Reports are unavailable.</td></tr>';
           if (message) message.textContent = 'Could not load breakdown reports: Supabase is not configured.';
           return;
         }
 
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">Loading breakdown reports…</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">Loading breakdown reports…</td></tr>';
         if (message) message.textContent = 'Loading shared breakdown reports…';
         try {
           const { data, error } = await supabase.from('fleet_breakdown_reports')
-            .select('reported_date, vehicle_id, downtime_category, reason_details, breakdown_at, returned_to_service_at, created_at')
+            .select('id, reported_date, vehicle_id, downtime_category, reason_details, breakdown_at, returned_to_service_at, created_at')
             .order('reported_date', { ascending: false })
             .order('created_at', { ascending: false });
           if (error) throw error;
           if (requestId !== fleetBreakdownLoadRequest) return;
           const reports = Array.isArray(data) ? data : [];
+          fleetBreakdownReports = reports;
           tbody.innerHTML = reports.length ? reports.map(report => `
             <tr>
               <td>${escapeVehHtml(formatFleetReportDate(report.reported_date))}</td>
@@ -18015,13 +18079,19 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               <td style="white-space:pre-wrap;">${escapeVehHtml(report.reason_details)}</td>
               <td>${escapeVehHtml(formatFleetReportDateTime(report.breakdown_at))}</td>
               <td>${escapeVehHtml(formatFleetReportDateTime(report.returned_to_service_at))}</td>
+              <td><button type="button" class="btn-primary" data-report-id="${escapeVehHtml(report.id)}"
+                onclick="editFleetBreakdownReport(this.dataset.reportId)"
+                style="padding:5px 9px; font-size:0.75rem; white-space:nowrap;">
+                <i class="fa-solid fa-pen-to-square"></i> Update
+              </button></td>
             </tr>
-          `).join('') : '<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">No breakdown reports recorded.</td></tr>';
+          `).join('') : '<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No breakdown reports recorded.</td></tr>';
           if (message) message.textContent = `${reports.length} shared breakdown report${reports.length === 1 ? '' : 's'} loaded.`;
         } catch (error) {
           if (requestId !== fleetBreakdownLoadRequest) return;
           console.error('Unable to load fleet breakdown reports:', error);
-          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#dc2626;">Could not load breakdown reports.</td></tr>';
+          fleetBreakdownReports = [];
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#dc2626;">Could not load breakdown reports.</td></tr>';
           if (message) message.textContent = `Could not load shared reports: ${error.message || error}. Apply supabase_fleet_monthly_kpi_schema.sql and try again.`;
         }
       };
@@ -18036,6 +18106,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         const returnedValue = document.getElementById('fleetBreakdownReturnedAt')?.value || '';
         const message = document.getElementById('fleetBreakdownMessage');
         const saveButton = document.getElementById('fleetBreakdownSaveButton');
+        const editingReportId = fleetEditingBreakdownReportId;
         const reportedDateParsed = /^\d{4}-\d{2}-\d{2}$/.test(reportedDate)
           ? new Date(`${reportedDate}T00:00:00Z`)
           : null;
@@ -18062,34 +18133,42 @@ This serves as your official electronic copy of the posted Requisition & Issue S
 
         if (saveButton) {
           saveButton.disabled = true;
-          saveButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving…';
+          saveButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${editingReportId ? 'Updating' : 'Saving'}…`;
         }
         try {
-          const { error } = await supabase.from('fleet_breakdown_reports').insert([{
+          const reportData = {
             reported_date: reportedDate,
             vehicle_id: vehicleId,
             downtime_category: downtimeCategory,
             reason_details: reasonDetails,
             breakdown_at: breakdownAt.toISOString(),
             returned_to_service_at: returnedAt ? returnedAt.toISOString() : null
-          }]);
-          if (error) throw error;
-          document.getElementById('fleetBreakdownForm')?.reset();
-          const reportedDateInput = document.getElementById('fleetBreakdownReportedDate');
-          if (reportedDateInput) {
-            const now = new Date();
-            reportedDateInput.value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+          };
+          if (editingReportId) {
+            const { data, error } = await supabase.from('fleet_breakdown_reports')
+              .update(reportData)
+              .eq('id', editingReportId)
+              .select('id')
+              .maybeSingle();
+            if (error) throw error;
+            if (!data) throw new Error('Report was not found or you do not have permission to update it.');
+          } else {
+            const { error } = await supabase.from('fleet_breakdown_reports').insert([reportData]);
+            if (error) throw error;
           }
-          if (message) message.textContent = 'Breakdown report saved and shared successfully.';
+          resetFleetBreakdownForm();
+          if (message) message.textContent = editingReportId
+            ? 'Breakdown report updated and shared successfully.'
+            : 'Breakdown report saved and shared successfully.';
           await window.loadFleetBreakdownReports();
           await window.loadFleetMonthlyKpi();
         } catch (error) {
-          console.error('Unable to save fleet breakdown report:', error);
-          if (message) message.textContent = `Could not save shared report: ${error.message || error}. Check the Supabase schema and access policy.`;
+          console.error(editingReportId ? 'Unable to update fleet breakdown report:' : 'Unable to save fleet breakdown report:', error);
+          if (message) message.textContent = `Could not ${editingReportId ? 'update' : 'save'} shared report: ${error.message || error}. Check the Supabase schema and access policy.`;
         } finally {
           if (saveButton) {
             saveButton.disabled = false;
-            saveButton.innerHTML = '<i class="fa-solid fa-plus"></i> Add Breakdown Report';
+            setFleetBreakdownFormMode();
           }
         }
       };
