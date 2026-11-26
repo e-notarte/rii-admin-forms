@@ -6191,10 +6191,12 @@
                 Target: maintain at least 95% availability. Downtime is calculated from breakdown reports; each weekday touched counts once per vehicle, including the return-to-service weekday.
               </p>
             </div>
-            <label style="display:flex; align-items:center; gap:8px; color:var(--text-muted); font-size:0.82rem; font-weight:600;">
-              Monitoring month
+            <label style="display:flex; align-items:center; gap:10px; padding:8px 10px; border:1px solid var(--accent); border-radius:8px; background:rgba(245,158,11,0.12); color:var(--primary); font-size:0.82rem; font-weight:700;">
+              <span style="display:flex; align-items:center; gap:6px; white-space:nowrap;">
+                <i class="fa-regular fa-calendar-days" style="color:var(--accent);"></i> Monitoring month
+              </span>
               <input type="month" id="fleetKpiMonth" onchange="loadFleetMonthlyKpi()"
-                style="padding:7px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main); font:inherit;">
+                style="width:155px; padding:7px 10px; border:2px solid var(--accent); border-radius:6px; background:var(--bg-surface); color:var(--text-main); font:inherit; font-weight:600; box-shadow:0 0 0 2px rgba(245,158,11,0.12);">
             </label>
           </div>
 
