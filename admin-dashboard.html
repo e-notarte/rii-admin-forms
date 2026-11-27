@@ -5631,8 +5631,8 @@
                   <i class="fa-solid fa-chevron-right"></i></button>
               </div>
             </div>
+
           </div>
-        </div>
       </div>
 
       <!-- MATERIAL ISSUANCE VIEW (MIS) -->
@@ -6412,6 +6412,93 @@
                     master records...
                   </td>
                 </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Driver's Trip Ticket Registry -->
+        <div class="data-card" style="padding:24px; margin-top:24px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:18px;">
+            <div>
+              <h3 style="margin:0; color:var(--primary); font-size:1.1rem;">
+                <i class="fa-solid fa-file-lines" style="color:var(--accent);"></i> Driver's Trip Ticket Registry
+              </h3>
+              <p style="margin:6px 0 0; color:var(--text-muted); font-size:0.82rem;">
+                Registry of approved and completed vehicle trip tickets.
+              </p>
+            </div>
+            <button type="button" class="btn-primary" onclick="openTripTicketForm()"
+              style="font-size:0.82rem; padding:8px 14px; background:#10b981;">
+              <i class="fa-solid fa-plus"></i> Add Trip Ticket
+            </button>
+          </div>
+
+          <div id="tripTicketFormCard"
+            style="display:none; margin-bottom:18px; padding:16px; border:1px solid var(--border); border-radius:10px;">
+            <form id="tripTicketForm" onsubmit="saveTripTicket(event)">
+              <input type="hidden" id="tripTicketEditingId">
+              <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px;">
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Trip Date *
+                  <input type="date" id="tripTicketDate" required style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">DTT No. *
+                  <input type="text" id="tripTicketDttNo" required maxlength="50" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Vehicle *
+                  <input type="text" id="tripTicketVehicle" required maxlength="100" list="tripTicketVehicleList" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                  <datalist id="tripTicketVehicleList"></datalist>
+                </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Driver's Name *
+                  <input type="text" id="tripTicketDriver" required maxlength="100" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Leaving from *
+                  <input type="text" id="tripTicketLeavingFrom" required maxlength="150" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Going to *
+                  <input type="text" id="tripTicketGoingTo" required maxlength="150" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Odo Start
+                  <input type="number" id="tripTicketOdoStart" min="0" step="1" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Odo Finish
+                  <input type="number" id="tripTicketOdoFinish" min="0" step="1" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
+              </div>
+              <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+                <button type="button" class="btn-primary" onclick="closeTripTicketForm()" style="padding:8px 14px; background:var(--bg-surface); color:var(--text-main); border:1px solid var(--border);">Cancel</button>
+                <button type="submit" id="tripTicketSaveButton" class="btn-primary" style="padding:8px 14px; background:#10b981;">
+                  <i class="fa-solid fa-save"></i> Save Trip Ticket
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+            <span id="tripTicketResultCount" style="font-size:0.75rem; color:var(--text-muted);">0 trip tickets</span>
+            <input type="text" id="tripTicketSearch" oninput="filterTripTicketRegistry()" placeholder="Search DTT no., vehicle, driver, or destination..."
+              style="width:min(360px,100%); padding:8px 12px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="dispatch-table" style="min-width:1000px;">
+              <thead>
+                <tr>
+                  <th>Trip Date</th>
+                  <th>DTT No.</th>
+                  <th>Vehicle</th>
+                  <th>Driver's Name</th>
+                  <th>Leaving from</th>
+                  <th>Going to</th>
+                  <th>Odo Start</th>
+                  <th>Odo Finish</th>
+                  <th style="width:105px; text-align:center;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="tripTicketTableBody">
+                <tr><td colspan="9" style="text-align:center; padding:24px; color:var(--text-muted);">
+                  <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading trip tickets...
+                </td></tr>
               </tbody>
             </table>
           </div>
@@ -8094,6 +8181,9 @@
         loadDocumentTransmittals();
       } else if (viewId === 'view-company-vehicles' && typeof loadCompanyVehicles === 'function') {
         loadCompanyVehicles();
+        if (typeof loadTripTicketRegistry === 'function') {
+          loadTripTicketRegistry();
+        }
       }
 
       return false;
@@ -17740,6 +17830,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
       let fleetBreakdownReportsLoaded = false;
       let fleetEditingBreakdownReportId = null;
 
+      let tripTicketRegistry = [];
+      let tripTicketLoadRequest = 0;
+
       function escapeVehHtml(str) {
         if (str === null || str === undefined) return '';
         return String(str)
@@ -17786,6 +17879,216 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         populateCompanyVehiclesDropdowns();
         renderCompanyVehiclesTable();
         updateCompanyVehiclesStats();
+      };
+
+      window.openTripTicketForm = function (record) {
+        const card = document.getElementById('tripTicketFormCard');
+        if (!card) return;
+
+        document.getElementById('tripTicketEditingId').value = record?.id || '';
+        document.getElementById('tripTicketDate').value = record?.trip_date || '';
+        document.getElementById('tripTicketDttNo').value = record?.dtt_no || '';
+        document.getElementById('tripTicketVehicle').value = record?.vehicle || '';
+        document.getElementById('tripTicketDriver').value = record?.driver_name || '';
+        document.getElementById('tripTicketLeavingFrom').value = record?.leaving_from || '';
+        document.getElementById('tripTicketGoingTo').value = record?.going_to || '';
+        document.getElementById('tripTicketOdoStart').value = record?.odo_start ?? '';
+        document.getElementById('tripTicketOdoFinish').value = record?.odo_finish ?? '';
+        document.getElementById('tripTicketSaveButton').innerHTML =
+          record ? '<i class="fa-solid fa-save"></i> Update Trip Ticket' : '<i class="fa-solid fa-save"></i> Save Trip Ticket';
+
+        card.style.display = 'block';
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        document.getElementById('tripTicketDate').focus();
+      };
+
+      window.closeTripTicketForm = function () {
+        const card = document.getElementById('tripTicketFormCard');
+        if (card) card.style.display = 'none';
+        document.getElementById('tripTicketForm')?.reset();
+        document.getElementById('tripTicketEditingId').value = '';
+      };
+
+      window.loadTripTicketRegistry = async function () {
+        const requestId = ++tripTicketLoadRequest;
+        let records = [];
+
+        if (supabase) {
+          try {
+            const { data, error } = await supabase
+              .from('driver_trip_tickets')
+              .select('*')
+              .order('trip_date', { ascending: false });
+            if (!error && Array.isArray(data)) records = data;
+          } catch (e) {
+            console.warn('Trip ticket Supabase fetch unavailable:', e);
+          }
+        }
+
+        if (requestId !== tripTicketLoadRequest) return;
+        if (records.length === 0) {
+          try {
+            records = JSON.parse(localStorage.getItem('rii_driver_trip_tickets') || '[]');
+          } catch (_) {
+            records = [];
+          }
+        }
+
+        tripTicketRegistry = records
+          .map(record => ({ ...record, id: record.id != null ? String(record.id) : '' }))
+          .sort((a, b) => String(b.trip_date || '').localeCompare(String(a.trip_date || '')));
+
+        populateTripTicketVehicleList();
+        renderTripTicketRegistry();
+      };
+
+      function populateTripTicketVehicleList() {
+        const list = document.getElementById('tripTicketVehicleList');
+        if (!list) return;
+        const uniqueVehicles = [...new Map(
+          (Array.isArray(allCompanyVehicles) ? allCompanyVehicles : [])
+            .filter(v => v?.plate_no || v?.brand_make)
+            .map(v => [
+              `${v.brand_make || ''} ${v.model_description || ''} - ${v.plate_no || ''}`.trim(),
+              `${v.brand_make || ''} ${v.model_description || ''} - ${v.plate_no || ''}`.trim()
+            ])
+        ).values()];
+        list.innerHTML = uniqueVehicles.map(v => `<option value="${escapeVehHtml(v)}"></option>`).join('');
+      }
+
+      window.filterTripTicketRegistry = function () {
+        renderTripTicketRegistry();
+      };
+
+      window.renderTripTicketRegistry = function () {
+        const tbody = document.getElementById('tripTicketTableBody');
+        const countEl = document.getElementById('tripTicketResultCount');
+        if (!tbody) return;
+
+        const query = (document.getElementById('tripTicketSearch')?.value || '').trim().toLowerCase();
+        const filtered = tripTicketRegistry.filter(record => {
+          if (!query) return true;
+          return [
+            record.trip_date,
+            record.dtt_no,
+            record.vehicle,
+            record.driver_name,
+            record.leaving_from,
+            record.going_to
+          ].join(' ').toLowerCase().includes(query);
+        });
+
+        if (countEl) {
+          countEl.textContent = `Showing ${filtered.length} of ${tripTicketRegistry.length} trip ticket${tripTicketRegistry.length === 1 ? '' : 's'}`;
+        }
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="9" style="text-align:center; padding:30px 20px; color:var(--text-muted);">
+                <i class="fa-solid fa-file-circle-xmark" style="font-size:1.8rem; display:block; margin-bottom:8px; color:#cbd5e1;"></i>
+                No trip tickets found.
+              </td>
+            </tr>`;
+          return;
+        }
+
+        tbody.innerHTML = filtered.map(record => {
+          const formattedDate = record.trip_date
+            ? new Date(`${record.trip_date}T00:00:00`).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: '2-digit' })
+            : '-';
+          return `
+            <tr>
+              <td style="white-space:nowrap;">${escapeVehHtml(formattedDate)}</td>
+              <td><strong style="color:#0284c7;">${escapeVehHtml(record.dtt_no || '-')}</strong></td>
+              <td>${escapeVehHtml(record.vehicle || '-')}</td>
+              <td style="font-weight:600;">${escapeVehHtml(record.driver_name || '-')}</td>
+              <td>${escapeVehHtml(record.leaving_from || '-')}</td>
+              <td>${escapeVehHtml(record.going_to || '-')}</td>
+              <td style="font-family:monospace; text-align:right;">${record.odo_start !== null && record.odo_start !== undefined && record.odo_start !== '' ? escapeVehHtml(Number(record.odo_start).toLocaleString()) : '-'}</td>
+              <td style="font-family:monospace; text-align:right;">${record.odo_finish !== null && record.odo_finish !== undefined && record.odo_finish !== '' ? escapeVehHtml(Number(record.odo_finish).toLocaleString()) : '-'}</td>
+              <td style="text-align:center;">
+                <div style="display:inline-flex; gap:5px;">
+                  <button type="button" class="btn-primary" onclick="editTripTicketById('${escapeVehHtml(record.id)}')"
+                    style="padding:5px 9px; font-size:0.75rem; background:#0284c7;" title="Edit trip ticket">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button type="button" class="btn-primary" onclick="deleteTripTicket('${escapeVehHtml(record.id)}')"
+                    style="padding:5px 9px; font-size:0.75rem; background:#dc2626;" title="Delete trip ticket">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>`;
+        }).join('');
+      };
+
+      window.editTripTicket = function (record) {
+        openTripTicketForm(record);
+      };
+
+      window.editTripTicketById = function (id) {
+        const record = tripTicketRegistry.find(item => String(item.id) === String(id));
+        if (record) openTripTicketForm(record);
+      };
+
+      window.saveTripTicket = async function (event) {
+        event.preventDefault();
+
+        const editingId = document.getElementById('tripTicketEditingId').value;
+        const odoStart = document.getElementById('tripTicketOdoStart').value;
+        const odoFinish = document.getElementById('tripTicketOdoFinish').value;
+        const record = {
+          id: editingId || (window.crypto?.randomUUID ? window.crypto.randomUUID() : `dtt_${Date.now()}`),
+          trip_date: document.getElementById('tripTicketDate').value,
+          dtt_no: document.getElementById('tripTicketDttNo').value.trim(),
+          vehicle: document.getElementById('tripTicketVehicle').value.trim(),
+          driver_name: document.getElementById('tripTicketDriver').value.trim(),
+          leaving_from: document.getElementById('tripTicketLeavingFrom').value.trim(),
+          going_to: document.getElementById('tripTicketGoingTo').value.trim(),
+          odo_start: odoStart === '' ? null : Number(odoStart),
+          odo_finish: odoFinish === '' ? null : Number(odoFinish)
+        };
+
+        if (record.odo_start !== null && record.odo_finish !== null && record.odo_finish < record.odo_start) {
+          alert('Odo Finish cannot be less than Odo Start.');
+          return;
+        }
+
+        if (supabase) {
+          try {
+            const { error } = await supabase
+              .from('driver_trip_tickets')
+              .upsert([record], { onConflict: 'id' });
+            if (error) throw error;
+          } catch (e) {
+            console.warn('Trip ticket Supabase save fallback to local storage:', e);
+          }
+        }
+
+        const localRecords = tripTicketRegistry.filter(item => item.id !== record.id);
+        localRecords.push(record);
+        tripTicketRegistry = localRecords.sort((a, b) => String(b.trip_date || '').localeCompare(String(a.trip_date || '')));
+        localStorage.setItem('rii_driver_trip_tickets', JSON.stringify(tripTicketRegistry));
+
+        closeTripTicketForm();
+        renderTripTicketRegistry();
+      };
+
+      window.deleteTripTicket = async function (id) {
+        if (!id || !confirm('Delete this trip ticket record?')) return;
+
+        if (supabase) {
+          try {
+            await supabase.from('driver_trip_tickets').delete().eq('id', id);
+          } catch (e) {
+            console.warn('Trip ticket Supabase delete unavailable:', e);
+          }
+        }
+
+        tripTicketRegistry = tripTicketRegistry.filter(record => record.id !== String(id));
+        localStorage.setItem('rii_driver_trip_tickets', JSON.stringify(tripTicketRegistry));
+        renderTripTicketRegistry();
       };
 
       function getFleetKpiWeekdays(monthYear) {
