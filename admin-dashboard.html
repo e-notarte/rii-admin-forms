@@ -4523,6 +4523,12 @@
         </span>
         <span class="nav-title">List of Company Vehicles</span>
       </a>
+      <a href="#" class="nav-link" onclick="return switchView('view-trip-tickets', this)">
+        <span class="nav-icon-wrapper">
+          <i class="fa-solid fa-file-lines"></i>
+        </span>
+        <span class="nav-title">Driver's Trip Ticket Registry</span>
+      </a>
     </nav>
 
     <div class="nav-label">BUILDING MAINTENANCE</div>
@@ -6418,6 +6424,8 @@
           </div>
         </div>
 
+      </div>
+      <div id="view-trip-tickets" class="view-section">
         <!-- Driver's Trip Ticket Registry -->
         <div class="data-card" style="padding:24px; margin-top:24px;">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:18px;">
@@ -7984,6 +7992,11 @@
         pin: '016',
         editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
       },
+      'view-trip-tickets': {
+        name: "Driver's Trip Ticket Registry",
+        pin: '016',
+        editors: ['System Admin', 'Clarisa P. Lasam', 'Emmanuel Notarte', 'Marlyn A. Bergantin']
+      },
       'view-building-maintenance': {
         name: 'Electricity Submeter Billing',
         pin: '017',
@@ -8182,9 +8195,8 @@
         loadDocumentTransmittals();
       } else if (viewId === 'view-company-vehicles' && typeof loadCompanyVehicles === 'function') {
         loadCompanyVehicles();
-        if (typeof loadTripTicketRegistry === 'function') {
-          loadTripTicketRegistry();
-        }
+      } else if (viewId === 'view-trip-tickets' && typeof loadTripTicketRegistry === 'function') {
+        loadTripTicketRegistry();
       }
 
       return false;
