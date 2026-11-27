@@ -6463,6 +6463,9 @@
                 <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Leaving from *
                   <input type="text" id="tripTicketLeavingFrom" required maxlength="150" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
                 </label>
+                <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Time
+                  <input type="time" id="tripTicketTime" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+                </label>
                 <label style="display:flex; flex-direction:column; gap:5px; font-size:0.78rem; font-weight:700;">Going to *
                   <input type="text" id="tripTicketGoingTo" required maxlength="150" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
                 </label>
@@ -6489,7 +6492,7 @@
           </div>
 
           <div style="overflow-x:auto;">
-            <table class="dispatch-table" style="min-width:1000px;">
+            <table class="dispatch-table" style="min-width:1120px;">
               <thead>
                 <tr>
                   <th>Trip Date</th>
@@ -6497,6 +6500,7 @@
                   <th>Vehicle</th>
                   <th>Driver's Name</th>
                   <th>Leaving from</th>
+                  <th>Time</th>
                   <th>Going to</th>
                   <th>Odo Start</th>
                   <th>Odo Finish</th>
@@ -6504,7 +6508,7 @@
                 </tr>
               </thead>
               <tbody id="tripTicketTableBody">
-                <tr><td colspan="9" style="text-align:center; padding:24px; color:var(--text-muted);">
+                <tr><td colspan="10" style="text-align:center; padding:24px; color:var(--text-muted);">
                   <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px;"></i> Loading trip tickets...
                 </td></tr>
               </tbody>
@@ -17855,6 +17859,17 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           .replace(/'/g, '&#39;');
       }
 
+      function formatTripTicketTime(value) {
+        const match = /^(\d{1,2}):(\d{2})/.exec(String(value || ''));
+        if (!match) return '-';
+
+        const hours = Number(match[1]);
+        const minutes = Number(match[2]);
+        if (hours > 23 || minutes > 59) return '-';
+
+        return `${hours % 12 || 12}:${String(minutes).padStart(2, '0')} ${hours < 12 ? 'AM' : 'PM'}`;
+      }
+
       window.loadCompanyVehicles = async function () {
         try {
           if (supabase) {
@@ -17918,6 +17933,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         document.getElementById('editTripTicketVehicle').value = record.vehicle || '';
         document.getElementById('editTripTicketDriver').value = record.driver_name || '';
         document.getElementById('editTripTicketLeavingFrom').value = record.leaving_from || '';
+        document.getElementById('editTripTicketTime').value = (record.trip_time || '').slice(0, 5);
         document.getElementById('editTripTicketGoingTo').value = record.going_to || '';
         document.getElementById('editTripTicketOdoStart').value = record.odo_start ?? '';
         document.getElementById('editTripTicketOdoFinish').value = record.odo_finish ?? '';
@@ -17996,6 +18012,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             record.vehicle,
             record.driver_name,
             record.leaving_from,
+            record.trip_time,
             record.going_to
           ].join(' ').toLowerCase().includes(query);
         });
@@ -18007,7 +18024,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
         if (filtered.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="9" style="text-align:center; padding:30px 20px; color:var(--text-muted);">
+              <td colspan="10" style="text-align:center; padding:30px 20px; color:var(--text-muted);">
                 <i class="fa-solid fa-file-circle-xmark" style="font-size:1.8rem; display:block; margin-bottom:8px; color:#cbd5e1;"></i>
                 No trip tickets found.
               </td>
@@ -18026,6 +18043,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
               <td>${escapeVehHtml(record.vehicle || '-')}</td>
               <td style="font-weight:600;">${escapeVehHtml(record.driver_name || '-')}</td>
               <td>${escapeVehHtml(record.leaving_from || '-')}</td>
+              <td style="white-space:nowrap;">${escapeVehHtml(formatTripTicketTime(record.trip_time))}</td>
               <td>${escapeVehHtml(record.going_to || '-')}</td>
               <td style="font-family:monospace; text-align:right;">${record.odo_start !== null && record.odo_start !== undefined && record.odo_start !== '' ? escapeVehHtml(Number(record.odo_start).toLocaleString()) : '-'}</td>
               <td style="font-family:monospace; text-align:right;">${record.odo_finish !== null && record.odo_finish !== undefined && record.odo_finish !== '' ? escapeVehHtml(Number(record.odo_finish).toLocaleString()) : '-'}</td>
@@ -18066,6 +18084,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           vehicle: document.getElementById('tripTicketVehicle').value.trim(),
           driver_name: document.getElementById('tripTicketDriver').value.trim(),
           leaving_from: document.getElementById('tripTicketLeavingFrom').value.trim(),
+          trip_time: document.getElementById('tripTicketTime').value || null,
           going_to: document.getElementById('tripTicketGoingTo').value.trim(),
           odo_start: odoStart === '' ? null : Number(odoStart),
           odo_finish: odoFinish === '' ? null : Number(odoFinish)
@@ -18115,6 +18134,7 @@ This serves as your official electronic copy of the posted Requisition & Issue S
           vehicle: document.getElementById('editTripTicketVehicle').value.trim(),
           driver_name: document.getElementById('editTripTicketDriver').value.trim(),
           leaving_from: document.getElementById('editTripTicketLeavingFrom').value.trim(),
+          trip_time: document.getElementById('editTripTicketTime').value || null,
           going_to: document.getElementById('editTripTicketGoingTo').value.trim(),
           odo_start: odoStart === '' ? null : Number(odoStart),
           odo_finish: odoFinish === '' ? null : Number(odoFinish)
@@ -19455,6 +19475,9 @@ This serves as your official electronic copy of the posted Requisition & Issue S
             </label>
             <label style="display:flex; flex-direction:column; gap:5px; font-size:0.82rem; font-weight:600;">Leaving from *
               <input type="text" id="editTripTicketLeavingFrom" required maxlength="150" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
+            </label>
+            <label style="display:flex; flex-direction:column; gap:5px; font-size:0.82rem; font-weight:600;">Time
+              <input type="time" id="editTripTicketTime" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
             </label>
             <label style="display:flex; flex-direction:column; gap:5px; font-size:0.82rem; font-weight:600;">Going to *
               <input type="text" id="editTripTicketGoingTo" required maxlength="150" style="height:38px; padding:8px 10px; border:1px solid var(--border); border-radius:6px; background:var(--bg-surface); color:var(--text-main);">
